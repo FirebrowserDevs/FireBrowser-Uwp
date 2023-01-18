@@ -12,6 +12,7 @@
     "UI": {
         "Layout": "Classic",
         "FlyoutLayout": "Normal",
+        "UI-Design":  "Default",
         "FloatingTabs": true,
         "BaseTheme": "Auto",
         "Theme": 0,
