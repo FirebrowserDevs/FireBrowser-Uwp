@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="7c838069-2340-4849-bc74-70d68b4e0516"
-    Publisher="CN=Julian"
+    Name="FireBrowserDevelopers.FireBrowser.Uwp"
+    Publisher="CN=FireBrowser Developers"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="7c838069-2340-4849-bc74-70d68b4e0516" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>FireBrowser</DisplayName>
-    <PublisherDisplayName>Julian</PublisherDisplayName>
+    <PublisherDisplayName>FireBrowser Developers</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
