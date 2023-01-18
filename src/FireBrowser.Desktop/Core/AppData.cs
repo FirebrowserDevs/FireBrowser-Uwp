@@ -266,37 +266,7 @@ namespace FireBrowser.Core
                 }
             };
 
-            string appDataFilePath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "FireBrowserData", "ProfileData.json");
 
-            if (File.Exists(appDataFilePath))
-            {
-                if(templateProfile == null)
-                {
-                    throw new ArgumentNullException("templateProfile cannot be null.");
-                }
-                var appDataCore = await GetAppDataCore();
-
-                if (appDataCore.Profiles.Count > 0)
-                {
-                    templateProfile.ID = appDataCore.Profiles.Max(p => p.ID) + 1;
-                }
-                else
-                {
-                    templateProfile.ID = 1;
-                }
-                appDataCore.Profiles.Add(templateProfile);
-
-                using (var fileStream = File.Open(appDataFilePath, FileMode.Open))
-                {
-                    using (var streamWriter = new StreamWriter(fileStream))
-                    {
-                        await streamWriter.WriteAsync(JsonSerializer.Serialize(appDataCore, serializerOptions));
-                    }
-                }
-
-            }
-
-           
 
             StorageFolder dataFolder = await GetDataFolder();
             StorageFolder userFolder = await dataFolder.CreateFolderAsync(templateProfile.FriendlyID);
