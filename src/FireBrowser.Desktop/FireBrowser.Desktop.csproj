@@ -577,7 +577,7 @@
       <Version>2.8.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Web.WebView2">
-      <Version>1.0.1549-prerelease</Version>
+      <Version>1.0.1343.22</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Win32.Registry">
       <Version>6.0.0-preview.5.21301.5</Version>
@@ -597,13 +597,13 @@
       <Version>2.1.4</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.Pdf.UWP">
-      <Version>20.4.0.43</Version>
+      <Version>20.4.0.44</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.SfPdfViewer.UWP">
-      <Version>20.4.0.43</Version>
+      <Version>20.4.0.44</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.SfRadialMenu.UWP">
-      <Version>20.4.0.43</Version>
+      <Version>20.4.0.44</Version>
     </PackageReference>
     <PackageReference Include="System.Text.Json">
       <Version>7.0.1</Version>

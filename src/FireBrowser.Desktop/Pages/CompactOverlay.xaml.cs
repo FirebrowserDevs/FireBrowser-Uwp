@@ -29,7 +29,6 @@ namespace FireBrowser.Pages
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            testWv.CoreWebView2.MemoryUsageTargetLevel = Microsoft.Web.WebView2.Core.CoreWebView2MemoryUsageTargetLevel.Low;
             testWv.CoreWebView2.Stop();
             await testWv.CoreWebView2.TrySuspendAsync();
         }

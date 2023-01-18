@@ -329,7 +329,7 @@ namespace FireBrowser.Pages
 
                     break;
                 case "Print":
-                    WebViewElement.CoreWebView2.ShowPrintUI(CoreWebView2PrintDialogKind.System);
+                    
                     break;
             }
         }

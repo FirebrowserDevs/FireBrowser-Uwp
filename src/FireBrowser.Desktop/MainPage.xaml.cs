@@ -528,19 +528,11 @@ private void DataRequested(DataTransferManager sender, DataRequestedEventArgs e)
                 case "Sleep":
                     if (true)
                     {
-                        if (TabContent.Content is WebContent)
-                        {
-                            (TabContent.Content as WebContent).WebViewElement.CoreWebView2.MemoryUsageTargetLevel = Microsoft.Web.WebView2.Core.CoreWebView2MemoryUsageTargetLevel.Low;
-                            (TabContent.Content as WebContent).WebViewElement.CoreWebView2.Stop();
-                        }
+                       
                     }
                     else
                     {
-                        if (TabContent.Content is WebContent)
-                        {
-                            (TabContent.Content as WebContent).WebViewElement.CoreWebView2.MemoryUsageTargetLevel = Microsoft.Web.WebView2.Core.CoreWebView2MemoryUsageTargetLevel.Normal;
-                            (TabContent.Content as WebContent).WebViewElement.CoreWebView2.Resume();
-                        }
+                        
                     }
                     break;
             }
@@ -749,7 +741,7 @@ private void DataRequested(DataTransferManager sender, DataRequestedEventArgs e)
                     TabContent.Navigate(typeof(FocusPage));
                     break;
                 case "Print":
-                    if (TabContent.Content is WebContent) (TabContent.Content as WebContent).WebViewElement.CoreWebView2.ShowPrintUI(Microsoft.Web.WebView2.Core.CoreWebView2PrintDialogKind.Browser);
+
                     break;
                 case "Note":
                     if (TabContent.Content is WebContent) (TabContent.Content as WebContent).PrepareForNoting();
