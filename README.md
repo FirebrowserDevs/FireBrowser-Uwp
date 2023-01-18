@@ -1,6 +1,6 @@
 <div style="display: flex; align-items: center;">
   <img src="Desktop/src/Assets/Square44x44Logo.altform-lightunplated_targetsize-48.png" />
-  <a style="font-size: 25px;">Airplane<a>
+  <a style="font-size: 25px;">FireBrowser<a>
 </div>
 
 ### A modern Web browser with a beautiful UI built with the UWP and the WebView2 SDK.
