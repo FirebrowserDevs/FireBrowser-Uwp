@@ -1,5 +1,5 @@
 <div style="display: flex; align-items: center;">
-  <img src="src/Readme/Logo.png" width="32" height="32"/>
+  <img src="src/Readme/Logo.png" width=64" height="64"/>
   <a style="font-size: 25px;">FireBrowser<a>
 </div>
 
