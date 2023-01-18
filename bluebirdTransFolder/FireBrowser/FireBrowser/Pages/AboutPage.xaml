@@ -1,0 +1,59 @@
+﻿<Page
+    x:Class="FireBrowser.Pages.AboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:FireBrowser.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:svsettctrl="using:SVSettingsControl"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Image
+                Width="70"
+                Height="70"
+                Source="ms-appx:///Assets/Square44x44Logo.targetsize-256.png" />
+            <StackPanel>
+                <TextBlock FontSize="30">FireBrowser</TextBlock>
+                <TextBlock FontSize="15">Your next-gen webbrowser</TextBlock>
+            </StackPanel>
+        </StackPanel>
+        <svsettctrl:SettingsBlockControl Title="Version information" IsExpanded="True">
+            <svsettctrl:SettingsBlockControl.Icon>
+                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE946;" />
+            </svsettctrl:SettingsBlockControl.Icon>
+            <svsettctrl:SettingsBlockControl.ExpandableContent>
+                <StackPanel>
+                    <TextBlock x:Name="FireBrowserVersion" />
+                    <TextBlock x:Name="WebView2Version" />
+                </StackPanel>
+            </svsettctrl:SettingsBlockControl.ExpandableContent>
+        </svsettctrl:SettingsBlockControl>
+        <svsettctrl:SettingsBlockControl Title="Dependencies" IsExpanded="True">
+            <svsettctrl:SettingsBlockControl.Icon>
+                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE1D3;" />
+            </svsettctrl:SettingsBlockControl.Icon>
+            <svsettctrl:SettingsBlockControl.ExpandableContent>
+                <StackPanel>
+                    <TextBlock
+                        Foreground="{ThemeResource HyperlinkForegroundThemeBrush}"
+                        Tag="https://github.com/microsoft/microsoft-ui-xaml"
+                        Tapped="TextBlock_Tapped"
+                        Text="Microsoft.UI.Xaml (MIT Licence)" />
+                    <TextBlock
+                        Foreground="{ThemeResource HyperlinkForegroundThemeBrush}"
+                        Tag="https://github.com/JamesNK/Newtonsoft.Json"
+                        Tapped="TextBlock_Tapped"
+                        Text="Newtonsoft.Json (MIT Licence)" />
+                    <TextBlock
+                        Foreground="{ThemeResource HyperlinkForegroundThemeBrush}"
+                        Tag="https://github.com/gus33000/SVSettingsControl"
+                        Tapped="TextBlock_Tapped"
+                        Text="SVSettingsControl (MIT Licence)" />
+                </StackPanel>
+            </svsettctrl:SettingsBlockControl.ExpandableContent>
+        </svsettctrl:SettingsBlockControl>
+    </StackPanel>
+</Page>
