@@ -129,8 +129,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemHelper.cs" />
     <Compile Include="UI.cs" />
-    <Compile Include="UserAgentHelper.cs" />
-    <Compile Include="Web.cs" />
     <Compile Include="WindowManager.cs" />
     <EmbeddedResource Include="Properties\FireBrowser.Shared.rd.xml" />
   </ItemGroup>
