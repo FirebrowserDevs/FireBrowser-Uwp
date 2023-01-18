@@ -1,5 +1,5 @@
 <div style="display: flex; align-items: center;">
-  <img src="Desktop/src/Assets/Square44x44Logo.altform-lightunplated_targetsize-48.png" />
+  <img src="src/Readme/Logo.png" />
   <a style="font-size: 25px;">FireBrowser<a>
 </div>
 
