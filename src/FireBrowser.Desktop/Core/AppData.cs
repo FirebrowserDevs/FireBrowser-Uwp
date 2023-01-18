@@ -35,7 +35,6 @@ namespace FireBrowser.Core
                 }
                 catch (Exception ex)
                 {
-                    Dots.SDK.UWP.Log.WriteLog(ex.Message, "CurrentProfileCore", Dots.SDK.Log.LogType.Error);
                     return null;
                 }
             }
@@ -50,7 +49,7 @@ namespace FireBrowser.Core
             }
             catch(Exception ex)
             {
-                Dots.SDK.UWP.Log.WriteLog(ex.Message, "GetCurrentProfileCore", Dots.SDK.Log.LogType.Error);
+             
                 var appdatacore = await CreateAppDataCore();
                 return appdatacore.Profiles[0];
             }
@@ -70,14 +69,7 @@ namespace FireBrowser.Core
             var profileCore = await GetCurrentProfileCoreAsync();
             if (File.Exists($"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/{profileCore.FriendlyID}/FireBrowserHistory.Db"))
             {
-                if (File.Exists($"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/log.txt"))
-                {
-                    
-                }
-                else
-                {
-                    
-                }          
+                      
             }
             else
             {
@@ -214,7 +206,7 @@ namespace FireBrowser.Core
             }
             catch (Exception ex)
             {
-                Dots.SDK.UWP.Log.WriteLog(ex.Message, "GetAppDataCore", Dots.SDK.Log.LogType.Error);
+              
                 await CreateAppDataCore();
                 return JsonSerializer.Deserialize<AppDataCore>(File.ReadAllText($"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/ProfileData.json"), serializerOptions);
             }
@@ -274,19 +266,37 @@ namespace FireBrowser.Core
                 }
             };
 
-            string appDataFilePath = $"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/ProfileData.json";
+            string appDataFilePath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "FireBrowserData", "ProfileData.json");
 
-            //To-Do: Also check if the files aren't empty
             if (File.Exists(appDataFilePath))
             {
+                if(templateProfile == null)
+                {
+                    throw new ArgumentNullException("templateProfile cannot be null.");
+                }
                 var appDataCore = await GetAppDataCore();
 
-                templateProfile.ID = (appDataCore.Profiles.Count);
+                if (appDataCore.Profiles.Count > 0)
+                {
+                    templateProfile.ID = appDataCore.Profiles.Max(p => p.ID) + 1;
+                }
+                else
+                {
+                    templateProfile.ID = 1;
+                }
                 appDataCore.Profiles.Add(templateProfile);
-                await FileIO.WriteTextAsync(await StorageFile.GetFileFromPathAsync(
-                            $"{ApplicationData.Current.LocalFolder.Path}\\FireBrowserData\\ProfileData.json"),
-                            JsonSerializer.Serialize(appDataCore, serializerOptions));
+
+                using (var fileStream = File.Open(appDataFilePath, FileMode.Open))
+                {
+                    using (var streamWriter = new StreamWriter(fileStream))
+                    {
+                        await streamWriter.WriteAsync(JsonSerializer.Serialize(appDataCore, serializerOptions));
+                    }
+                }
+
             }
+
+           
 
             StorageFolder dataFolder = await GetDataFolder();
             StorageFolder userFolder = await dataFolder.CreateFolderAsync(templateProfile.FriendlyID);
