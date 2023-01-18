@@ -1,0 +1,59 @@
+﻿<Page
+    x:Class="FireBrowser.Pages.WebContent"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FireBrowser.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:end="using:FireBrowser.Controls.BrowserEngines"
+    xmlns:airplane="using:FireBrowser.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <muxc:CommandBarFlyout x:Name="Ctx">
+            <AppBarButton x:Uid="ToDo" Click="ContextMenuItem_Click" Tag="MenuBack" Icon="{airplane:FluentIcon Glyph=&#xF15C;}"/>
+            <AppBarButton Click="ContextMenuItem_Click" Tag="Forward">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xF182;"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton Icon="Share" ToolTipService.ToolTip="Share" Tag="Share"/>
+            <AppBarButton Tag="Print" Click="ContextMenuItem_Click">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xF62B;"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <muxc:CommandBarFlyout.SecondaryCommands>
+                <AppBarButton Label="Select all" Tag="Select">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator 
+                        Modifiers="Control" 
+                        Key="A" />
+                    </AppBarButton.KeyboardAccelerators>
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xF66A;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton Label="Read aloud" Tag="Read">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xF64E;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton Label="Save" Tag="Save">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xF680;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <!-- Todo: add inspect and possibly a separator for these dev options-->
+                <AppBarButton Click="ContextMenuItem_Click" Label="View source" Tag="Source">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xF2EF;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </muxc:CommandBarFlyout.SecondaryCommands>
+        </muxc:CommandBarFlyout>
+    </Page.Resources>
+    <Grid x:Name="Grid" Loaded="Grid_Loaded">
+    </Grid>
+</Page>

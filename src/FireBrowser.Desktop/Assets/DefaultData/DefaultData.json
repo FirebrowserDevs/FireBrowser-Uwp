@@ -1,0 +1,142 @@
+﻿
+    {
+      "Favorites": [
+        {
+          "Name": "FireBrowserToolbarFavoritesFolder",
+          "Favicon": null,
+          "URL": null,
+          "Content": []
+        },
+        {
+          "Name": "FireBrowserFavoritesFolder",
+          "Favicon": null,
+          "URL": null,
+          "Content": []
+        }
+      ],
+      "NewTabPins": [
+        {
+          "Name": "Netflix",
+          "Favicon": {
+            "Hash": "f3418a443e7d841097c714d69ec4bcb8",
+            "FallbackURL": "https://netflix.com/favicon.ico"
+          },
+          "URL": "https://netflix.com"
+        },
+        {
+          "Name": "YouTube",
+          "Favicon": {
+            "Hash": "f3418a443e7d841097c714d69ec4bcb8",
+            "FallbackURL": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://www.youtube.com&size=32"
+          },
+          "URL": "https://www.youtube.com"
+        },
+        {
+          "Name": "Spotify",
+          "Favicon": {
+            "Hash": "f3418a443e7d841097c714d69ec4bcb8",
+            "FallbackURL": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://www.spotify.com&size=32"
+          },
+          "URL": "https://spotify.com"
+        },
+        {
+          "Name": "Twitter",
+          "Favicon": {
+            "Hash": "f3418a443e7d841097c714d69ec4bcb8",
+            "FallbackURL": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://www.twitter.com&size=32"
+          },
+          "URL": "https://twitter.com"
+        },
+        {
+          "Name": "Discord",
+          "Favicon": {
+            "Hash": "f3418a443e7d841097c714d69ec4bcb8",
+            "FallbackURL": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://www.discord.com&size=32"
+          },
+          "URL": "https://discord.com"
+        },
+        {
+          "Name": "Google",
+          "Favicon": {
+            "Hash": "f3418a443e7d841097c714d69ec4bcb8",
+            "FallbackURL": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://www.google.com&size=32"
+          },
+          "URL": "https://google.com"
+        },
+        {
+          "Name": "GitHub",
+          "Favicon": {
+            "Hash": "f3418a443e7d841097c714d69ec4bcb8",
+            "FallbackURL": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://www.github.com&size=32"
+          },
+          "URL": "https://github.com"
+        },
+        {
+          "Name": "Wikipedia",
+          "Favicon": {
+            "Hash": "f3418a443e7d841097c714d69ec4bcb8",
+            "FallbackURL": "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://www.wikipedia.com&size=32"
+          },
+          "URL": "https://en.wikipedia.org/wiki/Main_Page"
+        }
+      ],
+      "Focus": [
+        {
+          "Name": "Studying",
+          "Icon": "📕",
+          "Mode": "AllowAll",
+          "_Mode": "BlockAll blocks all sites except the ones on the list. AllowAll allows all sites except the ones on the list.",
+          "SiteList": [
+            "https://facebook.com",
+            "https://discord.com"
+          ]
+        }
+      ],
+      "Collections": [
+        {
+          "Name": "Collection 1",
+          "Icon": "📕",
+          "Content": [
+            {
+              "Type": "Site",
+              "Content": {
+                "Name": "Hello",
+                "URL": "https://google.com"
+              },
+              "_Content": "TODO: Use an object that will automatically get casted to the correct type when according to the Type field"
+            },
+            {
+              "Type": "Note",
+              "Content": {
+                "Text": "Hello world!",
+                "Color": "#ff0000"
+              }
+            }
+          ]
+        }
+      ],
+      "TabsAside": [
+        {
+          "Name": "9 tabs aside - 21th June",
+          "Content": [
+            {
+              "Name": "Name",
+              "Favicon": null,
+              "URL": "https://google.com"
+            },
+            {
+              "Name": "Name",
+              "Favicon": null,
+              "URL": "https://google.com"
+            }
+          ]
+        }
+      ],
+      "InstalledApps": [
+        {
+          "Name": "Some PWA",
+          "URL": "https://youtube.com",
+          "Pinned": true
+        }
+      ]
+    }

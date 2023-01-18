@@ -1,0 +1,187 @@
+﻿<Page
+    x:Class="FireBrowser.Pages.Settings.About"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:icp="using:FireBrowser.Controls"
+    mc:Ignorable="d">
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,10,0,0">
+            <Button Click="EasterEgg" Padding="0" Margin="0,0,16,0" Background="Transparent" BorderBrush="Transparent">
+                <Image Source="/Assets/Logo.png" Width="64" Height="64"/>
+            </Button>
+            <TextBlock Style="{ThemeResource TitleTextBlockStyle}" VerticalAlignment="Center" x:Uid="AppName"/>
+        </StackPanel>
+        <StackPanel>
+            <!--                     <BitmapIcon ShowAsMonochrome="False"
+                            UriSource="https://raw.githubusercontent.com/microsoft/PowerToys/main/src/settings-ui/Settings.UI/Assets/FluentIcons/FluentIconsImageResizer.png" />
+-->
+            <labs:SettingsCard x:Uid="AboutDonateLink"
+                               Tag="Donate"
+                               Click="AboutCardClicked"
+                               IsClickEnabled="True"
+                               Margin="0,5,0,0"
+                               >
+                <labs:SettingsCard.Header>
+                    Donate
+                </labs:SettingsCard.Header>
+                <labs:SettingsCard.HeaderIcon>
+                    <FontIcon Glyph="&#xF686;"/>
+                </labs:SettingsCard.HeaderIcon>
+            </labs:SettingsCard>
+
+            <labs:SettingsCard x:Uid="AboutDiscordLink"
+                               Tag="Discord"
+                               Click="AboutCardClicked"
+                               IsClickEnabled="True"
+                               Grid.Column="1"
+                               Margin="0,5,0,0">
+                <labs:SettingsCard.Header>
+                    Discord
+                </labs:SettingsCard.Header>
+                <labs:SettingsCard.HeaderIcon>
+                    <icp:FluentIcon Glyph="&#xF686;"/>
+                </labs:SettingsCard.HeaderIcon>
+            </labs:SettingsCard>
+            <labs:SettingsCard x:Uid="AboutTwitterLink"
+                               Tag="Twitter"
+                               Click="AboutCardClicked"
+                               IsClickEnabled="True"
+                               Grid.Row="1">
+                <labs:SettingsCard.Header>
+                    Twitter
+                </labs:SettingsCard.Header>
+                <labs:SettingsCard.HeaderIcon>
+                    <icp:FluentIcon Glyph="&#xF686;"/>
+                </labs:SettingsCard.HeaderIcon>
+            </labs:SettingsCard>
+            <labs:SettingsCard x:Uid="AboutGitHubLink"
+                               Tag="GitHub"
+                               Click="AboutCardClicked"
+                               IsClickEnabled="True"
+                               Grid.Column="1" Grid.Row="1">
+                <labs:SettingsCard.Header>
+                    Github
+                </labs:SettingsCard.Header>
+                <labs:SettingsCard.HeaderIcon>
+                    <icp:FluentIcon Glyph="&#xF686;"/>
+                </labs:SettingsCard.HeaderIcon>
+            </labs:SettingsCard>
+            <labs:SettingsExpander x:Uid="AboutCredits" HorizontalAlignment="Stretch">
+                <labs:SettingsExpander.HeaderIcon>
+                    <icp:FluentIcon Glyph="&#xF5A9;"/>
+                </labs:SettingsExpander.HeaderIcon>
+                <labs:SettingsExpander.Header>
+                    Contributors (4)
+                </labs:SettingsExpander.Header>
+                <labs:SettingsExpander.Items>
+                    <labs:SettingsCard Header="Jakub">
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xF686;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard Header="jarno9981">
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xEC7A;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard Header="JULIΛN (Pinguin2001)">
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xEC7A;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard Header="shef3r"/>
+                    <labs:SettingsCard Header="Blindside - Labs">
+                            <labs:SettingsCard.HeaderIcon>
+                                <FontIcon Glyph="&#xEC7A;"/>
+                            </labs:SettingsCard.HeaderIcon>
+                        </labs:SettingsCard>
+                </labs:SettingsExpander.Items>
+            </labs:SettingsExpander>
+
+            <labs:SettingsExpander x:Uid="SettingsAboutTranslators" HorizontalAlignment="Stretch">
+                <labs:SettingsExpander.HeaderIcon>
+                    <icp:FluentIcon Glyph="&#xF5A9;"/>
+                </labs:SettingsExpander.HeaderIcon>
+                <labs:SettingsExpander.Header>
+                    Translators (7)
+                </labs:SettingsExpander.Header>
+                <labs:SettingsExpander.Items>
+                    <labs:SettingsCard Header="AlienFromMars">
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE775;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard Header="Bygrilinho">
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE775;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard Header="JULIΛN (Pinguin2001)">
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE775;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard Header="LexTheCat">
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE775;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard Header="NoobNotFound">
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE775;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard Header="jarno9981">
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE775;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard Header="VspalihuikA">
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE775;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                </labs:SettingsExpander.Items>
+            </labs:SettingsExpander>
+            
+            <labs:SettingsExpander x:Uid="SettingsAboutLibraries" HorizontalAlignment="Stretch">
+                <labs:SettingsExpander.Header>
+                    Builded Using
+                </labs:SettingsExpander.Header>
+                <labs:SettingsExpander.HeaderIcon>
+                    <icp:FluentIcon Glyph="&#xF5A9;"/>
+                </labs:SettingsExpander.HeaderIcon>
+                <labs:SettingsExpander.Items>
+                    <labs:SettingsCard Header="This app is built using: codepen animation, wct toolkit, weatherapi.com, to-do">
+                        <labs:SettingsCard.HeaderIcon>
+                            <icp:FluentIcon Glyph="&#xF686;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard Header="Do you want to be in this list? You can contribute on GitHub.">
+                    </labs:SettingsCard>
+                </labs:SettingsExpander.Items>
+            </labs:SettingsExpander>
+
+            <labs:SettingsCard x:Uid="AboutLicenseLink"
+                               Tag="License"
+                               Click="AboutCardClicked"
+                               IsClickEnabled="True"
+                               Margin="0,5,0,0">
+                <labs:SettingsCard.Header>
+                    License
+                </labs:SettingsCard.Header>
+                <labs:SettingsCard.HeaderIcon>
+                    <icp:FluentIcon Glyph="&#xE4EC;"/>
+                </labs:SettingsCard.HeaderIcon>
+            </labs:SettingsCard>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+            <FontIcon Glyph="&#xF47A;"/>
+            <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" x:Uid="SpecialThanksNote"/>
+        </StackPanel>
+    </StackPanel>
+</Page>

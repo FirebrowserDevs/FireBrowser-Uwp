@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
+  xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4"
+  xmlns:iot2="http://schemas.microsoft.com/appx/manifest/iot/windows10/2"  
+  xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
+  xmlns:urn="schemas-microsoft-com:asm.v1"
+  IgnorableNamespaces="uap mp uap3 desktop4 iot2">
+
+  <Identity
+    Name="57443TechFireX.557053C62582B"
+    Publisher="CN=787233D4-4D29-47D2-B29A-AD3E99C44FE7"	Version="0.1.3.0" />
+
+  <mp:PhoneIdentity PhoneProductId="9589a0be-f3f4-4ebf-a859-10367f62b9fb" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+
+  <Properties>
+    <DisplayName>FireBrowserX</DisplayName>
+    <PublisherDisplayName>Jarno Beerten</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="x-generate"/>
+  </Resources>
+
+  <Applications>
+    <Application Id="App"
+      Executable="$targetnametoken$.exe"
+      EntryPoint="FireBrowser.App"
+      desktop4:SupportsMultipleInstances="true"
+      iot2:SupportsMultipleInstances="true">		
+      <uap:VisualElements
+        DisplayName="FireBrowserX"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png"
+        Description="FireBrowser"
+        BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png" ShortName="FireBrowser">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square150x150Logo"/>
+            <uap:ShowOn Tile="wide310x150Logo"/>
+            <uap:ShowOn Tile="square310x310Logo"/>
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile >
+        <uap:SplashScreen Image="Assets\SplashScreen.png" uap5:Optional="true"/>
+      </uap:VisualElements>
+      <Extensions>
+		  <uap5:Extension
+		  Category="windows.startupTask"
+		  Executable="FireBrowser.exe"
+		  EntryPoint="FireBrowser.App">
+			  <uap5:StartupTask
+				TaskId="AirplaneStartUp"
+				Enabled="true"
+				DisplayName="FireBrowser" />
+		  </uap5:Extension>
+		
+		  <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="https">
+            <uap:DisplayName>FireBrowser</uap:DisplayName>
+          </uap:Protocol>
+        </uap:Extension>
+		  <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="http">
+            <uap:DisplayName>FireBrowser</uap:DisplayName>
+          </uap:Protocol>
+        </uap:Extension>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="airplane">
+            <uap:DisplayName>FireBrowser Internal Protocol</uap:DisplayName>
+          </uap:Protocol>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="pdf">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="application/pdf">.pdf</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>FireBrowser PDF Viewer</uap:DisplayName>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="html">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/html">.html</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>FireBrowser HTML Viewer</uap:DisplayName>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="htm">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/html">.htm</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>FireBrowser HTML Viewer</uap:DisplayName>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="xml">
+            <uap:SupportedFileTypes>
+              <uap:FileType ContentType="text/xml">.xml</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DisplayName>FireBrowser XML Viewer</uap:DisplayName>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+		  <Extension Category="windows.backgroundTasks" EntryPoint="BackgroundMedia" >
+			  <BackgroundTasks>
+				  <Task Type="audio" />
+			  </BackgroundTasks>
+		  </Extension>
+	  </Extensions>
+		
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <uap:Capability Name="userAccountInformation"/>	
+    <uap3:Capability Name="backgroundMediaPlayback"/>
+	  <Capability Name="internetClient" />
+	  <!-- Permissions used by the WebView -->
+	  <DeviceCapability Name="webcam"/>
+	  <DeviceCapability Name="microphone"/>
+	  <DeviceCapability Name="location"/>
+  </Capabilities>
+</Package>

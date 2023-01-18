@@ -1,0 +1,25 @@
+﻿<Application
+    x:Class="FireBrowser.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:media="using:Microsoft.UI.Xaml.Media">
+    <Application.Resources>
+        <muxc:XamlControlsResources>
+            <muxc:XamlControlsResources.MergedDictionaries>
+                <ResourceDictionary Source="Styles/Resources.xaml"/>
+                <ResourceDictionary Source="Styles/Buttons.xaml"/>
+                <ResourceDictionary Source="Styles/Card.xaml"/>
+                <ResourceDictionary Source="Styles/TabView.xaml"/>
+                <ResourceDictionary Source="Styles/TextBox.xaml"/>
+                <ResourceDictionary Source="History/DataTemplate.xaml"/>
+            </muxc:XamlControlsResources.MergedDictionaries>
+            <muxc:XamlControlsResources.ThemeDictionaries>
+                <ResourceDictionary x:Key="CostumAc">
+                    <media:AcrylicBrush x:Key="CustomAcrylicInAppLuminosity" BackgroundSource="Backdrop"
+                     TintOpacity="0" TintLuminosityOpacity="0" TintColor="SkyBlue" FallbackColor="SkyBlue" />
+                </ResourceDictionary>
+            </muxc:XamlControlsResources.ThemeDictionaries>
+        </muxc:XamlControlsResources>
+    </Application.Resources>
+</Application>

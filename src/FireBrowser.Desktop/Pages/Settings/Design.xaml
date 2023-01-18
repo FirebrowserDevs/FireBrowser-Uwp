@@ -1,0 +1,30 @@
+﻿<Page
+    x:Class="FireBrowser.Pages.Settings.Design"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FireBrowser.Pages.Settings"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    mc:Ignorable="d"
+    d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <labs:SettingsExpander VerticalAlignment="Top" Margin="0,10,0,0">
+            <labs:SettingsExpander.HeaderIcon>
+                <SymbolIcon Symbol="Edit"/>
+            </labs:SettingsExpander.HeaderIcon>
+            <labs:SettingsExpander.Header>
+                Tabs Items Design
+            </labs:SettingsExpander.Header>
+            <labs:SettingsExpander.Items>
+                <labs:SettingsCard ContentAlignment="Left">
+                    <TextBlock>
+                        Coming Soon
+                    </TextBlock>
+                </labs:SettingsCard>
+            </labs:SettingsExpander.Items>
+        </labs:SettingsExpander>
+    </Grid>
+</Page>

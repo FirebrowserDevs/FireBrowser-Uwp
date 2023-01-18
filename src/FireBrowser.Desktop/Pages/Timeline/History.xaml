@@ -1,0 +1,34 @@
+﻿<Page
+    x:Class="FireBrowser.Pages.Timeline.History"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FireBrowser.Pages.Timeline"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:mcu="using:FireBrowser.History"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded"
+    d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45" />
+            <!-- This row is a fixed height -->
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Height="45" VerticalAlignment="Top" Grid.RowSpan="1">
+            <TextBox x:Name="Ts" Margin="0,7,0,0" Width="300" PlaceholderText="Search History Here" muxc:AnimatedIcon.State="True" TextChanged="TextBox_TextChanged">
+
+            </TextBox>
+        </StackPanel>
+        <Button x:Name="Delete" Style="{StaticResource QuietButtonStyle}" Width="75" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" Click="Delete_Click" ToolTipService.ToolTip="Delete All History">
+            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE74D;" />
+        </Button>
+        <StackPanel HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Grid.Row="2">
+            <ListView x:Name="BigTemp">
+               
+            </ListView>
+        </StackPanel>
+    </Grid>
+</Page>

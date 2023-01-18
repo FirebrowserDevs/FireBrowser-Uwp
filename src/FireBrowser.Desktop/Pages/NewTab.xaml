@@ -1,0 +1,183 @@
+﻿<Page
+    x:Class="FireBrowser.Pages.NewTab"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FireBrowser.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:items="using:Dots.SDK.CollectionItems"
+    xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:airplane="using:FireBrowser.Controls"
+    xmlns:res="using:Dots.SDK"
+    xmlns:cc="using:FireBrowser.Core"
+    mc:Ignorable="d"
+    d:Background="LightCoral">
+
+
+    <Grid x:Name="Grid" Loaded="Grid_Loaded" Background="{x:Bind local:NewTab.GetGridBackgroundAsync(ViewModel.BackgroundType), Mode=OneWay}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <!-- VisualState to be triggered when the
+                             window width is >=640 effective pixels. -->
+                        <AdaptiveTrigger MinWindowWidth="640" />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <!-- <Setter Target="Grid.Background" Value="Red"/> -->
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Button x:Uid="NewTabSettingsButton"
+                Style="{ThemeResource QuietButtonStyle}"
+                Padding="8" Margin="0,31,32,0"
+                VerticalAlignment="Top" HorizontalAlignment="Right">
+            <FontIcon Glyph="&#xF6AA;"/>
+            <Button.Flyout>
+                <Flyout Placement="Bottom">
+                    <StackPanel>
+                        <TextBlock x:Uid="NewTabSettingsFlyoutSectionTitleLayout" d:Text="Layout"
+                                   Style="{ThemeResource BaseTextBlockStyle}"/>
+                        <GridView SelectionChanged="LayoutGridView_SelectionChanged">
+                            <GridViewItem Padding="12" Tag="Simple">
+                                <StackPanel>
+                                    <Image Width="100" Source="ms-appx:///Assets/Illustrations/NewTab/LayoutSimple.svg"/>
+                                    <TextBlock x:Uid="NewTabLayoutSimple" d:Text="Simple"
+                               HorizontalAlignment="Center"
+                               Margin="0,8,0,0"/>
+                                </StackPanel>
+                            </GridViewItem>
+                            <GridViewItem Padding="12" Tag="Simple">
+                                <StackPanel>
+                                    <Image Width="100" Source="ms-appx:///Assets/Illustrations/NewTab/LayoutClassic.svg"/>
+                                    <TextBlock x:Uid="NewTabLayoutClassic" d:Text="Classic"
+                               HorizontalAlignment="Center"
+                               Margin="0,8,0,0"/>
+                                </StackPanel>
+                            </GridViewItem>
+                            <GridViewItem Padding="12" Tag="Simple">
+                                <StackPanel>
+                                    <Image Width="100" Source="ms-appx:///Assets/Illustrations/NewTab/LayoutProductive.svg"/>
+                                    <TextBlock x:Uid="NewTabLayoutProductive" d:Text="Productive"
+                               HorizontalAlignment="Center"
+                               Margin="0,8,0,0"/>
+                                </StackPanel>
+                            </GridViewItem>
+                        </GridView>
+                        <TextBlock x:Uid="NewTabSettingsFlyoutSectionTitleBackground" d:Text="Background"
+                                   Style="{ThemeResource BaseTextBlockStyle}"/>
+                        <GridView SelectionChanged="BackgroundGridView_SelectionChanged">
+                            <GridViewItem Padding="12" Tag="None">
+                                <StackPanel>
+                                    <Image Width="100" Source="ms-appx:///Assets/Illustrations/NewTab/BackgroundNone.svg"/>
+                                    <TextBlock x:Uid="NewTabBackgroundNone" d:Text="None"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,8,0,0"/>
+                                </StackPanel>
+                            </GridViewItem>
+                            <GridViewItem Padding="12" Tag="Custom">
+                                <StackPanel>
+                                    <Image Width="100" Source="ms-appx:///Assets/Illustrations/NewTab/BackgroundCustom.svg"/>
+                                    <TextBlock x:Uid="NewTabBackgroundCustom" d:Text="Custom"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,8,0,0"/>
+                                </StackPanel>
+                            </GridViewItem>
+                            <GridViewItem Padding="12" Tag="Featured">
+                                <StackPanel>
+                                    <Image Width="100" Source="ms-appx:///Assets/Illustrations/NewTab/BackgroundBing.svg"/>
+                                    <TextBlock x:Uid="NewTabBackgroundBing" d:Text="Bing Image"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,8,0,0"/>
+                                </StackPanel>
+                            </GridViewItem>
+                        </GridView>
+                        <CheckBox x:Uid="NewTabSearchSuggestions"
+                                  IsChecked="{x:Bind ViewModel.ShowSearchSuggestions, Mode=TwoWay}"
+                                  Checked="CheckBox_Checked"/>
+                        <muxc:NumberBox x:Uid="NewTabPinCount" Maximum="8"></muxc:NumberBox>
+                    </StackPanel>
+                </Flyout>
+            </Button.Flyout>
+        </Button>
+        <!-- To-Do: Acrylic background, voice search, search suggestions -->
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" RowSpacing="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <AutoSuggestBox x:Name="NewTabSearchBox"
+                            x:Uid="SearchBar"
+                            Grid.Row="0"
+                            Height="40"
+                            QueryIcon="{airplane:FluentIcon Foreground=White, Glyph=&#xF690;}"
+                            BorderThickness="0,0,0,2"
+                            CornerRadius="0"
+                            BorderBrush="{ThemeResource SystemAltHighColor}"
+                            Background="Transparent"
+                            VerticalContentAlignment="Center"
+                            d:PlaceholderText="Type here to search"
+                            TextChanged="NewTabSearchBox_TextChanged">
+                <AutoSuggestBox.Resources>
+                    <SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="{ThemeResource SystemAltHighColor}"/>
+                    <SolidColorBrush x:Key="TextControlButtonForeground" Color="{ThemeResource SystemAltHighColor}"/>
+                </AutoSuggestBox.Resources>
+            </AutoSuggestBox>
+            <StackPanel Grid.Row="1"
+                        Visibility="{x:Bind ViewModel.ShowSearchSuggestions, Mode=OneWay}" Orientation="Horizontal" Spacing="4">
+                <Button CornerRadius="16" Background="Transparent" BorderThickness="1" BorderBrush="Red">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Image Source="/Assets/Logo.png" Width="16"></Image>
+                        <TextBlock Text="Suggestion 1"/>
+                    </StackPanel>
+                </Button>
+                <Button CornerRadius="16" Click="Button_Click" Background="Transparent" BorderThickness="1" BorderBrush="Red">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Image Source="/Assets/Logo.png" Width="16"></Image>
+                        <TextBlock Text="Suggestion 1"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+              <muxc:ItemsRepeater ItemsSource="{x:Bind ViewModel.Pins, Mode=OneWay}">
+                <muxc:ItemsRepeater.Layout>
+                    <toolkit:WrapLayout Orientation="Horizontal" HorizontalSpacing="8" />
+                </muxc:ItemsRepeater.Layout>
+                <DataTemplate x:DataType="items:WebsiteItem">
+                    <Grid Tag="{x:Bind URL}"
+                          Style="{ThemeResource Card}"
+                            VerticalAlignment="Bottom"
+                          Background="AliceBlue"
+                            MinWidth="128"
+                            MinHeight="96"
+                            PointerReleased="QuickLinkClicked">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <!-- <Image Width="32" Source="{x:Bind res:Resources.CachedImageSource(Favicon)}"/> -->
+                            <TextBlock Text="{x:Bind Title}" Margin="0,8,0,0" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </muxc:ItemsRepeater>
+            <Grid Margin="8,0,0,0"
+                  Style="{ThemeResource Card}"
+                  Tag="NewTabEdit"
+                  MinWidth="128" Height="96"
+                  PointerReleased="QuickLinkClicked"
+                  Grid.Column="1"
+                  VerticalAlignment="Bottom">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <FontIcon Glyph="&#xF3DE;" FontSize="24"/>
+                    <TextBlock x:Uid="NewTabEditPinsShortcut" Margin="0,8,0,0" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

@@ -1,0 +1,47 @@
+﻿<Page
+    x:Class="FireBrowser.Pages.Settings.Look"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FireBrowser.Pages.Settings"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <StackPanel>
+        <CheckBox x:Uid="StyleWebsiteAccent">Make browser theme match website color</CheckBox>
+        <ListView ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+    ScrollViewer.HorizontalScrollMode="Enabled"     
+                  CanDragItems="True" CanReorderItems="True" AllowDrop="True"
+    ScrollViewer.VerticalScrollMode="Disabled">
+            <ListView.Items>
+                <ListViewItem>A</ListViewItem>
+                <ListViewItem>B</ListViewItem>
+                <ListViewItem>C</ListViewItem>
+
+            </ListView.Items>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Background="Transparent" Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+        <ListView ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+    ScrollViewer.HorizontalScrollMode="Enabled"     
+                  CanDragItems="True" CanReorderItems="True" AllowDrop="True"
+
+    ScrollViewer.VerticalScrollMode="Disabled">
+            <ListView.Items>
+                <ListViewItem>X</ListViewItem>
+                <ListViewItem>y</ListViewItem>
+                <ListViewItem>z</ListViewItem>
+
+            </ListView.Items>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Background="Transparent" Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+
+    </StackPanel>
+</Page>

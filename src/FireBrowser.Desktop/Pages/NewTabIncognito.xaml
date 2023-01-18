@@ -1,0 +1,18 @@
+﻿<Page
+    x:Class="FireBrowser.Pages.NewTabIncognito"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FireBrowser.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:RequestedTheme="Dark"
+    d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Padding="20" CornerRadius="44" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}">
+            <FontIcon FontSize="48" Glyph="&#xF4A1;"/>
+        </Grid>
+        <TextBlock x:Uid="NewTabIncognitoTitle" Style="{ThemeResource TitleTextBlockStyle}" d:Text="You're browsing in Incognito mode"/>
+    </Grid>
+</Page>

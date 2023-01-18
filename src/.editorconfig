@@ -1,0 +1,133 @@
+﻿[*.cs]
+
+# CS8305: Typ jest przeznaczony wyłącznie do celów ewaluacyjnych i może zostać zmieniony albo usunięty w przyszłych aktualizacjach.
+dotnet_diagnostic.CS8305.severity = none
+csharp_prefer_simple_using_statement = true:suggestion
+csharp_prefer_braces = true:silent
+csharp_style_namespace_declarations = block_scoped:silent
+csharp_style_prefer_method_group_conversion = true:silent
+csharp_style_prefer_switch_expression = true:suggestion
+csharp_style_prefer_pattern_matching = true:silent
+csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
+csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
+csharp_style_prefer_not_pattern = true:suggestion
+csharp_style_prefer_extended_property_pattern = true:suggestion
+
+[*.{cs,vb}]
+dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:silent
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:silent
+dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:silent
+dotnet_style_parentheses_in_other_operators = never_if_unnecessary:silent
+dotnet_style_operator_placement_when_wrapping = beginning_of_line
+end_of_line = crlf
+tab_width = 4
+indent_size = 4
+[*.cs]
+#### Style nazewnictwa ####
+
+# Reguły nazewnictwa
+
+dotnet_naming_rule.interface_should_be_begins_with_i.severity = suggestion
+dotnet_naming_rule.interface_should_be_begins_with_i.symbols = interface
+dotnet_naming_rule.interface_should_be_begins_with_i.style = begins_with_i
+
+dotnet_naming_rule.types_should_be_pascal_case.severity = suggestion
+dotnet_naming_rule.types_should_be_pascal_case.symbols = types
+dotnet_naming_rule.types_should_be_pascal_case.style = pascal_case
+
+dotnet_naming_rule.non_field_members_should_be_pascal_case.severity = suggestion
+dotnet_naming_rule.non_field_members_should_be_pascal_case.symbols = non_field_members
+dotnet_naming_rule.non_field_members_should_be_pascal_case.style = pascal_case
+
+# Specyfikacje symboli
+
+dotnet_naming_symbols.interface.applicable_kinds = interface
+dotnet_naming_symbols.interface.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.interface.required_modifiers = 
+
+dotnet_naming_symbols.types.applicable_kinds = class, struct, interface, enum
+dotnet_naming_symbols.types.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.types.required_modifiers = 
+
+dotnet_naming_symbols.non_field_members.applicable_kinds = property, event, method
+dotnet_naming_symbols.non_field_members.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.non_field_members.required_modifiers = 
+
+# Style nazewnictwa
+
+dotnet_naming_style.begins_with_i.required_prefix = I
+dotnet_naming_style.begins_with_i.required_suffix = 
+dotnet_naming_style.begins_with_i.word_separator = 
+dotnet_naming_style.begins_with_i.capitalization = pascal_case
+
+dotnet_naming_style.pascal_case.required_prefix = 
+dotnet_naming_style.pascal_case.required_suffix = 
+dotnet_naming_style.pascal_case.word_separator = 
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+
+dotnet_naming_style.pascal_case.required_prefix = 
+dotnet_naming_style.pascal_case.required_suffix = 
+dotnet_naming_style.pascal_case.word_separator = 
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+csharp_space_between_method_declaration_name_and_open_parenthesis = false
+csharp_space_around_binary_operators = before_and_after
+csharp_space_before_comma = false
+csharp_indent_labels = one_less_than_current
+csharp_using_directive_placement = outside_namespace:silent
+csharp_style_prefer_top_level_statements = true:silent
+csharp_style_expression_bodied_methods = false:silent
+csharp_style_expression_bodied_constructors = false:silent
+csharp_style_expression_bodied_operators = false:silent
+csharp_style_expression_bodied_properties = true:silent
+csharp_style_expression_bodied_indexers = true:silent
+csharp_style_expression_bodied_accessors = true:silent
+csharp_style_expression_bodied_lambdas = true:silent
+csharp_style_expression_bodied_local_functions = false:silent
+
+[*.vb]
+#### Style nazewnictwa ####
+
+# Reguły nazewnictwa
+
+dotnet_naming_rule.interface_should_be_rozpoczyna_się_znakiem_i.severity = suggestion
+dotnet_naming_rule.interface_should_be_rozpoczyna_się_znakiem_i.symbols = interface
+dotnet_naming_rule.interface_should_be_rozpoczyna_się_znakiem_i.style = rozpoczyna_się_znakiem_i
+
+dotnet_naming_rule.typy_should_be_pascalcase.severity = suggestion
+dotnet_naming_rule.typy_should_be_pascalcase.symbols = typy
+dotnet_naming_rule.typy_should_be_pascalcase.style = pascalcase
+
+dotnet_naming_rule.składowe_inne_niż_pola_should_be_pascalcase.severity = suggestion
+dotnet_naming_rule.składowe_inne_niż_pola_should_be_pascalcase.symbols = składowe_inne_niż_pola
+dotnet_naming_rule.składowe_inne_niż_pola_should_be_pascalcase.style = pascalcase
+
+# Specyfikacje symboli
+
+dotnet_naming_symbols.interface.applicable_kinds = interface
+dotnet_naming_symbols.interface.applicable_accessibilities = public, friend, private, protected, protected_friend, private_protected
+dotnet_naming_symbols.interface.required_modifiers = 
+
+dotnet_naming_symbols.typy.applicable_kinds = class, struct, interface, enum
+dotnet_naming_symbols.typy.applicable_accessibilities = public, friend, private, protected, protected_friend, private_protected
+dotnet_naming_symbols.typy.required_modifiers = 
+
+dotnet_naming_symbols.składowe_inne_niż_pola.applicable_kinds = property, event, method
+dotnet_naming_symbols.składowe_inne_niż_pola.applicable_accessibilities = public, friend, private, protected, protected_friend, private_protected
+dotnet_naming_symbols.składowe_inne_niż_pola.required_modifiers = 
+
+# Style nazewnictwa
+
+dotnet_naming_style.rozpoczyna_się_znakiem_i.required_prefix = I
+dotnet_naming_style.rozpoczyna_się_znakiem_i.required_suffix = 
+dotnet_naming_style.rozpoczyna_się_znakiem_i.word_separator = 
+dotnet_naming_style.rozpoczyna_się_znakiem_i.capitalization = pascal_case
+
+dotnet_naming_style.pascalcase.required_prefix = 
+dotnet_naming_style.pascalcase.required_suffix = 
+dotnet_naming_style.pascalcase.word_separator = 
+dotnet_naming_style.pascalcase.capitalization = pascal_case
+
+dotnet_naming_style.pascalcase.required_prefix = 
+dotnet_naming_style.pascalcase.required_suffix = 
+dotnet_naming_style.pascalcase.word_separator = 
+dotnet_naming_style.pascalcase.capitalization = pascal_case

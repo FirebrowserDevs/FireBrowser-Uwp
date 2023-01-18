@@ -1,0 +1,25 @@
+﻿<Page
+    x:Class="FireBrowser.Pages.UnlockProfile"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FireBrowser.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <ListView HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <ListViewItem Width="192">
+                <StackPanel Orientation="Horizontal">
+                    <PersonPicture ProfilePicture="/Assets/Logo.png" Width="32"/>
+                    <TextBlock Text="Account 1" Width="93" Margin="15,5,0,5"/>
+                </StackPanel>
+            </ListViewItem>
+        </ListView>
+        <Button>
+            <TextBlock Text="Unlock with a password"/>
+        </Button>
+        <Button Content="Unlock with Windows Hello"/>
+    </Grid>
+</Page>

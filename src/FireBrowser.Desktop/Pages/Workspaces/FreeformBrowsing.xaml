@@ -1,0 +1,76 @@
+﻿<Page
+    x:Class="FireBrowser.Pages.Workspaces.FreeformBrowsing"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FireBrowser.Pages.Workspaces"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:airplane="using:FireBrowser.Controls"
+    mc:Ignorable="d"
+    d:RequestedTheme="Dark"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Height="48"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Top">
+            <Grid x:Name="AppTitleBar" Background="Transparent">
+            </Grid>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Image Height="24" Width="24" Source="/Assets/Logo.png"/>
+                <muxc:SplitButton>Workspace 1
+                    <muxc:SplitButton.Flyout>
+                        <Flyout>
+                            <ListView SelectionChanged="ListView_SelectionChanged">
+                                <ListViewItem IsSelected="True">Workspace 1</ListViewItem>
+                                <ListViewItem>Workspace 2</ListViewItem>
+                                <ListViewItem>New Workspace</ListViewItem>
+                                <ListViewItem x:Name="LeaveCanvasMode">Leave canvas mode</ListViewItem>
+                            </ListView>
+                        </Flyout>
+                    </muxc:SplitButton.Flyout>
+                </muxc:SplitButton>
+            </StackPanel>
+            <Button HorizontalAlignment="Right" Margin="0,0,256,0" Click="Button_Click">...
+                <Button.Flyout>
+                    <Flyout>
+                        <TextBlock>More flyout from MainPage should go here soon</TextBlock>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </Grid>
+        <!-- To-Do, use Grid definitions and icons for the toolbar items and turn all of them 
+        into togglebuttons -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="72" />
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Margin="24, 72" HorizontalAlignment="Left">
+                <StackPanel>
+                    <ToggleButton x:Uid="FreeformToolbarCursor" Content="{airplane:FluentIcon Glyph=&#xF9AB;}"/>
+                    <Button x:Uid="FreeformToolbarText"/>
+                    <Button x:Uid="FreeformToolbarNote" Content="Sticky note"/>
+                    <Button x:Uid="FreeformToolbarImage" Content="{}"/>
+                    <Button x:Uid="FreeformToolbarWebsite">
+                        Website
+                    </Button>
+                    <!-- Windows Ink pens go here soon and after the pens we have the more button -->
+                    <Button x:Uid="FreeformToolbarMore" Content="{airplane:FluentIcon Glyph=&#xFC2E;}"/>
+                </StackPanel>
+            </Grid>
+            <toolkit:InfiniteCanvas Grid.Column="1"
+                                    Name="canvas"
+                                    CanvasWidth="20000"
+                                    CanvasHeight="20000"
+                                    IsToolbarVisible="True">
+            </toolkit:InfiniteCanvas>
+        </Grid>
+    </Grid>
+</Page>
