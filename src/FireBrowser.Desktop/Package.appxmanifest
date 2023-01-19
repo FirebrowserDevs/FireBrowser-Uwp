@@ -51,6 +51,8 @@
           </uap:ShowNameOnTiles>
         </uap:DefaultTile >
         <uap:SplashScreen Image="Assets\SplashScreen.png" uap5:Optional="true"/>
+        <uap:InitialRotationPreference>
+          <uap:Rotation Preference="landscape"/></uap:InitialRotationPreference>
       </uap:VisualElements>
       <Extensions>
 		  <uap5:Extension
@@ -66,16 +68,19 @@
 		  <uap:Extension Category="windows.protocol">
           <uap:Protocol Name="https">
             <uap:DisplayName>FireBrowser</uap:DisplayName>
+            <uap:Logo>Assets\FileIcons\link.png</uap:Logo>
           </uap:Protocol>
         </uap:Extension>
 		  <uap:Extension Category="windows.protocol">
           <uap:Protocol Name="http">
             <uap:DisplayName>FireBrowser</uap:DisplayName>
+            <uap:Logo>Assets\FileIcons\link.png</uap:Logo>
           </uap:Protocol>
         </uap:Extension>
         <uap:Extension Category="windows.protocol">
-          <uap:Protocol Name="airplane">
+          <uap:Protocol Name="firebrowser">
             <uap:DisplayName>FireBrowser Internal Protocol</uap:DisplayName>
+            <uap:Logo>Assets\FileIcons\link.png</uap:Logo>
           </uap:Protocol>
         </uap:Extension>
         <uap:Extension Category="windows.fileTypeAssociation">

@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="Styles/TabView.xaml"/>
                 <ResourceDictionary Source="Styles/TextBox.xaml"/>
                 <ResourceDictionary Source="History/DataTemplate.xaml"/>
+                <ResourceDictionary Source="Styles/SidebarButton.xaml"/>
             </muxc:XamlControlsResources.MergedDictionaries>
             <muxc:XamlControlsResources.ThemeDictionaries>
                 <ResourceDictionary x:Key="CostumAc">

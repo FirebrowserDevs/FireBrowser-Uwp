@@ -8,10 +8,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("FireBrowser")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Developers FireBrowser")]
 [assembly: AssemblyProduct("FireBrowser")]
 [assembly: AssemblyCopyright("Copyright ©  2022")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("Developers FireBrowser")]
 [assembly: AssemblyCulture("")]
 
 // Informacje o wersji zestawu zawierają następujące cztery wartości:

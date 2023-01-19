@@ -277,6 +277,8 @@
     <Content Include="Assets\EasterEgg\flappyBird.js" />
     <Content Include="Assets\EasterEgg\bird.png" />
     <Content Include="Assets\EasterEgg\point.mp3" />
+    <Content Include="Assets\FileIcons\document.png" />
+    <Content Include="Assets\FileIcons\link.png" />
     <Content Include="Assets\Icons\About.svg" />
     <Content Include="Assets\Icons\Accessibility.svg" />
     <Content Include="Assets\Icons\Home.svg" />
@@ -536,6 +538,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\Resources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\SidebarButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

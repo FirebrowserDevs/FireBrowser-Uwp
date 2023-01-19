@@ -121,6 +121,12 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Converters.cs" />
+    <Compile Include="Controllers\ExceptionHelper.cs" />
+    <Compile Include="Controllers\FaviconHelper.cs" />
+    <Compile Include="Controllers\Json.cs" />
+    <Compile Include="Controllers\SystemHelper.cs" />
+    <Compile Include="Controllers\WindowManager.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\UserData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -137,6 +143,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.2</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
