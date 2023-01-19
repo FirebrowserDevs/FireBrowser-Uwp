@@ -1,6 +1,6 @@
-<div style="display: flex; align-items: center;">
-  <img src="src/Readme/Logo.png" width=64" height="64"/>
-  <a style="font-size: 25px;">FireBrowser<a>
+<div align="center">
+  <img src="src/Readme/Logo.png" height="75" width="75" />
+  <h1>FireBrowser</h1>
 </div>
 
 ### A modern Web browser with a beautiful UI built with the UWP and the WebView2 SDK.
