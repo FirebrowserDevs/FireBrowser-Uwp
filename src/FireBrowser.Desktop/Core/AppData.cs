@@ -25,11 +25,12 @@ namespace FireBrowser.Core
         public static int currentProfileID = 0;
         public static ProfileCore CurrentProfileCore
         {
+
             get
             {
+
                 string appDataFilePath = $"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/ProfileData.json";
                 CreateHisDb();
-                CreateProfilesDb();
                 try
                 {
                     var profiles = JsonSerializer.Deserialize<AppDataCore>(File.ReadAllText($"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/ProfileData.json"), serializerOptions);
@@ -67,45 +68,7 @@ namespace FireBrowser.Core
             return await localFolder.CreateFolderAsync($"FireBrowserData", CreationCollisionOption.OpenIfExists);
         }
 
-        public static async void CreateProfilesDb()
-        {
-
-            if (File.Exists($"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/FireBrowserProfiles.Db"))
-            {
-
-            }
-            else
-            {
-
-                SqliteConnection m_dbConnection = new SqliteConnection($"Data Source={ApplicationData.Current.LocalFolder.Path}/FireBrowserData/FireBrowserProfiles.Db");
-                m_dbConnection.Open();
-
-                string sql = "create table Profiles (DefaultProfileID int, Name varchar(50), friendlyId varchar(100), accountType default'local', haslock BOOLEAN, isfirstlaunch BOOLEAN)";
-
-                SqliteCommand command = new SqliteCommand(sql, m_dbConnection);
-                command.ExecuteNonQuery();
-
-                m_dbConnection.Close();
-
-                using (var con = new SqliteConnection($"Data Source={ApplicationData.Current.LocalFolder.Path}/FireBrowserData/FireBrowserProfiles.Db"))
-                {
-                    con.Open();
-
-                    using (var cmd = new SqliteCommand("INSERT Into Profiles (DefaultProfileID, Name, friendlyId, accountType, haslock, isfirstlaunch) VALUES(@DefaultProfileID, @Name, @friendlyId, @accountType, @haslock, @isfirstlaunch)", con))
-                    {
-                        cmd.Parameters.AddWithValue("@DefaultProfileID", "0");
-                        cmd.Parameters.AddWithValue("@Name", "DefaultFireBrowserUser");
-                        cmd.Parameters.AddWithValue("@friendlyId", "DefaultFireBrowserUser" + "_" + "@Name");
-                        cmd.Parameters.AddWithValue("@accountType", "Local");
-                        cmd.Parameters.AddWithValue("@haslock", "0");
-                        cmd.Parameters.AddWithValue("@isfirstlaunch", "0");
-                        cmd.ExecuteNonQuery();
-                    }
-                    con.Close();
-                }
-            }
-
-        }
+       
         public static async void CreateHisDb()
         {
             var profileCore = await GetCurrentProfileCoreAsync();
@@ -245,6 +208,7 @@ namespace FireBrowser.Core
             try
             {
                 return JsonSerializer.Deserialize<AppDataCore>(File.ReadAllText($"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/ProfileData.json"), serializerOptions);
+
             }
             catch (Exception ex)
             {
