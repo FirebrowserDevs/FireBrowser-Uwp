@@ -22,7 +22,7 @@ namespace FireBrowser.Pages.Settings
 
         private async void id()
         {
-            var startup = await StartupTask.GetAsync("AirplaneStartUp");
+            var startup = await StartupTask.GetAsync("FireBrowserStartUp");
             UpdateToggleState(startup.State);
         }
         private async void LaunchOnStartupToggle_Click(object sender, RoutedEventArgs e)
@@ -50,7 +50,7 @@ namespace FireBrowser.Pages.Settings
         }
         private async Task ToggleLaunchOnStartup(bool enable)
         {
-            var startup = await StartupTask.GetAsync("AirplaneStartUp");
+            var startup = await StartupTask.GetAsync("FireBrowserStartUp");
             switch (startup.State)
             {
                 case StartupTaskState.Enabled when !enable:

@@ -11,6 +11,8 @@ using Microsoft.Data.Sqlite;
 using Dots.SDK;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using static FireBrowser.Core.AppData;
+using static QRCoder.PayloadGenerator;
 
 namespace FireBrowser.Core
 {
@@ -27,6 +29,7 @@ namespace FireBrowser.Core
             {
                 string appDataFilePath = $"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/ProfileData.json";
                 CreateHisDb();
+                CreateProfilesDb();
                 try
                 {
                     var profiles = JsonSerializer.Deserialize<AppDataCore>(File.ReadAllText($"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/ProfileData.json"), serializerOptions);
@@ -64,6 +67,45 @@ namespace FireBrowser.Core
             return await localFolder.CreateFolderAsync($"FireBrowserData", CreationCollisionOption.OpenIfExists);
         }
 
+        public static async void CreateProfilesDb()
+        {
+
+            if (File.Exists($"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/FireBrowserProfiles.Db"))
+            {
+
+            }
+            else
+            {
+
+                SqliteConnection m_dbConnection = new SqliteConnection($"Data Source={ApplicationData.Current.LocalFolder.Path}/FireBrowserData/FireBrowserProfiles.Db");
+                m_dbConnection.Open();
+
+                string sql = "create table Profiles (DefaultProfileID int, Name varchar(50), friendlyId varchar(100), accountType default'local', haslock BOOLEAN, isfirstlaunch BOOLEAN)";
+
+                SqliteCommand command = new SqliteCommand(sql, m_dbConnection);
+                command.ExecuteNonQuery();
+
+                m_dbConnection.Close();
+
+                using (var con = new SqliteConnection($"Data Source={ApplicationData.Current.LocalFolder.Path}/FireBrowserData/FireBrowserProfiles.Db"))
+                {
+                    con.Open();
+
+                    using (var cmd = new SqliteCommand("INSERT Into Profiles (DefaultProfileID, Name, friendlyId, accountType, haslock, isfirstlaunch) VALUES(@DefaultProfileID, @Name, @friendlyId, @accountType, @haslock, @isfirstlaunch)", con))
+                    {
+                        cmd.Parameters.AddWithValue("@DefaultProfileID", "0");
+                        cmd.Parameters.AddWithValue("@Name", "DefaultFireBrowserUser");
+                        cmd.Parameters.AddWithValue("@friendlyId", "DefaultFireBrowserUser" + "_" + "@Name");
+                        cmd.Parameters.AddWithValue("@accountType", "Local");
+                        cmd.Parameters.AddWithValue("@haslock", "0");
+                        cmd.Parameters.AddWithValue("@isfirstlaunch", "0");
+                        cmd.ExecuteNonQuery();
+                    }
+                    con.Close();
+                }
+            }
+
+        }
         public static async void CreateHisDb()
         {
             var profileCore = await GetCurrentProfileCoreAsync();
@@ -97,7 +139,7 @@ namespace FireBrowser.Core
         public static async Task<StorageFolder> GetUserFolder()
         {
             var profileCore = await GetCurrentProfileCoreAsync();
-            Debug.WriteLine($"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/{profileCore.FriendlyID}");
+            Debug.WriteLine($"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/{profileCore.FriendlyID}/");
             var app = await StorageFolder.GetFolderFromPathAsync(ApplicationData.Current.LocalFolder.Path);
             var airplane = await app.GetFolderAsync("FireBrowserData");
             var user = await airplane.CreateFolderAsync(profileCore.FriendlyID, CreationCollisionOption.OpenIfExists);
@@ -266,7 +308,36 @@ namespace FireBrowser.Core
                 }
             };
 
+            string appDataFilePath = $"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/ProfileData.json";
 
+            if (File.Exists(appDataFilePath))
+            {
+                if (templateProfile == null)
+                {
+                    return null;
+                }
+
+                var appDataCore = await GetAppDataCore();
+
+                if (appDataCore.Profiles.Count > 0)
+                {
+                    templateProfile.ID = appDataCore.Profiles.Max(p => p.ID) + 1;
+                }
+                else
+                {
+                    templateProfile.ID = 1;
+                }
+                appDataCore.Profiles.Add(templateProfile);
+
+                using (var fileStream = File.Open(appDataFilePath, FileMode.Open))
+                {
+                    using (var streamWriter = new StreamWriter(fileStream))
+                    {
+                        await streamWriter.WriteAsync(JsonSerializer.Serialize(appDataCore, serializerOptions));
+                    }
+                }
+
+            }
 
             StorageFolder dataFolder = await GetDataFolder();
             StorageFolder userFolder = await dataFolder.CreateFolderAsync(templateProfile.FriendlyID);

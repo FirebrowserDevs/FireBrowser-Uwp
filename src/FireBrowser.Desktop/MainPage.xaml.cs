@@ -137,7 +137,7 @@ private void DataRequested(DataTransferManager sender, DataRequestedEventArgs e)
                         };
                         break;
                     case AppLaunchType.LaunchStartup:
-                        var startup = await StartupTask.GetAsync("AirplaneStartUp");
+                        var startup = await StartupTask.GetAsync("FireBrowserStartUp");
                         break;
                     case AppLaunchType.FirstLaunch:
                         Tabs.TabItems.Add(CreateNewTab(typeof(FirstLaunchPage), 1));

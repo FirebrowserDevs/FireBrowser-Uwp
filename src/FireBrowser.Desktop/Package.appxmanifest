@@ -58,7 +58,7 @@
 		  Executable="FireBrowser.exe"
 		  EntryPoint="FireBrowser.App">
 			  <uap5:StartupTask
-				TaskId="AirplaneStartUp"
+				TaskId="FireBrowserStartUp"
 				Enabled="true"
 				DisplayName="FireBrowser" />
 		  </uap5:Extension>
