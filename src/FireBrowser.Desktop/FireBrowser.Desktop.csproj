@@ -278,7 +278,11 @@
     <Content Include="Assets\EasterEgg\bird.png" />
     <Content Include="Assets\EasterEgg\point.mp3" />
     <Content Include="Assets\FileIcons\document.png" />
+    <Content Include="Assets\FileIcons\htm.png" />
+    <Content Include="Assets\FileIcons\html.png" />
     <Content Include="Assets\FileIcons\link.png" />
+    <Content Include="Assets\FileIcons\pdf.png" />
+    <Content Include="Assets\FileIcons\xml.png" />
     <Content Include="Assets\Icons\About.svg" />
     <Content Include="Assets\Icons\Accessibility.svg" />
     <Content Include="Assets\Icons\Home.svg" />

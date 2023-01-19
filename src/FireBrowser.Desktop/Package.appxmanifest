@@ -89,6 +89,7 @@
               <uap:FileType ContentType="application/pdf">.pdf</uap:FileType>
             </uap:SupportedFileTypes>
             <uap:DisplayName>FireBrowser PDF Viewer</uap:DisplayName>
+            <uap:Logo>Assets\FileIcons\pdf.png</uap:Logo>
           </uap:FileTypeAssociation>
         </uap:Extension>
         <uap:Extension Category="windows.fileTypeAssociation">
@@ -97,6 +98,7 @@
               <uap:FileType ContentType="text/html">.html</uap:FileType>
             </uap:SupportedFileTypes>
             <uap:DisplayName>FireBrowser HTML Viewer</uap:DisplayName>
+            <uap:Logo>Assets\FileIcons\html.png</uap:Logo>
           </uap:FileTypeAssociation>
         </uap:Extension>
         <uap:Extension Category="windows.fileTypeAssociation">
@@ -105,6 +107,7 @@
               <uap:FileType ContentType="text/html">.htm</uap:FileType>
             </uap:SupportedFileTypes>
             <uap:DisplayName>FireBrowser HTML Viewer</uap:DisplayName>
+            <uap:Logo>Assets\FileIcons\htm.png</uap:Logo>
           </uap:FileTypeAssociation>
         </uap:Extension>
         <uap:Extension Category="windows.fileTypeAssociation">
@@ -113,6 +116,7 @@
               <uap:FileType ContentType="text/xml">.xml</uap:FileType>
             </uap:SupportedFileTypes>
             <uap:DisplayName>FireBrowser XML Viewer</uap:DisplayName>
+            <uap:Logo>Assets\FileIcons\xml.png</uap:Logo>
           </uap:FileTypeAssociation>
         </uap:Extension>
 		  <Extension Category="windows.backgroundTasks" EntryPoint="BackgroundMedia" >
