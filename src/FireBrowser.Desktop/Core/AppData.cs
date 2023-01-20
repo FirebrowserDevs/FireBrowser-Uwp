@@ -21,13 +21,7 @@ namespace FireBrowser.Core
     /// </summary>
     public static class AppData
     {
-        public class FolderCreator
-        {
-            public async Task CreateFolder()
-            {
-                StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("FireBrowserData", CreationCollisionOption.OpenIfExists);
-            }
-        }
+        
 
         //Currently selected profile ID
         public static int currentProfileID = 0;
@@ -36,8 +30,7 @@ namespace FireBrowser.Core
 
             get
             {
-                AppData.FolderCreator fs = new FolderCreator();
-                fs.CreateFolder();
+               
                 string appDataFilePath = $"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/ProfileData.json";
                 CreateHisDb();
                 try
@@ -111,10 +104,10 @@ namespace FireBrowser.Core
         public static async Task<StorageFolder> GetUserFolder()
         {
             var profileCore = await GetCurrentProfileCoreAsync();
-            Debug.WriteLine($"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/{profileCore.FriendlyID}/");
+           
             var app = await StorageFolder.GetFolderFromPathAsync(ApplicationData.Current.LocalFolder.Path);
-            var airplane = await app.GetFolderAsync("FireBrowserData");
-            var user = await airplane.CreateFolderAsync(profileCore.FriendlyID, CreationCollisionOption.OpenIfExists);
+            var firebrowser = await app.GetFolderAsync("FireBrowserData");
+            var user = await firebrowser.CreateFolderAsync(profileCore.FriendlyID, CreationCollisionOption.OpenIfExists);
             return user;
             //return await StorageFolder.GetFolderFromPathAsync($"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/{profileID}");
         }
@@ -283,14 +276,15 @@ namespace FireBrowser.Core
 
             string appDataFilePath = $"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/ProfileData.json";
 
-            // Initialize appDataCore
-            var appDataCore = await GetAppDataCore() ?? new AppDataCore();
             if (File.Exists(appDataFilePath))
             {
                 if (templateProfile == null)
                 {
                     return null;
                 }
+
+                var appDataCore = await GetAppDataCore() ?? new AppDataCore();
+                appDataCore.Profiles = appDataCore.Profiles ?? new List<ProfileCore>();
 
                 if (appDataCore.Profiles.Count > 0)
                 {
@@ -309,8 +303,8 @@ namespace FireBrowser.Core
                         await streamWriter.WriteAsync(JsonSerializer.Serialize(appDataCore, serializerOptions));
                     }
                 }
-
             }
+
 
             StorageFolder dataFolder = await GetDataFolder();
             StorageFolder userFolder = await dataFolder.CreateFolderAsync(templateProfile.FriendlyID);
