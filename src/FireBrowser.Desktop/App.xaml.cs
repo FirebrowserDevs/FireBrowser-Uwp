@@ -10,6 +10,10 @@ using Windows.Storage;
 using Windows.UI.Xaml.Navigation;
 using FireBrowser.Core;
 using System.Web;
+using System.Linq;
+using static FireBrowser.Core.Settings;
+using Newtonsoft.Json;
+using static FireBrowser.Core.AppData;
 
 namespace FireBrowser
 {
@@ -37,13 +41,15 @@ namespace FireBrowser
         {
             InitializeComponent();
             Suspending += OnSuspending;
-            Dots.SDK.Core.projectID = "AirplaneDesktop";
+            Dots.SDK.Core.projectID = "FireBrowserDesktop";
         }
+
+       
         protected override void OnFileActivated(FileActivatedEventArgs args)
         {
             AppLaunchPasser passer = new()
             {
-                //To-Do: temporary
+                   
                 LaunchType = AppLaunchType.FilePDF,
                 LaunchData = args.Files
             };
@@ -177,14 +183,14 @@ namespace FireBrowser
                 };
                 if (rootFrame.Content == null)
                 {
-                    // When the navigation stack isn't restored navigate to the first page,
-                    // configuring the new page by passing required information as a navigation
-                    // parameter
                     if (!settings.AccountData.FinishedFirstLaunch)
                         rootFrame.Navigate(typeof(Pages.FirstLaunchPage), e.User);
                     else
                         rootFrame.Navigate(typeof(MainPage), passer);
                 }
+
+
+
                 // Ensure the current window is active
                 Window.Current.Activate();
             }

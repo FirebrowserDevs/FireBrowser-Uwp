@@ -21,6 +21,8 @@ namespace FireBrowser.Core
     /// </summary>
     public static class AppData
     {
+        
+
         //Currently selected profile ID
         public static int currentProfileID = 0;
         public static ProfileCore CurrentProfileCore
@@ -28,7 +30,7 @@ namespace FireBrowser.Core
 
             get
             {
-
+               
                 string appDataFilePath = $"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/ProfileData.json";
                 CreateHisDb();
                 try
@@ -102,10 +104,10 @@ namespace FireBrowser.Core
         public static async Task<StorageFolder> GetUserFolder()
         {
             var profileCore = await GetCurrentProfileCoreAsync();
-            Debug.WriteLine($"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/{profileCore.FriendlyID}/");
+           
             var app = await StorageFolder.GetFolderFromPathAsync(ApplicationData.Current.LocalFolder.Path);
-            var airplane = await app.GetFolderAsync("FireBrowserData");
-            var user = await airplane.CreateFolderAsync(profileCore.FriendlyID, CreationCollisionOption.OpenIfExists);
+            var firebrowser = await app.GetFolderAsync("FireBrowserData");
+            var user = await firebrowser.CreateFolderAsync(profileCore.FriendlyID, CreationCollisionOption.OpenIfExists);
             return user;
             //return await StorageFolder.GetFolderFromPathAsync($"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/{profileID}");
         }
@@ -250,15 +252,15 @@ namespace FireBrowser.Core
 
             string friendlyID = name.RemoveSpecialCharacters();
 
-            //Generate a random ID, in case the user decides to have multiple accounts with the same name
-            Random random = new();
+            // Generate a random ID, in case the user decides to have multiple accounts with the same name
+            Random random = new Random();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            string randomID = new(Enumerable.Repeat(chars, 8).Select(c => c[random.Next(c.Length)]).ToArray());
-            //Append the current friendlyID with the randomID
+            string randomID = new string(Enumerable.Repeat(chars, 8).Select(c => c[random.Next(c.Length)]).ToArray());
+            // Append the current friendlyID with the randomID
             friendlyID += "_" + randomID;
 
-            //Create a template profile
-            ProfileCore templateProfile = new()
+            // Create a template profile
+            ProfileCore templateProfile = new ProfileCore
             {
                 Name = name,
                 FriendlyID = friendlyID,
@@ -281,7 +283,8 @@ namespace FireBrowser.Core
                     return null;
                 }
 
-                var appDataCore = await GetAppDataCore();
+                var appDataCore = await GetAppDataCore() ?? new AppDataCore();
+                appDataCore.Profiles = appDataCore.Profiles ?? new List<ProfileCore>();
 
                 if (appDataCore.Profiles.Count > 0)
                 {
@@ -300,8 +303,8 @@ namespace FireBrowser.Core
                         await streamWriter.WriteAsync(JsonSerializer.Serialize(appDataCore, serializerOptions));
                     }
                 }
-
             }
+
 
             StorageFolder dataFolder = await GetDataFolder();
             StorageFolder userFolder = await dataFolder.CreateFolderAsync(templateProfile.FriendlyID);
@@ -317,7 +320,7 @@ namespace FireBrowser.Core
             StorageFile defaultUserSettings = await defaultDataFolder.GetFileAsync("DefaultSettings.json");
             await FileIO.WriteTextAsync(userSettings, await FileIO.ReadTextAsync(defaultUserSettings));
 
-
+            
             //Create empty folders
             await userFolder.CreateFolderAsync("Browsers");
             await userFolder.CreateFolderAsync("Collections");
