@@ -1,5 +1,4 @@
-﻿using static FireBrowser.Core.Globals;
-using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 using FireBrowser.Shared;
 using System;
 using Windows.ApplicationModel.Core;
@@ -12,7 +11,6 @@ using Windows.UI.Xaml.Input;
 using FireBrowser.Pages;
 using FireBrowser.Core;
 using System.Linq;
-using Windows.ApplicationModel.VoiceCommands;
 
 namespace FireBrowser;
 
@@ -45,50 +43,56 @@ public sealed partial class MainPage : Page
 
     private async void SidebarButton_Click(object sender, RoutedEventArgs e)
     {
-        switch ((sender as Button).Tag)
+        try {
+            switch ((sender as Button).Tag)
+            {
+                case "Back":
+                    TabWebView.GoBack();
+                    break;
+                case "Refresh":
+                    TabWebView.Reload();
+                    break;
+                case "Forward":
+                    TabWebView.GoForward();
+                    break;
+                case "Home":
+                    NavigateToUrl(HomepageUrl);
+                    break;
+                case "Search":
+                    UrlBox.Text = TabWebView.CoreWebView2.Source;
+                    UrlBox.Focus(FocusState.Programmatic);
+                    break;
+                case "ReadingMode":
+                    string jscript = await ReadingModeHelper.GetReadingModeJScriptAsync();
+                    await TabWebView.CoreWebView2.ExecuteScriptAsync(jscript);
+                    break;
+                case "Translate":
+                    string url = TabWebView.CoreWebView2.Source;
+                    TabWebView.CoreWebView2.Navigate("https://translate.google.com/translate?hl&u=" + url);
+                    break;
+                case "AddFavoriteFlyout":
+                    FavoriteTitle.Text = TabWebView.CoreWebView2.DocumentTitle;
+                    FavoriteUrl.Text = TabWebView.CoreWebView2.Source;
+                    break;
+                case "AddFavorite":
+                    FavoritesHelper.AddFavoritesItem(FavoriteTitle.Text, FavoriteUrl.Text);
+                    AddFavoriteFlyout.Hide();
+                    break;
+                case "Favorites":
+                    LoadListFromJson("Favorites.json");
+                    break;
+                case "History":
+                    LoadListFromJson("History.json");
+                    break;
+            }
+        }
+        catch
         {
-            case "Back":
-                TabWebView.GoBack();
-                break;
-            case "Refresh":
-                TabWebView.Reload();
-                break;
-            case "Forward":
-                TabWebView.GoForward();
-                break;
-            case "Home":
-                NavigateToUrl(HomepageUrl);
-                break;
-            case "Search":
-                UrlBox.Text = TabWebView.CoreWebView2.Source;
-                UrlBox.Focus(FocusState.Programmatic);
-                break;
-            case "ReadingMode":
-                string jscript = await ReadingModeHelper.GetReadingModeJScriptAsync();
-                await TabWebView.CoreWebView2.ExecuteScriptAsync(jscript);
-                break;
-            case "Translate":
-                string url = TabWebView.CoreWebView2.Source;
-                TabWebView.CoreWebView2.Navigate("https://translate.google.com/translate?hl&u=" + url);
-                break;
-            case "AddFavoriteFlyout":
-                FavoriteTitle.Text = TabWebView.CoreWebView2.DocumentTitle;
-                FavoriteUrl.Text = TabWebView.CoreWebView2.Source;
-                break;
-            case "AddFavorite":
-                FavoritesHelper.AddFavoritesItem(FavoriteTitle.Text, FavoriteUrl.Text);
-                AddFavoriteFlyout.Hide();
-                break;
-            case "Favorites":
-                LoadListFromJson("Favorites.json");
-                break;
-            case "History":
-                LoadListFromJson("History.json");
-                break;
+            await UI.ShowDialog("Error", "This action is not supported on XAML-based pages");
         }
     }
 
-    private async void MoreFlyoutItem_Click(object sender, RoutedEventArgs e)
+    private void MoreFlyoutItem_Click(object sender, RoutedEventArgs e)
     {
         switch ((sender as MenuFlyoutItem).Tag)
         {
@@ -117,10 +121,9 @@ public sealed partial class MainPage : Page
                 TabWebView.CoreWebView2.OpenTaskManagerWindow();
                 break;
             case "Settings":
-                OpenExtendedSidebar("Settings");
+                CreateTab("Settings", typeof(SettingsPage));
                 break;
             case "About":
-                OpenExtendedSidebar("About");
                 break;
         }
     }
@@ -163,22 +166,29 @@ public sealed partial class MainPage : Page
     }
     #endregion
 
-    private void NavigateToUrl(string uri)
+    public void NavigateToUrl(string uri)
     {
-        TabWebView.CoreWebView2.Navigate(uri);
+        if (TabWebView != null)
+        {
+            TabWebView.CoreWebView2.Navigate(uri);
+        }
+        else {
+            launchurl = uri;
+            TabContent.Navigate(typeof(WebViewPage));
+        }
     }
 
     private void OpenExtendedSidebar(object page)
     {
-        ExtendedSidebar.Visibility = Visibility.Visible;
-        contentFrame.Navigate(Type.GetType($"FireBrowser.Pages.{page}Page"));
-        ExtendedSidebarTitle.Text = page.ToString();
+        //ExtendedSidebar.Visibility = Visibility.Visible;
+        //contentFrame.Navigate(Type.GetType($"FireBrowser.Pages.{page}Page"));
+        //ExtendedSidebarTitle.Text = page.ToString();
     }
 
     private void CloseExtendedSidebar_Click(object sender, RoutedEventArgs e)
     {
-        ExtendedSidebar.Visibility = Visibility.Collapsed;
-        contentFrame.Content = null;
+        //ExtendedSidebar.Visibility = Visibility.Collapsed;
+        //contentFrame.Content = null;
     }
 
     public TabViewItem SelectedTab
@@ -231,14 +241,19 @@ public sealed partial class MainPage : Page
 
     public void CreateNewTab()
     {
+        CreateTab("New tab", typeof(NewTabPage));
+    }
+
+    public void CreateTab(string header, Type page)
+    {
         Frame frame = new();
         TabViewItem newItem = new()
         {
-            Header = "New tab",
+            Header = header,
             IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = Symbol.Document },
             Content = frame,
         };
-        frame.Navigate(typeof(WebViewPage));
+        frame.Navigate(page);
         Tabs.TabItems.Add(newItem);
         Tabs.SelectedItem = newItem;
     }
@@ -247,7 +262,7 @@ public sealed partial class MainPage : Page
     {
         TabViewItem selectedItem = args.Tab;
         var tabcontent = (Frame)selectedItem.Content;
-        (tabcontent.Content as WebViewPage).WebViewControl.Close();
+        if (tabcontent.Content is WebViewPage) (tabcontent.Content as WebViewPage).WebViewControl.Close();
         sender.TabItems.Remove(args.Tab);
     }
 
@@ -270,7 +285,7 @@ public sealed partial class MainPage : Page
             // Get selected item
             JsonItems item = (JsonItems)listView.SelectedItem;
             string url = item.Url;
-            MainPageContent.TabWebView.CoreWebView2.Navigate(url);
+            NavigateToUrl(url);
             listView.ItemsSource = null;
         }
     }

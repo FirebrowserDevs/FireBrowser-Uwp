@@ -7,49 +7,48 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:svsettctrl="using:SVSettingsControl"
-    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
-    <StackPanel>
-        <TextBlock FontFamily="15" Foreground="Red">Warning: You need to close and re-open FireBrowser to apply any setting!</TextBlock>
-        <TextBlock Style="{StaticResource SubheaderTextBlockStyle}">General</TextBlock>
-        <svsettctrl:SettingsBlockControl Title="Search engine" Description="This will also change your startpage">
-            <svsettctrl:SettingsBlockControl.Icon>
-                <SymbolIcon Symbol="Find" />
-            </svsettctrl:SettingsBlockControl.Icon>
-            <ComboBox
-                x:Name="SearchengineSelection"
-                Loaded="SearchengineSelection_Loaded"
-                SelectionChanged="SearchengineSelection_SelectionChanged">
-                <x:String>Ask</x:String>
-                <x:String>Baidu</x:String>
-                <x:String>Bing</x:String>
-                <x:String>DuckDuckGo</x:String>
-                <x:String>Ecosia</x:String>
-                <x:String>Google</x:String>
-                <x:String>Startpage</x:String>
-                <x:String>Qwant</x:String>
-                <x:String>Qwant Lite</x:String>
-                <x:String>Yahoo!</x:String>
-            </ComboBox>
-        </svsettctrl:SettingsBlockControl>
-        <TextBlock Style="{StaticResource SubheaderTextBlockStyle}">Data</TextBlock>
-        <svsettctrl:SettingsBlockControl Title="Browser data" Description="">
-            <svsettctrl:SettingsBlockControl.Icon>
-                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE13D;" />
-            </svsettctrl:SettingsBlockControl.Icon>
-            <Button Click="ClearBrowserData_Click" Content="Clear" />
-        </svsettctrl:SettingsBlockControl>
-        <TextBlock Style="{StaticResource SubheaderTextBlockStyle}">Privacy</TextBlock>
-        <svsettctrl:SettingsBlockControl Title="Disable JavaScript" Description="This improves your privacy by blocking trackers but it can also break a lot sites">
-            <svsettctrl:SettingsBlockControl.Icon>
-                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE943;" />
-            </svsettctrl:SettingsBlockControl.Icon>
-            <ToggleSwitch
-                x:Name="DisableJavaScriptToggle"
-                Loaded="DisableJavaScriptToggle_Loaded"
-                Toggled="DisableJavaScriptToggle_Toggled" />
-        </svsettctrl:SettingsBlockControl>
-    </StackPanel>
+    <Grid>
+        <muxc:NavigationView
+            x:Name="NavView"
+            IsBackButtonVisible="Collapsed"
+            IsSettingsVisible="False"
+            ItemInvoked="NavigationView_ItemInvoked"
+            Loaded="NavigationView_Loaded">
+            <muxc:NavigationView.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock
+                        x:Name="appTitle"
+                        Margin="-11,-9,0,0"
+                        VerticalAlignment="Center"
+                        FontSize="24"
+                        Text="{Binding}" />
+                </DataTemplate>
+            </muxc:NavigationView.HeaderTemplate>
+            <muxc:NavigationView.MenuItems>
+                <muxc:NavigationViewItem Content="General" Tag="General">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE10F;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Content="Data" Tag="Data">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8B7;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Content="Privacy" Tag="Privacy">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEA18;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Content="About" Tag="About">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE946;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+            </muxc:NavigationView.MenuItems>
+            <Frame x:Name="contentFrame" Margin="40,0,40,0" />
+        </muxc:NavigationView>
+    </Grid>
 </Page>

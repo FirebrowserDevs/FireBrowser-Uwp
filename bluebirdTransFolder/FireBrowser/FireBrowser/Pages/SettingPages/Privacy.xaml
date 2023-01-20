@@ -1,0 +1,22 @@
+﻿<Page
+    x:Class="FireBrowser.Pages.SettingPages.Privacy"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:FireBrowser.Pages.SettingPages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:svsettctrl="using:SVSettingsControl"
+    mc:Ignorable="d">
+
+    <StackPanel>
+        <svsettctrl:SettingsBlockControl Title="Disable JavaScript" Description="This improves your privacy by blocking trackers but it can also break a lot sites">
+            <svsettctrl:SettingsBlockControl.Icon>
+                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE943;" />
+            </svsettctrl:SettingsBlockControl.Icon>
+            <ToggleSwitch
+                x:Name="DisableJavaScriptToggle"
+                Loaded="DisableJavaScriptToggle_Loaded"
+                Toggled="DisableJavaScriptToggle_Toggled" />
+        </svsettctrl:SettingsBlockControl>
+    </StackPanel>
+</Page>

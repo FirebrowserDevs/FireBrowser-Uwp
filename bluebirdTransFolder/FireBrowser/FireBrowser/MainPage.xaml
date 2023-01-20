@@ -196,14 +196,14 @@
                                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE713;" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
-                                <MenuFlyoutItem
+                                <!--<MenuFlyoutItem
                                     Click="MoreFlyoutItem_Click"
                                     Tag="About"
                                     Text="About">
                                     <MenuFlyoutItem.Icon>
                                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE946;" />
                                     </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
+                                </MenuFlyoutItem>-->
                             </MenuFlyout>
                         </Button.Flyout>
                     </Button>
@@ -219,43 +219,24 @@
             <muxc:TabView
                 x:Name="Tabs"
                 Grid.Column="1"
+                VerticalAlignment="Stretch"
                 x:FieldModifier="public"
                 AddTabButtonClick="Tabs_AddTabButtonClick"
+                Background="Transparent"
                 Loaded="Tabs_Loaded"
                 TabCloseRequested="Tabs_TabCloseRequested">
-                <muxc:TabView.TabStripHeader>
-                    <TextBlock VerticalAlignment="Center">FireBrowser</TextBlock>
-                </muxc:TabView.TabStripHeader>
                 <muxc:TabView.TabStripFooter>
                     <Grid
                         x:Name="CustomDragRegion"
                         MinWidth="188"
                         Background="Transparent" />
                 </muxc:TabView.TabStripFooter>
+                <muxc:TabView.Resources>
+                    <ResourceDictionary>
+                        <SolidColorBrush x:Key="TabViewItemHeaderBackgroundSelected" Color="Transparent" />
+                    </ResourceDictionary>
+                </muxc:TabView.Resources>
             </muxc:TabView>
-
-            <Grid
-                x:Name="ExtendedSidebar"
-                Grid.Column="1"
-                Width="400"
-                HorizontalAlignment="Left"
-                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-                CornerRadius="0,8,0,0"
-                Visibility="Collapsed">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0" VerticalAlignment="Top">
-                    <TextBlock x:Name="ExtendedSidebarTitle" FontSize="20" />
-                    <Button HorizontalAlignment="Right" Click="CloseExtendedSidebar_Click">
-                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE10A;" />
-                    </Button>
-                </Grid>
-                <ScrollViewer Grid.Row="1">
-                    <Frame x:Name="contentFrame" />
-                </ScrollViewer>
-            </Grid>
         </Grid>
     </Grid>
 </Page>

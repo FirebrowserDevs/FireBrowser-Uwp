@@ -1,5 +1,5 @@
 ﻿using FireBrowser.Core;
-using static FireBrowser.Core.Globals;
+
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
@@ -22,11 +22,10 @@ public sealed partial class WebViewPage : Page
     {
         this.InitializeComponent();
         WebViewControl.EnsureCoreWebView2Async();
-        
     }
 
     #region WebViewEvents
-    private async void WebViewControl_CoreWebView2Initialized(WebView2 sender, CoreWebView2InitializedEventArgs args)
+    private void WebViewControl_CoreWebView2Initialized(WebView2 sender, CoreWebView2InitializedEventArgs args)
     {
         // WebViewEvents
         sender.CoreWebView2.NavigationStarting += CoreWebView2_NavigationStarting;
@@ -36,15 +35,10 @@ public sealed partial class WebViewPage : Page
         sender.CoreWebView2.DocumentTitleChanged += CoreWebView2_DocumentTitleChanged;
         // Apply WebView2 settings
         ApplyWebView2Settings();
-        // After CoreWebView2Initialized we can load the homepage
         if (launchurl != null)
         {
             WebViewControl.Source = new Uri(launchurl);
             launchurl = null;
-        }
-        else
-        {
-            LoadHomepage();
         }
     }
 
@@ -55,11 +49,6 @@ public sealed partial class WebViewPage : Page
         {
             WebViewControl.CoreWebView2.Settings.IsScriptEnabled = false;
         }
-    }
-    public void LoadHomepage()
-    {
-        HomepageUrl ??= "https://lite.qwant.com/";
-        WebViewControl.Source = new Uri(HomepageUrl);
     }
     private void CoreWebView2_NavigationStarting(CoreWebView2 sender, CoreWebView2NavigationStartingEventArgs args)
     {
@@ -75,7 +64,7 @@ public sealed partial class WebViewPage : Page
     private void CoreWebView2_NewWindowRequested(CoreWebView2 sender, CoreWebView2NewWindowRequestedEventArgs args)
     {
         launchurl = args.Uri;
-        MainPageContent.CreateNewTab();
+        MainPageContent.CreateTab("New tab", typeof(WebViewPage));
         args.Handled = true;
     }
 
@@ -97,11 +86,4 @@ public sealed partial class WebViewPage : Page
         MainPageContent.SelectedTab.Header = sender.DocumentTitle;
     }
     #endregion
-
-    private async void Page_SizeChanged(object sender, SizeChangedEventArgs e)
-    {
-        await Task.Delay(20);
-        int currentheight = Convert.ToInt32(((Frame)Window.Current.Content).ActualHeight);
-        WebViewControl.Height = Convert.ToDouble(currentheight - 40);
-    }
 }

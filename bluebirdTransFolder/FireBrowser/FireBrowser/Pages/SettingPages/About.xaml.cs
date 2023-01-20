@@ -2,14 +2,13 @@
 using FireBrowser.Shared;
 using Windows.UI.Xaml.Controls;
 
-namespace FireBrowser.Pages;
+namespace FireBrowser.Pages.SettingPages;
 
-public sealed partial class AboutPage : Page
+public sealed partial class About : Page
 {
-    public AboutPage()
+    public About()
     {
         this.InitializeComponent();
-        WindowManager.SetWindowTitle("About");
         FireBrowserVersion.Text = "FireBrowser " + AppVersion.GetAppVersion() + " (" + SystemHelper.GetSystemArchitecture() + ")";
         WebView2Version.Text = "WebView2 " + UA.wv2version;
     }

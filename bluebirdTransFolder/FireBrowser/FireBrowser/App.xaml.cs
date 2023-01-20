@@ -1,4 +1,4 @@
-﻿
+﻿global using static FireBrowser.Core.Globals;
 using System;
 using System.Collections.Generic;
 using System.IO;

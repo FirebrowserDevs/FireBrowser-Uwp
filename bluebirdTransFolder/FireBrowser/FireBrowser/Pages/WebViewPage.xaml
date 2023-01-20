@@ -6,8 +6,6 @@
     xmlns:local="using:FireBrowser.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    SizeChanged="Page_SizeChanged"
     mc:Ignorable="d">
 
     <Grid CornerRadius="8,0,0,0">

@@ -1,4 +1,4 @@
-﻿using static FireBrowser.Core.Globals;
+﻿
 using FireBrowser.Shared;
 using System;
 using Windows.Storage;
