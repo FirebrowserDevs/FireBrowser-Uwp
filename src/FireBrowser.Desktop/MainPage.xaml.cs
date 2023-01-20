@@ -43,6 +43,7 @@ using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Data.Sqlite;
 using System.Data;
 using Windows.UI.WebUI;
+using static QRCoder.PayloadGenerator;
 
 namespace FireBrowser
 {
@@ -142,9 +143,11 @@ private void DataRequested(DataTransferManager sender, DataRequestedEventArgs e)
                     case AppLaunchType.FirstLaunch:
                         Tabs.TabItems.Add(CreateNewTab(typeof(FirstLaunchPage), 1));
                         break;
+                    case AppLaunchType.FileHTML:
+                       
+                        break;
                     case AppLaunchType.FilePDF:
                         Dots.SDK.UWP.Log.WriteLog("App was launched from a file", "MainPage.OnNavigatedTo", Dots.SDK.Log.LogType.Info);
-
                         var files = passer.LaunchData as IReadOnlyList<IStorageItem>;
                         Tabs.TabItems.Add(CreateNewTab(typeof(PDFReader), files[0]));
                         break;

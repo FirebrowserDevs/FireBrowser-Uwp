@@ -145,8 +145,6 @@
     <Compile Include="Core\Favorites.cs" />
     <Compile Include="Core\Focusing.cs" />
     <Compile Include="History\DataAccess.cs" />
-    <Compile Include="History\HistoryDetails.cs" />
-    <Compile Include="History\SmallHistoryDetails.cs" />
     <Compile Include="Core\Icons.cs" />
     <Compile Include="Core\Resources.cs" />
     <Compile Include="Core\Settings.cs" />

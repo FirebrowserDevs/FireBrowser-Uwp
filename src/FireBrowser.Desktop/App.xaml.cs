@@ -10,6 +10,7 @@ using Windows.Storage;
 using Windows.UI.Xaml.Navigation;
 using FireBrowser.Core;
 using System.Web;
+using System.Linq;
 
 namespace FireBrowser
 {
@@ -37,13 +38,15 @@ namespace FireBrowser
         {
             InitializeComponent();
             Suspending += OnSuspending;
-            Dots.SDK.Core.projectID = "AirplaneDesktop";
+            Dots.SDK.Core.projectID = "FireBrowserDesktop";
         }
+
+       
         protected override void OnFileActivated(FileActivatedEventArgs args)
         {
             AppLaunchPasser passer = new()
             {
-                //To-Do: temporary
+                   
                 LaunchType = AppLaunchType.FilePDF,
                 LaunchData = args.Files
             };

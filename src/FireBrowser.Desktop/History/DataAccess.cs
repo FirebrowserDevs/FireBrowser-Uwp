@@ -5,6 +5,7 @@ using FireBrowser.Core;
 using System.Diagnostics;
 using static FireBrowser.Core.UserData;
 using Microsoft.Data.Sqlite;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace FireBrowser.History
 {
@@ -37,6 +38,26 @@ namespace FireBrowser.History
 
 
              return historyDetails;
+        }
+
+        public class HistoryDetails
+        {
+            public string Title { get; set; }
+            public string Url { get; set; }
+            public BitmapImage ImageSource { get; set; }
+
+            public DateTime Date { get; set; }
+        }
+
+        public class SmallHistoryDetails
+        {
+            public string ImageSource { get; set; }
+            public string Title { get; set; }
+
+            DateTime Date
+            {
+                get; set;
+            }
         }
     }
 }
