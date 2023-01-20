@@ -21,6 +21,14 @@ namespace FireBrowser.Core
     /// </summary>
     public static class AppData
     {
+        public class FolderCreator
+        {
+            public async Task CreateFolder()
+            {
+                StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("FireBrowserData", CreationCollisionOption.OpenIfExists);
+            }
+        }
+
         //Currently selected profile ID
         public static int currentProfileID = 0;
         public static ProfileCore CurrentProfileCore
@@ -28,7 +36,8 @@ namespace FireBrowser.Core
 
             get
             {
-
+                AppData.FolderCreator fs = new FolderCreator();
+                fs.CreateFolder();
                 string appDataFilePath = $"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/ProfileData.json";
                 CreateHisDb();
                 try
@@ -250,15 +259,15 @@ namespace FireBrowser.Core
 
             string friendlyID = name.RemoveSpecialCharacters();
 
-            //Generate a random ID, in case the user decides to have multiple accounts with the same name
-            Random random = new();
+            // Generate a random ID, in case the user decides to have multiple accounts with the same name
+            Random random = new Random();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            string randomID = new(Enumerable.Repeat(chars, 8).Select(c => c[random.Next(c.Length)]).ToArray());
-            //Append the current friendlyID with the randomID
+            string randomID = new string(Enumerable.Repeat(chars, 8).Select(c => c[random.Next(c.Length)]).ToArray());
+            // Append the current friendlyID with the randomID
             friendlyID += "_" + randomID;
 
-            //Create a template profile
-            ProfileCore templateProfile = new()
+            // Create a template profile
+            ProfileCore templateProfile = new ProfileCore
             {
                 Name = name,
                 FriendlyID = friendlyID,
@@ -274,14 +283,14 @@ namespace FireBrowser.Core
 
             string appDataFilePath = $"{ApplicationData.Current.LocalFolder.Path}/FireBrowserData/ProfileData.json";
 
+            // Initialize appDataCore
+            var appDataCore = await GetAppDataCore() ?? new AppDataCore();
             if (File.Exists(appDataFilePath))
             {
                 if (templateProfile == null)
                 {
                     return null;
                 }
-
-                var appDataCore = await GetAppDataCore();
 
                 if (appDataCore.Profiles.Count > 0)
                 {
@@ -317,7 +326,7 @@ namespace FireBrowser.Core
             StorageFile defaultUserSettings = await defaultDataFolder.GetFileAsync("DefaultSettings.json");
             await FileIO.WriteTextAsync(userSettings, await FileIO.ReadTextAsync(defaultUserSettings));
 
-
+            
             //Create empty folders
             await userFolder.CreateFolderAsync("Browsers");
             await userFolder.CreateFolderAsync("Collections");

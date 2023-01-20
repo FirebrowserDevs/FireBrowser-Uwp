@@ -11,13 +11,11 @@ using Windows.UI.Xaml.Input;
 using FireBrowser.Core;
 using static FireBrowser.Core.Resources;
 using FireBrowser.Pages;
-using Windows.UI.WindowManagement;
 using Windows.UI.Xaml.Navigation;
 using System.Collections.Generic;
 using Windows.Storage;
 using System.Linq;
 using Windows.ApplicationModel;
-using Windows.ApplicationModel.ExtendedExecution.Foreground;
 using Windows.UI.Xaml.Media;
 using FireBrowser.Pages.Workspaces;
 using FireBrowser.Controls;
@@ -28,44 +26,42 @@ using FireBrowser.History;
 using QRCoder;
 using System.Net.Http;
 using System.Xml.Serialization;
-using Dots.SDK.UWP;
 using static FireBrowser.MainPage;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Windows.UI.Xaml.Controls.Primitives;
-using FireBrowser.Controls.BrowserEngines;
-using Dots.SDK;
-using System.Diagnostics;
 using static FireBrowser.Core.Favorites;
-using Windows.UI.Xaml.Controls;
-using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Data.Sqlite;
-using System.Data;
-using Windows.UI.WebUI;
-using static QRCoder.PayloadGenerator;
 
 namespace FireBrowser
 {
     public class StringOrIntTemplateSelector : DataTemplateSelector
     {
-        // Define the (currently empty) data templates to return
-        // These will be "filled-in" in the XAML code.
         public DataTemplate StringTemplate { get; set; }
-
         public DataTemplate IntTemplate { get; set; }
         public DataTemplate DefaultTemplate { get; set; }
+
         protected override DataTemplate SelectTemplateCore(object item)
         {
             var suggestion = item as EverythingBoxSuggestion;
-            // Return the correct data template based on the item's type.
+
+            if (suggestion == null)
+            {
+                return null;
+            }
+
             if (suggestion.Type == EverythingBoxSuggestionType.Search)
             {
                 return DefaultTemplate;
             }
-            else if (item.GetType() == typeof(int))
+            else if (item is int)
             {
                 return IntTemplate;
+            }
+            else if (item is string)
+            {
+                return StringTemplate;
             }
             else
             {
@@ -226,56 +222,6 @@ private void DataRequested(DataTransferManager sender, DataRequestedEventArgs e)
             args.Handled = true;
         }
 
-        /// <summary>
-        /// Computer\HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications\57453DotsStudio.Airplane_ngs6csccwd0b4
-        /// </summary>
-        /// <param name="window"></param>
-
-
-        void SetupWindow(AppWindow window)
-        {
-            if (window == null)
-            {
-                // Main Window -- add some default items
-                for (int i = 0; i < 1; i++)
-                {
-                    Tabs.TabItems.Add(CreatePasser());
-                }
-
-                Tabs.SelectedIndex = 0;
-
-
-                // Extend into the titlebar
-                var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
-                coreTitleBar.ExtendViewIntoTitleBar = true;
-
-                coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
-
-                var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-                titleBar.ButtonBackgroundColor = Colors.Transparent;
-                titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-                titleBar.BackgroundColor = Colors.Transparent;
-
-                Window.Current.SetTitleBar(CustomDragRegion);
-            }
-            else
-            {
-
-                // Extend into the titlebar
-                window.TitleBar.ExtendsContentIntoTitleBar = true;
-                window.TitleBar.ButtonBackgroundColor = Colors.Transparent;
-                window.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-                window.TitleBar.BackgroundColor = Colors.Transparent;
-
-                // Due to a bug in AppWindow, we cannot follow the same pattern as CoreWindow when setting the min width.
-                // Instead, set a hardcoded number. 
-                CustomDragRegion.MinWidth = 188;
-
-                window.Frame.DragRegionVisuals.Add(CustomDragRegion);
-            }
-
-        }
-
         private void CloseSelectedTabKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
             var InvokedTabView = (args.Element as TabView);
@@ -401,7 +347,6 @@ private void DataRequested(DataTransferManager sender, DataRequestedEventArgs e)
         {
             CustomDragRegion.MinWidth = (FlowDirection == FlowDirection.LeftToRight) ? sender.SystemOverlayRightInset : sender.SystemOverlayLeftInset;
             CustomDragRegion.Height = sender.Height;
-            //ClassicToolbar.Margin = new Thickness(0, CustomDragRegion.Height, 0, 0);
         }
         private void Tabs_Loaded(object sender, RoutedEventArgs e)
         {
@@ -499,48 +444,7 @@ private void DataRequested(DataTransferManager sender, DataRequestedEventArgs e)
             newItem.Content = frame;
             return newItem;
         }
-        private void TabMenuOnClick(object sender, RoutedEventArgs e)
-        {
-            switch ((sender as MenuFlyoutItem).Tag)
-            {
-                case "New-Tab":
-                    Tabs.TabItems.Add(CreateNewTab());
-                    break;
-                case "Edit":
-
-                    break;
-                case "Kill":
-                    if (TabContent.Content is WebContent)
-                    {
-                        (TabContent.Content as WebContent).WebViewElement.Close();
-                    }
-                    Tabs.TabItems.Remove((TabViewItem)Tabs.SelectedItem);
-                    break;
-                case "Mute":
-                    if (TabContent.Content is WebContent)
-                    {
-                    }
-                    break;
-                case "Duplicate":
-                    if (TabContent.Content is WebContent)
-                    {
-                        string url = (TabContent.Content as WebContent).WebViewElement.CoreWebView2.Source.ToString();
-                        Tabs.TabItems.Add(CreateNewTab(typeof(WebContent), new Uri(url)));
-                    }
-                    break;
-                case "Sleep":
-                    if (true)
-                    {
-                       
-                    }
-                    else
-                    {
-                        
-                    }
-                    break;
-            }
-        }
-
+      
         Frame TabContent
         {
             get
@@ -712,11 +616,11 @@ private void DataRequested(DataTransferManager sender, DataRequestedEventArgs e)
                 case "NewTab":
                     Tabs.TabItems.Add(CreateNewTab());
                     break;
-                case "NewIncognitoTab":
-                    OpenNewWindow(new Uri("airplane://incognito"));
+                case "Incognito":
+                    OpenNewWindow(new Uri("https://www.google.com/?=incognito"));
                     break;
                 case "NewWindow":
-                    OpenNewWindow(new Uri("airplane://"));
+                    OpenNewWindow(new Uri("https://www.google.com/"));
                     break;
                 case "Share":
                     var dt = DataTransferManager.GetForCurrentView();
@@ -730,7 +634,7 @@ private void DataRequested(DataTransferManager sender, DataRequestedEventArgs e)
                         }
                         else
                         {
-                            request.Data.SetWebLink(new Uri("https://alur.me/go/FireBrowser"));
+                            request.Data.SetWebLink(new Uri(""));
                             //To-Do: localization
                             request.Data.Properties.Title = "Check out FireBrowser!";
                         }
@@ -744,7 +648,7 @@ private void DataRequested(DataTransferManager sender, DataRequestedEventArgs e)
                     TabContent.Navigate(typeof(FocusPage));
                     break;
                 case "Print":
-
+                   
                     break;
                 case "Note":
                     if (TabContent.Content is WebContent) (TabContent.Content as WebContent).PrepareForNoting();
