@@ -64,7 +64,7 @@ public sealed partial class WebViewPage : Page
         //MainPageContent.JsonListView.ItemsSource = menuList;
         for (int index = 0; index < menuList.Count; index++)
         {
-            if (menuList[index].Name == "openLinkInNewWindow" || menuList[index].Name == "print" || menuList[index].Name == "emoji" || menuList[index].Name == "webCapture" || menuList[index].Name == "openLinkInNewWindow")
+            if (menuList[index].Name == "openLinkInNewWindow" || menuList[index].Name == "print" || menuList[index].Name == "emoji" || menuList[index].Name == "webCapture")
             {
                 menuList.RemoveAt(index);
             }
