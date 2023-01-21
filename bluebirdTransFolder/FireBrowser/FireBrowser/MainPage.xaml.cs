@@ -94,9 +94,6 @@ public sealed partial class MainPage : Page
     {
         switch ((sender as MenuFlyoutItem).Tag)
         {
-            case "DownloadFlyout":
-                TabWebView.CoreWebView2.OpenDefaultDownloadDialog();
-                break;
             case "Fullscreen":
                 var view = ApplicationView.GetForCurrentView();
                 if (!view.IsFullScreenMode)
@@ -109,28 +106,25 @@ public sealed partial class MainPage : Page
                 }
                 break;
             case "DevTools":
-                try
+                if (TabContent.Content is WebViewPage)
                 {
                     TabWebView.CoreWebView2.OpenDevToolsWindow();
                 }
-                catch
-                {
-                    await UI.ShowDialog("Error", "XAML-based pages cannot be inspected");
-                }
-                break;
-            case "ShowSource":
-                try
-                {
-                    launchurl = "view-source:" + TabWebView.Source.ToString();
-                    CreateWebTab();
-                }
-                catch
+                else
                 {
                     await UI.ShowDialog("Error", "Only webpage source can be inspected");
                 }
                 break;
-            case "TaskManager":
-                TabWebView.CoreWebView2.OpenTaskManagerWindow();
+            case "ShowSource":
+                if (TabContent.Content is WebViewPage)
+                {
+                    launchurl = "view-source:" + TabWebView.Source.ToString();
+                    CreateWebTab();
+                }
+                else
+                {
+                    await UI.ShowDialog("Error", "Only webpage source can be inspected");
+                }
                 break;
             case "Settings":
                 CreateTab("Settings", Symbol.Setting, typeof(SettingsPage));
