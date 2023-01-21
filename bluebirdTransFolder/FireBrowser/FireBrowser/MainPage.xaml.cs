@@ -11,9 +11,7 @@ using Windows.UI.Xaml.Input;
 using FireBrowser.Pages;
 using FireBrowser.Core;
 using System.Linq;
-using Windows.Media.Playback;
-using Windows.Graphics.Printing.PrintSupport;
-using Windows.UI.WindowManagement;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace FireBrowser;
 
@@ -82,7 +80,7 @@ public sealed partial class MainPage : Page
                     LoadListFromJson("Favorites.json");
                     break;
                 case "History":
-                    LoadListFromJson("History.json");
+                    ShowHistory();
                     break;
             }
         }
@@ -307,5 +305,45 @@ public sealed partial class MainPage : Page
         var SearchResults = from s in JsonItemsList where s.Title.Contains(textbox.Text, StringComparison.OrdinalIgnoreCase) select s;
         // Set SearchResults as ItemSource for HistoryListView
         JsonListView.ItemsSource = SearchResults;
+    }
+
+    private async void ShowHistory()
+    {
+        var historyList = await DataAccess.GetHistoryDetails();
+        foreach (var item in historyList)
+        {
+            ListViewItem lvi = new()
+            {
+                ContentTemplate = Application.Current.Resources["SmallHistoryDataTemplate"] as DataTemplate
+            };
+            item.ImageSource = new BitmapImage(new Uri("https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=" + item.Url + "&size=16"));
+            lvi.DataContext = item;
+            lvi.Tag = item.Url;
+
+            // Check if the item already exists in the ListView
+            bool itemExists = false;
+            foreach (ListViewItem existingItem in SmallHistoryMenu.Items)
+            {
+                if (existingItem.Tag.Equals(item.Url))
+                {
+                    itemExists = true;
+                    break;
+                }
+            }
+
+            // If the item does not exist, add it to the ListView
+            if (!itemExists)
+            {
+                SmallHistoryMenu.Items.Add(lvi);
+                SmallHistoryMenu.AllowFocusOnInteraction = true;
+            }
+        }
+    }
+
+    private void SmallHistoryMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var listview = sender as ListView;
+        ListViewItem item = listview.SelectedItem as ListViewItem;
+        NavigateToUrl(item.Tag.ToString());
     }
 }

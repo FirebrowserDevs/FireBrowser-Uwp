@@ -1,0 +1,73 @@
+﻿<!--  Copyright (c) Microsoft Corporation and Contributors.  -->
+<!--  Licensed under the MIT License.  -->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DataTemplate x:Key="SmallHistoryDataTemplate">
+        <Grid MaxHeight="28" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="28" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="28" />
+            </Grid.ColumnDefinitions>
+
+            <Image
+                Width="20"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Source="{Binding ImageSource}" />
+            <TextBlock
+                Grid.Column="1"
+                Margin="10,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Text="{Binding Title}" />
+            <TextBlock
+                Grid.Column="1"
+                Width="0"
+                Height="0"
+                Text="{Binding Date}"
+                Visibility="Collapsed" />
+            <FontIcon
+                Grid.Column="2"
+                Width="20"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="10"
+                Glyph="&#xE76C;" />
+        </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="BigHistoryDataTemplate">
+        <Grid MaxHeight="28" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="28" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="28" />
+            </Grid.ColumnDefinitions>
+
+            <Image
+                Width="20"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Source="{Binding ImageSource}" />
+            <TextBlock
+                Grid.Column="1"
+                Margin="10,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Text="{Binding Title}" />
+            <TextBlock
+                Grid.Column="1"
+                Margin="10,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Text="{Binding Date}" />
+            <FontIcon
+                Grid.Column="2"
+                Width="20"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="10"
+                Glyph="&#xE76C;" />
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

@@ -20,6 +20,7 @@ using System.Diagnostics;
 using Windows.Storage;
 using FireBrowser;
 using Windows.System;
+using FireBrowser.Core;
 
 namespace FireBrowser;
 
@@ -42,6 +43,7 @@ sealed partial class App : Application
     private void LoadSettings()
     {
         SearchUrl = Core.SettingsHelper.GetSetting("SearchUrl");
+        HistoryHelper.CheckHisDb();
     }
 
     protected override void OnActivated(IActivatedEventArgs args)

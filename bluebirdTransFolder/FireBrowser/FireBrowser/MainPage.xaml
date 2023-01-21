@@ -24,14 +24,6 @@
                     x:Name="JsonListView"
                     Grid.Row="1"
                     SelectionChanged="JsonListView_SelectionChanged">
-                    <!--<ListView.Resources>
-                        <MenuFlyout x:Name="contextMenuFlyout">
-                            <MenuFlyout.Items>
-                                <MenuFlyoutItem Text="Copy url" />
-                                <MenuFlyoutItem Text="Remove" />
-                            </MenuFlyout.Items>
-                        </MenuFlyout>
-                    </ListView.Resources>-->
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
@@ -43,6 +35,22 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+            </Grid>
+        </Flyout>
+        <Flyout x:Name="SmallHistoryFlyout" Placement="Right">
+            <Grid
+                MinWidth="300"
+                MinHeight="500"
+                MaxWidth="300"
+                MaxHeight="500">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <ListView
+                    x:Name="SmallHistoryMenu"
+                    Grid.Row="1"
+                    SelectionChanged="SmallHistoryMenu_SelectionChanged" />
             </Grid>
         </Flyout>
     </Page.Resources>
@@ -139,7 +147,7 @@
                     </Button>
                     <Button
                         Click="SidebarButton_Click"
-                        Flyout="{x:Bind JsonListFlyout}"
+                        Flyout="{x:Bind SmallHistoryFlyout}"
                         Style="{StaticResource SidebarButton}"
                         Tag="History">
                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE81C;" />

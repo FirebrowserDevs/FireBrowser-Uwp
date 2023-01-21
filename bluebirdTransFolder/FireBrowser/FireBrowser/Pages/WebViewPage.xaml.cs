@@ -1,8 +1,10 @@
 ﻿using FireBrowser.Core;
+using Microsoft.Data.Sqlite;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
 using System.Collections.Generic;
+using Windows.Storage;
 using Windows.UI.Xaml.Controls;
 
 namespace FireBrowser.Pages;
@@ -49,7 +51,8 @@ public sealed partial class WebViewPage : Page
         MainPageContent.LoadingRing.IsActive = false;
         MainPageContent.SelectedTab.IconSource = FaviconHelper.GetFavicon(sender.Source);
         // Add item to history file
-        HistoryHelper.AddHistoryItem(sender.DocumentTitle, sender.Source);
+        //HistoryHelper.AddHistoryItem(sender.DocumentTitle, sender.Source);
+        
     }
     private void CoreWebView2_NewWindowRequested(CoreWebView2 sender, CoreWebView2NewWindowRequestedEventArgs args)
     {
@@ -74,6 +77,7 @@ public sealed partial class WebViewPage : Page
     private void CoreWebView2_DocumentTitleChanged(CoreWebView2 sender, object args)
     {
         MainPageContent.SelectedTab.Header = sender.DocumentTitle;
+        HistoryHelper.WriteToDb(sender.DocumentTitle, sender.Source);
     }
     #endregion
 }
