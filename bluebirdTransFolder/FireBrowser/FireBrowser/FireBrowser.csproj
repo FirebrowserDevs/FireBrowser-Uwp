@@ -145,7 +145,6 @@
     <Compile Include="Core\Json.cs" />
     <Compile Include="Core\ReadingModeHelper.cs" />
     <Compile Include="Core\SettingsHelper.cs" />
-    <Compile Include="Core\UA.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
