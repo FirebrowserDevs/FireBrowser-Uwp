@@ -17,16 +17,18 @@ public static class DataAccess
         con.Open();
 
 
-        SqliteCommand selectHistoryCommand = new SqliteCommand("SELECT url, title, last_visit_time FROM urls", con);
+        SqliteCommand selectHistoryCommand = new("SELECT url, title, last_visit_time FROM urls", con);
         SqliteDataReader query = selectHistoryCommand.ExecuteReader();
 
         while (query.Read())
         {
 
-            HistoryDetails hd = new HistoryDetails();
-            hd.Url = query.GetString(0);
-            hd.Title = query.GetString(1);
-            hd.Date = query.GetDateTime(2);
+            HistoryDetails hd = new()
+            {
+                Url = query.GetString(0),
+                Title = query.GetString(1),
+                Date = query.GetDateTime(2)
+            };
 
             historyDetails.Add(hd);
         }

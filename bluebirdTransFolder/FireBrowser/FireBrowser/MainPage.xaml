@@ -9,7 +9,7 @@
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     mc:Ignorable="d">
     <Page.Resources>
-        <Flyout x:Name="JsonListFlyout" Placement="Right">
+        <Flyout x:Name="FavoritesFlyout" Placement="Right">
             <Grid
                 MinWidth="300"
                 MinHeight="500"
@@ -47,10 +47,22 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
+                <TextBox Grid.Row="0" TextChanged="SmallHistoryMenu_SearchBoxTextChanged" />
                 <ListView
                     x:Name="SmallHistoryMenu"
                     Grid.Row="1"
-                    SelectionChanged="SmallHistoryMenu_SelectionChanged" />
+                    SelectionChanged="SmallHistoryMenu_SelectionChanged">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock
+                                    FontSize="20"
+                                    Text="{Binding Title}"
+                                    ToolTipService.ToolTip="{Binding Url}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </Grid>
         </Flyout>
     </Page.Resources>
@@ -140,7 +152,7 @@
                     </Button>
                     <Button
                         Click="SidebarButton_Click"
-                        Flyout="{x:Bind JsonListFlyout}"
+                        Flyout="{x:Bind FavoritesFlyout}"
                         Style="{StaticResource SidebarButton}"
                         Tag="Favorites">
                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE728;" />
