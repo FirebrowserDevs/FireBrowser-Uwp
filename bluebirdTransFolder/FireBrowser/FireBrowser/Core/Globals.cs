@@ -32,6 +32,6 @@ public class Globals
 
     public static List<JsonItems> JsonItemsList;
 
-    // Global variable to pass random data to other pages
+    // Varible which defines which url should be launched when a new tab is created
     public static string launchurl { get; set; }
 }

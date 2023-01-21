@@ -41,14 +41,15 @@ sealed partial class App : Application
 
     private void LoadSettings()
     {
-        Core.Globals.HomepageUrl = Core.SettingsHelper.GetSetting("HomepageUrl");
-        Core.Globals.SearchUrl = Core.SettingsHelper.GetSetting("SearchUrl");
+        SearchUrl = Core.SettingsHelper.GetSetting("SearchUrl");
     }
 
     protected override void OnActivated(IActivatedEventArgs args)
     {
         ProtocolActivatedEventArgs eventArgs = args as ProtocolActivatedEventArgs;
-        Core.Globals.launchurl = eventArgs.Uri.ToString();
+        string URI = eventArgs.Uri.ToString();
+        if (URI.Contains("firebrowser:")) launchurl = eventArgs.Uri.AbsolutePath;
+        else { launchurl = URI; }
         if (args.Kind == ActivationKind.Protocol)
         {
             Frame rootFrame = Window.Current.Content as Frame;
@@ -72,7 +73,7 @@ sealed partial class App : Application
             {
                 // Since we already have a window open
                 // we create a new tab with the uri
-                Core.Globals.MainPageContent.CreateNewTab();
+                Core.Globals.MainPageContent.CreateWebTab();
             }
         }
     }

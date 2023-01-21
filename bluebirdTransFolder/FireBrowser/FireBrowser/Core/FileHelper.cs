@@ -1,5 +1,4 @@
-﻿
-using FireBrowser.Shared;
+﻿using FireBrowser.Shared;
 using System;
 using Windows.Storage;
 

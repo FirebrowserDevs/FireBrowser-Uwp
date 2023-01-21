@@ -14,8 +14,7 @@
             x:Name="NavView"
             IsBackButtonVisible="Collapsed"
             IsSettingsVisible="False"
-            ItemInvoked="NavigationView_ItemInvoked"
-            Loaded="NavigationView_Loaded">
+            ItemInvoked="NavigationView_ItemInvoked">
             <muxc:NavigationView.HeaderTemplate>
                 <DataTemplate>
                     <TextBlock

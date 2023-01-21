@@ -11,6 +11,9 @@ using Windows.UI.Xaml.Input;
 using FireBrowser.Pages;
 using FireBrowser.Core;
 using System.Linq;
+using Windows.Media.Playback;
+using Windows.Graphics.Printing.PrintSupport;
+using Windows.UI.WindowManagement;
 
 namespace FireBrowser;
 
@@ -23,11 +26,11 @@ public sealed partial class MainPage : Page
         Window.Current.VisibilityChanged += WindowVisibilityChangedEventHandler;
     }
 
-    void WindowVisibilityChangedEventHandler(System.Object sender, Windows.UI.Core.VisibilityChangedEventArgs e)
+    void WindowVisibilityChangedEventHandler(object sender, Windows.UI.Core.VisibilityChangedEventArgs e)
     {
         // Perform operations that should take place when the application becomes visible rather than
         // when it is prelaunched, such as building a what's new feed
-        if (Tabs.TabItems.Count == 0) CreateNewTab();
+        if (Tabs.TabItems.Count == 0) CreateHomeTab();
     }
     private void CustomTitleBar()
     {
@@ -54,9 +57,6 @@ public sealed partial class MainPage : Page
                     break;
                 case "Forward":
                     TabWebView.GoForward();
-                    break;
-                case "Home":
-                    NavigateToUrl(HomepageUrl);
                     break;
                 case "Search":
                     UrlBox.Text = TabWebView.CoreWebView2.Source;
@@ -88,11 +88,11 @@ public sealed partial class MainPage : Page
         }
         catch
         {
-            await UI.ShowDialog("Error", "This action is not supported on XAML-based pages");
+            
         }
     }
 
-    private void MoreFlyoutItem_Click(object sender, RoutedEventArgs e)
+    private async void MoreFlyoutItem_Click(object sender, RoutedEventArgs e)
     {
         switch ((sender as MenuFlyoutItem).Tag)
         {
@@ -111,17 +111,31 @@ public sealed partial class MainPage : Page
                 }
                 break;
             case "DevTools":
-                TabWebView.CoreWebView2.OpenDevToolsWindow();
+                try
+                {
+                    TabWebView.CoreWebView2.OpenDevToolsWindow();
+                }
+                catch
+                {
+                    await UI.ShowDialog("Error", "XAML-based pages cannot be inspected");
+                }
                 break;
             case "ShowSource":
-                launchurl = "view-source:" + TabWebView.Source.ToString();
-                CreateNewTab();
+                try
+                {
+                    launchurl = "view-source:" + TabWebView.Source.ToString();
+                    CreateWebTab();
+                }
+                catch
+                {
+                    await UI.ShowDialog("Error", "Only webpage source can be inspected");
+                }
                 break;
             case "TaskManager":
                 TabWebView.CoreWebView2.OpenTaskManagerWindow();
                 break;
             case "Settings":
-                CreateTab("Settings", typeof(SettingsPage));
+                CreateTab("Settings", Symbol.Setting, typeof(SettingsPage));
                 break;
             case "About":
                 break;
@@ -178,19 +192,6 @@ public sealed partial class MainPage : Page
         }
     }
 
-    private void OpenExtendedSidebar(object page)
-    {
-        //ExtendedSidebar.Visibility = Visibility.Visible;
-        //contentFrame.Navigate(Type.GetType($"FireBrowser.Pages.{page}Page"));
-        //ExtendedSidebarTitle.Text = page.ToString();
-    }
-
-    private void CloseExtendedSidebar_Click(object sender, RoutedEventArgs e)
-    {
-        //ExtendedSidebar.Visibility = Visibility.Collapsed;
-        //contentFrame.Content = null;
-    }
-
     public TabViewItem SelectedTab
     {
         get
@@ -231,26 +232,35 @@ public sealed partial class MainPage : Page
 
     private void Tabs_Loaded(object sender, RoutedEventArgs e)
     {
-        CreateNewTab();
+        if (launchurl != null) CreateWebTab();
+        else
+        {
+            CreateHomeTab();
+        }
     }
 
     private void Tabs_AddTabButtonClick(TabView sender, object args)
     {
-        CreateNewTab();
+        CreateHomeTab();
     }
 
-    public void CreateNewTab()
+    public void CreateHomeTab()
     {
-        CreateTab("New tab", typeof(NewTabPage));
+        CreateTab("New tab", Symbol.Document, typeof(NewTabPage));
     }
 
-    public void CreateTab(string header, Type page)
+    public void CreateWebTab()
+    {
+        CreateTab("New tab", Symbol.Document, typeof(WebViewPage));
+    }
+
+    public void CreateTab(string header, Symbol symbol , Type page)
     {
         Frame frame = new();
         TabViewItem newItem = new()
         {
             Header = header,
-            IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = Symbol.Document },
+            IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = symbol },
             Content = frame,
         };
         frame.Navigate(page);
@@ -268,7 +278,7 @@ public sealed partial class MainPage : Page
 
     private async void LoadListFromJson(string file)
     {
-        Core.Globals.JsonItemsList = await Json.GetListFromJsonAsync(file);
+        JsonItemsList = await Json.GetListFromJsonAsync(file);
         if (JsonItemsList != null) JsonListView.ItemsSource = JsonItemsList;
         else
         {

@@ -1,21 +1,12 @@
 ﻿using FireBrowser.Core;
-
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
 using System.Collections.Generic;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using System.Threading.Tasks;
-using Windows.UI.WindowManagement;
-using System.Diagnostics;
-using System.Reflection;
 
 namespace FireBrowser.Pages;
 
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
 public sealed partial class WebViewPage : Page
 {
     public WebViewPage()
@@ -64,7 +55,7 @@ public sealed partial class WebViewPage : Page
     private void CoreWebView2_NewWindowRequested(CoreWebView2 sender, CoreWebView2NewWindowRequestedEventArgs args)
     {
         launchurl = args.Uri;
-        MainPageContent.CreateTab("New tab", typeof(WebViewPage));
+        MainPageContent.CreateWebTab();
         args.Handled = true;
     }
 

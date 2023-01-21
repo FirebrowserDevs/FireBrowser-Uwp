@@ -29,28 +29,36 @@
                 </StackPanel>
             </svsettctrl:SettingsBlockControl.ExpandableContent>
         </svsettctrl:SettingsBlockControl>
+        <svsettctrl:SettingsBlockControl Title="Developers" IsExpanded="True">
+            <svsettctrl:SettingsBlockControl.Icon>
+                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC7A;" />
+            </svsettctrl:SettingsBlockControl.Icon>
+            <svsettctrl:SettingsBlockControl.ExpandableContent>
+                <RichTextBlock>
+                    <Paragraph>Fluid_union</Paragraph>
+                    <Paragraph>jarno9981</Paragraph>
+                    <Paragraph>Pinguin2001</Paragraph>
+                    <Paragraph>Note: This list is in alphabetical order</Paragraph>
+                </RichTextBlock>
+            </svsettctrl:SettingsBlockControl.ExpandableContent>
+        </svsettctrl:SettingsBlockControl>
         <svsettctrl:SettingsBlockControl Title="Dependencies" IsExpanded="True">
             <svsettctrl:SettingsBlockControl.Icon>
                 <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE1D3;" />
             </svsettctrl:SettingsBlockControl.Icon>
             <svsettctrl:SettingsBlockControl.ExpandableContent>
-                <StackPanel>
-                    <TextBlock
-                        Foreground="{ThemeResource HyperlinkForegroundThemeBrush}"
-                        Tag="https://github.com/microsoft/microsoft-ui-xaml"
-                        Tapped="TextBlock_Tapped"
-                        Text="Microsoft.UI.Xaml (MIT Licence)" />
-                    <TextBlock
-                        Foreground="{ThemeResource HyperlinkForegroundThemeBrush}"
-                        Tag="https://github.com/JamesNK/Newtonsoft.Json"
-                        Tapped="TextBlock_Tapped"
-                        Text="Newtonsoft.Json (MIT Licence)" />
-                    <TextBlock
-                        Foreground="{ThemeResource HyperlinkForegroundThemeBrush}"
-                        Tag="https://github.com/gus33000/SVSettingsControl"
-                        Tapped="TextBlock_Tapped"
-                        Text="SVSettingsControl (MIT Licence)" />
-                </StackPanel>
+                <RichTextBlock>
+                    <Paragraph>
+                        <Hyperlink NavigateUri="firebrowser:https://github.com/microsoft/microsoft-ui-xaml">Microsoft.UI.Xaml</Hyperlink>
+                        (MIT Licence)</Paragraph>
+                    <Paragraph>
+                        <Hyperlink NavigateUri="firebrowser:https://github.com/JamesNK/Newtonsoft.Json">Newtonsoft.Json</Hyperlink>
+                        (MIT Licence)</Paragraph>
+                    <Paragraph>
+                        <Hyperlink NavigateUri="firebrowser:https://github.com/gus33000/SVSettingsControl">SVSettingsControl</Hyperlink>
+                        (MIT Licence)</Paragraph>
+                    <Paragraph>Many thanks to everyone who is distributing these libraries for free!</Paragraph>
+                </RichTextBlock>
             </svsettctrl:SettingsBlockControl.ExpandableContent>
         </svsettctrl:SettingsBlockControl>
     </StackPanel>

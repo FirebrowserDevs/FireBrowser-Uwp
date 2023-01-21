@@ -18,6 +18,7 @@ public sealed partial class Privacy : Page
             DisableJavaScriptToggle.IsOn = true;
         }
     }
+
     private void DisableJavaScriptToggle_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e)
     {
         if (DisableJavaScriptToggle.IsOn)
