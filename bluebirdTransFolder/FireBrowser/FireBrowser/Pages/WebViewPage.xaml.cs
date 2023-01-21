@@ -35,7 +35,6 @@ public sealed partial class WebViewPage : Page
 
     private void ApplyWebView2Settings()
     {
-        WebViewControl.CoreWebView2.Settings.UserAgent = UA.FireBrowserUA;
         if (SettingsHelper.GetSetting("DisableJavaScript") == "true")
         {
             WebViewControl.CoreWebView2.Settings.IsScriptEnabled = false;
