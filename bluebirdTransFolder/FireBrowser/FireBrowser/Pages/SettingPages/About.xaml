@@ -39,6 +39,10 @@
                     <Paragraph>jarno9981</Paragraph>
                     <Paragraph>Pinguin2001</Paragraph>
                     <Paragraph>Note: This list is in alphabetical order</Paragraph>
+                    <Paragraph>
+                        Chat with us on <Hyperlink NavigateUri="firebrowser:https://discord.com/invite/CWGHdGVFFV">Discord</Hyperlink>
+                        to get latest information and support
+                    </Paragraph>
                 </RichTextBlock>
             </svsettctrl:SettingsBlockControl.ExpandableContent>
         </svsettctrl:SettingsBlockControl>
