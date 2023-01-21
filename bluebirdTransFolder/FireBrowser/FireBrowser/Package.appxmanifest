@@ -8,15 +8,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="FireBrowserDevelopers.FireBrowser.Uwp"
-    Publisher="CN=Julian"
-    Version="1.0.1.0" />
+    Name="57443TechFireX.FireBrowser-Uwp"
+    Publisher="CN=787233D4-4D29-47D2-B29A-AD3E99C44FE7"
+    Version="1.0.6.0" />
 
-  <mp:PhoneIdentity PhoneProductId="7c838069-2340-4849-bc74-70d68b4e0516" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="8aa2212b-8862-4148-85e3-bb11fc084868" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>FireBrowser</DisplayName>
-    <PublisherDisplayName>FireBrowser Developers</PublisherDisplayName>
+    <DisplayName>FireBrowser-Uwp</DisplayName>
+    <PublisherDisplayName>FireBrowser Devs</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -33,7 +33,7 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="FireBrowser.App">
       <uap:VisualElements
-        DisplayName="FireBrowser"
+        DisplayName="FireBrowser-Uwp"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="FireBrowser"
