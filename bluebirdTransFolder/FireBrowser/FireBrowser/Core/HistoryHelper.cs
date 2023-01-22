@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using System;
+using System.Data;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -47,5 +48,19 @@ public class HistoryHelper
     public async static Task UpdateHistoryListAsync()
     {
         HistoryList = await DataAccess.GetHistoryDetails();
+    }
+
+    public static void DelHistory()
+    {
+        using var con = new SqliteConnection($"Data Source={ApplicationData.Current.LocalFolder.Path}/FireBrowserHistory.Db");
+        con.Open();
+
+        using (var cmd = new SqliteCommand("INSERT INTO urls(url, title, last_visit_time) VALUES(@url, @title, @last_visit_time)", con))
+        {
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "DELETE FROM urls";
+            cmd.ExecuteNonQuery();
+        }
+        con.Close();
     }
 }

@@ -1,21 +1,17 @@
-﻿using FireBrowser.Shared;
-using System;
+﻿using System;
+using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace FireBrowser.Core;
 
 public class FileHelper
 {
-    public static async void DeleteLocalFile(string filename)
+    public static async Task DeleteLocalFile(string fileName)
     {
-        try
+        var file = await ApplicationData.Current.LocalFolder.TryGetItemAsync(fileName);
+        if (file != null)
         {
-            StorageFile historyfile = await localFolder.GetFileAsync(filename);
-            await historyfile.DeleteAsync();
-        }
-        catch (Exception ex)
-        {
-            ExceptionHelper.ThrowFullError(ex);
+            await file.DeleteAsync();
         }
     }
 }

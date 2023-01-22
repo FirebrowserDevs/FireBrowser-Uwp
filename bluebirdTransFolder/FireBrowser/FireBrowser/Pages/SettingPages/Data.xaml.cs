@@ -18,6 +18,7 @@ public sealed partial class Data : Page
             Title = "Clear data",
             Content = "Do you want to clear all your browsing data including: Favorites and History",
             PrimaryButtonText = "Clear",
+            DefaultButton = ContentDialogButton.Primary,
             SecondaryButtonText = "Cancel"
         };
 
@@ -26,9 +27,9 @@ public sealed partial class Data : Page
         if (result == ContentDialogResult.Primary)
         {
             // Clear favorties
-            FileHelper.DeleteLocalFile("Favorites.json");
+            await FileHelper.DeleteLocalFile("Favorites.json");
             // Clear history
-            FileHelper.DeleteLocalFile("History.json");
+            HistoryHelper.DelHistory();
         }
     }
 }
