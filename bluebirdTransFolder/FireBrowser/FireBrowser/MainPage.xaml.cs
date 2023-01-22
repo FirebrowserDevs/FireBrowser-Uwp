@@ -273,14 +273,14 @@ public sealed partial class MainPage : Page
     private async void LoadListFromJson(string file)
     {
         JsonItemsList = await Json.GetListFromJsonAsync(file);
-        if (JsonItemsList != null) JsonListView.ItemsSource = JsonItemsList;
+        if (JsonItemsList != null) FavoritesListView.ItemsSource = JsonItemsList;
         else
         {
-            JsonListView.ItemsSource = null;
+            FavoritesListView.ItemsSource = null;
         }
     }
 
-    private void JsonListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void FavoritesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         // Get listview sender
         ListView listView = sender as ListView;
@@ -290,30 +290,31 @@ public sealed partial class MainPage : Page
             JsonItems item = (JsonItems)listView.SelectedItem;
             string url = item.Url;
             NavigateToUrl(url);
+            OpenFavoriteFlyoutBtn.Flyout.Hide();
             listView.ItemsSource = null;
         }
     }
 
-    private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+    private void Favorites_SearchBoxTextChanged(object sender, TextChangedEventArgs e)
     {
         TextBox textbox = sender as TextBox;
         // Get all ListView items with the submitted search query
         var SearchResults = from s in JsonItemsList where s.Title.Contains(textbox.Text, StringComparison.OrdinalIgnoreCase) select s;
         // Set SearchResults as ItemSource for HistoryListView
-        JsonListView.ItemsSource = SearchResults;
+        FavoritesListView.ItemsSource = SearchResults;
     }
 
     private async void ShowHistory()
     {
         await HistoryHelper.UpdateHistoryListAsync();
-        if (HistoryList != null) SmallHistoryMenu.ItemsSource = HistoryList;
+        if (HistoryList != null) HistoryListView.ItemsSource = HistoryList;
         else
         {
-            SmallHistoryMenu.ItemsSource = null;
+            HistoryListView.ItemsSource = null;
         }
     }
 
-    private async void SmallHistoryMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void HistoryListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         ListView listView = sender as ListView;
         if (listView.ItemsSource != null)
@@ -322,16 +323,17 @@ public sealed partial class MainPage : Page
             HistoryDetails item = (HistoryDetails)listView.SelectedItem;
             string url = item.Url;
             NavigateToUrl(url);
+            OpenHistoryFlyoutBtn.Flyout.Hide();
             listView.ItemsSource = null;
         }
     }
 
-    private void SmallHistoryMenu_SearchBoxTextChanged(object sender, TextChangedEventArgs e)
+    private void HistoryListView_SearchBoxTextChanged(object sender, TextChangedEventArgs e)
     {
         TextBox textbox = sender as TextBox;
         // Get all ListView items with the submitted search query
         var SearchResults = from s in HistoryList where s.Title.Contains(textbox.Text, StringComparison.OrdinalIgnoreCase) select s;
         // Set SearchResults as ItemSource for HistoryListView
-        SmallHistoryMenu.ItemsSource = SearchResults;
+        HistoryListView.ItemsSource = SearchResults;
     }
 }

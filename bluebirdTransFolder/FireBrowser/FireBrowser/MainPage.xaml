@@ -19,11 +19,11 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <TextBox Grid.Row="0" TextChanged="SearchBox_TextChanged" />
+                <TextBox Grid.Row="0" TextChanged="Favorites_SearchBoxTextChanged" />
                 <ListView
-                    x:Name="JsonListView"
+                    x:Name="FavoritesListView"
                     Grid.Row="1"
-                    SelectionChanged="JsonListView_SelectionChanged">
+                    SelectionChanged="FavoritesList_SelectionChanged">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
@@ -37,7 +37,7 @@
                 </ListView>
             </Grid>
         </Flyout>
-        <Flyout x:Name="SmallHistoryFlyout" Placement="Right">
+        <Flyout x:Name="HistoryFlyout" Placement="Right">
             <Grid
                 MinWidth="300"
                 MinHeight="500"
@@ -47,11 +47,11 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <TextBox Grid.Row="0" TextChanged="SmallHistoryMenu_SearchBoxTextChanged" />
+                <TextBox Grid.Row="0" TextChanged="HistoryListView_SearchBoxTextChanged" />
                 <ListView
-                    x:Name="SmallHistoryMenu"
+                    x:Name="HistoryListView"
                     Grid.Row="1"
-                    SelectionChanged="SmallHistoryMenu_SelectionChanged">
+                    SelectionChanged="HistoryListView_SelectionChanged">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
@@ -151,6 +151,7 @@
                         </Button.Flyout>
                     </Button>
                     <Button
+                        x:Name="OpenFavoriteFlyoutBtn"
                         Click="SidebarButton_Click"
                         Flyout="{x:Bind FavoritesFlyout}"
                         Style="{StaticResource SidebarButton}"
@@ -158,8 +159,9 @@
                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE728;" />
                     </Button>
                     <Button
+                        x:Name="OpenHistoryFlyoutBtn"
                         Click="SidebarButton_Click"
-                        Flyout="{x:Bind SmallHistoryFlyout}"
+                        Flyout="{x:Bind HistoryFlyout}"
                         Style="{StaticResource SidebarButton}"
                         Tag="History">
                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE81C;" />
