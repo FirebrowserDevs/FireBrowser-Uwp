@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace FireBrowser.Core;
@@ -41,5 +42,10 @@ public class HistoryHelper
             cmd.ExecuteNonQuery();
         }
         con.Close();
+    }
+
+    public async static Task UpdateHistoryListAsync()
+    {
+        HistoryList = await DataAccess.GetHistoryDetails();
     }
 }

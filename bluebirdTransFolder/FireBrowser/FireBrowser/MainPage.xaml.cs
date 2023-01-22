@@ -305,8 +305,8 @@ public sealed partial class MainPage : Page
 
     private async void ShowHistory()
     {
-        var historyList = await DataAccess.GetHistoryDetails();
-        if (historyList != null) SmallHistoryMenu.ItemsSource = historyList;
+        await HistoryHelper.UpdateHistoryListAsync();
+        if (HistoryList != null) SmallHistoryMenu.ItemsSource = HistoryList;
         else
         {
             SmallHistoryMenu.ItemsSource = null;
@@ -326,13 +326,11 @@ public sealed partial class MainPage : Page
         }
     }
 
-    private async void SmallHistoryMenu_SearchBoxTextChanged(object sender, TextChangedEventArgs e)
+    private void SmallHistoryMenu_SearchBoxTextChanged(object sender, TextChangedEventArgs e)
     {
-        // very inefficient
-        var historyList = await GetHistoryDetails();
         TextBox textbox = sender as TextBox;
         // Get all ListView items with the submitted search query
-        var SearchResults = from s in historyList where s.Title.Contains(textbox.Text, StringComparison.OrdinalIgnoreCase) select s;
+        var SearchResults = from s in HistoryList where s.Title.Contains(textbox.Text, StringComparison.OrdinalIgnoreCase) select s;
         // Set SearchResults as ItemSource for HistoryListView
         SmallHistoryMenu.ItemsSource = SearchResults;
     }
