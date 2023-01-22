@@ -14,6 +14,7 @@ using System.Linq;
 using Windows.UI.Xaml.Media.Imaging;
 using static FireBrowser.Core.DataAccess;
 using System.Collections.Generic;
+using Microsoft.Web.WebView2.Core;
 
 namespace FireBrowser;
 
@@ -320,7 +321,7 @@ public sealed partial class MainPage : Page
         if (listView.ItemsSource != null)
         {
             // Get selected item
-            HistoryDetails item = (HistoryDetails)listView.SelectedItem;
+            HistoryDetails item = listView.SelectedItem as HistoryDetails ?? throw new InvalidOperationException("No item selected.");
             string url = item.Url;
             NavigateToUrl(url);
             OpenHistoryFlyoutBtn.Flyout.Hide();
@@ -331,9 +332,15 @@ public sealed partial class MainPage : Page
     private void HistoryListView_SearchBoxTextChanged(object sender, TextChangedEventArgs e)
     {
         TextBox textbox = sender as TextBox;
+        if (textbox == null || string.IsNullOrWhiteSpace(textbox.Text))
+        {
+            return;
+        }
+
         // Get all ListView items with the submitted search query
-        var SearchResults = from s in HistoryList where s.Title.Contains(textbox.Text, StringComparison.OrdinalIgnoreCase) select s;
+        var searchResults = HistoryList.Where(s => s.Title.IndexOf(textbox.Text, StringComparison.OrdinalIgnoreCase) >= 0);
         // Set SearchResults as ItemSource for HistoryListView
-        HistoryListView.ItemsSource = SearchResults;
+        HistoryListView.ItemsSource = searchResults;
+
     }
 }

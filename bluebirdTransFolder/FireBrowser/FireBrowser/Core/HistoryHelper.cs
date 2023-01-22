@@ -19,16 +19,21 @@ public class HistoryHelper
 
     private static void CreateHisDb()
     {
-        SqliteConnection m_dbConnection = new($"Data Source={ApplicationData.Current.LocalFolder.Path}/FireBrowserHistory.Db");
-        m_dbConnection.Open();
+        string path = Path.Combine(ApplicationData.Current.LocalFolder.Path, "FireBrowserHistory.Db");
+        using (SqliteConnection connection = new SqliteConnection($"Data Source={path}"))
+        {
+            connection.Open();
 
-        string sql = "create table urls (url varchar(250), title varchar(250), last_visit_time DATETIME)";
-        
-        SqliteCommand command = new(sql, m_dbConnection);
-        command.ExecuteNonQuery();
+            string sql = "CREATE TABLE IF NOT EXISTS urls (url VARCHAR(250), title VARCHAR(250), last_visit_time DATETIME)";
+            using (SqliteCommand command = new SqliteCommand(sql, connection))
+            {
+                command.ExecuteNonQuery();
+            }
 
-        m_dbConnection.Close();
+            connection.Close();
+        }
     }
+
 
     public static void WriteToDb(string title, string url)
     {
