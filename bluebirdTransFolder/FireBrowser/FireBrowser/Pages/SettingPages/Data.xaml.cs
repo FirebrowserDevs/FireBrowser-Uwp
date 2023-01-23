@@ -28,8 +28,6 @@ public sealed partial class Data : Page
         {
             // Clear favorties
             await FileHelper.DeleteLocalFile("Favorites.json");
-            // Clear history
-            HistoryHelper.DelHistory();
         }
     }
 }

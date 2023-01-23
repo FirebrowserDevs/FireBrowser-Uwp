@@ -138,17 +138,20 @@
     <Compile Include="Controls\SVSettingsControl\SettingsDisplayControl.xaml.cs">
       <DependentUpon>SettingsDisplayControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Core\DataAccess.cs" />
     <Compile Include="Core\FaviconHelper.cs" />
     <Compile Include="Core\FavoritesHelper.cs" />
     <Compile Include="Core\FileHelper.cs" />
     <Compile Include="Core\Globals.cs" />
-    <Compile Include="Core\HistoryHelper.cs" />
     <Compile Include="Core\Json.cs" />
     <Compile Include="Core\ReadingModeHelper.cs" />
     <Compile Include="Core\SettingsHelper.cs" />
+    <Compile Include="Core\TLD.cs" />
+    <Compile Include="Core\UrlHelper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\FavoritesPage.xaml.cs">
+      <DependentUpon>FavoritesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SettingPages\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
@@ -255,6 +258,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\FavoritesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\SettingPages\About.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -311,7 +318,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\tldlist.json" />
+    <None Include="Assets\tldlist.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="FireBrowser_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

@@ -122,7 +122,6 @@ public sealed partial class WebViewPage : Page
     private void CoreWebView2_DocumentTitleChanged(CoreWebView2 sender, object args)
     {
         MainPageContent.SelectedTab.Header = sender.DocumentTitle;
-        HistoryHelper.WriteToDb(sender.DocumentTitle, sender.Source);
     }
     #endregion
 }

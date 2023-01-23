@@ -19,39 +19,24 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <TextBox Grid.Row="0" TextChanged="Favorites_SearchBoxTextChanged" />
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250" />
+                        <ColumnDefinition Width="50" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" TextChanged="Favorites_SearchBoxTextChanged" />
+                    <Button
+                        Grid.Column="1"
+                        Click="SidebarButton_Click"
+                        Style="{StaticResource SidebarButton}"
+                        Tag="FavoritesExpanded">
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8A7;" />
+                    </Button>
+                </Grid>
                 <ListView
                     x:Name="FavoritesListView"
                     Grid.Row="1"
                     SelectionChanged="FavoritesList_SelectionChanged">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <TextBlock
-                                    FontSize="20"
-                                    Text="{Binding Title}"
-                                    ToolTipService.ToolTip="{Binding Url}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
-        </Flyout>
-        <Flyout x:Name="HistoryFlyout" Placement="Right">
-            <Grid
-                MinWidth="300"
-                MinHeight="500"
-                MaxWidth="300"
-                MaxHeight="500">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <TextBox Grid.Row="0" TextChanged="HistoryListView_SearchBoxTextChanged" />
-                <ListView
-                    x:Name="HistoryListView"
-                    Grid.Row="1"
-                    SelectionChanged="HistoryListView_SelectionChanged">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
@@ -161,7 +146,6 @@
                     <Button
                         x:Name="OpenHistoryFlyoutBtn"
                         Click="SidebarButton_Click"
-                        Flyout="{x:Bind HistoryFlyout}"
                         Style="{StaticResource SidebarButton}"
                         Tag="History">
                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE81C;" />

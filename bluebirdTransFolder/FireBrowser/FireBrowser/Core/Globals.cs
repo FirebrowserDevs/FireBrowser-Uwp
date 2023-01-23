@@ -3,14 +3,11 @@ using Windows.UI.Xaml;
 using Windows.Storage;
 using System.Collections.Generic;
 using FireBrowser.Pages;
-using static FireBrowser.Core.DataAccess;
 
 namespace FireBrowser.Core;
 
 public class Globals
 {
-    // History items list
-    public static List<HistoryDetails> HistoryList { get; set; }
     public class JsonItems
     {
         public string Title { get; set; }

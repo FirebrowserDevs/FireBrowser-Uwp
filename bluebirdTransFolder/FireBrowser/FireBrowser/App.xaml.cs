@@ -62,8 +62,8 @@ sealed partial class App : Application
 
     private void LoadSettings()
     {
-        SearchUrl = Core.SettingsHelper.GetSetting("SearchUrl");
-        HistoryHelper.CheckHisDb();
+        SearchUrl = SettingsHelper.GetSetting("SearchUrl");
+        TLD.LoadKnownDomains();
     }
 
     protected override void OnActivated(IActivatedEventArgs args)

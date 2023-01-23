@@ -12,7 +12,6 @@ using FireBrowser.Pages;
 using FireBrowser.Core;
 using System.Linq;
 using Windows.UI.Xaml.Media.Imaging;
-using static FireBrowser.Core.DataAccess;
 using System.Collections.Generic;
 using Microsoft.Web.WebView2.Core;
 using Windows.Media.Playback;
@@ -68,7 +67,7 @@ public sealed partial class MainPage : Page
                     TabWebView.GoForward();
                     break;
                 case "Search":
-                    UrlBox.Text = TabWebView.CoreWebView2.Source;
+                    //UrlBox.Text = TabWebView.CoreWebView2.Source;
                     UrlBox.Focus(FocusState.Programmatic);
                     break;
                 case "ReadingMode":
@@ -90,8 +89,12 @@ public sealed partial class MainPage : Page
                 case "Favorites":
                     LoadListFromJson("Favorites.json");
                     break;
+                case "FavoritesExpanded":
+                    CreateTab("Favorites", Symbol.Favorite, typeof(FavoritesPage));
+                    break;
                 case "History":
-                    ShowHistory();
+                    launchurl = "edge://history";
+                    CreateWebTab();
                     break;
             }
         }
@@ -150,17 +153,26 @@ public sealed partial class MainPage : Page
     {
         if (e.Key == VirtualKey.Enter)
         {
-            if (UrlBox.Text.Contains("."))
+            string input = UrlBox.Text;
+            string inputtype = UrlHelper.GetInputType(input);
+            if (input.Contains("firebrowser-int://"))
             {
-                if (UrlBox.Text.Contains("http://") || UrlBox.Text.Contains("https://"))
+                if (input == "firebrowser-int://newtab")
                 {
-                    NavigateToUrl(UrlBox.Text.Trim());
+                    TabContent.Navigate(typeof(NewTabPage));
                 }
-                else
+                if (input == "firebrowser-int://settings")
                 {
-                    UrlBox.Text = "https://" + UrlBox.Text;
-                    NavigateToUrl(UrlBox.Text.Trim());
+                    TabContent.Navigate(typeof(SettingsPage));
                 }
+            }
+            else if (inputtype == "url")
+            {
+                NavigateToUrl(input.Trim());
+            }
+            else if (inputtype == "urlNOProtocol")
+            {
+                NavigateToUrl("https://" + input.Trim());
             }
             else
             {
@@ -170,7 +182,7 @@ public sealed partial class MainPage : Page
                 {
                     searchurl = SearchUrl;
                 }
-                string query = searchurl + UrlBox.Text;
+                string query = searchurl + input;
                 NavigateToUrl(query);
             }
             SearchFlyout.Hide();
@@ -311,44 +323,5 @@ public sealed partial class MainPage : Page
         var SearchResults = from s in JsonItemsList where s.Title.Contains(textbox.Text, StringComparison.OrdinalIgnoreCase) select s;
         // Set SearchResults as ItemSource for HistoryListView
         FavoritesListView.ItemsSource = SearchResults;
-    }
-
-    private async void ShowHistory()
-    {
-        await HistoryHelper.UpdateHistoryListAsync();
-        if (HistoryList != null) HistoryListView.ItemsSource = HistoryList;
-        else
-        {
-            HistoryListView.ItemsSource = null;
-        }
-    }
-
-    private void HistoryListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        ListView listView = sender as ListView;
-        if (listView.ItemsSource != null)
-        {
-            // Get selected item
-            HistoryDetails item = listView.SelectedItem as HistoryDetails ?? throw new InvalidOperationException("No item selected.");
-            string url = item.Url;
-            NavigateToUrl(url);
-            OpenHistoryFlyoutBtn.Flyout.Hide();
-            listView.ItemsSource = null;
-        }
-    }
-
-    private void HistoryListView_SearchBoxTextChanged(object sender, TextChangedEventArgs e)
-    {
-        TextBox textbox = sender as TextBox;
-        if (textbox == null || string.IsNullOrWhiteSpace(textbox.Text))
-        {
-            return;
-        }
-
-        // Get all ListView items with the submitted search query
-        var searchResults = HistoryList.Where(s => s.Title.IndexOf(textbox.Text, StringComparison.OrdinalIgnoreCase) >= 0);
-        // Set SearchResults as ItemSource for HistoryListView
-        HistoryListView.ItemsSource = searchResults;
-
     }
 }
