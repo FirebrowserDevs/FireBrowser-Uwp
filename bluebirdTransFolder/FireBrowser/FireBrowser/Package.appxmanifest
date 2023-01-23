@@ -5,7 +5,8 @@
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
-  IgnorableNamespaces="uap mp">
+  xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
+  IgnorableNamespaces="uap mp uap3">
 
   <Identity
     Name="57443TechFireX.FireBrowser-Uwp"
@@ -73,6 +74,7 @@
   <Capabilities>
 	  <!-- required to access the internet-->
 	  <Capability Name="internetClient" />
+	  <uap3:Capability Name="backgroundMediaPlayback"/>
 	  <!-- required to access intranets -->
 	  <Capability Name="privateNetworkClientServer"/>
   </Capabilities>

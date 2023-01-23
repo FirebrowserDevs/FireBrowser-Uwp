@@ -4,18 +4,46 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
 using System.Collections.Generic;
+using Windows.ApplicationModel;
+using Windows.Media.Playback;
 using Windows.Storage;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.ApplicationModel.ExtendedExecution;
+using Windows.ApplicationModel.ExtendedExecution.Foreground;
+using System.ServiceModel.Channels;
+using System.Security.Authentication.ExtendedProtection;
 
 namespace FireBrowser.Pages;
 
 public sealed partial class WebViewPage : Page
 {
+    public static event System.EventHandler<EnteredBackgroundEventArgs> EnteredBackground;
+    public static event System.EventHandler<LeavingBackgroundEventArgs> ExitBackground;
+
     public WebViewPage()
     {
         this.InitializeComponent();
         WebViewControl.EnsureCoreWebView2Async();
+
+        EnteredBackground += WebViewPage_EnteredBackground;
+        ExitBackground += WebViewPage_ExitBackground;
     }
+
+   
+    private void WebViewPage_ExitBackground(object sender, LeavingBackgroundEventArgs e)
+    {
+        
+    }
+
+    private void WebViewPage_EnteredBackground(object sender, EnteredBackgroundEventArgs e)
+    {
+
+    }
+
+
+
 
     #region WebViewEvents
     private void WebViewControl_CoreWebView2Initialized(WebView2 sender, CoreWebView2InitializedEventArgs args)

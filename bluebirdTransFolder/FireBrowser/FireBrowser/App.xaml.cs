@@ -21,6 +21,10 @@ using Windows.Storage;
 using FireBrowser;
 using Windows.System;
 using FireBrowser.Core;
+using Windows.Media.Editing;
+using Windows.Media.Playback;
+using Microsoft.UI.Xaml.Controls;
+using FireBrowser.Pages;
 
 namespace FireBrowser;
 
@@ -38,6 +42,20 @@ sealed partial class App : Application
         this.InitializeComponent();
         this.Suspending += OnSuspending;
         LoadSettings();
+
+        this.EnteredBackground += App_EnteredBackground;
+        this.LeavingBackground += App_LeavingBackground;
+    }
+
+    bool _isInBackgroundMode = false;
+    private void App_LeavingBackground(object sender, LeavingBackgroundEventArgs e)
+    {
+        _isInBackgroundMode = false;
+    }
+
+    private void App_EnteredBackground(object sender, EnteredBackgroundEventArgs e)
+    {
+        _isInBackgroundMode = true;
     }
 
     private void LoadSettings()

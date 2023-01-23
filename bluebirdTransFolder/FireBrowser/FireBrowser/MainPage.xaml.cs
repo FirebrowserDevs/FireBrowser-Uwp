@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using static FireBrowser.Core.DataAccess;
 using System.Collections.Generic;
 using Microsoft.Web.WebView2.Core;
+using Windows.Media.Playback;
 
 namespace FireBrowser;
 
@@ -27,6 +28,7 @@ public sealed partial class MainPage : Page
         Window.Current.VisibilityChanged += WindowVisibilityChangedEventHandler;
     }
 
+ 
     void WindowVisibilityChangedEventHandler(object sender, Windows.UI.Core.VisibilityChangedEventArgs e)
     {
         // Perform operations that should take place when the application becomes visible rather than
