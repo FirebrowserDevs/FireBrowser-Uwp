@@ -1,9 +1,4 @@
 ﻿using FireBrowser.Core;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.ServiceModel.Channels;
-using Windows.Storage;
 using Windows.UI.Xaml.Controls;
 
 namespace FireBrowser.Pages.SettingPages;
@@ -38,6 +33,7 @@ public sealed partial class Privacy : Page
             trueCount--;
             SettingsHelper.SetSetting("DisableJavaScript", "false");
         }
+   
         UpdateText();
     }
 
@@ -53,23 +49,16 @@ public sealed partial class Privacy : Page
     int trueCount = 0;
     public async void UpdateText()
     {
-        if(trueCount == 0)
+        TextLevel.Text = trueCount switch
         {
-            TextLevel.Text = "Default";
-        }
-        if(trueCount == 1)
-        {
-            TextLevel.Text = "Low";
-        }
-        if(trueCount == 2)
-        {
-            TextLevel.Text = "Medium";
-        }
-        if(trueCount > 3)
-        {
-            TextLevel.Text = "High";
-        }
+            0 => "Default",
+            1 => "Low",
+            2 => "Medium",
+            3 => "High",
+            4 => "Extreme"
+        };
     }
+
     private void DisableGenaralAutoFillToggle_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e)
     {
         if (DisableGenaralAutoFillToggle.IsOn)

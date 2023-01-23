@@ -19,6 +19,7 @@ using Windows.ApplicationModel.AppService;
 using Windows.Foundation.Collections;
 using Windows.Networking.Sockets;
 using Windows.ApplicationModel.Background;
+using Windows.Storage;
 
 namespace FireBrowser;
 
@@ -208,6 +209,7 @@ public sealed partial class MainPage : Page
     }
 
     public TabViewItem SelectedTab
+   
     {
         get
         {
