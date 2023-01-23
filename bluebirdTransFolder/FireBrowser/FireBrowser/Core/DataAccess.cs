@@ -9,54 +9,56 @@ namespace FireBrowser.Core;
 
 public static class DataAccess
 {
+    //this new code make sure it loaded and unloaded so less memory leaks
     public static async Task<List<HistoryDetails>> GetHistoryDetails()
     {
-        List<HistoryDetails> historyDetails = new();
+        List<HistoryDetails> historyDetails = new List<HistoryDetails>();
 
-        SqliteConnection con = new($"Data Source={ApplicationData.Current.LocalFolder.Path}/FireBrowserHistory.Db");
-        con.Open();
-
-
-        SqliteCommand selectHistoryCommand = new("SELECT url, title, last_visit_time FROM urls", con);
-        SqliteDataReader query = selectHistoryCommand.ExecuteReader();
-
-        while (query.Read())
+        using (SqliteConnection con = new SqliteConnection($"Data Source={ApplicationData.Current.LocalFolder.Path}/FireBrowserHistory.Db"))
         {
-
-            HistoryDetails hd = new()
-            {
-                Url = query.GetString(0),
-                Title = query.GetString(1),
-                Date = query.GetDateTime(2)
-            };
-
-            historyDetails.Add(hd);
+            con.Open();
+            historyDetails = await SelectHistoryAsync(con);
         }
-
-        ///this to make sure it doesn't crash
-        con.Close();
-
 
         return historyDetails;
     }
 
-    public class HistoryDetails
+    private static async Task<List<HistoryDetails>> SelectHistoryAsync(SqliteConnection con)
+    {
+        List<HistoryDetails> historyDetails = new List<HistoryDetails>();
+        using (SqliteCommand selectHistoryCommand = new SqliteCommand("SELECT url, title, last_visit_time FROM urls", con))
+        {
+            using (SqliteDataReader query = await selectHistoryCommand.ExecuteReaderAsync())
+            {
+                while (query.Read())
+                {
+                    HistoryDetails hd = new HistoryDetails
+                    {
+                        Url = query.GetString(0),
+                        Title = query.GetString(1),
+                        Date = query.GetDateTime(2)
+                    };
+
+                    historyDetails.Add(hd);
+                }
+            }
+        }
+        return historyDetails;
+    }
+
+    public record HistoryDetails
     {
         public string Title { get; set; }
         public string Url { get; set; }
         public BitmapImage ImageSource { get; set; }
-
         public DateTime Date { get; set; }
     }
 
-    public class SmallHistoryDetails
+    public record SmallHistoryDetails
     {
         public string ImageSource { get; set; }
         public string Title { get; set; }
-
-        DateTime Date
-        {
-            get; set;
-        }
+        public DateTime Date { get; set; }
     }
+
 }

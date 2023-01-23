@@ -14,6 +14,10 @@ using Windows.ApplicationModel.ExtendedExecution;
 using Windows.ApplicationModel.ExtendedExecution.Foreground;
 using System.ServiceModel.Channels;
 using System.Security.Authentication.ExtendedProtection;
+using Windows.ApplicationModel.Background;
+using Windows.Services.Maps;
+using Windows.UI.Xaml.Documents;
+using Windows.ApplicationModel.Activation;
 
 namespace FireBrowser.Pages;
 
@@ -31,7 +35,6 @@ public sealed partial class WebViewPage : Page
         ExitBackground += WebViewPage_ExitBackground;
     }
 
-   
     private void WebViewPage_ExitBackground(object sender, LeavingBackgroundEventArgs e)
     {
         
@@ -39,7 +42,7 @@ public sealed partial class WebViewPage : Page
 
     private void WebViewPage_EnteredBackground(object sender, EnteredBackgroundEventArgs e)
     {
-
+       
     }
 
 
@@ -68,6 +71,22 @@ public sealed partial class WebViewPage : Page
         if (SettingsHelper.GetSetting("DisableJavaScript") == "true")
         {
             WebViewControl.CoreWebView2.Settings.IsScriptEnabled = false;
+        }
+        if(SettingsHelper.GetSetting("SwipeNav") == "true")
+        {
+            WebViewControl.CoreWebView2.Settings.IsSwipeNavigationEnabled = false;
+        }
+        if(SettingsHelper.GetSetting("GenAutoFill") == "true")
+        {
+            WebViewControl.CoreWebView2.Settings.IsGeneralAutofillEnabled = false;
+        }
+        if(SettingsHelper.GetSetting("WebMess") == "true")
+        {
+            WebViewControl.CoreWebView2.Settings.IsWebMessageEnabled = false;
+        }
+        if (SettingsHelper.GetSetting("PassSave") == "true")
+        {
+            WebViewControl.CoreWebView2.Settings.IsPasswordAutosaveEnabled = false;
         }
     }
     private void CoreWebView2_NavigationStarting(CoreWebView2 sender, CoreWebView2NavigationStartingEventArgs args)

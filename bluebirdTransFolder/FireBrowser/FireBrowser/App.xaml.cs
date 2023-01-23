@@ -25,6 +25,8 @@ using Windows.Media.Editing;
 using Windows.Media.Playback;
 using Microsoft.UI.Xaml.Controls;
 using FireBrowser.Pages;
+using Microsoft.Web.WebView2.Core;
+using Windows.ApplicationModel.Background;
 
 namespace FireBrowser;
 
@@ -52,7 +54,7 @@ sealed partial class App : Application
     {
         _isInBackgroundMode = false;
     }
-
+  
     private void App_EnteredBackground(object sender, EnteredBackgroundEventArgs e)
     {
         _isInBackgroundMode = true;
