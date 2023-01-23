@@ -7,7 +7,6 @@
         <controls:XamlControlsResources>
             <controls:XamlControlsResources.MergedDictionaries>
                 <ResourceDictionary Source="Styles/SidebarButton.xaml" />
-                <ResourceDictionary Source="Styles/DataTemplate.xaml" />
             </controls:XamlControlsResources.MergedDictionaries>
         </controls:XamlControlsResources>
     </Application.Resources>

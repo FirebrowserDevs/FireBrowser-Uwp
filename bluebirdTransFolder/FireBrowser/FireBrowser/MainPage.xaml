@@ -21,8 +21,8 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="250" />
-                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="260" />
+                        <ColumnDefinition Width="40" />
                     </Grid.ColumnDefinitions>
                     <TextBox Grid.Column="0" TextChanged="Favorites_SearchBoxTextChanged" />
                     <Button
@@ -54,18 +54,14 @@
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="45" />
+                <ColumnDefinition Width="40" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid
                 x:Name="Sidebar"
                 Grid.Column="0"
-                Margin="0,12,0,0">
+                Margin="0,8,0,0">
                 <StackPanel>
-                    <Image
-                        Width="20"
-                        Height="20"
-                        Source="Assets/Square44x44Logo.altform-unplated_targetsize-48.png" />
                     <Button
                         Click="SidebarButton_Click"
                         Style="{StaticResource SidebarButton}"
@@ -143,17 +139,27 @@
                         Tag="Favorites">
                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE728;" />
                     </Button>
-                    <Button
-                        x:Name="OpenHistoryFlyoutBtn"
-                        Click="SidebarButton_Click"
-                        Style="{StaticResource SidebarButton}"
-                        Tag="History">
-                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE81C;" />
-                    </Button>
                     <Button Style="{StaticResource SidebarButton}">
                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE10C;" />
                         <Button.Flyout>
                             <MenuFlyout x:Name="MoreFlyout" Placement="Right">
+                                <MenuFlyoutItem
+                                    Click="MoreFlyoutItem_Click"
+                                    Tag="Favorites"
+                                    Text="Favorites">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE728;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem
+                                    Click="MoreFlyoutItem_Click"
+                                    Tag="History"
+                                    Text="History">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE81C;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutSeparator />
                                 <MenuFlyoutItem
                                     Click="MoreFlyoutItem_Click"
                                     Tag="Fullscreen"

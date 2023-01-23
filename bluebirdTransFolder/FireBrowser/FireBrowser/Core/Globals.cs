@@ -19,10 +19,6 @@ public class Globals
     {
         get { return (Window.Current.Content as Frame)?.Content as MainPage; }
     }
-    public static WebViewPage WebViewPageContent
-    {
-        get { return (Window.Current.Content as Frame)?.Content as WebViewPage; }
-    }
     // Global variables
     public static StorageFolder localFolder = ApplicationData.Current.LocalFolder;
 

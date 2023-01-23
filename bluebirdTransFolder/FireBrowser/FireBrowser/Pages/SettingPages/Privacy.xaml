@@ -13,11 +13,17 @@
             <svsettctrl:SettingsBlockControl.Icon>
                 <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEA18;" />
             </svsettctrl:SettingsBlockControl.Icon>
-            <TextBlock x:Name="TextLevel" Visibility="Visible" Width="150">
+            <TextBlock
+                x:Name="TextLevel"
+                Width="150"
+                Visibility="Visible">
                 Default
             </TextBlock>
         </svsettctrl:SettingsBlockControl>
-        <svsettctrl:SettingsBlockControl Margin="0,5,0,0" Title="Disable JavaScript" Description="This improves your privacy by blocking trackers but it can also break a lot sites">
+        <svsettctrl:SettingsBlockControl
+            Title="Disable JavaScript"
+            Margin="0,5,0,0"
+            Description="This improves your privacy by blocking trackers but it can also break a lot sites">
             <svsettctrl:SettingsBlockControl.Icon>
                 <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE943;" />
             </svsettctrl:SettingsBlockControl.Icon>
@@ -42,8 +48,7 @@
             <ToggleSwitch
                 x:Name="DisablWebMessFillToggle"
                 Loaded="DisablWebMessFillToggle_Loaded"
-                Toggled="DisablWebMessFillToggle_Toggled" 
-                />
+                Toggled="DisablWebMessFillToggle_Toggled" />
         </svsettctrl:SettingsBlockControl>
         <svsettctrl:SettingsBlockControl Title="Disable Save Passwords" Description="This will disable browser Auto Save Password">
             <svsettctrl:SettingsBlockControl.Icon>
@@ -51,7 +56,7 @@
             </svsettctrl:SettingsBlockControl.Icon>
             <ToggleSwitch
                 x:Name="PasswordWebMessFillToggle"
-               Loaded="PasswordWebMessFillToggle_Loaded"
+                Loaded="PasswordWebMessFillToggle_Loaded"
                 Toggled="PasswordWebMessFillToggle_Toggled" />
         </svsettctrl:SettingsBlockControl>
     </StackPanel>

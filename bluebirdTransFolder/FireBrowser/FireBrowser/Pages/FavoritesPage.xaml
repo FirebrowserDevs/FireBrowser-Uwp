@@ -16,58 +16,26 @@
             Grid.Column="0"
             BorderBrush="DarkGray"
             BorderThickness="0,0,1,0">
-            <TextBlock Margin="50,30,0,0" FontSize="25">Favorites</TextBlock>
+            <TextBlock Margin="50,30,0,0" FontSize="25">
+                Favorites
+            </TextBlock>
             <TextBox
                 Width="250"
                 Margin="50,15,0,0"
                 HorizontalAlignment="Left"
+                KeyDown="TextBox_KeyDown"
                 PlaceholderText="Search Favorites" />
         </StackPanel>
         <Grid Grid.Column="1" Margin="30,30,0,0">
-            <ListView>
-                <ListView.Items>
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                    <ListViewItem Content="PlaceholderText" />
-                </ListView.Items>
+            <ListView x:Name="FavoritesListView" SelectionChanged="FavoritesList_SelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock FontSize="20" Text="{Binding Title}" />
+                            <TextBlock Text="{Binding Url}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
         </Grid>
     </Grid>

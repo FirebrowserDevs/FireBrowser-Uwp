@@ -91,11 +91,8 @@ public sealed partial class MainPage : Page
                     LoadListFromJson("Favorites.json");
                     break;
                 case "FavoritesExpanded":
+                    OpenFavoriteFlyoutBtn.Flyout.Hide();
                     CreateTab("Favorites", Symbol.Favorite, typeof(FavoritesPage));
-                    break;
-                case "History":
-                    launchurl = "edge://history";
-                    CreateWebTab();
                     break;
             }
         }
@@ -109,6 +106,13 @@ public sealed partial class MainPage : Page
     {
         switch ((sender as MenuFlyoutItem).Tag)
         {
+            case "Favorites":
+                CreateTab("Favorites", Symbol.Favorite, typeof(FavoritesPage));
+                break;
+            case "History":
+                launchurl = "edge://history";
+                CreateWebTab();
+                break;
             case "Fullscreen":
                 var view = ApplicationView.GetForCurrentView();
                 if (!view.IsFullScreenMode)
