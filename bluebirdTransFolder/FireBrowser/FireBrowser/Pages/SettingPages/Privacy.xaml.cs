@@ -1,4 +1,9 @@
 ﻿using FireBrowser.Core;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.ServiceModel.Channels;
+using Windows.Storage;
 using Windows.UI.Xaml.Controls;
 
 namespace FireBrowser.Pages.SettingPages;
@@ -8,6 +13,7 @@ public sealed partial class Privacy : Page
     public Privacy()
     {
         this.InitializeComponent();
+        UpdateText();
     }
 
     private void DisableJavaScriptToggle_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -25,9 +31,11 @@ public sealed partial class Privacy : Page
         if (DisableJavaScriptToggle.IsOn)
         {
             SettingsHelper.SetSetting("DisableJavaScript", "true");
+            trueCount++;
         }
         else
         {
+            trueCount--;
             SettingsHelper.SetSetting("DisableJavaScript", "false");
         }
         UpdateText();
@@ -42,52 +50,37 @@ public sealed partial class Privacy : Page
         }
     }
 
-    public void UpdateText()
+    int trueCount = 0;
+    public async void UpdateText()
     {
-        #region lowlevel
-        if (DisableJavaScriptToggle.IsOn == true)
-        {
-            TextLevel.Text = "Low";
-        }
-        else if(DisableJavaScriptToggle.IsOn == false) 
+        if(trueCount == 0)
         {
             TextLevel.Text = "Default";
         }
-        if(DisablWebMessFillToggle.IsOn == true)
+        if(trueCount == 1)
         {
             TextLevel.Text = "Low";
         }
-        else if(DisablWebMessFillToggle.IsOn == false)
+        if(trueCount == 2)
         {
-            TextLevel.Text = "Default";
+            TextLevel.Text = "Medium";
         }
-        if (DisableGenaralAutoFillToggle.IsOn == true)
+        if(trueCount > 3)
         {
-            TextLevel.Text = "Low";
+            TextLevel.Text = "High";
         }
-        else if (DisableGenaralAutoFillToggle.IsOn == false)
-        {
-            TextLevel.Text = "Default";
-        }
-        if (PasswordWebMessFillToggle.IsOn == true)
-        {
-            TextLevel.Text = "Low";
-        }
-        else if (PasswordWebMessFillToggle.IsOn == false)
-        {
-            TextLevel.Text = "Default";
-        }
-        #endregion
     }
     private void DisableGenaralAutoFillToggle_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e)
     {
         if (DisableGenaralAutoFillToggle.IsOn)
         {
             SettingsHelper.SetSetting("GenAutoFill", "true");
+            trueCount++;
         }
         else
         {
             SettingsHelper.SetSetting("GenAutoFill", "false");
+            trueCount--;
         }
         UpdateText();
     }
@@ -106,10 +99,12 @@ public sealed partial class Privacy : Page
         if (DisablWebMessFillToggle.IsOn)
         {
             SettingsHelper.SetSetting("WebMess", "true");
+            trueCount++;
         }
         else
         {
             SettingsHelper.SetSetting("WebMess", "false");
+            trueCount--;
         }
         UpdateText();
     }
@@ -127,10 +122,12 @@ public sealed partial class Privacy : Page
     {
         if (PasswordWebMessFillToggle.IsOn)
         {
+            trueCount++;
             SettingsHelper.SetSetting("PassSave", "true");
         }
         else
         {
+            trueCount--;
             SettingsHelper.SetSetting("PassSave", "false");
         }
         UpdateText();
