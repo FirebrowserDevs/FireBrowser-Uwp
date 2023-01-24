@@ -57,10 +57,7 @@
                 <ColumnDefinition Width="40" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Grid
-                x:Name="Sidebar"
-                Grid.Column="0"
-                Margin="0,8,0,0">
+            <Grid x:Name="Sidebar" Grid.Column="0">
                 <StackPanel>
                     <Button
                         Click="SidebarButton_Click"
@@ -209,6 +206,7 @@
             <muxc:TabView
                 x:Name="Tabs"
                 Grid.Column="1"
+                Margin="0,-8,0,0"
                 VerticalAlignment="Stretch"
                 x:FieldModifier="public"
                 AddTabButtonClick="Tabs_AddTabButtonClick"

@@ -31,7 +31,7 @@ public sealed partial class General : Page
         if (selection == "Bing") SetEngine("Bing", "https://www.bing.com?q=");
         if (selection == "DuckDuckGo") SetEngine("DuckDuckGo","https://www.duckduckgo.com?q=");
         if (selection == "Ecosia") SetEngine("Ecosia", "https://www.ecosia.org/search?q=");
-        if (selection == "Google") SetEngine("Google", "https://www.google.com/?q=");
+        if (selection == "Google") SetEngine("Google", "https://www.google.com/search?q=");
         if (selection == "Startpage") SetEngine("Startpage", "https://www.startpage.com/search?q=");
         if (selection == "Qwant") SetEngine("Qwant", "https://www.qwant.com/?q=");
         if (selection == "Qwant Lite") SetEngine("Qwant Lite", "https://lite.qwant.com/?q=");
