@@ -41,7 +41,7 @@
                         <Paragraph>Pinguin2001</Paragraph>
                         <Paragraph>Note: This list is in alphabetical order</Paragraph>
                         <Paragraph>
-                            Chat with us on<Hyperlink NavigateUri="Bluebird:https://discord.com/invite/CWGHdGVFFV">Discord</Hyperlink>
+                            Chat with us on<Hyperlink NavigateUri="bluebird:https://discord.com/invite/CWGHdGVFFV">Discord</Hyperlink>
                             to get latest information and support</Paragraph>
                     </RichTextBlock>
                 </svsettctrl:SettingsBlockControl.ExpandableContent>
@@ -54,13 +54,19 @@
                     <RichTextBlock>
                         <Paragraph>
                             <Hyperlink NavigateUri="bluebird:https://github.com/microsoft/microsoft-ui-xaml">Microsoft.UI.Xaml</Hyperlink>
-                            (MIT Licence)</Paragraph>
+                            (MIT licence)</Paragraph>
                         <Paragraph>
                             <Hyperlink NavigateUri="bluebird:https://github.com/JamesNK/Newtonsoft.Json">Newtonsoft.Json</Hyperlink>
-                            (MIT Licence)</Paragraph>
+                            (MIT licence)</Paragraph>
+                        <Paragraph>
+                            <Hyperlink NavigateUri="bluebird:https://github.com/Pinguin2001/simplyread-enhanced">simplyread-enhanced</Hyperlink>
+                            (AGPL-3.0 license)</Paragraph>
                         <Paragraph>
                             <Hyperlink NavigateUri="bluebird:https://github.com/gus33000/SVSettingsControl">SVSettingsControl</Hyperlink>
-                            (MIT Licence)</Paragraph>
+                            (MIT licence)</Paragraph>
+                        <Paragraph>
+                            <Hyperlink NavigateUri="bluebird:https://github.com/publicsuffix/list">The Public Suffix List</Hyperlink>
+                            (MPL-2.0 license)</Paragraph>
                         <Paragraph>Many thanks to everyone who is distributing these libraries for free!</Paragraph>
                     </RichTextBlock>
                 </svsettctrl:SettingsBlockControl.ExpandableContent>

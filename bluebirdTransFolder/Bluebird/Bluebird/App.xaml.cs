@@ -70,7 +70,7 @@ sealed partial class App : Application
     {
         ProtocolActivatedEventArgs eventArgs = args as ProtocolActivatedEventArgs;
         string URI = eventArgs.Uri.ToString();
-        if (URI.Contains("Bluebird:")) launchurl = eventArgs.Uri.AbsolutePath;
+        if (URI.Contains("bluebird:")) launchurl = eventArgs.Uri.AbsolutePath;
         else { launchurl = URI; }
         if (args.Kind == ActivationKind.Protocol)
         {
