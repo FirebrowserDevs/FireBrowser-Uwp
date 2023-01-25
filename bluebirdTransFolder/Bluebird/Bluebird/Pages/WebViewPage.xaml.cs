@@ -18,6 +18,7 @@ using Windows.Services.Maps;
 using Windows.UI.Xaml.Documents;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml.Shapes;
+using Bluebird.Shared;
 
 namespace Bluebird.Pages;
 
@@ -54,6 +55,7 @@ public sealed partial class WebViewPage : Page
         sender.CoreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
         sender.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
         sender.CoreWebView2.DocumentTitleChanged += CoreWebView2_DocumentTitleChanged;
+        sender.CoreWebView2.FaviconChanged += CoreWebView2_FaviconChanged;
         // Apply WebView2 settings
         
         ApplyWebView2Settings();
@@ -95,8 +97,13 @@ public sealed partial class WebViewPage : Page
     private void CoreWebView2_NavigationCompleted(CoreWebView2 sender, CoreWebView2NavigationCompletedEventArgs args)
     {
         MainPageContent.LoadingRing.IsActive = false;
-        MainPageContent.SelectedTab.IconSource = FaviconHelper.GetFavicon(sender.Source);
     }
+
+    private void CoreWebView2_FaviconChanged(CoreWebView2 sender, object args)
+    {
+        MainPageContent.SelectedTab.IconSource = IconHelper.ConvFavURLToIconSource(sender.FaviconUri);
+    }
+
     private void CoreWebView2_NewWindowRequested(CoreWebView2 sender, CoreWebView2NewWindowRequestedEventArgs args)
     {
         launchurl = args.Uri;

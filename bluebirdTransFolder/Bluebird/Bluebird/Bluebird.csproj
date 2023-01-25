@@ -138,7 +138,7 @@
     <Compile Include="Controls\SVSettingsControl\SettingsDisplayControl.xaml.cs">
       <DependentUpon>SettingsDisplayControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Core\FaviconHelper.cs" />
+    <Compile Include="Core\IconHelper.cs" />
     <Compile Include="Core\FavoritesHelper.cs" />
     <Compile Include="Core\FileHelper.cs" />
     <Compile Include="Core\Globals.cs" />
