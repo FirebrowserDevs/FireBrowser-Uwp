@@ -70,19 +70,19 @@ public sealed partial class WebViewPage : Page
         {
             WebViewControl.CoreWebView2.Settings.IsScriptEnabled = false;
         }
-        if (SettingsHelper.GetSetting("SwipeNav") is "true")
+        if (SettingsHelper.GetSetting("DisableSwipeNav") is "true")
         {
             WebViewControl.CoreWebView2.Settings.IsSwipeNavigationEnabled = false;
         }
-        if (SettingsHelper.GetSetting("GenAutoFill") is "true")
+        if (SettingsHelper.GetSetting("DisableGenAutoFill") is "true")
         {
             WebViewControl.CoreWebView2.Settings.IsGeneralAutofillEnabled = false;
         }
-        if (SettingsHelper.GetSetting("WebMess") is "true")
+        if (SettingsHelper.GetSetting("DisableWebMess") is "true")
         {
             WebViewControl.CoreWebView2.Settings.IsWebMessageEnabled = false;
         }
-        if (SettingsHelper.GetSetting("PassSave") is "true")
+        if (SettingsHelper.GetSetting("DisablePassSave") is "true")
         {
             WebViewControl.CoreWebView2.Settings.IsPasswordAutosaveEnabled = false;
         }

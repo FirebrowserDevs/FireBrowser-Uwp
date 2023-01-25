@@ -39,7 +39,7 @@ public sealed partial class Privacy : Page
 
     private void DisableGenaralAutoFillToggle_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
     {
-        string selection = SettingsHelper.GetSetting("GenAutoFill");
+        string selection = SettingsHelper.GetSetting("DisableGenAutoFill");
         if (selection == "true")
         {
             DisableGenaralAutoFillToggle.IsOn = true;
@@ -63,12 +63,12 @@ public sealed partial class Privacy : Page
     {
         if (DisableGenaralAutoFillToggle.IsOn)
         {
-            SettingsHelper.SetSetting("GenAutoFill", "true");
+            SettingsHelper.SetSetting("DisableGenAutoFill", "true");
             trueCount++;
         }
         else
         {
-            SettingsHelper.SetSetting("GenAutoFill", "false");
+            SettingsHelper.SetSetting("DisableGenAutoFill", "false");
             trueCount--;
         }
         UpdateText();
@@ -76,7 +76,7 @@ public sealed partial class Privacy : Page
 
     private void DisablWebMessFillToggle_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
     {
-        string selection = SettingsHelper.GetSetting("WebMess");
+        string selection = SettingsHelper.GetSetting("DisableWebMess");
         if (selection == "true")
         {
             DisablWebMessFillToggle.IsOn = true;
@@ -87,12 +87,12 @@ public sealed partial class Privacy : Page
     {
         if (DisablWebMessFillToggle.IsOn)
         {
-            SettingsHelper.SetSetting("WebMess", "true");
+            SettingsHelper.SetSetting("DisableWebMess", "true");
             trueCount++;
         }
         else
         {
-            SettingsHelper.SetSetting("WebMess", "false");
+            SettingsHelper.SetSetting("DisableWebMess", "false");
             trueCount--;
         }
         UpdateText();
@@ -100,7 +100,7 @@ public sealed partial class Privacy : Page
 
     private void PasswordWebMessFillToggle_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
     {
-        string selection = SettingsHelper.GetSetting("PassSave");
+        string selection = SettingsHelper.GetSetting("DisablePassSave");
         if (selection == "true")
         {
             PasswordWebMessFillToggle.IsOn = true;
@@ -112,12 +112,12 @@ public sealed partial class Privacy : Page
         if (PasswordWebMessFillToggle.IsOn)
         {
             trueCount++;
-            SettingsHelper.SetSetting("PassSave", "true");
+            SettingsHelper.SetSetting("DisablePassSave", "true");
         }
         else
         {
             trueCount--;
-            SettingsHelper.SetSetting("PassSave", "false");
+            SettingsHelper.SetSetting("DisablePassSave", "false");
         }
         UpdateText();
     }
