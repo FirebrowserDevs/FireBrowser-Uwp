@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.IO;
 using Windows.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Bluebird.Shared;
 
 namespace Bluebird.Pages.SettingPages;
 
@@ -92,10 +93,10 @@ public sealed partial class General : Page
                 UpdateToggleState(updatedState);
                 break;
             case StartupTaskState.DisabledByUser when enable:
-                await new MessageDialog("Unable to change state of startup task via the application - enable via Startup tab on Task Manager (Ctrl+Shift+Esc)").ShowAsync();
+                await UI.ShowDialog("Error", "Unable to change state of startup task via the application - enable via Startup tab on Task Manager (Ctrl+Shift+Esc)");
                 break;
             default:
-                await new MessageDialog("Unable to change state of startup task").ShowAsync();
+                await UI.ShowDialog("Error", "Unable to change state of startup task");
                 break;
         }
     }

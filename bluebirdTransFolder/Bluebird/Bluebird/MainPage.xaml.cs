@@ -112,7 +112,7 @@ public sealed partial class MainPage : Page
         }
         catch
         {
-            
+            await UI.ShowDialog("Error", "This action is not supported on this page");
         }
     }
 
