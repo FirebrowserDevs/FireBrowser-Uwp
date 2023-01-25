@@ -4,6 +4,11 @@ using System;
 using Windows.ApplicationModel;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Imaging;
+using System.Net.Http;
+using System.IO;
+using Windows.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 namespace Bluebird.Pages.SettingPages;
 
@@ -13,6 +18,7 @@ public sealed partial class General : Page
     {
         this.InitializeComponent();
         id();
+
     }
 
     private async void id()
@@ -97,5 +103,79 @@ public sealed partial class General : Page
     private async void AutoStart_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
     {
         await ToggleLaunchOnStartup(AutoStart.IsChecked ?? false);
+    }
+
+    #region UpdateFrame
+    private void ShowFrame()
+    {
+        FrameUpdate.Height = 300;
+        FrameUpdate.Visibility = Windows.UI.Xaml.Visibility.Visible;
+        Inameb.Text = "Close Add";
+    }
+
+    private void HideFrame()
+    {
+        FrameUpdate.Height = 1;
+        FrameUpdate.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+        Inameb.Text = "Add Profile";
+    }
+
+    #endregion
+
+    private void Addprf_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+    {
+        if (FrameUpdate.Content != null)
+        {
+            IDisposable disposableContent = FrameUpdate.Content as IDisposable;
+            if (disposableContent != null)
+            {
+                disposableContent.Dispose();
+            }
+            FrameUpdate.Content = null;
+            HideFrame();
+        }
+        else
+        {
+            ShowFrame();
+            FrameUpdate.Navigate(typeof(AddProfile));
+        }
+
+    }
+
+    private DispatcherTimer _timer;
+    private int _progressValue;
+
+    private void Syncprf_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+    {
+        iscon.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+        Progr.Visibility = Windows.UI.Xaml.Visibility.Visible;
+        Progr.IsActive = true;
+        Text.Text = "Syncing Profile";
+        prg.Visibility = Windows.UI.Xaml.Visibility.Visible;
+        _timer = new DispatcherTimer();
+        _timer.Interval = TimeSpan.FromMilliseconds(100);
+        _timer.Tick += Timer_Tick;
+        _timer.Start();
+    }
+
+    private void Timer_Tick(object sender, object e)
+    {
+        _progressValue++;
+        prg.Value = _progressValue;
+        if (_progressValue >= 100)
+        {
+            iscon.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            Progr.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            Progr.IsActive = false;
+            Text.Text = "Sync Profile";
+            prg.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            _timer.Stop();
+            prg.Value = 0;
+            _progressValue = 0;
+        }
+    }
+    private void SettingsBlockControl_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+    {
+
     }
 }
