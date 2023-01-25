@@ -98,6 +98,26 @@ sealed partial class App : Application
                 Core.Globals.MainPageContent.CreateWebTab();
             }
         }
+        else
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame == null)
+            {
+                rootFrame = new Frame();
+                Window.Current.Content = rootFrame;
+            }
+
+
+            string payload = "BlueBirdStartup";
+            if (args.Kind == ActivationKind.StartupTask)
+            {
+                var startupArgs = args as StartupTaskActivatedEventArgs;
+                payload = ActivationKind.StartupTask.ToString();
+            }
+
+            rootFrame.Navigate(typeof(MainPage), payload);
+            Window.Current.Activate();
+        }
     }
 
     /// <summary>

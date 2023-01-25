@@ -29,5 +29,13 @@
                 <x:String>Yahoo!</x:String>
             </ComboBox>
         </svsettctrl:SettingsBlockControl>
+        <svsettctrl:SettingsBlockControl Title="BleuBird Auto Start" Description="This Will Enable Auto Start On Login">
+            <svsettctrl:SettingsBlockControl.Icon>
+                <SymbolIcon Symbol="PostUpdate" />
+            </svsettctrl:SettingsBlockControl.Icon>
+            <CheckBox x:Name="AutoStart" Click="AutoStart_Click">
+                
+            </CheckBox>
+        </svsettctrl:SettingsBlockControl>
     </StackPanel>
 </Page>
