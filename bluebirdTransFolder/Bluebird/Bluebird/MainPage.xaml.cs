@@ -90,6 +90,9 @@ public sealed partial class MainPage : Page
                     string url = TabWebView.CoreWebView2.Source;
                     TabWebView.CoreWebView2.Navigate("https://translate.google.com/translate?hl&u=" + url);
                     break;
+                case "Share":
+                    SystemHelper.ShowShareUIURL(TabWebView.CoreWebView2.DocumentTitle, TabWebView.CoreWebView2.Source);
+                    break;
                 case "AddFavoriteFlyout":
                     FavoriteTitle.Text = TabWebView.CoreWebView2.DocumentTitle;
                     FavoriteUrl.Text = TabWebView.CoreWebView2.Source;

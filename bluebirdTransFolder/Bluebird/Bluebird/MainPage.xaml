@@ -108,6 +108,12 @@
                     <Button
                         Click="SidebarButton_Click"
                         Style="{StaticResource SidebarButton}"
+                        Tag="Share">
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE72D;" />
+                    </Button>
+                    <Button
+                        Click="SidebarButton_Click"
+                        Style="{StaticResource SidebarButton}"
                         Tag="AddFavoriteFlyout">
                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE734;" />
                         <Button.Flyout>
