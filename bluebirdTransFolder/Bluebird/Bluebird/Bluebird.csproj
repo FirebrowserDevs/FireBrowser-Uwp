@@ -162,6 +162,9 @@
     <Compile Include="Pages\NewTabPage.xaml.cs">
       <DependentUpon>NewTabPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\SettingPages\AddProfile.xaml.cs">
+      <DependentUpon>AddProfile.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\SettingPages\Data.xaml.cs">
       <DependentUpon>Data.xaml</DependentUpon>
     </Compile>
@@ -188,6 +191,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\DefaultUser\default.png" />
     <Content Include="Assets\FileIcons\document.png" />
     <Content Include="Assets\FileIcons\link.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
@@ -277,6 +281,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\NewTabPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingPages\AddProfile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
