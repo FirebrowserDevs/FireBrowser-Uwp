@@ -9,6 +9,10 @@
     >
 
     <StackPanel>
-        <TextBlock Text="Add Profile Name"/>
+        <TextBlock Margin="10,0,0,0" Text="Profile Name Here"/>
+        <TextBox Margin="10,3,10,0" x:Name="ProfileUs" PlaceholderText="Enter You New Profile Name Here"/>
+        <Button x:Name="SavePrf" Margin="10,3,0,0" Click="SavePrf_Click">
+            Save New Profile
+        </Button>
     </StackPanel>
 </Page>

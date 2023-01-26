@@ -10,6 +10,7 @@ using System.IO;
 using Windows.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Bluebird.Shared;
+using Windows.Storage;
 
 namespace Bluebird.Pages.SettingPages;
 
@@ -19,9 +20,20 @@ public sealed partial class General : Page
     {
         this.InitializeComponent();
         id();
-
+        ReadFileContent();
     }
 
+    private async void ReadFileContent()
+    {
+        // Get the file
+        StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync("Profile.txt", CreationCollisionOption.OpenIfExists);
+
+        // Read the file's contents
+        string fileContent = await FileIO.ReadTextAsync(file);
+
+        // Split the file's contents into lines
+        string[] lines = fileContent.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+    }
     private async void id()
     {
         var startup = await StartupTask.GetAsync("BlueBirdStartUp");
@@ -109,7 +121,7 @@ public sealed partial class General : Page
     #region UpdateFrame
     private void ShowFrame()
     {
-        FrameUpdate.Height = 300;
+        FrameUpdate.Height = 200;
         FrameUpdate.Visibility = Windows.UI.Xaml.Visibility.Visible;
         Inameb.Text = "Close Add";
     }
@@ -171,7 +183,6 @@ public sealed partial class General : Page
             Text.Text = "Sync Profile";
             prg.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             _timer.Stop();
-            prg.Value = 0;
             _progressValue = 0;
         }
     }

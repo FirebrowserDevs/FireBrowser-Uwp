@@ -12,11 +12,9 @@
     <ScrollViewer>
         <StackPanel>
             <StackPanel Height="135" VerticalAlignment="Center">
-                <StackPanel Width="110" HorizontalAlignment="Left">
-                    <PersonPicture Margin="3,12,0,0" HorizontalAlignment="Left"/>
-                    <TextBlock x:Name="BlBirdDf" Margin="15,2,0,0" VerticalAlignment="Center" HorizontalAlignment="Left">
-                        Default user
-                    </TextBlock>
+                <StackPanel Width="150" VerticalAlignment="Top" HorizontalAlignment="Left">
+                    <PersonPicture Margin="25,2,0,0" HorizontalAlignment="Left"/>
+                    <TextBlock Text="Default User" Margin="35,0,35,0"/>
                 </StackPanel>
                 <Button x:Name="Addprf" Margin="0,-120,10,0" HorizontalAlignment="Right" VerticalAlignment="Center" Click="Addprf_Click">
                     <StackPanel>
@@ -62,6 +60,9 @@
                 </svsettctrl:SettingsBlockControl.Icon>
                 <CheckBox x:Name="AutoStart" Click="AutoStart_Click"/>
             </svsettctrl:SettingsBlockControl>
+            <Frame Margin="0,10,0,0">
+                
+            </Frame>
         </StackPanel>
     </ScrollViewer>
 </Page>
