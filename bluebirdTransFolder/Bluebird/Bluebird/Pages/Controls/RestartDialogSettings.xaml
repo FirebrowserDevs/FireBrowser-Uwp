@@ -10,7 +10,7 @@
 
     <StackPanel>
         <svsettctrl:SettingsBlockControl x:Name="RestartDialog" Visibility="Visible" Margin="0,5,0,0" Title="Apply Settings Changes" Description="After Browser Restart Your Settings Will Apply">
-            <Button x:Name="RestartBtn">
+            <Button x:Name="RestartBtn" Click="RestartBtn_Click">
                 Restart to Apply Changes
             </Button>
         </svsettctrl:SettingsBlockControl>
