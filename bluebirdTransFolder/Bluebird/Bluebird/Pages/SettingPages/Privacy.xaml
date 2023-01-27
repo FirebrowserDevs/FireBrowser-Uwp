@@ -2,11 +2,11 @@
     x:Class="Bluebird.Pages.SettingPages.Privacy"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Bluebird.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Bluebird.Pages.SettingPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:svsettctrl="using:SVSettingsControl"
-    xmlns:RestartDialog="using:Bluebird.Pages.Controls"
     mc:Ignorable="d">
 
     <StackPanel>
@@ -21,7 +21,7 @@
                 Default
             </TextBlock>
         </svsettctrl:SettingsBlockControl>
-        <RestartDialog:RestartDialogSettings x:Name="Dialog" Visibility="Collapsed"/>
+        <controls:RestartDialogSettings x:Name="Dialog" Visibility="Collapsed" />
         <svsettctrl:SettingsBlockControl
             Title="Disable JavaScript"
             Margin="0,5,0,0"

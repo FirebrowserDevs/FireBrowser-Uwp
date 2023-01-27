@@ -1,5 +1,4 @@
 ﻿using Bluebird.Core;
-using Bluebird.Pages.Controls;
 using Windows.UI.Xaml.Controls;
 
 namespace Bluebird.Pages.SettingPages;
@@ -19,7 +18,6 @@ public sealed partial class Privacy : Page
         {
             DisableJavaScriptToggle.IsOn = true;
         }
-        
     }
 
     private void DisableJavaScriptToggle_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -63,7 +61,7 @@ public sealed partial class Privacy : Page
         };
     }
 
-    public async void UpdateDialogShow()
+    public void UpdateDialogShow()
     {
         if(changed == 1)
         {
