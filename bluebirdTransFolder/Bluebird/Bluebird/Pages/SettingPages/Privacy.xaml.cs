@@ -1,4 +1,5 @@
 ﻿using Bluebird.Core;
+using Bluebird.Pages.Controls;
 using Windows.UI.Xaml.Controls;
 
 namespace Bluebird.Pages.SettingPages;
@@ -26,14 +27,16 @@ public sealed partial class Privacy : Page
         if (DisableJavaScriptToggle.IsOn)
         {
             SettingsHelper.SetSetting("DisableJavaScript", "true");
+            changed++;
             trueCount++;
         }
         else
         {
             trueCount--;
+            changed--;
             SettingsHelper.SetSetting("DisableJavaScript", "false");
         }
-   
+        UpdateDialogShow();
         UpdateText();
     }
 
@@ -47,6 +50,7 @@ public sealed partial class Privacy : Page
     }
 
     int trueCount = 0;
+    int changed = 0;
     public async void UpdateText()
     {
         TextLevel.Text = trueCount switch
@@ -59,18 +63,33 @@ public sealed partial class Privacy : Page
         };
     }
 
+    public async void UpdateDialogShow()
+    {
+        if(changed == 1)
+        {
+            Dialog.Visibility = Windows.UI.Xaml.Visibility.Visible;
+        }
+        else if (changed < 1)
+        {
+            Dialog.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+        }
+    }
+
     private void DisableGenaralAutoFillToggle_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e)
     {
         if (DisableGenaralAutoFillToggle.IsOn)
         {
             SettingsHelper.SetSetting("DisableGenAutoFill", "true");
             trueCount++;
+            changed++;
         }
         else
         {
             SettingsHelper.SetSetting("DisableGenAutoFill", "false");
             trueCount--;
+            changed--;
         }
+        UpdateDialogShow();
         UpdateText();
     }
 
@@ -89,12 +108,15 @@ public sealed partial class Privacy : Page
         {
             SettingsHelper.SetSetting("DisableWebMess", "true");
             trueCount++;
+            changed++;
         }
         else
         {
             SettingsHelper.SetSetting("DisableWebMess", "false");
             trueCount--;
+            changed--;
         }
+        UpdateDialogShow();
         UpdateText();
     }
 
@@ -113,12 +135,15 @@ public sealed partial class Privacy : Page
         {
             trueCount++;
             SettingsHelper.SetSetting("DisablePassSave", "true");
+            changed++;
         }
         else
         {
             trueCount--;
             SettingsHelper.SetSetting("DisablePassSave", "false");
+            changed--;
         }
+        UpdateDialogShow();
         UpdateText();
     }
 

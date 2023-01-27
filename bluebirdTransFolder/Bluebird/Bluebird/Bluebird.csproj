@@ -153,6 +153,9 @@
     <Compile Include="Pages\CompactOverlayPage.xaml.cs">
       <DependentUpon>CompactOverlayPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Controls\RestartDialogSettings.xaml.cs">
+      <DependentUpon>RestartDialogSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\FavoritesPage.xaml.cs">
       <DependentUpon>FavoritesPage.xaml</DependentUpon>
     </Compile>
@@ -269,6 +272,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\CompactOverlayPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Controls\RestartDialogSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

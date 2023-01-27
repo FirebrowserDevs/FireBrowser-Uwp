@@ -6,6 +6,7 @@
     xmlns:local="using:Bluebird.Pages.SettingPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:svsettctrl="using:SVSettingsControl"
+    xmlns:RestartDialog="using:Bluebird.Pages.Controls"
     mc:Ignorable="d">
 
     <StackPanel>
@@ -20,6 +21,7 @@
                 Default
             </TextBlock>
         </svsettctrl:SettingsBlockControl>
+        <RestartDialog:RestartDialogSettings x:Name="Dialog" Visibility="Collapsed"/>
         <svsettctrl:SettingsBlockControl
             Title="Disable JavaScript"
             Margin="0,5,0,0"
