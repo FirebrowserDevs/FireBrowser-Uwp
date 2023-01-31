@@ -32,44 +32,44 @@ public sealed partial class WebViewPage : Page
     public WebViewPage()
     {
         this.InitializeComponent();
-        returnFileContent();
-    
+
+        WebViewControl.EnsureCoreWebView2Async();
+
         EnteredBackground += WebViewPage_EnteredBackground;
         ExitBackground += WebViewPage_ExitBackground;
     }
 
-    private async void returnFileContent()
-    {
-        try
-        {
-            // Try to get the file
-            StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync("ProfileCore.rash");
+    //private async void returnFileContent() disabled for now until it works better
+    //{
+     //   try
+       // {
+         //   // Try to get the file
+           // StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync("ProfileCore.rash");
             // Read the content of the file
-            string folderName = await FileIO.ReadTextAsync(file);
+            //string folderName = await FileIO.ReadTextAsync(file);
             // Try to get the folder with the name from the file
-            StorageFolder folder = await ApplicationData.Current.LocalFolder.GetFolderAsync(folderName);
+            //StorageFolder folder = await ApplicationData.Current.LocalFolder.GetFolderAsync(folderName);
 
-            CoreWebView2Environment webView2Environment = null;
+            //CoreWebView2Environment webView2Environment = null;
 
-            string installPath = folder.ToString();
+            //string installPath = folder.ToString();
 
-           CoreWebView2EnvironmentOptions options = new CoreWebView2EnvironmentOptions();
+//           CoreWebView2EnvironmentOptions options = new CoreWebView2EnvironmentOptions();
 
-            var env = await CoreWebView2Environment.CreateWithOptionsAsync("", installPath, options);
-  
-            await WebViewControl.EnsureCoreWebView2Async();
-        }
-        catch (FileNotFoundException)
-        {
+  //          var env = await CoreWebView2Environment.CreateWithOptionsAsync("", installPath, options);
+            
+    //    }
+      //  catch (FileNotFoundException)
+        //{
             // If an exception is thrown, the file does not exist
-            System.Diagnostics.Debug.WriteLine("File does not exist");
-        }
-        catch (IOException)
-        {
+          //  System.Diagnostics.Debug.WriteLine("File does not exist");
+        //}
+        //catch (IOException)
+       // {
             // If an exception is thrown, the folder does not exist
-            System.Diagnostics.Debug.WriteLine("Folder does not exist");
-        }
-    }
+         //   System.Diagnostics.Debug.WriteLine("Folder does not exist");
+       // }
+    //}
 
 
   

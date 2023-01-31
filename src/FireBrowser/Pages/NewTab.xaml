@@ -1,0 +1,74 @@
+﻿<Page
+    x:Class="FireBrowser.Pages.NewTab"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FireBrowser.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Height="Auto"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+     >
+    <Grid  x:Name="Grid" Background="{x:Bind local:NewTab.GetGridBackgroundAsync(ViewModel.BackgroundType), Mode=OneWay}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <!-- VisualState to be triggered when the
+                             window width is >=640 effective pixels. -->
+                        <AdaptiveTrigger MinWindowWidth="640" />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <!-- <Setter Target="Grid.Background" Value="Red"/> -->
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+                    
+        <!-- To-Do: Acrylic background, voice search, search suggestions -->
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" RowSpacing="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <AutoSuggestBox x:Name="NewTabSearchBox"
+                            x:Uid="SearchBar"
+                            Grid.Row="0"
+                            Height="40"                         
+                            BorderThickness="0,0,0,2"
+                            CornerRadius="0"
+                            BorderBrush="{ThemeResource SystemAltHighColor}"
+                            Background="Transparent"
+                            VerticalContentAlignment="Center"
+                            d:PlaceholderText="Type here to search"
+                            >
+                <AutoSuggestBox.Resources>
+                    <SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="{ThemeResource SystemAltHighColor}"/>
+                    <SolidColorBrush x:Key="TextControlButtonForeground" Color="{ThemeResource SystemAltHighColor}"/>
+                </AutoSuggestBox.Resources>
+            </AutoSuggestBox>
+            <StackPanel Grid.Row="1"
+                        Orientation="Horizontal" Spacing="4">
+                <Button CornerRadius="16" Background="Transparent" BorderThickness="1" BorderBrush="Red">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Image Source="/Assets/Logo.png" Width="16"></Image>
+                        <TextBlock Text="Suggestion 1"/>
+                    </StackPanel>
+                </Button>
+                <Button CornerRadius="16" Background="Transparent" BorderThickness="1" BorderBrush="Red">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Image Source="/Assets/Logo.png" Width="16"></Image>
+                        <TextBlock Text="Suggestion 1"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+    </Grid>
+</Page>
