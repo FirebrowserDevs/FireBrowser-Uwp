@@ -1,12 +1,15 @@
-﻿using System;
+﻿using FireBrowser.Core;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Web;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -14,6 +17,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using static FireBrowser.Core.UserData;
+using static FireBrowser.MainPage;
 
 namespace FireBrowser
 {
@@ -30,6 +35,103 @@ namespace FireBrowser
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+          
+            LoadSettings();
+        }
+
+        public enum AppLaunchType
+        {
+            LaunchBasic,
+            LaunchIncognito,
+            LaunchStartup,
+            FirstLaunch,
+            FilePDF,
+            FileHTML,
+            URIHttp,
+            URIFireBrowser,
+        }
+        public class AppLaunchPasser
+        {
+            public AppLaunchType LaunchType { get; set; }
+            public object LaunchData { get; set; }
+        }
+
+        public static string ReadButton { get; set; }
+        public static string AdblockBtn { get; set; }
+        public static string Downloads { get; set; }
+        public static string Translate { get; set; }
+        public static string Favorites { get; set; }
+        public static string Historybtn { get; set; }
+        public static string QrCode { get; set; }
+        private void LoadSettings()
+        {
+            SearchUrl = SettingsHelper.GetSetting("SearchUrl");
+             ReadButton = SettingsHelper.GetSetting("Readbutton");
+             AdblockBtn = SettingsHelper.GetSetting("AdBtn");
+             Downloads = SettingsHelper.GetSetting("DwBtn");
+             Translate = SettingsHelper.GetSetting("TransBtn");
+             Favorites = SettingsHelper.GetSetting("FavBtn");
+             Historybtn = SettingsHelper.GetSetting("HisBtn");
+             QrCode = SettingsHelper.GetSetting("QrBtn");
+        }
+
+
+        private void TryEnablePrelaunch()
+        {
+            Windows.ApplicationModel.Core.CoreApplication.EnablePrelaunch(true);
+        }
+
+        protected async override void OnActivated(IActivatedEventArgs args)
+        {
+            if (args.Kind == ActivationKind.Protocol)
+            {
+                ProtocolActivatedEventArgs eventArgs = args as ProtocolActivatedEventArgs;
+                Frame rootFrame = Window.Current.Content as Frame;
+
+                if (rootFrame == null)
+                {
+                    var startup = await StartupTask.GetAsync("FireBrowserStartUp");
+
+                    AppLaunchPasser passer = new()
+                    {
+                        LaunchData = eventArgs.Uri
+                    };
+                  
+
+                    rootFrame = new Frame();
+                    rootFrame.NavigationFailed += OnNavigationFailed;
+
+                    rootFrame.Navigate(typeof(MainPage), passer);
+
+                    Window.Current.Activate();
+                    Window.Current.Content = rootFrame;
+                }
+            }
+            else
+            {
+                Frame rootFrame = Window.Current.Content as Frame;
+                if (rootFrame == null)
+                {
+                    rootFrame = new Frame();
+                    Window.Current.Content = rootFrame;
+                }
+
+
+                string payload = string.Empty;
+                if (args.Kind == ActivationKind.StartupTask)
+                {
+                    var startupArgs = args as StartupTaskActivatedEventArgs;
+                    payload = ActivationKind.StartupTask.ToString();
+                }
+                AppLaunchPasser passer = new()
+                {
+                    LaunchType = AppLaunchType.LaunchStartup,
+                    LaunchData = payload
+                };
+
+                rootFrame.Navigate(typeof(MainPage), passer);
+                Window.Current.Activate();
+            }
         }
 
         /// <summary>
@@ -39,6 +141,18 @@ namespace FireBrowser
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            // CoreApplication.EnablePrelaunch was introduced in Windows 10 version 1607
+            bool canEnablePrelaunch = Windows.Foundation.Metadata.ApiInformation.IsMethodPresent("Windows.ApplicationModel.Core.CoreApplication", "EnablePrelaunch");
+
+            // NOTE: Only enable this code if you are targeting a version of Windows 10 prior to version 1607,
+            // and you want to opt out of prelaunch.
+            // In Windows 10 version 1511, all UWP apps were candidates for prelaunch.
+            // Starting in Windows 10 version 1607, the app must opt in to be prelaunched.
+            //if ( !canEnablePrelaunch && e.PrelaunchActivated == true)
+            //{
+            //    return;
+            //}
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
@@ -61,6 +175,17 @@ namespace FireBrowser
 
             if (e.PrelaunchActivated == false)
             {
+                // On Windows 10 version 1607 or later, this code signals that this app wants to participate in prelaunch
+                if (canEnablePrelaunch)
+                {
+                    TryEnablePrelaunch();
+                }
+
+                // TODO: This is not a prelaunch activation. Perform operations which
+                // assume that the user explicitly launched the app such as updating
+                // the online presence of the user on a social network, updating a
+                // what's new feed, etc.
+
                 if (rootFrame.Content == null)
                 {
                     // When the navigation stack isn't restored navigate to the first page,

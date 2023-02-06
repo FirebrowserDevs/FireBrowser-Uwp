@@ -2,7 +2,7 @@
      x:Class="FireBrowser.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:airplane="using:FireBrowser.Controls"
+    xmlns:firebrowser="using:FireBrowser.Controls"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:controls="using:FireBrowser.Controls"
     xmlns:core="using:FireBrowser.Core"
@@ -36,13 +36,13 @@
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                         <Button
                             x:Uid="FlyoutEdit"
-                          
+                          Click="ActionClicked"
                             Style="{StaticResource QuietButtonStyle}"
                             Tag="Edit">
-                            <FontIcon Glyph="&#xF3DE;" />
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE72D;" />
                         </Button>
-                        <Button
-                           
+                        <Button    
+                            Click="ActionClicked"
                             Style="{StaticResource QuietButtonStyle}"
                             Tag="Settings">
                             <muxc:AnimatedIcon>
@@ -133,7 +133,7 @@
                 <Grid>
                     <Button
                         HorizontalAlignment="Left"
-                        Content="{airplane:FluentIcon Glyph=&#xF4A4;}"
+                        Content="{firebrowser:FluentIcon Glyph=&#xF4A4;}"
                         Style="{ThemeResource QuietButtonStyle}">
                         <Button.Flyout>
                             <Flyout>
@@ -303,7 +303,7 @@
         </Flyout>
     </Page.Resources>
     <Grid>
-        <airplane:CustomTabView
+        <firebrowser:CustomTabView
             x:Name="Tabs"
             Padding="0"
             VerticalAlignment="Stretch"
@@ -311,6 +311,9 @@
             CacheMode="BitmapCache"
             CanDragTabs="True"
             CanReorderTabs="True"
+            AddTabButtonClick="Tabs_AddTabButtonClick"
+            SelectionChanged="Tabs_SelectionChanged"
+            TabCloseRequested="Tabs_TabCloseRequested"
             Mode="Classic"
             >
             <muxc:TabView.TabStripHeader>
@@ -330,7 +333,7 @@
                 <!--  Needs the Background="Transparent" or else it won't work  -->
                 <Border x:Name="CustomDragRegion" Background="Transparent" />
             </muxc:TabView.TabStripFooter>
-        </airplane:CustomTabView>
+        </firebrowser:CustomTabView>
         <ContentDialog
             x:Name="CloseWithOpenTabsDialog"
             x:Uid="CloseWithOpenTabsDialog"
@@ -352,7 +355,9 @@
             <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                 <Button
                     Style="{StaticResource QuietButtonStyle}"
-                    Tag="Back">
+                    Tag="Back"
+                    Click="ToolbarButtonClick"
+                    >
                     <muxc:AnimatedIcon>
                         <animatedvisuals:AnimatedBackVisualSource />
                         <muxc:AnimatedIcon.FallbackIconSource>
@@ -362,7 +367,9 @@
                 </Button>
                 <Button
                     Style="{StaticResource QuietButtonStyle}"
-                    Tag="Forward">
+                    Tag="Forward"
+                    Click="ToolbarButtonClick"
+                    >
                     <muxc:AnimatedIcon>
                         <animatedvisuals:AnimatedBackVisualSource />
                         <muxc:AnimatedIcon.FallbackIconSource>
@@ -373,16 +380,19 @@
                         </muxc:AnimatedIcon.RenderTransform>
                     </muxc:AnimatedIcon>
                 </Button>
-                <Button
-                  
+                <Button                 
                     Style="{StaticResource QuietButtonStyle}"
-                    Tag="Refresh" />
+                    Tag="Refresh"
+                    Click="ToolbarButtonClick"
+                    Content="{x:Bind ViewModel.LoadingState, Mode=OneWay}">
+                </Button>
                 <Button
                     
                     Style="{StaticResource QuietButtonStyle}"
                     Tag="Home"
+                    Click="ToolbarButtonClick"
                    >
-                    <FontIcon Glyph="&#xF481;" />
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE80F;" />
                 </Button>
             </StackPanel>
 
@@ -394,13 +404,19 @@
                 <AutoSuggestBox
                     x:Name="UrlBox"
                     x:Uid="SearchBar"
+                    QuerySubmitted="UrlBox_QuerySubmitted"
                     Padding="32,5,5,0"
+                    KeyDown="UrlBox_KeyDown"
+                    TextChanged="UrlBox_TextChanged"
+                    Style="{ThemeResource PortalBarStyle}"
+                    Text="{x:Bind ViewModel.CurrentAddress, Mode=OneWay}"                 
                   />
                 <Button
                     x:Name="SecurityButtonToDoName"
                     Flyout="{x:Bind SecurityFlyout}"
                     Foreground="{ThemeResource TextFillColorDisabledBrush}"
                     Style="{StaticResource QuietButtonStyle}">
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE72E;" />
                 </Button>
 
 
@@ -442,23 +458,33 @@
             </Grid>
             <StackPanel Grid.Column="2" Orientation="Horizontal">
                 <Button
-                  
+                    x:Name="ReadBtn"
+                    Click="ToolbarButtonClick"
                     Style="{ThemeResource QuietButtonStyle}"
                     Tag="ReadingMode">
-                    <FontIcon Glyph="&#xE178;" />
+                    <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE736;" />
                 </Button>
                 <Button
-                   
+                    x:Name="AdBlock"
+                   Click="ToolbarButtonClick"
+                    Style="{ThemeResource QuietButtonStyle}"
+                    Tag="AdBlock">
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEA18;" />
+                </Button>
+                <Button
+                    x:Name="DownBtn"
+                    Click="ToolbarButtonClick"
                     Style="{ThemeResource QuietButtonStyle}"
                     Tag="DownloadFlyout">
-                    <FontIcon Glyph="&#xF151;" />
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE896;" />
                 </Button>
-                <Button
-                   
+                <Button 
+                    x:Name="BtnTrans"
+                    Click="ToolbarButtonClick"
                     Style="{ThemeResource QuietButtonStyle}"
                     Tag="Translate"
-                >
-                    <FontIcon Glyph="&#xF834;" />
+                    >
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE87E;" />
                 </Button>
                 <muxc:ItemsRepeater>
                     <DataTemplate>
@@ -472,14 +498,11 @@
                         </Button>
                     </DataTemplate>
                 </muxc:ItemsRepeater>
-                <Button Style="{ThemeResource QuietButtonStyle}">
-
-                </Button>
                 <Button
                     x:Name="FavoritesButton"                 
                     Style="{ThemeResource QuietButtonStyle}"
                     Tag="Favorites">
-                    <FontIcon Glyph="&#xEB9F;" />
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE734;" />
                     <Button.Flyout>
                         <Flyout>
                             <StackPanel
@@ -505,30 +528,24 @@
                 </Button>
                 <Button
                     x:Name="History"
-                   
                     Flyout="{x:Bind HistoryFlyoutMenu}"
                     IsEnabled="True"
                     Style="{ThemeResource QuietButtonStyle}">
-                    <FontIcon Glyph="&#xF47F;" />
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE81C;" />
                 </Button>
                 <Button
-                  
+                    x:Name="QrBtn"
+                  Click="ToolbarButtonClick"
                     Flyout="{x:Bind QRCodeFlyout}"
                     Style="{ThemeResource QuietButtonStyle}"
                     Tag="QRCode">
-                    <FontIcon Glyph="&#xF635;" />
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xED14;" />
                 </Button>
-                <Button
-                    x:Uid="ToolbarUserButton"
-                  
-                    Flyout="{x:Bind UserFlyout}"
-                    Style="{ThemeResource QuietButtonStyle}"
-                  >
-                </Button>
+              
                 <Button
                     x:Uid="ToolbarMoreButton"
                     VerticalAlignment="Center"
-                    Content="{airplane:FluentIcon Glyph=&#xE825;}"
+                    Content="{firebrowser:FluentIcon Glyph=&#xE825;}"
                     Flyout="{StaticResource MoreFlyout}"
                     Style="{ThemeResource QuietButtonStyle}" />
             </StackPanel>

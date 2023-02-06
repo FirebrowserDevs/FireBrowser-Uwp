@@ -5,6 +5,15 @@ using Windows.UI.Xaml.Navigation;
 using Windows.UI.Core;
 using Windows.System;
 using Windows.UI.Xaml.Controls;
+using FireBrowser.Core;
+using System;
+using FireBrowser.Pages.SettingsPages;
+using Windows.UI.Xaml;
+using static FireBrowser.MainPage;
+using Windows.Storage;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 
 //Szablon elementu Pusta strona jest udokumentowany na stronie https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -22,6 +31,178 @@ namespace FireBrowser.Pages
             this.InitializeComponent();
 
         }
+        private double NavViewCompactModeThresholdWidth { get { return NavView.CompactModeThresholdWidth; } }
 
+        private readonly List<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)>
+        {
+            ("SettingsHome", typeof(SettingsPages.Home)),
+            ("SettingsLook", typeof(SettingsPages.Look)),
+            ("Privacy", typeof(SettingsPages.Privacy)),
+            ("NewTab", typeof(SettingsPages.NewTab)),
+            ("Design", typeof(SettingsPages.Design)),
+            ("Accessibility", typeof(SettingsPages.Accessibility)),
+            ("About", typeof(SettingsPages.About))
+        };
+        private void NavView_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            // Add handler for ContentFrame navigation.
+            ContentFrame.Navigated += On_Navigated;
+
+            // NavView doesn't load any page by default, so load home page.
+            NavView.SelectedItem = NavView.MenuItems[0];
+            // If navigation occurs on SelectionChanged, this isn't needed.
+            // Because we use ItemInvoked to navigate, we need to call Navigate
+            // here to load the home page.
+            NavView_Navigate("SettingsHome", new Windows.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
+
+            // Listen to the window directly so the app responds
+            // to accelerator keys regardless of which element has focus.
+            Window.Current.CoreWindow.Dispatcher.AcceleratorKeyActivated +=
+                CoreDispatcher_AcceleratorKeyActivated;
+
+            Window.Current.CoreWindow.PointerPressed += CoreWindow_PointerPressed;
+
+            SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
+        }
+
+        private void NavView_ItemInvoked(muxc.NavigationView sender, muxc.NavigationViewItemInvokedEventArgs args)
+        {
+            if (args.IsSettingsInvoked == true)
+            {
+                NavView_Navigate("settings", args.RecommendedNavigationTransitionInfo);
+            }
+            else if (args.InvokedItemContainer != null)
+            {
+                var navItemTag = args.InvokedItemContainer.Tag.ToString();
+                NavView_Navigate(navItemTag, args.RecommendedNavigationTransitionInfo);
+            }
+        }
+
+        MainPage mainFrame = (MainPage)((Frame)Window.Current.Content).Content;
+
+        private Passer passer;
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        {         
+            passer = e.Parameter as Passer;
+            passer.Tab.IconSource = new muxc.FontIconSource()
+            {
+                Glyph = "\uF6AA"
+                
+
+            };
+        }
+
+
+
+        private async void NavView_SelectionChanged(muxc.NavigationView sender,
+                                             muxc.NavigationViewSelectionChangedEventArgs args)
+        {
+
+            if (args.IsSettingsSelected == true)
+            {
+                NavView_Navigate("settings", args.RecommendedNavigationTransitionInfo);
+            }
+            else if (args.SelectedItemContainer != null)
+            {
+                var navItemTag = args.SelectedItemContainer.Tag.ToString();
+                NavView_Navigate(navItemTag, args.RecommendedNavigationTransitionInfo);
+            }
+        }
+
+        private void NavView_Navigate(
+            string navItemTag,
+            Windows.UI.Xaml.Media.Animation.NavigationTransitionInfo transitionInfo)
+        {
+            Type _page = null;
+            if (navItemTag == "settings")
+            {
+                _page = typeof(SettingsPage);
+            }
+            else
+            {
+                var item = _pages.FirstOrDefault(p => p.Tag.Equals(navItemTag));
+                _page = item.Page;
+            }
+            // Get the page type before navigation so you can prevent duplicate
+            // entries in the backstack.
+            var preNavPageType = ContentFrame.CurrentSourcePageType;
+
+            // Only navigate if the selected page isn't currently loaded.
+            if (!(_page is null) && !Type.Equals(preNavPageType, _page))
+            {
+                ContentFrame.Navigate(_page, passer, transitionInfo);
+            }
+        }
+
+        private void NavView_BackRequested(muxc.NavigationView sender,
+                                           muxc.NavigationViewBackRequestedEventArgs args)
+        {
+            TryGoBack();
+        }
+
+        private void CoreDispatcher_AcceleratorKeyActivated(CoreDispatcher sender, AcceleratorKeyEventArgs e)
+        {
+            // When Alt+Left are pressed navigate back
+            if (e.EventType == CoreAcceleratorKeyEventType.SystemKeyDown
+                && e.VirtualKey == VirtualKey.Left
+                && e.KeyStatus.IsMenuKeyDown == true
+                && !e.Handled)
+            {
+                e.Handled = TryGoBack();
+            }
+        }
+
+        private void System_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if (!e.Handled)
+            {
+                e.Handled = TryGoBack();
+            }
+        }
+
+        private void CoreWindow_PointerPressed(CoreWindow sender, PointerEventArgs e)
+        {
+            // Handle mouse back button.
+            if (e.CurrentPoint.Properties.IsXButton1Pressed)
+            {
+                e.Handled = TryGoBack();
+            }
+        }
+
+        private bool TryGoBack()
+        {
+            if (!ContentFrame.CanGoBack)
+                return false;
+
+            // Don't go back if the nav pane is overlayed.
+            if (NavView.IsPaneOpen &&
+                (NavView.DisplayMode == muxc.NavigationViewDisplayMode.Compact ||
+                 NavView.DisplayMode == muxc.NavigationViewDisplayMode.Minimal))
+                return false;
+
+            ContentFrame.GoBack();
+            return true;
+        }
+
+        private void On_Navigated(object sender, NavigationEventArgs e)
+        {
+            NavView.IsBackEnabled = ContentFrame.CanGoBack;
+
+            if (ContentFrame.SourcePageType != null)
+            {
+                var item = _pages.FirstOrDefault(p => p.Page == e.SourcePageType);
+
+
+                NavView.Header =
+                    ((muxc.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
+                passer.Tab.Header = ((muxc.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
+            }
+        }
+
+
+        private void ContentFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
+        {
+            throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
+        }
     }
 }

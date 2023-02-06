@@ -153,6 +153,7 @@ namespace FireBrowser.Controls.BrowserEngines
 
         static Edge()
         {
+            
             var user32module = PInvoke.GetModuleHandle("user32.dll");
             if (user32module == default)
             {
@@ -202,6 +203,7 @@ namespace FireBrowser.Controls.BrowserEngines
         readonly ElementInteractionTracker ElementInteractionTracker;
         public Edge()
         {
+       
             // MODIFIED
             ElementInteractionTracker = new(this);
             ElementInteractionTracker.ValuesChangedEvent += ElementInteractionTracker_ValuesChanged;
@@ -209,6 +211,7 @@ namespace FireBrowser.Controls.BrowserEngines
             // END MODIFIED
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
+          
             ManipulationStarted += Edge_ManipulationStarted;
 
             // Turn off DirectManipulation for this element so that all scrolling and gesture
@@ -227,6 +230,8 @@ namespace FireBrowser.Controls.BrowserEngines
 
             // Set the background for WebView2 to ensure it will be visible to hit-testing.
             Background = new SolidColorBrush(Colors.Transparent);
+
+           
         }
 
         private void Edge_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)

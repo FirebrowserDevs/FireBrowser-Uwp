@@ -138,6 +138,9 @@
     <Compile Include="Core\ColorConverter.cs" />
     <Compile Include="Core\Icons.cs" />
     <Compile Include="Core\Settings.cs" />
+    <Compile Include="Core\SettingsHelper.cs" />
+    <Compile Include="Core\SystemHelper.cs" />
+    <Compile Include="Core\UI.cs" />
     <Compile Include="Core\UserData.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -147,6 +150,27 @@
     </Compile>
     <Compile Include="Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsPages\About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsPages\Accessibility.xaml.cs">
+      <DependentUpon>Accessibility.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsPages\Design.xaml.cs">
+      <DependentUpon>Design.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsPages\Home.xaml.cs">
+      <DependentUpon>Home.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsPages\Look.xaml.cs">
+      <DependentUpon>Look.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsPages\NewTab.xaml.cs">
+      <DependentUpon>NewTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsPages\Privacy.xaml.cs">
+      <DependentUpon>Privacy.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\WebContent.xaml.cs">
       <DependentUpon>WebContent.xaml</DependentUpon>
@@ -160,11 +184,21 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Icons\About.svg" />
+    <Content Include="Assets\Icons\Accessibility.svg" />
+    <Content Include="Assets\Icons\Home.svg" />
+    <Content Include="Assets\Icons\More.svg" />
+    <Content Include="Assets\Icons\Privacy.svg" />
+    <Content Include="Assets\Icons\Style.svg" />
+    <Content Include="Assets\Icons\Tabs.svg" />
+    <Content Include="Assets\JS\firebrowser-removead.js" />
+    <Content Include="Assets\JS\simplyread-firebrowser-min.js" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
+    <Content Include="Assets\logo.png" />
     <Content Include="Assets\SmallTile.scale-100.png" />
     <Content Include="Assets\SmallTile.scale-125.png" />
     <Content Include="Assets\SmallTile.scale-150.png" />
@@ -247,6 +281,34 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\SettingsPages\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsPages\Accessibility.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsPages\Design.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsPages\Home.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsPages\Look.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsPages\NewTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsPages\Privacy.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\WebContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -305,12 +367,21 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
     </PackageReference>
+    <PackageReference Include="QRCoder">
+      <Version>1.4.3</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Icons\FluentIcons.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Icons\FluentIcons-Filled.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Assets\Strings\en-US\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\tldlist.txt" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
