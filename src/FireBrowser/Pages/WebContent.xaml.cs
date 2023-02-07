@@ -1,4 +1,5 @@
 ﻿using FireBrowser.Controls;
+using FireBrowser.Controls.BrowserEngines;
 using FireBrowser.Core;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
@@ -39,12 +40,8 @@ namespace FireBrowser.Pages
             this.InitializeComponent();
         }
 
-        private async void Base_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (Base.Children.Count == 0) Base.Children.Add(WebViewElement);
 
-          
-        }
+      
 
         private bool fullScreen = false;
 
@@ -94,7 +91,7 @@ namespace FireBrowser.Pages
             s.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = true;
             s.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = false;
             s.CoreWebView2.Settings.IsStatusBarEnabled = true;
-            s.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = false;
+            s.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = true;
             s.CoreWebView2.Settings.IsPasswordAutosaveEnabled = true;
             s.CoreWebView2.Settings.AreDefaultContextMenusEnabled = true;
             s.CoreWebView2.ContextMenuRequested += async (se, args) =>
@@ -218,6 +215,14 @@ namespace FireBrowser.Pages
                    
                     break;
             }
+        }
+
+        private async void Grid_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            if (Grid.Children.Count == 0) Grid.Children.Add(WebViewElement);
+
+            await WebViewElement.EnsureCoreWebView2Async();
         }
     }
 }

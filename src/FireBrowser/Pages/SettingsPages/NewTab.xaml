@@ -33,50 +33,50 @@
         </labs:SettingsCard>
         <labs:SettingsExpander VerticalAlignment="Top" Margin="0,75,0,0">
             <labs:SettingsExpander.Header>
-                Toolbar icons - **ALPHA FUNCTION BUGS MAY APPLY**
+                Toolbar icons
             </labs:SettingsExpander.Header>
             <labs:SettingsExpander.HeaderIcon>
                 <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE70F;"/>
             </labs:SettingsExpander.HeaderIcon>
             <labs:SettingsExpander.Items>
                 <labs:SettingsCard>
-                    <CheckBox Checked="Easy_Checked" x:Name="Easy" Content="Show EasyRead Icon"/>
+                    <ToggleSwitch x:Name="Read" Toggled="Read_Toggled"/>
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE736;"/>
                     </labs:SettingsCard.HeaderIcon>
                 </labs:SettingsCard>
                 <labs:SettingsCard>
-                    <CheckBox Checked="Adbl_Checked" x:Name="Adbl" Content="Show Adblock Icon"/>
+                    <ToggleSwitch x:Name="Adbl" Toggled="Adbl_Toggled"/>
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xEA18;"/>
                     </labs:SettingsCard.HeaderIcon>
                 </labs:SettingsCard>
                 <labs:SettingsCard>
-                    <CheckBox Checked="Dwbl_Checked" x:Name="Dwbl" Content="Show Downloads Icon"/>
+                    <ToggleSwitch x:Name="Dwbl" Toggled="Dwbl_Toggled"/>
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE896;"/>
                     </labs:SettingsCard.HeaderIcon>
                 </labs:SettingsCard>
                 <labs:SettingsCard>
-                    <CheckBox Checked="Trbl_Checked" x:Name="Trbl" Content="Show Translate Icon"/>
+                    <ToggleSwitch x:Name="Trbl" Toggled="Trbl_Toggled"/>
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE87E;"/>
                     </labs:SettingsCard.HeaderIcon>
                 </labs:SettingsCard>
                 <labs:SettingsCard>
-                    <CheckBox Checked="Frbl_Checked" x:Name="Frbl" Content="Show Favorites Icon"/>
+                    <ToggleSwitch x:Name="Frbl" Toggled="Frbl_Toggled"/>
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE734;"/>
                     </labs:SettingsCard.HeaderIcon>
                 </labs:SettingsCard>
                 <labs:SettingsCard>
-                    <CheckBox Checked="Hsbl_Checked" x:Name="Hsbl" Content="Show History Icon"/>
+                    <ToggleSwitch x:Name="Hsbl" Toggled="Hsbl_Toggled"/>
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE81C;"/>
                     </labs:SettingsCard.HeaderIcon>
                 </labs:SettingsCard>
                 <labs:SettingsCard>
-                    <CheckBox Checked="Qrbl_Checked" x:Name="Qrbl" Content="Show QrCode Icon"/>
+                    <ToggleSwitch x:Name="Qrbl" Toggled="Qrbl_Toggled"/>
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xED14;"/>
                     </labs:SettingsCard.HeaderIcon>

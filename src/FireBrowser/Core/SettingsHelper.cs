@@ -17,5 +17,6 @@ namespace FireBrowser.Core
         {
             localSettings.Values[Setting] = SettingValue;
         }
+
     }
 }

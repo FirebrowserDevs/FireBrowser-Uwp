@@ -82,7 +82,6 @@
             </muxc:CommandBarFlyout.SecondaryCommands>
         </muxc:CommandBarFlyout>
     </Page.Resources>
-    <Grid x:Name="Base" Loaded="Base_Loaded">
-       
+    <Grid x:Name="Grid" Loaded="Grid_Loaded">
     </Grid>
 </Page>

@@ -5,12 +5,15 @@
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
-  IgnorableNamespaces="uap mp">
+  xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4"
+  xmlns:iot2="http://schemas.microsoft.com/appx/manifest/iot/windows10/2" 
+  xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
+  IgnorableNamespaces="uap mp iot2 desktop4 uap3">
 
   <Identity
     Name="104430cd-bfef-4f87-bd53-11ebfdade5e8"
     Publisher="CN=Jarno Beerten"
-    Version="1.0.0.0" />
+    Version="1.0.2.0" />
 
   <mp:PhoneIdentity PhoneProductId="104430cd-bfef-4f87-bd53-11ebfdade5e8" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
@@ -31,7 +34,9 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="FireBrowser.App">
+      EntryPoint="FireBrowser.App"
+	  desktop4:SupportsMultipleInstances="true"
+      iot2:SupportsMultipleInstances="true">
       <uap:VisualElements
         DisplayName="FireBrowser"
         Square150x150Logo="Assets\Square150x150Logo.png"
@@ -40,6 +45,7 @@
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:LockScreen BadgeLogo="Assets\BadgeLogo.png" Notification="badgeAndTileText"/>
       </uap:VisualElements>
 		<Extensions>
 			<uap5:Extension
@@ -54,20 +60,34 @@
 			<uap:Extension Category="windows.protocol">
 				<uap:Protocol Name="http">
 					<uap:Logo>Assets\logo.png</uap:Logo>
+					<uap:DisplayName>FireBrowser</uap:DisplayName>
 				</uap:Protocol>
 			</uap:Extension>
 			<uap:Extension Category="windows.protocol">
 				<uap:Protocol Name="https">
 					<uap:Logo>Assets\logo.png</uap:Logo>
+					<uap:DisplayName>FireBrowser</uap:DisplayName>
 				</uap:Protocol>
 			</uap:Extension>
+			<uap:Extension Category="windows.protocol">
+				<uap:Protocol Name="firebrowser">
+					<uap:DisplayName>FireBrowser internal protocol</uap:DisplayName>
+					<uap:Logo>Assets\logo.png</uap:Logo>
+				</uap:Protocol>
+			</uap:Extension>
+			<Extension Category="windows.backgroundTasks" EntryPoint="BackgroundMedia" >
+				<BackgroundTasks>
+					<Task Type="audio"/>
+				</BackgroundTasks>
+			</Extension>
 		</Extensions>
     </Application>
   </Applications>
 
   <Capabilities>
-    <Capability Name="internetClient" />
     <Capability Name="privateNetworkClientServer"/>
+	<uap3:Capability Name="backgroundMediaPlayback"/>
     <uap:Capability Name="userAccountInformation"/>
+    <Capability Name="internetClientServer"/>
   </Capabilities>
 </Package>

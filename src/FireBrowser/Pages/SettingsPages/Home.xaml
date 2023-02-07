@@ -10,7 +10,9 @@
     >
 
     <Grid>
-       
+        <Button Click="Button_Click">
+            Reset
+        </Button>
       
    
     </Grid>

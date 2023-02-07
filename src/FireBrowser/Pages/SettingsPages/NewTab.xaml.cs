@@ -69,71 +69,71 @@ namespace FireBrowser.Pages.SettingsPages
         }
    
 
-        public string ReadButton1 = SettingsHelper.GetSetting("Readbutton");
-        public string AdblockBtn1 = SettingsHelper.GetSetting("AdBtn");
-        public string Downloads1 = SettingsHelper.GetSetting("DwBtn");
-        public string Translate1 = SettingsHelper.GetSetting("TransBtn");
-        public string Favorites1 = SettingsHelper.GetSetting("FavBtn");
-        public string Historybtn1 = SettingsHelper.GetSetting("HisBtn");
-        public string QrCode1 = SettingsHelper.GetSetting("QrBtn");
+        public string ReadButton = SettingsHelper.GetSetting("Readbutton");
+        public string AdblockBtn = SettingsHelper.GetSetting("AdBtn");
+        public string Downloads = SettingsHelper.GetSetting("DwBtn");
+        public string Translate = SettingsHelper.GetSetting("TransBtn");
+        public string Favorites = SettingsHelper.GetSetting("FavBtn");
+        public string Historybtn = SettingsHelper.GetSetting("HisBtn");
+        public string QrCode = SettingsHelper.GetSetting("QrBtn");
         
         public void ButtonVisible()
         {
-            if (ReadButton1 == "True")
+            if (ReadButton == "True")
             {
-                Easy.IsChecked = true;
+                Read.IsOn = true;
             }
-            else if(ReadButton1 == "0")
+            else if(ReadButton == "0")
             {
-                Easy.IsChecked = false;
+                Read.IsOn = false;
             }
-            if (AdblockBtn1 == "True")
+            if (AdblockBtn == "True")
             {
-                Adbl.IsChecked = true;
+                Adbl.IsOn = true;
             }
-            else if (AdblockBtn1 == "0")
+            else if (AdblockBtn == "0")
             {
-               Adbl.IsChecked= false;
+               Adbl.IsOn = false;
             }
-            if (Downloads1 == "True")
+            if (Downloads == "True")
             {
-               Dwbl.IsChecked = true;
+               Dwbl.IsOn = true;
             }
-            else if (Downloads1 == "0")
+            else if (Downloads == "0")
             {
-               Dwbl.IsChecked = false;
+               Dwbl.IsOn = false;
             }
-            if (Translate1 == "True")
+            if (Translate == "True")
             {
-              Trbl.IsChecked= true;
+                 Trbl.IsOn = true;
             }
-            else if (Translate1 == "0")
+            else if (Translate == "0")
             {
-                Trbl.IsChecked= false;
+                Trbl.IsOn = false;
             }
-            if (Favorites1 == "True")
+            if (Favorites == "True")
             {
-              Frbl.IsChecked = true;
+              Frbl.IsOn = true;
             }
-            else if (Favorites1 == "0")
+            else if (Favorites == "0")
             {
-                Frbl.IsChecked= false;
+                Frbl.IsOn= false;
             }
-            if (Historybtn1 == "True")
+            if (Historybtn == "True")
             {
-               Hsbl.IsChecked = true;
+               Hsbl.IsOn = true;
             }
-            else if (Historybtn1 == "0")
+            else if (Historybtn == "0")
             {
-                Hsbl.IsChecked = false;
+                Hsbl.IsOn = false;
             }
-            if (QrCode1 == "True")
+            if (QrCode == "True")
             {
-                Qrbl.IsChecked = true;
+                Qrbl.IsOn = true;
             }
-            else if (QrCode1 == "0")
+            else if (QrCode == "0")
             {
-                Qrbl.IsChecked = false;
+                Qrbl.IsOn = false;
             }
         }
         private void Page_Loading(FrameworkElement sender, object args)
@@ -141,88 +141,89 @@ namespace FireBrowser.Pages.SettingsPages
            
         }
 
-        private void Qrbl_Checked(object sender, RoutedEventArgs e)
+        private void Read_Toggled(object sender, RoutedEventArgs e)
         {
-            if (Qrbl.IsChecked == true)
+            if (Read.IsOn == true)
             {
-                SettingsHelper.SetSetting("QrBtn", "True");
+                SettingsHelper.SetSetting("Readbutton", "True");
             }
-            else
+            else if (Read.IsOn == false)
             {
-                SettingsHelper.SetSetting("QrBtn", "0");
+
+                SettingsHelper.SetSetting("Readbutton", "0");
             }
         }
 
-        private void Hsbl_Checked(object sender, RoutedEventArgs e)
+        private void Adbl_Toggled(object sender, RoutedEventArgs e)
         {
-            if (Hsbl.IsChecked == true)
-            {
-                SettingsHelper.SetSetting("HisBtn", "True");
-            }
-            else
-            {
-             
-                SettingsHelper.SetSetting("HisBtn", "0");
-            }
-        }
-
-        private void Frbl_Checked(object sender, RoutedEventArgs e)
-        {
-            if (Frbl.IsChecked == true)
-            {
-                SettingsHelper.SetSetting("FavBtn", "True");
-            }
-            else
-            {
-                SettingsHelper.SetSetting("FavBtn", "0");
-            }
-        }
-
-        private void Trbl_Checked(object sender, RoutedEventArgs e)
-        {
-            if (Trbl.IsChecked == true)
-            {
-                SettingsHelper.SetSetting("TransBtn", "True");
-            }
-            else
-            {
-                SettingsHelper.SetSetting("TransBtn", "0");
-            }
-        }
-
-        private void Dwbl_Checked(object sender, RoutedEventArgs e)
-        {
-            if (Dwbl.IsChecked == true)
-            {
-                SettingsHelper.SetSetting("DwBtn", "True");
-            }
-            else
-            {
-                SettingsHelper.SetSetting("DwBtn", "0");
-            }
-        }
-
-        private void Adbl_Checked(object sender, RoutedEventArgs e)
-        {
-            if (Adbl.IsChecked == true)
+            if (Adbl.IsOn == true)
             {
                 SettingsHelper.SetSetting("AdBtn", "True");
             }
-            else
+            else if (Adbl.IsOn == false)
             {
                 SettingsHelper.SetSetting("AdBtn", "0");
             }
         }
 
-        private void Easy_Checked(object sender, RoutedEventArgs e)
+        private void Dwbl_Toggled(object sender, RoutedEventArgs e)
         {
-            if(Easy.IsChecked == true)
+            if (Dwbl.IsOn == true)
             {
-                SettingsHelper.SetSetting("Readbutton", "True");
+                SettingsHelper.SetSetting("DwBtn", "True");
             }
-            else
+            else if (Dwbl.IsOn == false)
             {
-                SettingsHelper.SetSetting("Readbutton", "0");
+                SettingsHelper.SetSetting("DwBtn", "0");
+            }
+        }
+
+        private void Trbl_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (Trbl.IsOn == true)
+            {
+                SettingsHelper.SetSetting("TransBtn", "True");
+            }
+            else if (Trbl.IsOn == false)
+            {
+                SettingsHelper.SetSetting("TransBtn", "0");
+            }
+        }
+
+        private void Frbl_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (Frbl.IsOn == true)
+            {
+                SettingsHelper.SetSetting("FavBtn", "True");
+            }
+            else if (Frbl.IsOn == false)
+            {
+                SettingsHelper.SetSetting("FavBtn", "0");
+            }
+        }
+
+        private void Hsbl_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (Hsbl.IsOn == true)
+            {
+                SettingsHelper.SetSetting("HisBtn", "True");
+            }
+            else if (Hsbl.IsOn == false)
+            {
+
+                SettingsHelper.SetSetting("HisBtn", "0");
+            }
+        }
+
+        private void Qrbl_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (Qrbl.IsOn == true)
+            {
+                SettingsHelper.SetSetting("QrBtn", "True");
+            }
+            else if (Qrbl.IsOn == false)
+            {
+                SettingsHelper.SetSetting("QrBtn", "0");
             }
         }
     }

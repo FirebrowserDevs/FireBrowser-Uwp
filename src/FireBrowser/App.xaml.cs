@@ -1,4 +1,5 @@
 ﻿using FireBrowser.Core;
+using FireBrowser.Launch;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,7 +36,6 @@ namespace FireBrowser
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-          
             LoadSettings();
         }
 
@@ -56,25 +56,11 @@ namespace FireBrowser
             public object LaunchData { get; set; }
         }
 
-        public static string ReadButton { get; set; }
-        public static string AdblockBtn { get; set; }
-        public static string Downloads { get; set; }
-        public static string Translate { get; set; }
-        public static string Favorites { get; set; }
-        public static string Historybtn { get; set; }
-        public static string QrCode { get; set; }
+        public static string IsFirstLaunch { get; set; }
         private void LoadSettings()
         {
             SearchUrl = SettingsHelper.GetSetting("SearchUrl");
-             ReadButton = SettingsHelper.GetSetting("Readbutton");
-             AdblockBtn = SettingsHelper.GetSetting("AdBtn");
-             Downloads = SettingsHelper.GetSetting("DwBtn");
-             Translate = SettingsHelper.GetSetting("TransBtn");
-             Favorites = SettingsHelper.GetSetting("FavBtn");
-             Historybtn = SettingsHelper.GetSetting("HisBtn");
-             QrCode = SettingsHelper.GetSetting("QrBtn");
         }
-
 
         private void TryEnablePrelaunch()
         {
@@ -109,28 +95,30 @@ namespace FireBrowser
             }
             else
             {
-                Frame rootFrame = Window.Current.Content as Frame;
-                if (rootFrame == null)
-                {
-                    rootFrame = new Frame();
-                    Window.Current.Content = rootFrame;
-                }
+               
+                    Frame rootFrame = Window.Current.Content as Frame;
+                    if (rootFrame == null)
+                    {
+                        rootFrame = new Frame();
+                        Window.Current.Content = rootFrame;
+                    }
 
 
-                string payload = string.Empty;
-                if (args.Kind == ActivationKind.StartupTask)
-                {
-                    var startupArgs = args as StartupTaskActivatedEventArgs;
-                    payload = ActivationKind.StartupTask.ToString();
-                }
-                AppLaunchPasser passer = new()
-                {
-                    LaunchType = AppLaunchType.LaunchStartup,
-                    LaunchData = payload
-                };
+                    string payload = string.Empty;
+                    if (args.Kind == ActivationKind.StartupTask)
+                    {
+                        var startupArgs = args as StartupTaskActivatedEventArgs;
+                        payload = ActivationKind.StartupTask.ToString();
+                    }
+                    AppLaunchPasser passer = new()
+                    {
+                        LaunchType = AppLaunchType.LaunchStartup,
+                        LaunchData = payload
+                    };
 
-                rootFrame.Navigate(typeof(MainPage), passer);
-                Window.Current.Activate();
+                    rootFrame.Navigate(typeof(MainPage), passer);
+                    Window.Current.Activate();
+                      
             }
         }
 
@@ -175,26 +163,38 @@ namespace FireBrowser
 
             if (e.PrelaunchActivated == false)
             {
+               
                 // On Windows 10 version 1607 or later, this code signals that this app wants to participate in prelaunch
                 if (canEnablePrelaunch)
                 {
                     TryEnablePrelaunch();
                 }
 
-                // TODO: This is not a prelaunch activation. Perform operations which
-                // assume that the user explicitly launched the app such as updating
-                // the online presence of the user on a social network, updating a
-                // what's new feed, etc.
-
-                if (rootFrame.Content == null)
+                IsFirstLaunch = SettingsHelper.GetSetting("LaunchFirst");
+                if (IsFirstLaunch == "1")
                 {
-                    // When the navigation stack isn't restored navigate to the first page,
-                    // configuring the new page by passing required information as a navigation
-                    // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                   
+                    if (rootFrame == null)
+                    {
+                        rootFrame = new Frame();
+                        Window.Current.Content = rootFrame;
+                    }
+
+                    rootFrame.Navigate(typeof(Setup));
+                    Window.Current.Activate();
                 }
-                // Ensure the current window is active
-                Window.Current.Activate();
+                else
+                {
+                    if (rootFrame.Content == null)
+                    {
+                        // When the navigation stack isn't restored navigate to the first page,
+                        // configuring the new page by passing required information as a navigation
+                        // parameter
+                        rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    }
+                    // Ensure the current window is active
+                    Window.Current.Activate();
+                }
             }
         }
 

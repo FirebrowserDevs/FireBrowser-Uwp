@@ -30,6 +30,7 @@ using static FireBrowser.App;
 using System.Reflection.PortableExecutable;
 using QRCoder;
 using FireBrowser.Core;
+using Windows.System;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -76,6 +77,13 @@ namespace FireBrowser
 
         public void ButtonVisible()
         {
+            ReadButton = SettingsHelper.GetSetting("Readbutton");
+            AdblockBtn = SettingsHelper.GetSetting("AdBtn");
+            Downloads = SettingsHelper.GetSetting("DwBtn");
+            Translate = SettingsHelper.GetSetting("TransBtn");
+            Favorites = SettingsHelper.GetSetting("FavBtn");
+            Historybtn = SettingsHelper.GetSetting("HisBtn");
+            QrCode = SettingsHelper.GetSetting("QrBtn");
             if (ReadButton == "True")
             {
                 ReadBtn.Visibility = Visibility.Visible;
@@ -133,6 +141,14 @@ namespace FireBrowser
                 QrBtn.Visibility = Visibility.Collapsed;
             }
         }
+
+        public static string ReadButton { get; set; }
+        public static string AdblockBtn { get; set; }
+        public static string Downloads { get; set; }
+        public static string Translate { get; set; }
+        public static string Favorites { get; set; }
+        public static string Historybtn { get; set; }
+        public static string QrCode { get; set; }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -356,79 +372,57 @@ namespace FireBrowser
             }
         }
 
-        public void FireBrowserCommands()
+        private void NavigateToUrl(string uri)
         {
-
-            if (UrlBox.Text.Contains("settings"))
-            {
-                TabContent.Navigate(typeof(SettingsPage), CreatePasser(),
-                                    new DrillInNavigationTransitionInfo());
-            }
-        }
-
-        private void NavigateToUrl(Uri uri)
-        {
-            // If there is no wv2 process running inside a tab, create a new one.
-            // Else the current wv2 process will be used to navigate to the url
-            if (TabContent.Content is WebContent)
+            if (TabWebView != null)
             {
                 (TabContent.Content as WebContent).WebViewElement.CoreWebView2.Navigate(uri.ToString());
             }
             else
             {
+                launchurl = uri;
                 TabContent.Navigate(typeof(WebContent), CreatePasser(uri));
             }
         }
         private async void UrlBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            if (UrlBox.Text.Contains("firebrowser://"))
+            string input = UrlBox.Text;
+            string inputtype = Core.UrlHelper.GetInputType(input);
+            if (input.Contains("firebrowser://"))
             {
-                FireBrowserCommands();
+                if (input == "firebrowser://newtab")
+                {
+                    Tabs.TabItems.Add(CreateNewTab());
+                    SelectNewTab();
+                }
+                if (input == "firebrowser://settings")
+                {
+                    TabContent.Navigate(typeof(SettingsPage), CreatePasser(),
+                                   new DrillInNavigationTransitionInfo());
+                }
+            }
+            else if (inputtype == "url")
+            {
+                NavigateToUrl(input.Trim());
+            }
+            else if (inputtype == "urlNOProtocol")
+            {
+                NavigateToUrl("https://" + input.Trim());
             }
             else
             {
-                // Top level domain list
-                StorageFolder appInstalledFolder = Package.Current.InstalledLocation;
-                StorageFolder assets = await appInstalledFolder.GetFolderAsync("Assets");
-                var file = await assets.GetFileAsync("tldlist.txt");
-                string filecontent = await FileIO.ReadTextAsync(file);
-                string[] knownDomains = JsonSerializer.Deserialize<string[]>(filecontent);
-
-                // If input does not contain a space and contains a valid tld it is a url
-                // else airplane will search for query with the selected search engine
-
-                int pos = UrlBox.Text.LastIndexOf(".") + 1;
-                string tld = UrlBox.Text.Substring(pos, UrlBox.Text.Length - pos);
-
-                if (UrlBox.Text.Contains(".") && knownDomains.Any(tld.Contains))
-                {
-                    if (UrlBox.Text.Contains("http://") || UrlBox.Text.Contains("https://"))
-                    {
-                        NavigateToUrl(new Uri(UrlBox.Text.Trim()));
-                    }
-                    else
-                    {
-                        UrlBox.Text = "https://" + UrlBox.Text;
-                        NavigateToUrl(new Uri(UrlBox.Text.Trim()));
-                    }
-                }
+                string searchurl;
+                if (SearchUrl == null) searchurl = "https://lite.qwant.com/?q=";
                 else
                 {
-                    string input = UrlBox.Text;
-                    string searchurl;
-                    if (SearchUrl == null) searchurl = "https://lite.qwant.com/?q=";
-                    else
-                    {
-                        searchurl = SearchUrl;
-                    }
-                    string query = searchurl + input;
-                    NavigateToUrl(new Uri(query));
+                    searchurl = SearchUrl;
                 }
-              
+                string query = searchurl + input;
+                NavigateToUrl(query);
             }
-         
         }
 
+        public static string launchurl { get; set; }
         public static string SearchUrl { get; set; }
 
         #region cangochecks
