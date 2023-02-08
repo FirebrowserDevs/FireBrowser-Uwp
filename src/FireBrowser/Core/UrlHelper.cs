@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 
-namespace FireBrowser.Core.Nav
+namespace FireBrowser.Core
 {
     public class UrlHelper
     {
         public static string GetInputType(string input)
-        {
+        {         
             string type;
             string tld = TLD.GetTLDfromURL(input);
             if (input.Contains("http://") || input.Contains("https://"))
@@ -24,5 +24,6 @@ namespace FireBrowser.Core.Nav
             return type;
         }
     }
-    
+
+
 }

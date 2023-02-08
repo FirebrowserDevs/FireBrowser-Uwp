@@ -60,6 +60,7 @@ namespace FireBrowser
         private void LoadSettings()
         {
             SearchUrl = SettingsHelper.GetSetting("SearchUrl");
+            TLD.LoadKnownDomains();
         }
 
         private void TryEnablePrelaunch()

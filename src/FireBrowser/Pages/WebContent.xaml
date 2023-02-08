@@ -6,13 +6,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    xmlns:airplane="using:FireBrowser.Controls"
+    xmlns:firebrowser="using:FireBrowser.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
         <muxc:CommandBarFlyout x:Name="Ctx">
-            <AppBarButton Click="ContextMenuItem_Click" x:Uid="ToDo" Tag="MenuBack" Icon="{airplane:FluentIcon Glyph=&#xF15C;}"/>
+            <AppBarButton Click="ContextMenuItem_Click" x:Uid="ToDo" Tag="MenuBack" Icon="{firebrowser:FluentIcon Glyph=&#xF15C;}"/>
             <AppBarButton Click="ContextMenuItem_Click" Tag="Forward">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xF182;"/>

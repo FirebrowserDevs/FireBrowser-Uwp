@@ -2,7 +2,7 @@
 using Windows.ApplicationModel;
 using Windows.Storage;
 
-namespace FireBrowser.Core.Nav
+namespace FireBrowser.Core
 {
     internal class TLD
     {

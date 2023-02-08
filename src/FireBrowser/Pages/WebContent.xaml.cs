@@ -22,7 +22,6 @@ namespace FireBrowser.Pages
     public sealed partial class WebContent : Page
     {
         public Controls.WebView WebViewElement = new();
-
         public WebContent()
         {
             this.InitializeComponent();
@@ -68,6 +67,7 @@ namespace FireBrowser.Pages
             param = e.Parameter as Passer;
             await WebViewElement.EnsureCoreWebView2Async();
             Controls.WebView s = WebViewElement;
+
             //the Param is the uri that the WebView should go to
             if (param?.Param != null)
             {

@@ -379,8 +379,8 @@ namespace FireBrowser
         }
         private async void UrlBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            string input = UrlBox.Text;
-            string inputtype = Core.Nav.UrlHelper.GetInputType(input);
+            string input = UrlBox.Text.ToString();
+            string inputtype = UrlHelper.GetInputType(input);
             if (input.Contains("firebrowser://"))
             {
                 if (input == "firebrowser://newtab")
@@ -391,7 +391,7 @@ namespace FireBrowser
                 if (input == "firebrowser://settings")
                 {
                     TabContent.Navigate(typeof(SettingsPage), CreatePasser(),
-                                   new DrillInNavigationTransitionInfo());
+                                       new DrillInNavigationTransitionInfo());
                 }
             }
             else if (inputtype == "url")

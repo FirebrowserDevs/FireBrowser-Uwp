@@ -146,9 +146,9 @@
     <Compile Include="Core\Settings.cs" />
     <Compile Include="Core\SettingsHelper.cs" />
     <Compile Include="Core\SystemHelper.cs" />
-    <Compile Include="Core\Nav\TLD.cs" />
+    <Compile Include="Core\TLD.cs" />
     <Compile Include="Core\UI.cs" />
-    <Compile Include="Core\Nav\UrlHelper.cs" />
+    <Compile Include="Core\UrlHelper.cs" />
     <Compile Include="Core\UserData.cs" />
     <Compile Include="Launch\Setup.xaml.cs">
       <DependentUpon>Setup.xaml</DependentUpon>
@@ -415,9 +415,6 @@
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Assets\Strings\en-US\Resources.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\DefaultData\DefaultSettings.json" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
