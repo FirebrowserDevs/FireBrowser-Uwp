@@ -4,6 +4,7 @@ using Microsoft.Web.WebView2.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reflection;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -74,7 +75,10 @@ namespace FireBrowser.Pages
                 WebViewElement.CoreWebView2.Navigate(param.Param.ToString());
             }
             //sender.Source = new(param.Param.ToString());
-
+            var userAgent = s?.CoreWebView2.Settings.UserAgent;
+            userAgent = userAgent.Substring(0, userAgent.IndexOf("Edg/"));
+            userAgent = userAgent.Replace("Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.46", "Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.46");
+            s.CoreWebView2.Settings.UserAgent = userAgent;
             //MESS
             s.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = true;
             s.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = false;
@@ -129,13 +133,14 @@ namespace FireBrowser.Pages
                 catch { }
             };
             s.CoreWebView2.NavigationStarting += (sender, args) => {
-               
+              
             };
+            string originalUserAgent = "";
             s.CoreWebView2.NavigationCompleted += (sender, args) =>
             {
                 if (!args.IsSuccess)
                 {
-
+                   
                 }
 
 
