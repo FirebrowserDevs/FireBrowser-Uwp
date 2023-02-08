@@ -30,7 +30,6 @@ using Windows.UI.Xaml.Hosting;
 using Windows.Graphics.Display;
 using Windows.System.Threading;
 using Windows.UI.Composition.Interactions;
-using FireBrowser.Core;
 using System;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml;

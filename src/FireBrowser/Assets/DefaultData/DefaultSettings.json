@@ -1,0 +1,120 @@
+﻿{
+  "UI": {
+    "Layout": "Classic",
+    "FlyoutLayout": "Normal",
+    "FloatingTabs": true,
+    "BaseTheme": "Auto",
+    "Theme": 0,
+    "ShowFavoritesBar": "NewTabOnly",
+    "ShowCloseAllDialog": true,
+    "ShowToolbarUserButton": true,
+    "ShowSetTabsAsideButton": true,
+    "ShowWindowActionButton": true,
+    "ShowTabPreviewOnHover": true,
+    "ShowZoomSlider": true
+  },
+  "SleepingTabs": {
+    "IsEnabled": true,
+    "PutTabsToSleepAfter": 900,
+    "Blocklist": []
+  },
+  "Other": {
+    "AskBeforeDownloading": false,
+    "DefaultZoomLevel": 100
+  },
+  "ToolbarPins": [
+    {
+      "Icon": "\u067A",
+      "ID": "Note",
+      "TextResource": "ToolbarNoteShortcut"
+    },
+    {
+      "Icon": "\uF710",
+      "ID": "Favorites",
+      "TextResource": "ToolbarFavoritesShortcut"
+    }
+  ],
+  "FlyoutPins": [
+    {
+      "Icon": "\uF751",
+      "ID": "NewTab",
+      "TextResource": "FlyoutNewTabShortcut"
+    },
+    {
+      "Icon": "\uEE6B",
+      "ID": "NewWindow",
+      "TextResource": "FlyoutNewWindowShortcut"
+    },
+    {
+      "Icon": "\uF753",
+      "ID": "Incognito",
+      "TextResource": "FlyoutIncognitoShortcut"
+    },
+    {
+      "Icon": "\uEAA6",
+      "ID": "Share",
+      "TextResource": "FlyoutShareShortcut"
+    },
+    {
+      "Icon": "\uF2DE",
+      "ID": "Timeline",
+      "TextResource": "FlyoutTimelineShortcut"
+    },
+    {
+      "Icon": "\uF8B8",
+      "ID": "DevTools",
+      "TextResource": "FlyoutDevToolsShortcut"
+    },
+    {
+      "Icon": "\uEE44",
+      "ID": "Focus",
+      "TextResource": "FlyoutFocusShortcut"
+    },
+    {
+      "Icon": "\uE9CC",
+      "ID": "Print",
+      "TextResource": "FlyoutPrintShortcut"
+    },
+    {
+      "Icon": "\uEA06",
+      "ID": "Find",
+      "TextResource": "FlyoutFindShortcut"
+    },
+    {
+      "Icon": "\uE86A",
+      "ID": "Note",
+      "TextResource": "FlyoutNoteShortcut"
+    },
+    {
+      "Icon": "\uE684",
+      "ID": "FullScreen",
+      "TextResource": "FlyoutFullscreenShortcut"
+    },
+    {
+      "Icon": "\uE733",
+      "ID": "ReadAloud",
+      "TextResource": "FlyoutReadAloudShortcut"
+    },
+    {
+      "Icon": "\uF680",
+      "ID": "Save",
+      "TextResource": "FlyoutSaveShortcut"
+    },
+    {
+      "Icon": "\uE97D",
+      "ID": "CompactOverlay",
+      "TextResource": "FlyoutCompactOverlayShortcut"
+    },
+    {
+      "Icon": "\uEB60",
+      "ID": "SplitBrowsing",
+      "TextResource": "FlyoutSplitBrowsingShortcut"
+    },
+    {
+      "Icon": "\uF457",
+      "_Icon": "To-Do: Change this icon",
+      "ID": "CanvasBrowsing",
+      "TextResource": "FlyoutCanvasBrowsingShortcut"
+    }
+  ]
+}

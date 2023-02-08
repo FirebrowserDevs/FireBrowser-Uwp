@@ -146,9 +146,9 @@
     <Compile Include="Core\Settings.cs" />
     <Compile Include="Core\SettingsHelper.cs" />
     <Compile Include="Core\SystemHelper.cs" />
-    <Compile Include="Core\TLD.cs" />
+    <Compile Include="Core\Nav\TLD.cs" />
     <Compile Include="Core\UI.cs" />
-    <Compile Include="Core\UrlHelper.cs" />
+    <Compile Include="Core\Nav\UrlHelper.cs" />
     <Compile Include="Core\UserData.cs" />
     <Compile Include="Launch\Setup.xaml.cs">
       <DependentUpon>Setup.xaml</DependentUpon>
@@ -186,6 +186,9 @@
     <Compile Include="Pages\SettingsPages\Privacy.xaml.cs">
       <DependentUpon>Privacy.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\SettingsPages\Restart\RestartDialog.xaml.cs">
+      <DependentUpon>RestartDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\WebContent.xaml.cs">
       <DependentUpon>WebContent.xaml</DependentUpon>
     </Compile>
@@ -217,6 +220,7 @@
     <Content Include="Assets\LargeTile.scale-150.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
+    <Content Include="Assets\Launch\firebrowser.mp4" />
     <Content Include="Assets\logo.png" />
     <Content Include="Assets\public_domains.txt" />
     <Content Include="Assets\SmallTile.scale-100.png" />
@@ -337,6 +341,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\SettingsPages\Restart\RestartDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\WebContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -407,6 +415,9 @@
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Assets\Strings\en-US\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\DefaultData\DefaultSettings.json" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

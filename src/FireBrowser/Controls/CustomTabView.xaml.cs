@@ -1,8 +1,4 @@
-﻿using FireBrowser.Controls;
-using FireBrowser.Core;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Controls;
 using Windows.UI.Xaml;
 

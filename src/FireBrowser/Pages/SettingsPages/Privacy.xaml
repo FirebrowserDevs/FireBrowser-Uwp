@@ -21,6 +21,7 @@
                 Default
             </TextBlock>
         </labs:SettingsCard>
+        <Frame x:Name="RestartFrame" Margin="0,5,0,0" Height="70" Visibility="Collapsed"/>
         <labs:SettingsCard Header="Disable Javascript" Description="This improves your privacy by blocking trackers but it can also break a lot sites" Margin="0,5,0,0">
             <labs:SettingsCard.HeaderIcon>
                 <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE943;" />

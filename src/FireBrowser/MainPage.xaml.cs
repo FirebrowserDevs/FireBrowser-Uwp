@@ -1,19 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Core;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.ViewManagement;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using FireBrowser.Controls;
 using Microsoft.UI.Xaml.Controls;
@@ -387,7 +380,7 @@ namespace FireBrowser
         private async void UrlBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             string input = UrlBox.Text;
-            string inputtype = Core.UrlHelper.GetInputType(input);
+            string inputtype = Core.Nav.UrlHelper.GetInputType(input);
             if (input.Contains("firebrowser://"))
             {
                 if (input == "firebrowser://newtab")

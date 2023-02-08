@@ -21,7 +21,7 @@
                 </labs:SettingsExpander.Header>
                 <labs:SettingsExpander.Items>
                     <labs:SettingsCard ContentAlignment="Left">
-                        <CheckBox x:Name="LaunchOnStartupToggle" Content="Airplane Auto-Start" Click="LaunchOnStartupToggle_Click"/>
+                        <CheckBox x:Name="LaunchOnStartupToggle" Content="FireBrowser Auto-Start" Click="LaunchOnStartupToggle_Click"/>
                     </labs:SettingsCard>
                 </labs:SettingsExpander.Items>
             </labs:SettingsExpander>

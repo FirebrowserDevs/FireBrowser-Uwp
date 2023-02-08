@@ -2,13 +2,13 @@
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.Storage;
-using static FireBrowser.Core.UserData;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace FireBrowser.Core
 {
     public class Settings
     {
+      
         public enum FavoritesBarVisibility
         {
             Always,
@@ -59,6 +59,7 @@ namespace FireBrowser.Core
             public bool ShowWindowActionButton { get; set; }
             public bool ShowTabPreviewOnHover { get; set; }
             public bool ShowZoomSlider { get; set; }
+            public List<UIPin> FlyoutPins { get; set; }
         }
         public class Sleepingtabs
         {

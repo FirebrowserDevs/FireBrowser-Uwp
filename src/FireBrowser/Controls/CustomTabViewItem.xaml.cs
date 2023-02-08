@@ -1,8 +1,4 @@
-﻿using FireBrowser.Core;
-using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Uwp.UI;
-using System;
-using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 using Windows.UI.Xaml;
 
 namespace FireBrowser.Controls

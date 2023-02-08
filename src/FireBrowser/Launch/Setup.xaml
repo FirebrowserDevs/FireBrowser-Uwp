@@ -8,9 +8,9 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     
-    <StackPanel Width="1200" Height="700">
-        <TextBlock x:Name="txt2" Width="500" Height="40" Margin="500,0,0,0" TextAlignment="Center" FontWeight="Bold" FontSize="24"><Run Text="Introduction"/></TextBlock>
-        <TextBlock x:Name="txt" Width="700" Height="150" Margin="500,0,0,0" TextAlignment="Center" TextLineBounds="Full" MaxLines="50" LineStackingStrategy="MaxHeight" TextWrapping="Wrap">
+    <StackPanel Margin="0,0,0,0" Width="1200" Height="700" VerticalAlignment="Center" HorizontalAlignment="Center" >
+        <TextBlock HorizontalAlignment="Center" x:Name="txt2" Width="500" Height="40" Margin="500,200,0,0" TextAlignment="Center" FontWeight="Bold" FontSize="24"><Run Text="Introduction"/></TextBlock>
+        <TextBlock HorizontalAlignment="Center" x:Name="txt" Width="700" Height="150" Margin="500,25,0,0" TextAlignment="Center" TextLineBounds="Full" MaxLines="50" LineStackingStrategy="MaxHeight" TextWrapping="Wrap">
             FireBrowser is a top-notch web browser that has all the features you need for an effortless and enjoyable browsing experience. 
             With FireBrowser, you can easily save your favorite websites to access them with just one click.
             The built-in favorites feature allows you to organize your frequently visited sites and save time. Moreover, 
@@ -19,7 +19,7 @@
             providing you with an uninterrupted browsing experience. Whether you want to watch a movie or just browse your favorite websites, 
             full-screen mode is perfect for both.
         </TextBlock>
-        <Button x:Name="btn" Width="75" Height="35" Margin="815,100,0,0" Click="Button_Click">
+        <Button x:Name="btn" Width="75" Height="35" Margin="815,50,0,0" Click="Button_Click">
              Next
         </Button>
         <MediaPlayerElement 
@@ -28,7 +28,7 @@
             Height="400"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
-            Margin="0,-325,0,0"
+            Margin="0,-350,0,0"
             AreTransportControlsEnabled="True"/>
 
         <Frame x:Name="FrameNext" BringIntoViewRequested="FrameNext_BringIntoViewRequested" Visibility="Collapsed">

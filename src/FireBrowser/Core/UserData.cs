@@ -1,7 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
-using System.Text.Json;
-using Windows.Storage;
 
 namespace FireBrowser.Core
 {

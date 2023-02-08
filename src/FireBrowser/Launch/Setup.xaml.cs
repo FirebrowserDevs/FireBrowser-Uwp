@@ -1,19 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Devices.Enumeration;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using System.Windows;
+using Windows.Media.Core;
+using Windows.Media.Playback;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -24,9 +14,17 @@ namespace FireBrowser.Launch
     /// </summary>
     public sealed partial class Setup : Page
     {
+        MediaPlayer mediaPlayer;
         public Setup()
         {
             this.InitializeComponent();
+
+            mediaPlayer = new MediaPlayer();
+            mediaPlayer.Source = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Launch/firebrowser.mp4"));
+            _mediaPlayerElement.SetMediaPlayer(mediaPlayer);
+
+            mediaPlayer.CommandManager.IsEnabled = false;
+            mediaPlayer.Play();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

@@ -29,7 +29,7 @@
             <StackPanel>
                 <Border Background="{ThemeResource LayerFillColorDefaultBrush}">
                     <Grid Width="318" Margin="20,24">
-
+                       
                     </Grid>
                 </Border>
                 <Grid Padding="8" HorizontalAlignment="Stretch">
@@ -136,8 +136,11 @@
                         Content="{firebrowser:FluentIcon Glyph=&#xF4A4;}"
                         Style="{ThemeResource QuietButtonStyle}">
                         <Button.Flyout>
-                            <Flyout>
-                                <TextBlock Text="Use a camera or a special app to continue browsing on a different device." />
+                            <Flyout Placement="Bottom">
+                                <TextBlock TextWrapping="Wrap" TextLineBounds="Full" MaxLines="50" LineStackingStrategy="MaxHeight">
+                                    Use a camera or a special app to 
+                                    continue browsing on new device.
+                                </TextBlock>
                             </Flyout>
                         </Button.Flyout>
                     </Button>

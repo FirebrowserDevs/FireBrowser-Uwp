@@ -5,15 +5,9 @@ using Windows.UI.Xaml.Navigation;
 using Windows.UI.Core;
 using Windows.System;
 using Windows.UI.Xaml.Controls;
-using FireBrowser.Core;
 using System;
-using FireBrowser.Pages.SettingsPages;
 using Windows.UI.Xaml;
 using static FireBrowser.MainPage;
-using Windows.Storage;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 
 //Szablon elementu Pusta strona jest udokumentowany na stronie https://go.microsoft.com/fwlink/?LinkId=234238
 
