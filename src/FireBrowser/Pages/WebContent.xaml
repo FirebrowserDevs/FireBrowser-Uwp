@@ -11,7 +11,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <muxc:CommandBarFlyout x:Name="Ctx">
+        <muxc:CommandBarFlyout x:Name="Ctx" Placement="BottomEdgeAlignedLeft">
             <AppBarButton Click="ContextMenuItem_Click" x:Uid="ToDo" Tag="MenuBack" Icon="{firebrowser:FluentIcon Glyph=&#xF15C;}"/>
             <AppBarButton Click="ContextMenuItem_Click" Tag="Forward">
                 <AppBarButton.Icon>
