@@ -208,6 +208,7 @@ namespace FireBrowser.Pages
                    
                     break;
             }
+            Ctx.Hide();
         }
 
         private async void Grid_Loaded(object sender, RoutedEventArgs e)
