@@ -21,10 +21,10 @@ namespace FireBrowser.Pages.SettingsPages
             Stack();
         }
 
-        string javasc = SettingsHelper.GetSetting("DisableJavaScript");
-        string webmes = SettingsHelper.GetSetting("DisableWebMess");
-        string autogen = SettingsHelper.GetSetting("DisableGenAutoFill");
-        string pass = SettingsHelper.GetSetting("DisablePassSave");
+        string javasc = FireBrowserInterop.SettingsHelper.GetSetting("DisableJavaScript");
+        string webmes = FireBrowserInterop.SettingsHelper.GetSetting("DisableWebMess");
+        string autogen = FireBrowserInterop.SettingsHelper.GetSetting("DisableGenAutoFill");
+        string pass = FireBrowserInterop.SettingsHelper.GetSetting("DisablePassSave");
         public async void Stack()
         {
             if (javasc == "true")
@@ -86,14 +86,14 @@ namespace FireBrowser.Pages.SettingsPages
         {
             if (DisableJavaScriptToggle.IsOn)
             {
-                SettingsHelper.SetSetting("DisableJavaScript", "true");
+                FireBrowserInterop.SettingsHelper.SetSetting("DisableJavaScript", "true");
                 trueCount++;
          
             }
             else
             {
                 trueCount--;
-                SettingsHelper.SetSetting("DisableJavaScript", "false");
+                FireBrowserInterop.SettingsHelper.SetSetting("DisableJavaScript", "false");
               
             }
             IfChanged();
@@ -104,13 +104,13 @@ namespace FireBrowser.Pages.SettingsPages
         {
             if (DisableGenaralAutoFillToggle.IsOn)
             {
-                SettingsHelper.SetSetting("DisableGenAutoFill", "true");
+                FireBrowserInterop.SettingsHelper.SetSetting("DisableGenAutoFill", "true");
                 trueCount++;
               
             }
             else
             {
-                SettingsHelper.SetSetting("DisableGenAutoFill", "false");
+                FireBrowserInterop.SettingsHelper.SetSetting("DisableGenAutoFill", "false");
                 trueCount--;
               
             }
@@ -123,12 +123,12 @@ namespace FireBrowser.Pages.SettingsPages
         {
             if (DisablWebMessFillToggle.IsOn)
             {
-                SettingsHelper.SetSetting("DisableWebMess", "true");
+                FireBrowserInterop.SettingsHelper.SetSetting("DisableWebMess", "true");
                 trueCount++;
             }
             else
             {
-                SettingsHelper.SetSetting("DisableWebMess", "false");
+                FireBrowserInterop.SettingsHelper.SetSetting("DisableWebMess", "false");
                 trueCount--;
             }
             IfChanged();
@@ -140,12 +140,12 @@ namespace FireBrowser.Pages.SettingsPages
             if (PasswordWebMessFillToggle.IsOn)
             {
                 trueCount++;
-                SettingsHelper.SetSetting("DisablePassSave", "true");
+                FireBrowserInterop.SettingsHelper.SetSetting("DisablePassSave", "true");
             }
             else
             {
                 trueCount--;
-                SettingsHelper.SetSetting("DisablePassSave", "false");
+                FireBrowserInterop.SettingsHelper.SetSetting("DisablePassSave", "false");
             }
             IfChanged();
             UpdateText();

@@ -13,7 +13,7 @@
   <Identity
     Name="104430cd-bfef-4f87-bd53-11ebfdade5e8"
     Publisher="CN=Jarno Beerten"
-    Version="1.0.2.0" />
+    Version="0.0.3.0" />
 
   <mp:PhoneIdentity PhoneProductId="104430cd-bfef-4f87-bd53-11ebfdade5e8" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

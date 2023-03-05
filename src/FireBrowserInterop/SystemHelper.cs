@@ -2,7 +2,7 @@
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 
-namespace FireBrowser.Core
+namespace FireBrowserInterop
 {
     public static class SystemHelper
     {
@@ -13,7 +13,7 @@ namespace FireBrowser.Core
             if (result == AppRestartFailureReason.NotInForeground
                 || result == AppRestartFailureReason.Other)
             {
-                await UI.ShowDialog("Error", "Couldn´t restart Bluebird, please close the app manually");
+               
             }
         }
 

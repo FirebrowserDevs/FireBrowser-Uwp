@@ -23,8 +23,8 @@ namespace FireBrowser.Pages.SettingsPages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            SettingsHelper.SetSetting("LaunchFirst", "1");
-            SystemHelper.RestartApp();
+            FireBrowserInterop.SettingsHelper.SetSetting("LaunchFirst", "1");
+            FireBrowserInterop.SystemHelper.RestartApp();
         }
     }
 }

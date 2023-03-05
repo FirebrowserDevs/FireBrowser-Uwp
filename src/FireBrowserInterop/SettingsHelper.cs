@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace FireBrowser.Core
+namespace FireBrowserInterop
 {
     public static class SettingsHelper
     {

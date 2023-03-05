@@ -13,7 +13,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22621.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.20348.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -139,8 +139,6 @@
     <Compile Include="Core\ColorConverter.cs" />
     <Compile Include="Core\Icons.cs" />
     <Compile Include="Core\Settings.cs" />
-    <Compile Include="Core\SettingsHelper.cs" />
-    <Compile Include="Core\SystemHelper.cs" />
     <Compile Include="Core\TLD.cs" />
     <Compile Include="Core\UI.cs" />
     <Compile Include="Core\UrlHelper.cs" />
@@ -208,6 +206,8 @@
     <Content Include="Assets\Icons\Privacy.svg" />
     <Content Include="Assets\Icons\Style.svg" />
     <Content Include="Assets\Icons\Tabs.svg" />
+    <Content Include="Assets\Illustrations\NewTab\BackgroundBing.svg" />
+    <Content Include="Assets\Illustrations\NewTab\BackgroundNone.svg" />
     <Content Include="Assets\JS\firebrowser-removead.js" />
     <Content Include="Assets\JS\simplyread-firebrowser-min.js" />
     <Content Include="Assets\LargeTile.scale-100.png" />
@@ -258,7 +258,6 @@
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
-    <Content Include="NativeMethods.txt" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -409,6 +408,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Fonts\Segoe Fluent Icons.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FireBrowserInterop\FireBrowserInterop.csproj">
+      <Project>{c0b577c9-a42d-49db-b53b-4b9063e16328}</Project>
+      <Name>FireBrowserInterop</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

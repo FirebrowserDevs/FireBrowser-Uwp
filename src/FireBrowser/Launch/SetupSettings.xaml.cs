@@ -35,14 +35,14 @@ namespace FireBrowser.Launch
 
         private void SetEngine(string EngineFriendlyName, string SearchUrl)
         {
-            SettingsHelper.SetSetting("EngineFriendlyName", EngineFriendlyName);
-            SettingsHelper.SetSetting("SearchUrl", SearchUrl);
+            FireBrowserInterop.SettingsHelper.SetSetting("EngineFriendlyName", EngineFriendlyName);
+            FireBrowserInterop.SettingsHelper.SetSetting("SearchUrl", SearchUrl);
         }
 
         private void Install_Click(object sender, RoutedEventArgs e)
         {
-            SettingsHelper.SetSetting("LaunchFirst", "0");
-            SystemHelper.RestartApp();
+            FireBrowserInterop.SettingsHelper.SetSetting("LaunchFirst", "0");
+            FireBrowserInterop.SystemHelper.RestartApp();
         }
     }
 }

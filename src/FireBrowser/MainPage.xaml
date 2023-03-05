@@ -16,10 +16,7 @@
     mc:Ignorable="d">
     <Page.Resources>
         <MenuFlyout x:Key="TabContextMenu">
-            <MenuFlyoutItem x:Uid="TabMenuClose" Icon="{controls:FluentIcon Glyph=&#xF36A;}" />
-            <MenuFlyoutSubItem x:Uid="TabMenuCloseOther">
-                <MenuFlyoutItem Text="Bluetooth" />
-            </MenuFlyoutSubItem>
+                 
         </MenuFlyout>
 
         <Flyout
@@ -386,6 +383,8 @@
                 <Button                 
                     Style="{StaticResource QuietButtonStyle}"
                     Tag="Refresh"
+                    Height="32"
+                    Width="32"
                     Click="ToolbarButtonClick"
                     Content="{x:Bind ViewModel.LoadingState, Mode=OneWay}">
                 </Button>

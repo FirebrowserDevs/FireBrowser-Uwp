@@ -1,5 +1,6 @@
 ﻿using FireBrowser.Core;
 using FireBrowser.Launch;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -61,7 +62,7 @@ namespace FireBrowser
         public static string IsFirstLaunch { get; set; }
         private void LoadSettings()
         {
-            SearchUrl = SettingsHelper.GetSetting("SearchUrl");
+            SearchUrl = FireBrowserInterop.SettingsHelper.GetSetting("SearchUrl");
             TLD.LoadKnownDomains();
         }
 
@@ -79,14 +80,12 @@ namespace FireBrowser
 
                 if (rootFrame == null)
                 {
-                    var startup = await StartupTask.GetAsync("FireBrowserStartUp");
-
+                 
                     AppLaunchPasser passer = new()
                     {
-                        LaunchData = eventArgs.Uri
+                        LaunchData = eventArgs.Uri,
                     };
-                  
-
+                 
                     rootFrame = new Frame();
                     rootFrame.NavigationFailed += OnNavigationFailed;
 
@@ -113,7 +112,8 @@ namespace FireBrowser
                         var startupArgs = args as StartupTaskActivatedEventArgs;
                         payload = ActivationKind.StartupTask.ToString();
                     }
-                    AppLaunchPasser passer = new()
+        
+                AppLaunchPasser passer = new()
                     {
                         LaunchType = AppLaunchType.LaunchStartup,
                         LaunchData = payload
@@ -175,7 +175,7 @@ namespace FireBrowser
                     TryEnablePrelaunch();
                 }
 
-                IsFirstLaunch = SettingsHelper.GetSetting("LaunchFirst");
+                IsFirstLaunch = FireBrowserInterop.SettingsHelper.GetSetting("LaunchFirst");
                 if (IsFirstLaunch == "1")
                 {
                    

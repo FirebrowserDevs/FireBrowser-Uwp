@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
-using Windows.Storage;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace FireBrowser.Core
 {

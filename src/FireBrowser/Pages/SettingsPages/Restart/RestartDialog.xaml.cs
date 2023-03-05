@@ -18,7 +18,7 @@ namespace FireBrowser.Pages.SettingsPages.Restart
 
         private void Restart_Click(object sender, RoutedEventArgs e)
         {
-            SystemHelper.RestartApp();
+            FireBrowserInterop.SystemHelper.RestartApp();
         }
     }
 }

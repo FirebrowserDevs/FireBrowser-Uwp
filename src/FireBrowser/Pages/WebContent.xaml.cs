@@ -93,11 +93,18 @@ namespace FireBrowser.Pages
             s.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
             s.CoreWebView2.ScriptDialogOpening += async (sender, args) =>
             {
-             
+                await UI.ShowDialog("Message from this site", args.Message);
             };
             s.CoreWebView2.DocumentTitleChanged += (sender, args) =>
             {
-                param.Tab.Header = s.CoreWebView2.DocumentTitle;
+                if (WebViewElement.CoreWebView2.IsMuted == true)
+                {
+                    param.Tab.Header = "Muted -" + WebViewElement.CoreWebView2.DocumentTitle;
+                }
+                else
+                {
+                    param.Tab.Header = WebViewElement.CoreWebView2.DocumentTitle;
+                }
             };
             s.CoreWebView2.PermissionRequested += async (sender, args) =>
             {
@@ -114,7 +121,11 @@ namespace FireBrowser.Pages
                 catch { }
             };
             s.CoreWebView2.NavigationStarting += (sender, args) => {
-              
+                param.ViewModel.LoadingState = new Microsoft.UI.Xaml.Controls.ProgressRing()
+                {
+                    Width = 16,
+                    Height = 16
+                };
             };
         
             s.CoreWebView2.NavigationCompleted += (sender, args) =>
@@ -124,6 +135,11 @@ namespace FireBrowser.Pages
                    
                 }
 
+                param.ViewModel.LoadingState = new FontIcon()
+                {
+                    Glyph = "\uF13E",
+                    FontSize = 16
+                };
 
                 s.CoreWebView2.ContainsFullScreenElementChanged += (sender, args) =>
                 {
@@ -160,40 +176,62 @@ namespace FireBrowser.Pages
         string LinkUri;
         private void CoreWebView2_ContextMenuRequested(CoreWebView2 sender, CoreWebView2ContextMenuRequestedEventArgs args)
         {
-            Microsoft.UI.Xaml.Controls.CommandBarFlyout flyout;
-            if (args.ContextMenuTarget.Kind == CoreWebView2ContextMenuTargetKind.SelectedText)
+            var flyout1 = (Microsoft.UI.Xaml.Controls.CommandBarFlyout)Resources["Ctx"];
+            FlyoutBase.SetAttachedFlyout(WebViewElement, flyout1);
+            var flyout = FlyoutBase.GetAttachedFlyout(WebViewElement);
+            var options = new FlyoutShowOptions()
             {
-                flyout = (Microsoft.UI.Xaml.Controls.CommandBarFlyout)Resources["TextContextMenu"];
-                SelectionText = args.ContextMenuTarget.SelectionText;
-            }
+                // Position shows the flyout next to the pointer.
+                // "Transient" ShowMode makes the flyout open in its collapsed state.
+                Position = args.Location,
+                ShowMode = FlyoutShowMode.Standard
+            };
+            flyout?.ShowAt(WebViewElement, options);
+            if (args.ContextMenuTarget.HasSelection) { }//todo
+            else { } //todo
+            args.Handled = true;
+        }
 
-            else if (args.ContextMenuTarget.Kind == CoreWebView2ContextMenuTargetKind.Image)
-                flyout = null;
-
-            else if (args.ContextMenuTarget.HasLinkUri)
+        private void ContextMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            switch ((sender as AppBarButton).Tag)
             {
-                flyout = (Microsoft.UI.Xaml.Controls.CommandBarFlyout)Resources["LinkContextMenu"];
-                SelectionText = args.ContextMenuTarget.LinkText;
-                LinkUri = args.ContextMenuTarget.LinkUri;
+                case "MenuBack":
+                    if (WebViewElement.CanGoBack == true)
+                    {
+                        WebViewElement.CoreWebView2.GoBack();
+                    }
+                    break;
+                case "Forward":
+                    if (WebViewElement.CanGoForward == true)
+                    {
+                        WebViewElement.CoreWebView2.GoForward();
+                    }
+                    break;
+                case "Source":
+                    WebViewElement.CoreWebView2.OpenDevToolsWindow();
+                    break;
+                case "Select":
+
+
+                    break;
+                case "Taskmgr":
+                    WebViewElement.CoreWebView2.OpenTaskManagerWindow();
+                    break;
+                case "Read":
+
+                    break;
+                case "Save":
+
+                    break;
+                case "Share":
+                    FireBrowserInterop.SystemHelper.ShowShareUIURL(WebViewElement.CoreWebView2.DocumentTitle, WebViewElement.CoreWebView2.Source);
+                    break;
+                case "Print":
+
+                    break;
             }
-
-            else if (args.ContextMenuTarget.IsEditable)
-                flyout = null;
-
-            else
-                flyout = (Microsoft.UI.Xaml.Controls.CommandBarFlyout)Resources["PageContextMenu"];
-
-            if (flyout != null)
-            {
-                FlyoutBase.SetAttachedFlyout(WebViewElement, flyout);
-                var wv2flyout = FlyoutBase.GetAttachedFlyout(WebViewElement);
-                var options = new FlyoutShowOptions()
-                {
-                    Position = args.Location,
-                };
-                wv2flyout?.ShowAt(WebViewElement, options);
-                args.Handled = true;
-            }
+            Ctx.Hide();
         }
 
         private async void Grid_Loaded_1(object sender, RoutedEventArgs e)

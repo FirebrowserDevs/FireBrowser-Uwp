@@ -25,7 +25,38 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-                    
+
+        <Button x:Uid="NewTabSettingsButton"
+                Style="{ThemeResource QuietButtonStyle}"
+                Padding="8" Margin="0,31,32,0"
+                VerticalAlignment="Top" HorizontalAlignment="Right">
+            <FontIcon Glyph="&#xF6AA;"/>
+            <Button.Flyout>
+                <Flyout Placement="Bottom">
+                    <StackPanel>
+                        <GridView  SelectionChanged="BackgroundGridView_SelectionChanged">
+                            <GridViewItem x:Name="NoneGrid" Padding="12" Tag="None">
+                                <StackPanel>
+                                    <Image Width="100" Source="ms-appx:///Assets/Illustrations/NewTab/BackgroundNone.svg"/>
+                                    <TextBlock x:Uid="NewTabBackgroundNone" d:Text="None"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,8,0,0"/>
+                                </StackPanel>
+                            </GridViewItem>
+                            <GridViewItem x:Name="FsGrid" Padding="12" Tag="Featured">
+                                <StackPanel>
+                                    <Image Width="100" Source="ms-appx:///Assets/Illustrations/NewTab/BackgroundBing.svg"/>
+                                    <TextBlock x:Uid="NewTabBackgroundBing" d:Text="Bing Image"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,8,0,0"/>
+                                </StackPanel>
+                            </GridViewItem>
+                        </GridView>
+
+                    </StackPanel>
+                </Flyout>
+            </Button.Flyout>
+        </Button>
         <!-- To-Do: Acrylic background, voice search, search suggestions -->
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center" RowSpacing="4">
             <Grid.RowDefinitions>
@@ -42,6 +73,7 @@
                             Background="Transparent"
                             VerticalContentAlignment="Center"
                             d:PlaceholderText="Type here to search"
+                            TextChanged="NewTabSearchBox_TextChanged"
                             >
                 <AutoSuggestBox.Resources>
                     <SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="{ThemeResource SystemAltHighColor}"/>
@@ -50,19 +82,21 @@
             </AutoSuggestBox>
             <StackPanel Grid.Row="1"
                         Orientation="Horizontal" Spacing="4">
-                <Button CornerRadius="16" Background="Transparent" BorderThickness="1" BorderBrush="Red">
+                
+                <Button Click="ActionClicked" Tag="Google" CornerRadius="16" Background="Transparent" BorderThickness="1" BorderBrush="Red">
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <Image Source="/Assets/Logo.png" Width="16"></Image>
-                        <TextBlock Text="Suggestion 1"/>
+                        <TextBlock Text="Google"/>
                     </StackPanel>
                 </Button>
-                <Button CornerRadius="16" Background="Transparent" BorderThickness="1" BorderBrush="Red">
+                <Button Click="ActionClicked" Tag="Youtube" CornerRadius="16" Background="Transparent" BorderThickness="1" BorderBrush="Red">
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <Image Source="/Assets/Logo.png" Width="16"></Image>
-                        <TextBlock Text="Suggestion 1"/>
+                        <TextBlock Text="Youtube"/>
                     </StackPanel>
                 </Button>
             </StackPanel>
+            
         </Grid>
         <Grid>
             <Grid.ColumnDefinitions>

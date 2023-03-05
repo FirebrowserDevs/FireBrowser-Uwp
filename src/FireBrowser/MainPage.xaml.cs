@@ -24,6 +24,8 @@ using System.Reflection.PortableExecutable;
 using QRCoder;
 using FireBrowser.Core;
 using Windows.System;
+using FireBrowser.Pages.SettingsPages;
+using FireBrowser.Pages;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -72,13 +74,13 @@ namespace FireBrowser
 
         public void ButtonVisible()
         {
-            ReadButton = SettingsHelper.GetSetting("Readbutton");
-            AdblockBtn = SettingsHelper.GetSetting("AdBtn");
-            Downloads = SettingsHelper.GetSetting("DwBtn");
-            Translate = SettingsHelper.GetSetting("TransBtn");
-            Favorites = SettingsHelper.GetSetting("FavBtn");
-            Historybtn = SettingsHelper.GetSetting("HisBtn");
-            QrCode = SettingsHelper.GetSetting("QrBtn");
+            ReadButton = FireBrowserInterop.SettingsHelper.GetSetting("Readbutton");
+            AdblockBtn = FireBrowserInterop.SettingsHelper.GetSetting("AdBtn");
+            Downloads = FireBrowserInterop.SettingsHelper.GetSetting("DwBtn");
+            Translate = FireBrowserInterop.SettingsHelper.GetSetting("TransBtn");
+            Favorites = FireBrowserInterop.SettingsHelper.GetSetting("FavBtn");
+            Historybtn = FireBrowserInterop.SettingsHelper.GetSetting("HisBtn");
+            QrCode = FireBrowserInterop.SettingsHelper.GetSetting("QrBtn");
             if (ReadButton == "True")
             {
                 ReadBtn.Visibility = Visibility.Visible;
@@ -158,8 +160,9 @@ namespace FireBrowser
             {
                 Tabs.TabItems.Add(CreateNewTab());
             }
-
         }
+            
+        
 
         #region toolbar
         public ToolbarViewModel ViewModel { get; set; }
@@ -370,6 +373,11 @@ namespace FireBrowser
             }
         }
 
+        public void FocusUrlBox(string text)
+        {
+            UrlBox.Text = text;
+            UrlBox.Focus(FocusState.Programmatic);
+        }
         private void NavigateToUrl(string uri)
         {
             if (TabWebView != null)
@@ -397,6 +405,7 @@ namespace FireBrowser
                 {
                     TabContent.Navigate(typeof(SettingsPage), CreatePasser(),
                                        new DrillInNavigationTransitionInfo());
+                  
                 }
             }
             else if (inputtype == "url")
@@ -504,14 +513,14 @@ namespace FireBrowser
             switch ((sender as FrameworkElement)?.Tag)
             {
                 case "Settings":
-                    TabContent.Navigate(typeof(SettingsPage), CreatePasser(),
-                                    new DrillInNavigationTransitionInfo());
-                    UrlBox.Text = "firebrowser://settings/";
+                    Tabs.TabItems.Add(CreateNewTab(typeof(SettingsPage), CreatePasser()
+                                     ));
+                  
                     SelectNewTab();
                     break;
                 case "Edit":
                     if (TabWebView != null)
-                        SystemHelper.ShowShareUIURL(TabWebView.CoreWebView2.DocumentTitle, TabWebView.CoreWebView2.Source);
+                        FireBrowserInterop.SystemHelper.ShowShareUIURL(TabWebView.CoreWebView2.DocumentTitle, TabWebView.CoreWebView2.Source);
                     break;
             }
         }
@@ -547,7 +556,7 @@ namespace FireBrowser
                     {
                         TabWebView.Close();
                     }
-                    TabContent.Navigate(typeof(NewTab), passer, new DrillInNavigationTransitionInfo());
+                    TabContent.Navigate(typeof(Pages.NewTab), passer, new DrillInNavigationTransitionInfo());
                     passer.Tab.Header = "FireBrowser HomePage";
                     passer.Tab.IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = Symbol.Home };
                     UrlBox.Text = "";

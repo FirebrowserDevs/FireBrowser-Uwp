@@ -31,7 +31,7 @@ namespace FireBrowser.Pages.SettingsPages
         }
         private void SearchengineSelection_Loaded(object sender, RoutedEventArgs e)
         {
-            string selection = SettingsHelper.GetSetting("EngineFriendlyName");
+            string selection = FireBrowserInterop.SettingsHelper.GetSetting("EngineFriendlyName");
             if (selection != null)
             {
                 SearchengineSelection.PlaceholderText = selection;
@@ -59,18 +59,18 @@ namespace FireBrowser.Pages.SettingsPages
 
         private void SetEngine(string EngineFriendlyName, string SearchUrl)
         {
-            SettingsHelper.SetSetting("EngineFriendlyName", EngineFriendlyName);
-            SettingsHelper.SetSetting("SearchUrl", SearchUrl);
+            FireBrowserInterop.SettingsHelper.SetSetting("EngineFriendlyName", EngineFriendlyName);
+            FireBrowserInterop.SettingsHelper.SetSetting("SearchUrl", SearchUrl);
         }
    
 
-        public string ReadButton = SettingsHelper.GetSetting("Readbutton");
-        public string AdblockBtn = SettingsHelper.GetSetting("AdBtn");
-        public string Downloads = SettingsHelper.GetSetting("DwBtn");
-        public string Translate = SettingsHelper.GetSetting("TransBtn");
-        public string Favorites = SettingsHelper.GetSetting("FavBtn");
-        public string Historybtn = SettingsHelper.GetSetting("HisBtn");
-        public string QrCode = SettingsHelper.GetSetting("QrBtn");
+        public string ReadButton = FireBrowserInterop.SettingsHelper.GetSetting("Readbutton");
+        public string AdblockBtn = FireBrowserInterop.SettingsHelper.GetSetting("AdBtn");
+        public string Downloads = FireBrowserInterop.SettingsHelper.GetSetting("DwBtn");
+        public string Translate = FireBrowserInterop.SettingsHelper.GetSetting("TransBtn");
+        public string Favorites = FireBrowserInterop.SettingsHelper.GetSetting("FavBtn");
+        public string Historybtn = FireBrowserInterop.SettingsHelper.GetSetting("HisBtn");
+        public string QrCode = FireBrowserInterop.SettingsHelper.GetSetting("QrBtn");
         
         public void ButtonVisible()
         {
@@ -140,12 +140,12 @@ namespace FireBrowser.Pages.SettingsPages
         {
             if (Read.IsOn == true)
             {
-                SettingsHelper.SetSetting("Readbutton", "True");
+                FireBrowserInterop.SettingsHelper.SetSetting("Readbutton", "True");
             }
             else if (Read.IsOn == false)
             {
 
-                SettingsHelper.SetSetting("Readbutton", "0");
+                FireBrowserInterop.SettingsHelper.SetSetting("Readbutton", "0");
             }
         }
 
@@ -153,11 +153,11 @@ namespace FireBrowser.Pages.SettingsPages
         {
             if (Adbl.IsOn == true)
             {
-                SettingsHelper.SetSetting("AdBtn", "True");
+                FireBrowserInterop.SettingsHelper.SetSetting("AdBtn", "True");
             }
             else if (Adbl.IsOn == false)
             {
-                SettingsHelper.SetSetting("AdBtn", "0");
+                FireBrowserInterop.SettingsHelper.SetSetting("AdBtn", "0");
             }
         }
 
@@ -165,11 +165,11 @@ namespace FireBrowser.Pages.SettingsPages
         {
             if (Dwbl.IsOn == true)
             {
-                SettingsHelper.SetSetting("DwBtn", "True");
+                FireBrowserInterop.SettingsHelper.SetSetting("DwBtn", "True");
             }
             else if (Dwbl.IsOn == false)
             {
-                SettingsHelper.SetSetting("DwBtn", "0");
+                FireBrowserInterop.SettingsHelper.SetSetting("DwBtn", "0");
             }
         }
 
@@ -177,11 +177,11 @@ namespace FireBrowser.Pages.SettingsPages
         {
             if (Trbl.IsOn == true)
             {
-                SettingsHelper.SetSetting("TransBtn", "True");
+                FireBrowserInterop.SettingsHelper.SetSetting("TransBtn", "True");
             }
             else if (Trbl.IsOn == false)
             {
-                SettingsHelper.SetSetting("TransBtn", "0");
+                FireBrowserInterop.SettingsHelper.SetSetting("TransBtn", "0");
             }
         }
 
@@ -189,11 +189,11 @@ namespace FireBrowser.Pages.SettingsPages
         {
             if (Frbl.IsOn == true)
             {
-                SettingsHelper.SetSetting("FavBtn", "True");
+                FireBrowserInterop.SettingsHelper.SetSetting("FavBtn", "True");
             }
             else if (Frbl.IsOn == false)
             {
-                SettingsHelper.SetSetting("FavBtn", "0");
+                FireBrowserInterop.SettingsHelper.SetSetting("FavBtn", "0");
             }
         }
 
@@ -201,12 +201,12 @@ namespace FireBrowser.Pages.SettingsPages
         {
             if (Hsbl.IsOn == true)
             {
-                SettingsHelper.SetSetting("HisBtn", "True");
+                FireBrowserInterop.SettingsHelper.SetSetting("HisBtn", "True");
             }
             else if (Hsbl.IsOn == false)
             {
 
-                SettingsHelper.SetSetting("HisBtn", "0");
+                FireBrowserInterop.SettingsHelper.SetSetting("HisBtn", "0");
             }
         }
 
@@ -214,11 +214,11 @@ namespace FireBrowser.Pages.SettingsPages
         {
             if (Qrbl.IsOn == true)
             {
-                SettingsHelper.SetSetting("QrBtn", "True");
+                FireBrowserInterop.SettingsHelper.SetSetting("QrBtn", "True");
             }
             else if (Qrbl.IsOn == false)
             {
-                SettingsHelper.SetSetting("QrBtn", "0");
+                FireBrowserInterop.SettingsHelper.SetSetting("QrBtn", "0");
             }
         }
     }
