@@ -10,11 +10,98 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <muxc:CommandBarFlyout
+            x:Name="PageContextMenu"
+            AlwaysExpanded="True"
+            Placement="BottomEdgeAlignedLeft">
+            <AppBarButton  Tag="Back">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="ms-appx:///Fonts/Segoe Fluent Icons.tff#Segoe Fluent Icons" Glyph="&#xE112;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton  Tag="Refresh">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="ms-appx:///Fonts/Segoe Fluent Icons.tff#Segoe Fluent Icons" Glyph="&#xE149;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton Tag="Forward">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="ms-appx:///Fonts/Segoe Fluent Icons.tff#Segoe Fluent Icons" Glyph="&#xE111;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton                
+                Icon="Share"
+                Tag="Share"
+                ToolTipService.ToolTip="Share" />
+            <muxc:CommandBarFlyout.SecondaryCommands>
+                <AppBarButton                
+                    Label="Select all"
+                    Tag="SelectAll">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="ms-appx:///Fonts/Segoe Fluent Icons.tff#Segoe Fluent Icons" Glyph="&#xE14E;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarSeparator />
+                <AppBarButton                  
+                    Label="View source"
+                    Tag="ViewSource">
+                    <FontIcon FontFamily="ms-appx:///Fonts/Segoe Fluent Icons.tff#Segoe Fluent Icons" Glyph="&#xE943;" />
+                </AppBarButton>
+                <AppBarButton                  
+                    Label="DevTools"
+                    Tag="DevTools">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="ms-appx:///Fonts/Segoe Fluent Icons.tff#Segoe Fluent Icons" Glyph="&#xEC7A;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </muxc:CommandBarFlyout.SecondaryCommands>
+        </muxc:CommandBarFlyout>
+        <muxc:CommandBarFlyout
+            x:Name="TextContextMenu"
+            AlwaysExpanded="True"
+            Placement="BottomEdgeAlignedLeft">
+            <AppBarButton          
+                Tag="CopyText"
+                ToolTipService.ToolTip="Copy text">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="ms-appx:///Fonts/Segoe Fluent Icons.tff#Segoe Fluent Icons" Glyph="&#xE16F;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+        </muxc:CommandBarFlyout>
+        <muxc:CommandBarFlyout
+            x:Name="LinkContextMenu"
+            AlwaysExpanded="True"
+            Placement="BottomEdgeAlignedLeft">
+            <AppBarButton             
+                Tag="OpenLnkInNewTab"
+                ToolTipService.ToolTip="Open link in new tab">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="ms-appx:///Fonts/Segoe Fluent Icons.tff#Segoe Fluent Icons" Glyph="&#xE8A7;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton            
+                Tag="Copy"
+                ToolTipService.ToolTip="Copy link">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="ms-appx:///Fonts/Segoe Fluent Icons.tff#Segoe Fluent Icons" Glyph="&#xE16F;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <muxc:CommandBarFlyout.SecondaryCommands>
+                <AppBarButton                   
+                    Label="Copy link text"
+                    Tag="CopyText">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="ms-appx:///Fonts/Segoe Fluent Icons.tff#Segoe Fluent Icons" Glyph="&#xE16F;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </muxc:CommandBarFlyout.SecondaryCommands>
+        </muxc:CommandBarFlyout>
+    </Page.Resources>
     <Grid x:Name="Grid" Loaded="Grid_Loaded_1">
-        <muxc:WebView2 x:Name="WebViewElement"
-                              x:FieldModifier="Public"
-                              Source="https://google.com" />
-
-
+        <muxc:WebView2
+            x:Name="WebViewElement"
+            x:FieldModifier="public"
+           />
     </Grid>
 </Page>
