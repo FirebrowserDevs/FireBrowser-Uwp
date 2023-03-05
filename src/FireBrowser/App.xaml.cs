@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Web;
 using Windows.ApplicationModel;
@@ -27,7 +28,8 @@ namespace FireBrowser
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
     sealed partial class App : Application
-    {
+    {  
+      
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -123,6 +125,7 @@ namespace FireBrowser
             }
         }
 
+        
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
@@ -158,6 +161,7 @@ namespace FireBrowser
                     //TODO: Load state from previously suspended application
                 }
 
+             
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }

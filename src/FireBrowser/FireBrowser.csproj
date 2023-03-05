@@ -126,7 +126,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\BrowserEngines\Edge.cs" />
     <Compile Include="Controls\CustomTabView.xaml.cs">
       <DependentUpon>CustomTabView.xaml</DependentUpon>
     </Compile>
@@ -134,12 +133,8 @@
       <DependentUpon>CustomTabViewItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\FluentIcon.cs" />
-    <Compile Include="Controls\IBrowserEngine.cs" />
     <Compile Include="Controls\Toolbar.xaml.cs">
       <DependentUpon>Toolbar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\WebView.xaml.cs">
-      <DependentUpon>WebView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Core\ColorConverter.cs" />
     <Compile Include="Core\Icons.cs" />
@@ -288,10 +283,6 @@
     <Page Include="Controls\Toolbar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\WebView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Launch\Setup.xaml">
       <SubType>Designer</SubType>

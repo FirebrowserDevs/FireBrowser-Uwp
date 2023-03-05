@@ -63,7 +63,9 @@ namespace FireBrowser
                     Glyph = "\uF13E",
                 }
             };
-     
+
+           
+
             Window.Current.SetTitleBar(CustomDragRegion);
             Tabs.TabItems.Add(CreateNewTab());
         }
@@ -261,7 +263,8 @@ namespace FireBrowser
                 return null;
             }
         }
-        Controls.WebView TabWebView
+
+        WebView2 TabWebView
         {
             get
             {
@@ -313,6 +316,8 @@ namespace FireBrowser
                 VerticalAlignment = VerticalAlignment.Stretch,
                 Margin = new Thickness(0, Margin, 0, 0)
             };
+
+            
 
             if (page != null)
             {

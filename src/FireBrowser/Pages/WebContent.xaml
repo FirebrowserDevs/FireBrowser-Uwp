@@ -10,78 +10,11 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Page.Resources>
-        <muxc:CommandBarFlyout x:Name="Ctx" Placement="BottomEdgeAlignedLeft">
-            <AppBarButton Click="ContextMenuItem_Click" x:Uid="ToDo" Tag="MenuBack" Icon="{firebrowser:FluentIcon Glyph=&#xF15C;}"/>
-            <AppBarButton Click="ContextMenuItem_Click" Tag="Forward">
-                <AppBarButton.Icon>
-                    <FontIcon Glyph="&#xF182;"/>
-                </AppBarButton.Icon>
-            </AppBarButton>
-            <AppBarButton Click="ContextMenuItem_Click" Icon="Share" ToolTipService.ToolTip="Share" Tag="Share"/>
-            <AppBarButton Click="ContextMenuItem_Click" Tag="Print" >
-                <AppBarButton.Icon>
-                    <FontIcon Glyph="&#xF62B;"/>
-                </AppBarButton.Icon>
-            </AppBarButton>
-            <muxc:CommandBarFlyout.SecondaryCommands>
-                <AppBarButton Click="ContextMenuItem_Click" Label="Select all" Tag="Select">
-                    <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator 
-                        Modifiers="Control" 
-                        Key="A" />
-                    </AppBarButton.KeyboardAccelerators>
-                    <AppBarButton.Icon>
-                        <FontIcon Glyph="&#xF66A;"/>
-                    </AppBarButton.Icon>
-                </AppBarButton>
-                <AppBarButton Click="ContextMenuItem_Click" Label="Read aloud" Tag="Read">
-                    <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator 
-                        Modifiers="Control" 
-                        Key="R"
-                        />
-                    </AppBarButton.KeyboardAccelerators>
-                    <AppBarButton.Icon>
-                        <FontIcon Glyph="&#xF64E;"/>
-                    </AppBarButton.Icon>
-                </AppBarButton>
-                <AppBarButton Click="ContextMenuItem_Click" Label="Save" Tag="Save">
-                    <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator 
-                        Modifiers="Control" 
-                        Key="S"
-                        />
-                    </AppBarButton.KeyboardAccelerators>
-                    <AppBarButton.Icon>
-                        <FontIcon Glyph="&#xF680;"/>
-                    </AppBarButton.Icon>
-                </AppBarButton>
-                <!-- Todo: add inspect and possibly a separator for these dev options-->
-                <AppBarButton Click="ContextMenuItem_Click" Label="View source" Tag="Source">
-                    <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator 
-                        Modifiers="Control" 
-                        Key="V"
-                        />
-                    </AppBarButton.KeyboardAccelerators>
-                    <AppBarButton.Icon>
-                        <FontIcon Glyph="&#xF2EF;"/>
-                    </AppBarButton.Icon>
-                </AppBarButton>
-                <AppBarButton Click="ContextMenuItem_Click" Label="TaskManager" Tag="Taskmgr">
-                    <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator 
-                        Modifiers="Control" 
-                        Key="T" />
-                    </AppBarButton.KeyboardAccelerators>
-                    <AppBarButton.Icon>
-                        <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE9F5;"/>
-                    </AppBarButton.Icon>
-                </AppBarButton>
-            </muxc:CommandBarFlyout.SecondaryCommands>
-        </muxc:CommandBarFlyout>
-    </Page.Resources>
-    <Grid x:Name="Grid" Loaded="Grid_Loaded">
+    <Grid x:Name="Grid" Loaded="Grid_Loaded_1">
+        <muxc:WebView2 x:Name="WebViewElement"
+                              x:FieldModifier="Public"
+                              Source="https://google.com" />
+
+
     </Grid>
 </Page>

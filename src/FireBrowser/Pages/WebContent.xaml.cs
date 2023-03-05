@@ -22,14 +22,11 @@ namespace FireBrowser.Pages
     /// </summary>
     public sealed partial class WebContent : Page
     {
-        public Controls.WebView WebViewElement = new();
+    
         public WebContent()
         {
             this.InitializeComponent();
-        }
-
-
-      
+        } 
 
         private bool fullScreen = false;
 
@@ -61,15 +58,22 @@ namespace FireBrowser.Pages
             }
         }
 
-        Passer param;
+        public async void PrepareForNoting()
+        {
+            var height = Convert.ToInt16(await WebViewElement.ExecuteScriptAsync("document.body.scrollHeight"));
+            var width = await WebViewElement.ExecuteScriptAsync("document.body.scrollWidth");
+            var PageParam = @"{""format"": ""png"", ""captureBeyondViewport"": true, ""clip"": {""x"": 0, ""y"": 0, ""width"":" + width + @", ""height"":" + height + @", ""scale"": 1.0" + "}}";
+        }
+
+            Passer param;
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             param = e.Parameter as Passer;
             await WebViewElement.EnsureCoreWebView2Async();
-            Controls.WebView s = WebViewElement;
-
+            WebView2 s = WebViewElement;
             //the Param is the uri that the WebView should go to
+
             if (param?.Param != null)
             {
                 WebViewElement.CoreWebView2.Navigate(param.Param.ToString());
@@ -86,22 +90,10 @@ namespace FireBrowser.Pages
             s.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = true;
             s.CoreWebView2.Settings.IsPasswordAutosaveEnabled = true;
             s.CoreWebView2.Settings.AreDefaultContextMenusEnabled = true;
+
             s.CoreWebView2.ContextMenuRequested += async (se, args) =>
             {
-                var flyout1 = (Microsoft.UI.Xaml.Controls.CommandBarFlyout)Resources["Ctx"];
-                FlyoutBase.SetAttachedFlyout(WebViewElement, flyout1);
-                var flyout = FlyoutBase.GetAttachedFlyout(WebViewElement);
-                var options = new FlyoutShowOptions()
-                {
-                    // Position shows the flyout next to the pointer.
-                    // "Transient" ShowMode makes the flyout open in its collapsed state.
-                    Position = args.Location,
-                    ShowMode = FlyoutShowMode.Standard
-                };
-                flyout?.ShowAt(s, options);
-                if (args.ContextMenuTarget.HasSelection) { }//todo
-                else { } //todo
-                args.Handled = true;
+               
             };
             s.CoreWebView2.ScriptDialogOpening += async (sender, args) =>
             {
@@ -109,14 +101,7 @@ namespace FireBrowser.Pages
             };
             s.CoreWebView2.DocumentTitleChanged += (sender, args) =>
             {
-                if (WebViewElement.CoreWebView2.IsMuted == true)
-                {
-                    param.Tab.Header = "Muted -" + WebViewElement.CoreWebView2.DocumentTitle;
-                }
-                else
-                {
-                    param.Tab.Header = WebViewElement.CoreWebView2.DocumentTitle;
-                }
+                param.Tab.Header = WebViewElement.CoreWebView2.DocumentTitle;
             };
             s.CoreWebView2.PermissionRequested += async (sender, args) =>
             {
@@ -135,7 +120,7 @@ namespace FireBrowser.Pages
             s.CoreWebView2.NavigationStarting += (sender, args) => {
               
             };
-            string originalUserAgent = "";
+        
             s.CoreWebView2.NavigationCompleted += (sender, args) =>
             {
                 if (!args.IsSuccess)
@@ -169,51 +154,8 @@ namespace FireBrowser.Pages
             };
         }
 
-        private void ContextMenuItem_Click(object sender, RoutedEventArgs e)
+        private async void Grid_Loaded_1(object sender, RoutedEventArgs e)
         {
-            switch ((sender as AppBarButton).Tag)
-            {
-                case "MenuBack":
-                    if (WebViewElement.CanGoBack == true)
-                    {
-                        WebViewElement.CoreWebView2.GoBack();
-                    }
-                    break;
-                case "Forward":
-                    if (WebViewElement.CanGoForward == true)
-                    {
-                        WebViewElement.CoreWebView2.GoForward();
-                    }
-                    break;
-                case "Source":
-                    WebViewElement.CoreWebView2.OpenDevToolsWindow();
-                    break;
-                case "Select":
-                    
-
-                    break;
-                case "Taskmgr":
-                    WebViewElement.CoreWebView2.OpenTaskManagerWindow();
-                    break;
-                case "Read":
-
-                    break;
-                case "Save":
-
-                    break;
-                case "Share":                 
-                      SystemHelper.ShowShareUIURL(WebViewElement.CoreWebView2.DocumentTitle, WebViewElement.CoreWebView2.Source);
-                    break;
-                case "Print":
-                   
-                    break;
-            }
-            Ctx.Hide();
-        }
-
-        private async void Grid_Loaded(object sender, RoutedEventArgs e)
-        {
-
             if (Grid.Children.Count == 0) Grid.Children.Add(WebViewElement);
 
             await WebViewElement.EnsureCoreWebView2Async();
