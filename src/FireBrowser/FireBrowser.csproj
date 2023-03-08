@@ -18,13 +18,18 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
-    <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+    <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
+    <PackageCertificateThumbprint>
+    </PackageCertificateThumbprint>
+    <PackageCertificateKeyFile>FireBrowser_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -139,9 +144,7 @@
     <Compile Include="Core\ColorConverter.cs" />
     <Compile Include="Core\Icons.cs" />
     <Compile Include="Core\Settings.cs" />
-    <Compile Include="Core\TLD.cs" />
     <Compile Include="Core\UI.cs" />
-    <Compile Include="Core\UrlHelper.cs" />
     <Compile Include="Core\UserData.cs" />
     <Compile Include="Launch\Setup.xaml.cs">
       <DependentUpon>Setup.xaml</DependentUpon>
@@ -151,6 +154,9 @@
     </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Incognito.xaml.cs">
+      <DependentUpon>Incognito.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\NewTab.xaml.cs">
       <DependentUpon>NewTab.xaml</DependentUpon>
@@ -208,8 +214,6 @@
     <Content Include="Assets\Icons\Tabs.svg" />
     <Content Include="Assets\Illustrations\NewTab\BackgroundBing.svg" />
     <Content Include="Assets\Illustrations\NewTab\BackgroundNone.svg" />
-    <Content Include="Assets\JS\firebrowser-removead.js" />
-    <Content Include="Assets\JS\simplyread-firebrowser-min.js" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
@@ -217,7 +221,6 @@
     <Content Include="Assets\LargeTile.scale-400.png" />
     <Content Include="Assets\Launch\firebrowser.mp4" />
     <Content Include="Assets\logo.png" />
-    <Content Include="Assets\public_domains.txt" />
     <Content Include="Assets\SmallTile.scale-100.png" />
     <Content Include="Assets\SmallTile.scale-125.png" />
     <Content Include="Assets\SmallTile.scale-150.png" />
@@ -258,6 +261,8 @@
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <None Include="FireBrowser_TemporaryKey.pfx" />
+    <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -292,6 +297,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Incognito.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -362,10 +371,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Labs.WinUI.SettingsControls">
-      <Version>0.0.12</Version>
+      <Version>0.0.13</Version>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm">
-      <Version>8.0.0</Version>
+      <Version>8.1.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
@@ -382,19 +391,8 @@
     <PackageReference Include="Microsoft.Web.WebView2">
       <Version>1.0.1343.22</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Win32.Registry">
-      <Version>6.0.0-preview.5.21301.5</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Windows.CsWin32">
-      <Version>0.2.188-beta</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="QRCoder">
-      <Version>1.4.3</Version>
+      <Version>13.0.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -410,9 +408,21 @@
     <Content Include="Fonts\Segoe Fluent Icons.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FireBrowserHelpers\FireBrowserHelpers.csproj">
+      <Project>{276be652-8b48-40f3-ad2e-e555bc63ba54}</Project>
+      <Name>FireBrowserHelpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FireBrowserInterop\FireBrowserInterop.csproj">
       <Project>{c0b577c9-a42d-49db-b53b-4b9063e16328}</Project>
       <Name>FireBrowserInterop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FireBrowserQr\FireBrowserQr.csproj">
+      <Project>{eca85c13-60c2-472c-a319-0f1e6573ab95}</Project>
+      <Name>FireBrowserQr</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FireBrowserUrlHelper\FireBrowserUrlHelper.csproj">
+      <Project>{57797dc9-ce3f-4ecf-b2d4-db5b724bfcee}</Project>
+      <Name>FireBrowserUrlHelper</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

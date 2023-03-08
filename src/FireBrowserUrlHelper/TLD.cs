@@ -1,20 +1,23 @@
 ﻿using System;
-using Windows.ApplicationModel;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace FireBrowser.Core
+namespace FireBrowserUrlHelper
 {
-    internal class TLD
+    public class TLD
     {
         public static string KnownDomains { get; set; }
 
         public static async void LoadKnownDomains()
         {
             // Top level domain list
-            StorageFolder appInstalledFolder = Package.Current.InstalledLocation;
-            StorageFolder assets = await appInstalledFolder.GetFolderAsync("Assets");
-            var file = await assets.GetFileAsync("public_domains.txt");
-            KnownDomains = await FileIO.ReadTextAsync(file);
+
+            StorageFile assets = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///FireBrowserUrlHelper/List/public_domains.txt"));
+   
+            KnownDomains = await FileIO.ReadTextAsync(assets);
         }
 
         public static string GetTLDfromURL(string url)

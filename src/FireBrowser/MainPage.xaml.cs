@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Windows.ApplicationModel.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI;
@@ -12,20 +11,17 @@ using FireBrowser.Controls;
 using Microsoft.UI.Xaml.Controls;
 using FireBrowser.Pages;
 using Windows.ApplicationModel;
-using Windows.Storage;
-using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Windows.UI.Xaml.Media.Animation;
-using static FireBrowser.Core.UserData;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
 using static FireBrowser.App;
-using System.Reflection.PortableExecutable;
-using QRCoder;
+using FireBrowserQr;
+using FireBrowserUrlHelper;
 using FireBrowser.Core;
-using Windows.System;
-using FireBrowser.Pages.SettingsPages;
-using FireBrowser.Pages;
+using NewTab = FireBrowser.Pages.NewTab;
+using FireBrowserHelpers.ReadingMode;
+using FireBrowserHelpers.AdBlocker;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -42,13 +38,16 @@ namespace FireBrowser
         public DataTemplate DefaultTemplate { get; set; }
     }
 
-   
+ 
+
     public sealed partial class MainPage : Page
     {
+      
         public MainPage()
         {
             this.InitializeComponent();
             ButtonVisible();
+            
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
@@ -66,12 +65,11 @@ namespace FireBrowser
                 }
             };
 
-           
-
             Window.Current.SetTitleBar(CustomDragRegion);
-            Tabs.TabItems.Add(CreateNewTab());
+          
         }
 
+        #region buttons
         public void ButtonVisible()
         {
             ReadButton = FireBrowserInterop.SettingsHelper.GetSetting("Readbutton");
@@ -147,6 +145,13 @@ namespace FireBrowser
         public static string Historybtn { get; set; }
         public static string QrCode { get; set; }
 
+        #endregion
+
+        public static WebContent WebPageContent
+        {
+            get { return (Window.Current.Content as Frame)?.Content as WebContent; }
+        }
+
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -154,7 +159,43 @@ namespace FireBrowser
 
             if (e.Parameter != null)
             {
-                var startup = await StartupTask.GetAsync("FireBrowserStartUp");
+                AppLaunchPasser passer = (AppLaunchPasser)e.Parameter;
+
+                switch (passer.LaunchType)
+                {
+                    case AppLaunchType.LaunchBasic:
+                        Tabs.TabItems.Add(CreateNewTab(typeof(NewTab)));
+                        break;
+                    case AppLaunchType.LaunchIncognito:
+                        RequestedTheme = ElementTheme.Default;
+                        ViewModel.IsIncognito = true;
+                        History.IsEnabled = false;
+                        DownBtn.IsEnabled = false;
+                        FavoritesButton.IsEnabled = false;
+                        Tabs.TabStripHeader = "Incognito";
+                        WebPageContent.incog = true;
+                        //To-Do...
+                        Tabs.TabItems.Add(CreateNewTab(typeof(Incognito)));
+                        
+                        break;
+                    case AppLaunchType.LaunchStartup:
+                        var startup = await StartupTask.GetAsync("FireBrowserStartUp");
+                        Tabs.TabItems.Add(CreateNewTab(typeof(NewTab)));
+                        break;
+                    case AppLaunchType.FirstLaunch:
+                       
+                        break;
+                    case AppLaunchType.FilePDF:
+                       
+                        break;
+                    case AppLaunchType.URIHttp:
+                        Tabs.TabItems.Add(CreateNewTab(typeof(WebContent),
+                                                       new Uri(passer.LaunchData.ToString())));
+                        break;
+                    case AppLaunchType.URIFireBrowser:
+                        Tabs.TabItems.Add(CreateNewTab(typeof(NewTab)));
+                        break;
+                }
             }
             else
             {
@@ -360,7 +401,7 @@ namespace FireBrowser
 
      
 
-        private async void UrlBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        private void UrlBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
@@ -557,7 +598,7 @@ namespace FireBrowser
                         TabWebView.Close();
                     }
                     TabContent.Navigate(typeof(Pages.NewTab), passer, new DrillInNavigationTransitionInfo());
-                    passer.Tab.Header = "FireBrowser HomePage";
+                    passer.Tab.Header = "New Tab";
                     passer.Tab.IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = Symbol.Home };
                     UrlBox.Text = "";
                     break;
@@ -622,16 +663,14 @@ namespace FireBrowser
                 case "ReadingMode":
                     if (TabContent.Content is WebContent)
                     {
-                        StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/JS/simplyread-firebrowser-min.js"));
-                        string jscript = await FileIO.ReadTextAsync(file);
+                        string jscript = await ReadabilityHelper.GetReadabilityScriptAsync();
                         await (TabContent.Content as WebContent).WebViewElement.CoreWebView2.ExecuteScriptAsync(jscript);
                     }
                     break;
                 case "AdBlock":
                     if (TabContent.Content is WebContent)
                     {
-                        StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/JS/firebrowser-removead.js"));
-                        string jscript = await FileIO.ReadTextAsync(file);
+                        string jscript = await AdBlockHelper.GetAdblockReadAsync();
                         await (TabContent.Content as WebContent).WebViewElement.CoreWebView2.ExecuteScriptAsync(jscript);
                         (TabContent.Content as WebContent).WebViewElement.CoreWebView2.Reload();
                     }

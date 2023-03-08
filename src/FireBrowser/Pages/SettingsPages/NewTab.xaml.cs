@@ -1,5 +1,5 @@
 ﻿using FireBrowser.Core;
-using QRCoder;
+using FireBrowserQr;
 using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;

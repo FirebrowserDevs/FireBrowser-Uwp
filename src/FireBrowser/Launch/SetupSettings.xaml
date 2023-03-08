@@ -7,7 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
 
     <Frame>
         <StackPanel VerticalAlignment="Center">
@@ -35,8 +36,73 @@
                     <x:String>Yahoo!</x:String>
                 </ComboBox>
             </labs:SettingsCard>
+            <labs:SettingsCard VerticalAlignment="Top" Margin="0,5,0,0" Width="600">
+                <labs:SettingsCard.Header>
+                    Set BackGround Type
+                </labs:SettingsCard.Header>
+                <labs:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xeb3c;"/>
+                </labs:SettingsCard.HeaderIcon>
+                <ComboBox  x:Name="Background" SelectionChanged="Background_SelectionChanged">
+                    <x:String>Default</x:String>
+                    <x:String>Featured</x:String>
+                </ComboBox>
+            </labs:SettingsCard>
+            <labs:SettingsExpander VerticalAlignment="Top" Margin="0,5,0,0" Width="600">
+                <labs:SettingsExpander.Header>
+                    Toolbar Icons
+                </labs:SettingsExpander.Header>
+                <labs:SettingsExpander.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE70F;"/>
+                </labs:SettingsExpander.HeaderIcon>
+                <labs:SettingsExpander.Items>
+                    <labs:SettingsCard>
+                        <ToggleSwitch x:Name="Read" Toggled="Read_Toggled" IsOn="True"/>
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE736;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard>
+                        <ToggleSwitch x:Name="Adbl" Toggled="Adbl_Toggled" IsOn="True"/>
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xEA18;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard>
+                        <ToggleSwitch x:Name="Dwbl"  Toggled="Dwbl_Toggled" IsOn="True"/>
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE896;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard>
+                        <ToggleSwitch x:Name="Trbl" Toggled="Trbl_Toggled" IsOn="True"/>
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE87E;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard>
+                        <ToggleSwitch x:Name="Frbl" Toggled="Frbl_Toggled" IsOn="True"/>
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE734;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard>
+                        <ToggleSwitch x:Name="Hsbl" Toggled="Hsbl_Toggled" IsOn="True"/>
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE81C;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard>
+                        <ToggleSwitch x:Name="Qrbl" Toggled="Qrbl_Toggled" IsOn="True"/>
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xED14;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                </labs:SettingsExpander.Items>
+            </labs:SettingsExpander>
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,0" FontStyle="Normal" FontWeight="Bold">* All Values Need To By Set Else App Crash *</TextBlock>
             <Button Click="Install_Click" x:Name="Install" Margin="0,8,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
-               Confirm Setup ( Note Search Engine Needs To have Value )
+               Confirm Setup
             </Button>
         </StackPanel>
     </Frame>

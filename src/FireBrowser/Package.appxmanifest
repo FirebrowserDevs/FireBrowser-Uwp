@@ -11,15 +11,15 @@
   IgnorableNamespaces="uap mp iot2 desktop4 uap3">
 
   <Identity
-    Name="104430cd-bfef-4f87-bd53-11ebfdade5e8"
+    Name="57443TechFireX.30017BED6DE0B"
     Publisher="CN=Jarno Beerten"
-    Version="0.0.3.0" />
+    Version="0.0.6.0" />
 
-  <mp:PhoneIdentity PhoneProductId="104430cd-bfef-4f87-bd53-11ebfdade5e8" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="000e3518-11a8-42f6-8c44-a7cc1af06c44" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>FireBrowser</DisplayName>
-    <PublisherDisplayName>Jarno Beerten</PublisherDisplayName>
+    <DisplayName>FireBrowser-Alpha</DisplayName>
+    <PublisherDisplayName>Bluebird Devs</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -38,7 +38,7 @@
 	  desktop4:SupportsMultipleInstances="true"
       iot2:SupportsMultipleInstances="true">
       <uap:VisualElements
-        DisplayName="FireBrowser"
+        DisplayName="FireBrowser-Alpha"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="FireBrowser"

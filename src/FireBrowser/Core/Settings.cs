@@ -96,9 +96,6 @@ namespace FireBrowser.Core
         //To-Do: UIPin kind, aka Native or Web or Custom (custom is extension)
         public class UIPin
         {
-            ResourceLoader res = ResourceLoader.GetForCurrentView();
-            string _res;
-
             public string Icon { get; set; }
             public string ID { get; set; }
             public string TextResource { get; set; }

@@ -2,22 +2,10 @@
 using FireBrowser.Launch;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Web;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using static FireBrowser.Core.UserData;
@@ -49,7 +37,6 @@ namespace FireBrowser
             LaunchStartup,
             FirstLaunch,
             FilePDF,
-            FileHTML,
             URIHttp,
             URIFireBrowser,
         }
@@ -63,7 +50,7 @@ namespace FireBrowser
         private void LoadSettings()
         {
             SearchUrl = FireBrowserInterop.SettingsHelper.GetSetting("SearchUrl");
-            TLD.LoadKnownDomains();
+            FireBrowserUrlHelper.TLD.LoadKnownDomains();
         }
 
         private void TryEnablePrelaunch()
@@ -71,7 +58,29 @@ namespace FireBrowser
             Windows.ApplicationModel.Core.CoreApplication.EnablePrelaunch(true);
         }
 
-        protected async override void OnActivated(IActivatedEventArgs args)
+        protected override void OnFileActivated(FileActivatedEventArgs args)
+        {
+            AppLaunchPasser passer = new()
+            {
+                //To-Do: temporary
+                LaunchType = AppLaunchType.FilePDF,
+                LaunchData = args.Files
+            };
+
+            Frame rootFrame = Window.Current.Content as Frame;
+
+            if (rootFrame == null)
+            {
+                rootFrame = new Frame();
+                rootFrame.NavigationFailed += OnNavigationFailed;
+
+                if (rootFrame.Content == null) rootFrame.Navigate(typeof(MainPage), passer);
+
+                Window.Current.Activate();
+                Window.Current.Content = rootFrame;
+            }
+        }
+        protected override void OnActivated(IActivatedEventArgs args)
         {
             if (args.Kind == ActivationKind.Protocol)
             {
@@ -80,12 +89,32 @@ namespace FireBrowser
 
                 if (rootFrame == null)
                 {
-                 
-                    AppLaunchPasser passer = new()
+                    AppLaunchType kind = AppLaunchType.LaunchBasic;
+
+                    if (eventArgs.Uri.Scheme == "firebrowser")
                     {
+                        kind = AppLaunchType.URIFireBrowser;
+                        //Part of the URL after airplane://
+                        switch (eventArgs.Uri.Authority)
+                        {
+                            case "incognito":
+                                kind = AppLaunchType.LaunchIncognito;
+                                break;
+
+                        }
+
+                    }
+                    else
+                    {
+                        kind = AppLaunchType.URIHttp;
+                    }
+
+                    AppLaunchPasser passer = new AppLaunchPasser()
+                    {
+                        LaunchType = kind,
                         LaunchData = eventArgs.Uri,
                     };
-                 
+
                     rootFrame = new Frame();
                     rootFrame.NavigationFailed += OnNavigationFailed;
 
@@ -97,31 +126,28 @@ namespace FireBrowser
             }
             else
             {
-               
-                    Frame rootFrame = Window.Current.Content as Frame;
-                    if (rootFrame == null)
-                    {
-                        rootFrame = new Frame();
-                        Window.Current.Content = rootFrame;
-                    }
+                Frame rootFrame = Window.Current.Content as Frame;
+                if (rootFrame == null)
+                {
+                    rootFrame = new Frame();
+                    Window.Current.Content = rootFrame;
+                }
 
+                string payload = string.Empty;
+                AppLaunchPasser passer = new AppLaunchPasser()
+                {
+                    LaunchType = AppLaunchType.LaunchStartup,
+                    LaunchData = payload
+                };
 
-                    string payload = string.Empty;
-                    if (args.Kind == ActivationKind.StartupTask)
-                    {
-                        var startupArgs = args as StartupTaskActivatedEventArgs;
-                        payload = ActivationKind.StartupTask.ToString();
-                    }
-        
-                AppLaunchPasser passer = new()
-                    {
-                        LaunchType = AppLaunchType.LaunchStartup,
-                        LaunchData = payload
-                    };
+                if (args.Kind == ActivationKind.StartupTask)
+                {
+                    var startupArgs = args as StartupTaskActivatedEventArgs;
+                    payload = ActivationKind.StartupTask.ToString();
+                }
 
-                    rootFrame.Navigate(typeof(MainPage), passer);
-                    Window.Current.Activate();
-                      
+                rootFrame.Navigate(typeof(MainPage), passer);
+                Window.Current.Activate();
             }
         }
 
@@ -168,7 +194,13 @@ namespace FireBrowser
 
             if (e.PrelaunchActivated == false)
             {
-               
+                AppLaunchPasser passer = new AppLaunchPasser()
+                {
+                    LaunchType = AppLaunchType.LaunchBasic,
+                    LaunchData = e.Arguments
+                };
+
+
                 // On Windows 10 version 1607 or later, this code signals that this app wants to participate in prelaunch
                 if (canEnablePrelaunch)
                 {
@@ -195,7 +227,7 @@ namespace FireBrowser
                         // When the navigation stack isn't restored navigate to the first page,
                         // configuring the new page by passing required information as a navigation
                         // parameter
-                        rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                        rootFrame.Navigate(typeof(MainPage), passer);
                     }
                     // Ensure the current window is active
                     Window.Current.Activate();

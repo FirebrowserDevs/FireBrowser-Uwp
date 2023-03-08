@@ -6,7 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
     
     <StackPanel Margin="0,0,0,0" Width="1200" Height="700" VerticalAlignment="Center" HorizontalAlignment="Center" >
         <TextBlock HorizontalAlignment="Center" x:Name="txt2" Width="500" Height="40" Margin="500,200,0,0" TextAlignment="Center" FontWeight="Bold" FontSize="24"><Run Text="Introduction"/></TextBlock>

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Toolkit.Uwp.UI;
-using System;
 
 namespace FireBrowser.Core
 {

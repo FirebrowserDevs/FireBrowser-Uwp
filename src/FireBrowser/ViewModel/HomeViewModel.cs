@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using FireBrowser.Core;
-using System;
 
 namespace FireBrowser.ViewModel
 {

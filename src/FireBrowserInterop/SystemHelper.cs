@@ -17,6 +17,16 @@ namespace FireBrowserInterop
             }
         }
 
+
+        public static void WriteStringToClipboard(string text)
+        {
+            DataPackage dataPackage = new DataPackage()
+            {
+                RequestedOperation = DataPackageOperation.Copy
+            };
+            dataPackage.SetText(text);
+            Clipboard.SetContent(dataPackage);
+        }
         public static string GetSystemArchitecture()
         {
             string architecture = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");

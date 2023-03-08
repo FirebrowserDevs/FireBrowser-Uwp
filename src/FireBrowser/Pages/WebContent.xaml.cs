@@ -1,9 +1,11 @@
 ﻿using FireBrowser.Core;
+using FireBrowserInterop;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Reflection;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -30,8 +32,9 @@ namespace FireBrowser.Pages
         } 
 
         private bool fullScreen = false;
+        
 
-        private MainPage MainPage
+        public static MainPage MainPageContent
         {
             get { return (Window.Current.Content as Frame)?.Content as MainPage; }
         }
@@ -48,21 +51,23 @@ namespace FireBrowser.Pages
                 if (isfullmode)
                 {
                     view.ExitFullScreenMode();
-                    MainPage.HideToolbar(false);
+                    MainPageContent.HideToolbar(false);
                 }
                 else
                 {
                     view.TryEnterFullScreenMode();
-                    MainPage.HideToolbar(true);
+                    MainPageContent.HideToolbar(true);
 
                 }
             }
         }
 
         Passer param;
+        public bool incog = false;
+
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-           
+          
             base.OnNavigatedTo(e);
             param = e.Parameter as Passer;
             await WebViewElement.EnsureCoreWebView2Async();
@@ -72,16 +77,31 @@ namespace FireBrowser.Pages
             var PageParam = @"{""format"": ""png"", ""captureBeyondViewport"": true, ""clip"": {""x"": 0, ""y"": 0, ""width"":" + "document.body.scrollWidth" + @", ""height"":" + "document.body.scrollHeight" + @", ""scale"": 1.0" + "}}";
             WebViewElement.CoreWebView2.CallDevToolsProtocolMethodAsync("Page.captureScreenshot", PageParam);
 
-            if (launchurl != null)
+           
+
+            if (param?.Param != null)
             {
-                WebViewElement.Source = new Uri(launchurl);
-                launchurl = null;
+              
+                WebViewElement.CoreWebView2.Navigate(param.Param.ToString());
             }
-            //sender.Source = new(param.Param.ToString());
-            var userAgent = s?.CoreWebView2.Settings.UserAgent;
-            userAgent = userAgent.Substring(0, userAgent.IndexOf("Edg/"));
-            userAgent = userAgent.Replace("Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.63", "Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.63");
-            s.CoreWebView2.Settings.UserAgent = userAgent;
+
+            if (incog == true)
+            {
+                var userAgent = s?.CoreWebView2.Settings.UserAgent;
+                userAgent = userAgent.Substring(0, userAgent.IndexOf("Edg/"));
+                userAgent = userAgent.Replace("BlackIncog", "BlackIncog");
+                s.CoreWebView2.Settings.UserAgent = userAgent;
+            }
+            else
+            {
+                var userAgent = s?.CoreWebView2.Settings.UserAgent;
+                userAgent = userAgent.Substring(0, userAgent.IndexOf("Edg/"));
+                userAgent = userAgent.Replace("Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.63", "Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.63");
+                s.CoreWebView2.Settings.UserAgent = userAgent;
+            }
+
+          
+            
             //MESS
             s.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = true;
             s.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = false;
@@ -120,12 +140,10 @@ namespace FireBrowser.Pages
                 }
                 catch { }
             };
-            s.CoreWebView2.NavigationStarting += (sender, args) => {
-                param.ViewModel.LoadingState = new Microsoft.UI.Xaml.Controls.ProgressRing()
-                {
-                    Width = 16,
-                    Height = 16
-                };
+            s.CoreWebView2.NavigationStarting += async (sender, args) => {
+                MainPageContent.LoadingRing.Visibility = Visibility.Visible;
+                MainPageContent.LoadingRing.IsActive = true;
+                MainPageContent.RefreshBtn.Visibility = Visibility.Collapsed;
             };
         
             s.CoreWebView2.NavigationCompleted += (sender, args) =>
@@ -135,11 +153,9 @@ namespace FireBrowser.Pages
                    
                 }
 
-                param.ViewModel.LoadingState = new FontIcon()
-                {
-                    Glyph = "\uF13E",
-                    FontSize = 16
-                };
+                MainPageContent.LoadingRing.Visibility = Visibility.Collapsed;
+                MainPageContent.LoadingRing.IsActive = false;
+                MainPageContent.RefreshBtn.Visibility = Visibility.Visible;
 
                 s.CoreWebView2.ContainsFullScreenElementChanged += (sender, args) =>
                 {
@@ -153,27 +169,20 @@ namespace FireBrowser.Pages
                 if (param.TabView.SelectedItem == param.Tab)
                 {
                     param.ViewModel.CurrentAddress = sender.Source;
-                    param.ViewModel.SecurityIcon = sender.Source.Contains("https") ? "\uE72E" : "\uE785";
+                  
                 }              
             };
             s.CoreWebView2.NewWindowRequested += (sender, args) =>
             {
                 //To-Do: Check if it should be a popup or tab. Can use args.something for that.
                 //To-Do: Get the currently selected tab's position and launch the new one next to it
-                ContentDialog dialog = new ContentDialog();
-                dialog.Title = "Not Working Is Alpha Currently";
-                dialog.PrimaryButtonText = "OK";      
-                dialog.DefaultButton = ContentDialogButton.Primary;
-                dialog.ShowAsync();
-
+              
                 MainPage mp = new();
                 param?.TabView.TabItems.Add(mp.CreateNewTab(typeof(WebContent), args.Uri));
                 args.Handled = true;
             };
         }
-
         string SelectionText;
-        string LinkUri;
         private void CoreWebView2_ContextMenuRequested(CoreWebView2 sender, CoreWebView2ContextMenuRequestedEventArgs args)
         {
             var flyout1 = (Microsoft.UI.Xaml.Controls.CommandBarFlyout)Resources["Ctx"];
@@ -186,9 +195,21 @@ namespace FireBrowser.Pages
                 Position = args.Location,
                 ShowMode = FlyoutShowMode.Standard
             };
+
+            if (args.ContextMenuTarget.Kind == CoreWebView2ContextMenuTargetKind.SelectedText)
+            {
+                flyout = (Microsoft.UI.Xaml.Controls.CommandBarFlyout)Resources["Ctx"];
+                SelectionText = args.ContextMenuTarget.SelectionText;
+            }
+
+            else if (args.ContextMenuTarget.HasLinkUri)
+            {
+                flyout = (Microsoft.UI.Xaml.Controls.CommandBarFlyout)Resources["Ctx"];
+                SelectionText = args.ContextMenuTarget.LinkText;
+                SelectionText = args.ContextMenuTarget.LinkUri;
+            }
+
             flyout?.ShowAt(WebViewElement, options);
-            if (args.ContextMenuTarget.HasSelection) { }//todo
-            else { } //todo
             args.Handled = true;
         }
 
@@ -215,6 +236,10 @@ namespace FireBrowser.Pages
 
 
                     break;
+                case "Copy":
+                    
+                    FireBrowserInterop.SystemHelper.WriteStringToClipboard(SelectionText);
+                    break;
                 case "Taskmgr":
                     WebViewElement.CoreWebView2.OpenTaskManagerWindow();
                     break;
@@ -234,7 +259,7 @@ namespace FireBrowser.Pages
             Ctx.Hide();
         }
 
-        private async void Grid_Loaded_1(object sender, RoutedEventArgs e)
+        private void Grid_Loaded_1(object sender, RoutedEventArgs e)
         {
             if (Grid.Children.Count == 0) Grid.Children.Add(WebViewElement);
         }

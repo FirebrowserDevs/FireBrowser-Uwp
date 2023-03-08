@@ -15,8 +15,6 @@ namespace FireBrowser.Pages.SettingsPages
     public sealed partial class About : Page
     {
         Passer param;
-
-        int i = 0;
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);

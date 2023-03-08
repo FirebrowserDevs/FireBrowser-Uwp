@@ -305,7 +305,7 @@
     <Grid>
         <firebrowser:CustomTabView
             x:Name="Tabs"
-            Padding="0"
+            Padding="0"         
             VerticalAlignment="Stretch"
             AllowDropTabs="True"
             CacheMode="BitmapCache"
@@ -385,9 +385,16 @@
                     Tag="Refresh"
                     Height="32"
                     Width="32"
-                    Click="ToolbarButtonClick"
-                    Content="{x:Bind ViewModel.LoadingState, Mode=OneWay}">
+                    x:FieldModifier="Public"
+                    x:Name="RefreshBtn"
+                    Click="ToolbarButtonClick"                  
+                    >
+                    <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xe72c;" />
                 </Button>
+                <muxc:ProgressRing
+                        x:Name="LoadingRing"
+                        x:FieldModifier="public"
+                        IsActive="False" Margin="3,0,3,0" Width="16" Height="16" Visibility="Collapsed"/>
                 <Button
                     
                     Style="{StaticResource QuietButtonStyle}"

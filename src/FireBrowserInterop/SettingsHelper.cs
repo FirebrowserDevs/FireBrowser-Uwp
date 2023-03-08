@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 
 namespace FireBrowserInterop

@@ -25,6 +25,16 @@
                 </AppBarButton.Icon>
             </AppBarButton>
             <muxc:CommandBarFlyout.SecondaryCommands>
+                <AppBarButton  Click="ContextMenuItem_Click" Label="Copy" Tag="Copy">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator 
+                        Modifiers="Control" 
+                        Key="C" />
+                    </AppBarButton.KeyboardAccelerators>
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe8c8;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
                 <AppBarButton  Click="ContextMenuItem_Click" Label="Select all" Tag="Select">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator 
@@ -59,22 +69,11 @@
                 </AppBarButton>
                 <!-- Todo: add inspect and possibly a separator for these dev options-->
                 <AppBarButton  Click="ContextMenuItem_Click"  Label="View source" Tag="Source">
-                    <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator 
-                        Modifiers="Control" 
-                        Key="V"
-                        />
-                    </AppBarButton.KeyboardAccelerators>
                     <AppBarButton.Icon>
                         <FontIcon Glyph="&#xF2EF;"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
                 <AppBarButton Click="ContextMenuItem_Click" Label="TaskManager" Tag="Taskmgr">
-                    <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator 
-                        Modifiers="Control" 
-                        Key="T" />
-                    </AppBarButton.KeyboardAccelerators>
                     <AppBarButton.Icon>
                         <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE9F5;"/>
                     </AppBarButton.Icon>

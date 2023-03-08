@@ -23,14 +23,13 @@ namespace FireBrowser.Pages
     /// </summary>
     public sealed partial class NewTab : Page
     {
+       
         public HomeViewModel ViewModel { get; set; }
         public NewTab()
         {
             this.InitializeComponent();
 
             var set = FireBrowserInterop.SettingsHelper.GetSetting("Background");
-
-       
 
             if (set.Equals("0"))
             {
