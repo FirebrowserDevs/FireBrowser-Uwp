@@ -1,5 +1,8 @@
 ﻿using FireBrowser.Core;
+using Microsoft.Data.Sqlite;
 using System;
+using System.IO;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -52,12 +55,35 @@ namespace FireBrowser.Launch
                 Install.IsEnabled = false;
             }
         }
-        private void Install_Click(object sender, RoutedEventArgs e)
+
+        public async void CreateDatabase()
         {
-            
+            await ApplicationData.Current.LocalFolder.CreateFileAsync("History.db", CreationCollisionOption.OpenIfExists);
+
+            var connectionStringBuilder = new SqliteConnectionStringBuilder();
+            connectionStringBuilder.DataSource = Path.Combine(ApplicationData.Current.LocalFolder.Path, "History.db");
+
+            using (var db = new SqliteConnection(connectionStringBuilder.ConnectionString))
+            {
+                db.Open();
+
+                string tableCommand = "CREATE TABLE IF NOT " +
+                     "EXISTS urls (Url NVARCHAR(2083) PRIMARY KEY NOT NULL, " +
+                     "Title NVARCHAR(2048), " +
+                     "Visit_Count INTEGER, " +
+                     "Last_Visit_Time DATETIME)";
+
+
+                SqliteCommand createTable = new SqliteCommand(tableCommand, db);
+
+                createTable.ExecuteReader();
+            }
+        }
+        private async void Install_Click(object sender, RoutedEventArgs e)
+        {
+                CreateDatabase();   
                 FireBrowserInterop.SettingsHelper.SetSetting("LaunchFirst", "0");
-                FireBrowserInterop.SystemHelper.RestartApp();
-            
+                FireBrowserInterop.SystemHelper.RestartApp();         
         }
 
         private void Read_Toggled(object sender, RoutedEventArgs e)

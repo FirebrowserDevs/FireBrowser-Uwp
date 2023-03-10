@@ -184,7 +184,7 @@
                             <TextBox
                                 x:Name="HistorySearchMenuItem"
                                 Height="35"
-                               
+                               TextChanged="HistorySearchMenuItem_TextChanged"
                                 Visibility="Collapsed" />
                             <StackPanel
                                 Grid.Column="1"
@@ -198,7 +198,8 @@
                                     Margin="0,0,10,0"
                                     Padding="0"
                                     Background="Transparent"
-                                    BorderThickness="0">
+                                    BorderThickness="0"
+                                    Click="SearchHistoryMenuFlyout_Click">
 
                                     <Viewbox
                                         Width="20"
@@ -240,15 +241,30 @@
                             </StackPanel>
                             <!--  History  -->
                             <ListView
-                                x:Name="SmallHistoryMenu"
+                               x:Name="HistoryTemp"
                                 Grid.Row="1"
                                 Grid.ColumnSpan="2"
-                                HorizontalAlignment="Stretch"
+                                 HorizontalAlignment="Stretch"
                                 HorizontalContentAlignment="Stretch"
                                 CanReorderItems="True"
                                 CanDragItems="True"
+                                 SelectionChanged="HistoryTemp_SelectionChanged"
                               >
-
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Image Grid.Column="0" Width="32" Height="32" Source="{Binding ImageSource}" />
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock Text="{Binding Title}" FontWeight="Bold" Margin="5,0,0,0" />
+                                                <TextBlock Text="{Binding Url}" Margin="5,0,0,0" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
                             </ListView>
                         </Grid>
                     </Flyout>
@@ -430,11 +446,9 @@
 
 
                 <muxc:TeachingTip
-                    x:Uid="ToggleThemeTeachingTip1"
-                    
+                    x:Uid="ToggleThemeTeachingTip1"                    
                     Width="1228"
-                    HorizontalAlignment="Right"
-               
+                    HorizontalAlignment="Right"              
                     ActionButtonContent="Allow"
                     ActionButtonStyle="{ThemeResource AccentButtonStyle}">
                 </muxc:TeachingTip>
@@ -442,8 +456,10 @@
                 <StackPanel HorizontalAlignment="Right">
                     <Button
                         Style="{ThemeResource QuietButtonStyle}"
-                        Tag="AddFavoriteFlyout">
-                       
+                        Tag="AddFavoriteFlyout"
+                        Click="ToolbarButtonClick"
+                        >
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe734;"/>
                         <Button.Flyout>
                             <Flyout>
                                 <StackPanel>
@@ -458,6 +474,7 @@
                                      
                                         Content="Add"
                                         Tag="AddFavorite" 
+                                        Click="ToolbarButtonClick"
                                         Margin="0,8,0,0"/>
                                 </StackPanel>
                             </Flyout>
@@ -510,7 +527,8 @@
                 <Button
                     x:Name="FavoritesButton"                 
                     Style="{ThemeResource QuietButtonStyle}"
-                    Tag="Favorites">
+                    Tag="Favorites"
+                    Click="ToolbarButtonClick">
                     <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE734;" />
                     <Button.Flyout>
                         <Flyout>
@@ -519,7 +537,7 @@
                                 MaxWidth="300"
                                 MaxHeight="600">
                                 <TextBox />
-                                <ListView x:Name="FavoritesListView" Margin="0,7,0,0">
+                                <ListView x:Name="FavoritesListView" Margin="0,7,0,0" SelectionChanged="FavoritesListView_SelectionChanged">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel>
@@ -539,7 +557,8 @@
                     x:Name="History"
                     Flyout="{x:Bind HistoryFlyoutMenu}"
                     IsEnabled="True"
-                    Style="{ThemeResource QuietButtonStyle}">
+                    Style="{ThemeResource QuietButtonStyle}"
+                    Click="History_Click">
                     <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE81C;" />
                 </Button>
                 <Button

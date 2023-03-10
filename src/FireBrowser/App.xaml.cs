@@ -99,8 +99,7 @@ namespace FireBrowser
                         {
                             case "incognito":
                                 kind = AppLaunchType.LaunchIncognito;
-                                break;
-
+                                break;                         
                         }
 
                     }

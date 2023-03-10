@@ -22,6 +22,15 @@ using FireBrowser.Core;
 using NewTab = FireBrowser.Pages.NewTab;
 using FireBrowserHelpers.ReadingMode;
 using FireBrowserHelpers.AdBlocker;
+using Microsoft.Data.Sqlite;
+using System.Collections.Generic;
+using Windows.Storage;
+using System.IO;
+using SQLitePCL;
+using System.Diagnostics;
+using FireBrowserFavorites;
+using System.Collections.Immutable;
+using System.Linq;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -172,20 +181,17 @@ namespace FireBrowser
                         History.IsEnabled = false;
                         DownBtn.IsEnabled = false;
                         FavoritesButton.IsEnabled = false;
-                        Tabs.TabStripHeader = "Incognito";
                         WebPageContent.incog = true;
                         //To-Do...
                         Tabs.TabItems.Add(CreateNewTab(typeof(Incognito)));
                         
                         break;
-                    case AppLaunchType.LaunchStartup:
-                        var startup = await StartupTask.GetAsync("FireBrowserStartUp");
+                    case AppLaunchType.LaunchStartup:                 
+                        //this works for some reason when set startup first it fails to add newtab        
                         Tabs.TabItems.Add(CreateNewTab(typeof(NewTab)));
+                        var startup = await StartupTask.GetAsync("FireBrowserStartUp");
                         break;
                     case AppLaunchType.FirstLaunch:
-                       
-                        break;
-                    case AppLaunchType.FilePDF:
                        
                         break;
                     case AppLaunchType.URIHttp:
@@ -675,6 +681,21 @@ namespace FireBrowser
                         (TabContent.Content as WebContent).WebViewElement.CoreWebView2.Reload();
                     }
                     break;
+                case "AddFavoriteFlyout":
+                    if (TabContent.Content is WebContent)
+                    {
+                        FavoriteTitle.Text = TabWebView.CoreWebView2.DocumentTitle;
+                        FavoriteUrl.Text = TabWebView.CoreWebView2.Source;
+                    }
+                    break;
+                case "AddFavorite":
+                    FavoritesHelper.AddFavoritesItem(FavoriteTitle.Text, FavoriteUrl.Text);               
+                    break;
+                case "Favorites":
+                    Globals.JsonItemsList = await Json.GetListFromJsonAsync("Favorites.json");
+                    if (Globals.JsonItemsList != null)
+                        FavoritesListView.ItemsSource = Globals.JsonItemsList;
+                    break;
             }
         }
         
@@ -703,5 +724,127 @@ namespace FireBrowser
             sender.TabItems.Remove(args.Tab); 
         }
         #endregion
+       
+        private void FetchBrowserHistory()
+        {
+            Batteries.Init();
+
+            try
+            {
+                // Create a connection to the SQLite database
+                var connectionStringBuilder = new SqliteConnectionStringBuilder();
+                connectionStringBuilder.DataSource = Path.Combine(ApplicationData.Current.LocalFolder.Path, "History.db");
+
+                using (var connection = new SqliteConnection(connectionStringBuilder.ConnectionString))
+                {
+                    // Open the database connection
+                    connection.Open();
+
+                    // Define the SQL query to fetch the browser history
+                    string sql = "SELECT url, title, visit_count, last_visit_time FROM urls ORDER BY last_visit_time DESC";
+
+                    // Create a command object with the SQL query and connection
+                    using (SqliteCommand command = new SqliteCommand(sql, connection))
+                    {
+                        // Execute the SQL query and get the results
+                        using (SqliteDataReader reader = command.ExecuteReader())
+                        {
+                            // Create a list to store the browser history items
+                            List<HistoryItem> historyItems = new List<HistoryItem>();
+
+                            // Iterate through the query results and create a BrowserHistoryItem for each row
+                            while (reader.Read())
+                            {
+                                HistoryItem historyItem = new HistoryItem
+                                {
+                                    Url = reader.GetString(0),
+                                    Title = reader.IsDBNull(1) ? null : reader.GetString(1),
+                                    VisitCount = reader.GetInt32(2),
+                                    LastVisitTime = DateTimeOffset.FromFileTime(reader.GetInt64(3)).DateTime
+                                };
+
+                                var item = historyItem;
+                                item.ImageSource = new BitmapImage(new Uri("https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=" + item.Url + "&size=32"));
+                                historyItems.Add(historyItem);
+                            }
+
+
+                            // Bind the browser history items to the ListView
+                            HistoryTemp.ItemsSource = historyItems;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that might be thrown during the execution of the code
+                Debug.WriteLine($"Error: {ex.Message}");
+            }
+        }
+        private void FavoritesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListView listView = sender as ListView;
+            if (listView.ItemsSource != null)
+            {
+                // Get selected item
+                Globals.JsonItems item = (Globals.JsonItems)listView.SelectedItem;
+                string launchurlfav = item.Url;
+                if (TabContent.Content is WebContent)
+                {
+                    (TabContent.Content as WebContent).WebViewElement.CoreWebView2.Navigate(launchurlfav);
+                }
+                else
+                {
+                    TabContent.Navigate(typeof(WebContent), CreatePasser(launchurlfav));
+                }
+
+            }
+            listView.ItemsSource = null;
+            FavoritesFlyout.Hide();
+        }
+
+        private void History_Click(object sender, RoutedEventArgs e)
+        {
+            FetchBrowserHistory();       
+        }
+        private void HistoryTemp_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListView listView = sender as ListView;
+            if (listView.ItemsSource != null)
+            {
+                // Get selected item
+                HistoryItem item = (HistoryItem)listView.SelectedItem;
+                string launchurlfav = item.Url;
+                if (TabContent.Content is WebContent)
+                {                
+                    (TabContent.Content as WebContent).WebViewElement.CoreWebView2.Navigate(launchurlfav);
+                }
+                else
+                {
+                    TabContent.Navigate(typeof(WebContent), CreatePasser(launchurlfav));
+                }
+            }
+            listView.ItemsSource = null;
+            HistoryFlyoutMenu.Hide();
+        }
+
+        private void SearchHistoryMenuFlyout_Click(object sender, RoutedEventArgs e)
+        {
+            if (HistorySearchMenuItem.Visibility == Visibility.Collapsed)
+            {
+                HistorySearchMenuItem.Visibility = Visibility.Visible;
+                HistorySmallTitle.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                HistorySearchMenuItem.Visibility = Visibility.Collapsed;
+                HistorySmallTitle.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void HistorySearchMenuItem_TextChanged(object sender, TextChangedEventArgs e)
+        {
+          
+        }
     }
 }

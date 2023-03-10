@@ -1,5 +1,6 @@
 ﻿using FireBrowser.Core;
 using FireBrowserInterop;
+using Microsoft.Data.Sqlite;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
+using Windows.Storage;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -162,7 +164,7 @@ namespace FireBrowser.Pages
                     this.FullScreen = s.CoreWebView2.ContainsFullScreenElement;
                 };
 
-
+                AddHistData();
             };
             s.CoreWebView2.SourceChanged += (sender, args) =>
             {
@@ -183,6 +185,25 @@ namespace FireBrowser.Pages
             };
         }
         string SelectionText;
+
+        public void AddHistData()
+        {
+            string address = WebViewElement.CoreWebView2.Source.ToString();
+            string title = WebViewElement.CoreWebView2.DocumentTitle;
+            SqliteConnection m_dbConnection = new SqliteConnection($"Data Source={ApplicationData.Current.LocalFolder.Path}/History.db;");
+            m_dbConnection.Open();
+
+            m_dbConnection.Open();
+            var insertCmd = m_dbConnection.CreateCommand();
+            insertCmd.CommandText = "INSERT INTO urls (url, title, visit_count, last_visit_time) VALUES (@url, @title, @visitCount, @lastVisitTime)";
+
+            insertCmd.Parameters.AddWithValue("@url", $"{address}");
+            insertCmd.Parameters.AddWithValue("@title", $"{title}");
+            insertCmd.Parameters.AddWithValue("@visitCount", 1);
+            insertCmd.Parameters.AddWithValue("@lastVisitTime", DateTimeOffset.Now.ToUnixTimeSeconds());
+
+            insertCmd.ExecuteNonQuery();
+        }
         private void CoreWebView2_ContextMenuRequested(CoreWebView2 sender, CoreWebView2ContextMenuRequestedEventArgs args)
         {
             var flyout1 = (Microsoft.UI.Xaml.Controls.CommandBarFlyout)Resources["Ctx"];
