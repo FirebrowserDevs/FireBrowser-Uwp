@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
+using System.Threading;
 using Windows.Storage;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -64,22 +65,59 @@ namespace FireBrowser.Pages
             }
         }
 
+        string javasc = FireBrowserInterop.SettingsHelper.GetSetting("DisableJavaScript");  
+        string pass = FireBrowserInterop.SettingsHelper.GetSetting("DisablePassSave");
+        string webmes = FireBrowserInterop.SettingsHelper.GetSetting("DisableWebMess");
+        string autogen = FireBrowserInterop.SettingsHelper.GetSetting("DisableGenAutoFill");
+
         Passer param;
         public bool incog = false;
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        public void loadSetting()
         {
-          
+            if (javasc.Equals("true"))
+            {
+               WebViewElement.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = false;
+            }
+            else
+            {
+                WebViewElement.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = true;
+
+                var PageParam = @"{""format"": ""png"", ""captureBeyondViewport"": true, ""clip"": {""x"": 0, ""y"": 0, ""width"":" + "document.body.scrollWidth" + @", ""height"":" + "document.body.scrollHeight" + @", ""scale"": 1.0" + "}}";
+                WebViewElement.CoreWebView2.CallDevToolsProtocolMethodAsync("Page.captureScreenshot", PageParam);
+            }
+            if (pass.Equals("true"))
+            {
+                WebViewElement.CoreWebView2.Settings.IsPasswordAutosaveEnabled = false;
+            }
+            else
+            {
+                WebViewElement.CoreWebView2.Settings.IsPasswordAutosaveEnabled = true;
+            }
+            if(webmes.Equals("true"))
+            {
+                WebViewElement.CoreWebView2.Settings.IsWebMessageEnabled = false;
+            }
+            else
+            {
+                WebViewElement.CoreWebView2.Settings.IsWebMessageEnabled = true;
+            }
+            if(autogen.Equals("true"))
+            {
+                WebViewElement.CoreWebView2.Settings.IsGeneralAutofillEnabled = false;
+            }
+            else
+            {
+                WebViewElement.CoreWebView2.Settings.IsGeneralAutofillEnabled = true;
+            }
+        }
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {        
             base.OnNavigatedTo(e);
             param = e.Parameter as Passer;
             await WebViewElement.EnsureCoreWebView2Async();
             WebView2 s = WebViewElement;
-            //the Param is the uri that the WebView should go to
-
-            var PageParam = @"{""format"": ""png"", ""captureBeyondViewport"": true, ""clip"": {""x"": 0, ""y"": 0, ""width"":" + "document.body.scrollWidth" + @", ""height"":" + "document.body.scrollHeight" + @", ""scale"": 1.0" + "}}";
-            WebViewElement.CoreWebView2.CallDevToolsProtocolMethodAsync("Page.captureScreenshot", PageParam);
-
-           
 
             if (param?.Param != null)
             {
@@ -91,25 +129,22 @@ namespace FireBrowser.Pages
             {
                 var userAgent = s?.CoreWebView2.Settings.UserAgent;
                 userAgent = userAgent.Substring(0, userAgent.IndexOf("Edg/"));
-                userAgent = userAgent.Replace("BlackIncog", "BlackIncog");
+                userAgent = userAgent.Replace("BlackIncog/1", "BlackIncog/1");
                 s.CoreWebView2.Settings.UserAgent = userAgent;
             }
             else
             {
                 var userAgent = s?.CoreWebView2.Settings.UserAgent;
                 userAgent = userAgent.Substring(0, userAgent.IndexOf("Edg/"));
-                userAgent = userAgent.Replace("Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.63", "Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.63");
+                userAgent = userAgent.Replace("Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.44", "Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.44");
                 s.CoreWebView2.Settings.UserAgent = userAgent;
             }
 
-          
-            
             //MESS
-            s.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = true;
-            s.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = false;
+            loadSetting();
+            s.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = true;         
             s.CoreWebView2.Settings.IsStatusBarEnabled = true;
-            s.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = true;
-            s.CoreWebView2.Settings.IsPasswordAutosaveEnabled = true;
+            s.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = true;        
             s.CoreWebView2.Settings.AreDefaultContextMenusEnabled = true;
 
             s.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
@@ -193,16 +228,34 @@ namespace FireBrowser.Pages
             SqliteConnection m_dbConnection = new SqliteConnection($"Data Source={ApplicationData.Current.LocalFolder.Path}/History.db;");
             m_dbConnection.Open();
 
-            m_dbConnection.Open();
-            var insertCmd = m_dbConnection.CreateCommand();
-            insertCmd.CommandText = "INSERT INTO urls (url, title, visit_count, last_visit_time) VALUES (@url, @title, @visitCount, @lastVisitTime)";
+            var selectCmd = m_dbConnection.CreateCommand();
+            selectCmd.CommandText = "SELECT * FROM urlsDb WHERE url = @url AND title = @title";
+            selectCmd.Parameters.AddWithValue("@url", address);
+            selectCmd.Parameters.AddWithValue("@title", title);
 
-            insertCmd.Parameters.AddWithValue("@url", $"{address}");
-            insertCmd.Parameters.AddWithValue("@title", $"{title}");
-            insertCmd.Parameters.AddWithValue("@visitCount", 1);
-            insertCmd.Parameters.AddWithValue("@lastVisitTime", DateTimeOffset.Now.ToUnixTimeSeconds());
+            var reader = selectCmd.ExecuteReader();
+            if (reader.Read())
+            {
+                var updateCmd = m_dbConnection.CreateCommand();
+                updateCmd.CommandText = "UPDATE urlsDb SET visit_count = visit_count + 1, last_visit_time = @lastVisitTime WHERE url = @url AND title = @title";
+                updateCmd.Parameters.AddWithValue("@url", address);
+                updateCmd.Parameters.AddWithValue("@title", title);
+                updateCmd.Parameters.AddWithValue("@lastVisitTime", DateTimeOffset.Now.ToUnixTimeSeconds());
+                updateCmd.ExecuteNonQuery();
+            }
+            else
+            {
+                var insertCmd = m_dbConnection.CreateCommand();
+                insertCmd.CommandText = "INSERT INTO urlsDb (url, title, visit_count, last_visit_time) VALUES (@url, @title, @visitCount, @lastVisitTime)";
+                insertCmd.Parameters.AddWithValue("@url", address);
+                insertCmd.Parameters.AddWithValue("@title", title);
+                insertCmd.Parameters.AddWithValue("@visitCount", 1);
+                insertCmd.Parameters.AddWithValue("@lastVisitTime", DateTimeOffset.Now.ToUnixTimeSeconds());
+                insertCmd.ExecuteNonQuery();
+            }
 
-            insertCmd.ExecuteNonQuery();
+            m_dbConnection.Close();
+
         }
         private void CoreWebView2_ContextMenuRequested(CoreWebView2 sender, CoreWebView2ContextMenuRequestedEventArgs args)
         {

@@ -1,5 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
+using Windows.Storage;
+using static FireBrowser.Core.UserData;
 
 namespace FireBrowser.Core
 {
@@ -108,5 +114,10 @@ namespace FireBrowser.Core
             public string Default { get; set; }
             public string en { get; set; }
         }
+
+
+        // Define a class to represent the app settings
+      
+
     }
 }

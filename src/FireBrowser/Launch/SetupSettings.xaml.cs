@@ -1,10 +1,13 @@
 ﻿using FireBrowser.Core;
 using Microsoft.Data.Sqlite;
+using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Threading;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using static FireBrowser.App;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -46,6 +49,7 @@ namespace FireBrowser.Launch
 
         private void checkcombobox()
         {
+            Thread.Sleep(100);
             if (!string.IsNullOrEmpty(SearchengineSelection.SelectedItem?.ToString()) && !string.IsNullOrEmpty(Background.SelectedItem?.ToString()))
             {
                 Install.IsEnabled = true;
@@ -68,7 +72,7 @@ namespace FireBrowser.Launch
                 db.Open();
 
                 string tableCommand = "CREATE TABLE IF NOT " +
-                     "EXISTS urls (Url NVARCHAR(2083) PRIMARY KEY NOT NULL, " +
+                     "EXISTS urlsDb (Url NVARCHAR(2083) PRIMARY KEY NOT NULL, " +
                      "Title NVARCHAR(2048), " +
                      "Visit_Count INTEGER, " +
                      "Last_Visit_Time DATETIME)";
@@ -81,9 +85,22 @@ namespace FireBrowser.Launch
         }
         private async void Install_Click(object sender, RoutedEventArgs e)
         {
-                CreateDatabase();   
-                FireBrowserInterop.SettingsHelper.SetSetting("LaunchFirst", "0");
-                FireBrowserInterop.SystemHelper.RestartApp();         
+            CreateDatabase();
+            bool isFirstLaunch = true;
+
+            var settingsFile = await ApplicationData.Current.LocalFolder.GetFileAsync("Isettings.json");
+            string settingsJson = await FileIO.ReadTextAsync(settingsFile);
+            AppSettings settings = JsonConvert.DeserializeObject<AppSettings>(settingsJson);
+
+            if (settings != null && settings.IsFirstLaunch)
+            {
+                // The app has been launched before, but this is the first launch after an update
+                isFirstLaunch = true;
+                settings.IsFirstLaunch = false; // Set the IsFirstLaunch property to false
+                string updatedSettingsJson = JsonConvert.SerializeObject(settings);
+                await FileIO.WriteTextAsync(settingsFile, updatedSettingsJson); // Save the updated settings
+            }
+            FireBrowserInterop.SystemHelper.RestartApp();         
         }
 
         private void Read_Toggled(object sender, RoutedEventArgs e)

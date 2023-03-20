@@ -31,6 +31,12 @@ namespace FireBrowser.Pages.SettingsPages
 
         }
 
+
+        public static MainPage MainPageContent
+        {
+            get { return (Window.Current.Content as Frame)?.Content as MainPage; }
+        }
+
         private void AboutCardClicked(object sender, RoutedEventArgs e)
         {
             string url = "https://example.com";
@@ -46,9 +52,10 @@ namespace FireBrowser.Pages.SettingsPages
                     url = "https://github.com/jarno9981/FireBrowser-Uwp/blob/main/LICENSE";
                     break;
             }
-           // MainPage mp = new();
+            MainPage mp = new();
             //To-Do: Get the currently selected tab's position and launch the new one next to it
-           // param?.TabView.TabItems.Add(mp.CreateNewTab(typeof(WebContent), url));
+
+            MainPageContent.NavigateToUrl(url);       
         }
     }
 }

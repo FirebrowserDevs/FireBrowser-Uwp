@@ -142,6 +142,7 @@
       <DependentUpon>Toolbar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Core\ColorConverter.cs" />
+    <Compile Include="Core\FavItem.cs" />
     <Compile Include="Core\Icons.cs" />
     <Compile Include="Core\HistoryItem.cs" />
     <Compile Include="Core\Settings.cs" />
@@ -189,6 +190,15 @@
     <Compile Include="Pages\SettingsPages\Restart\RestartDialog.xaml.cs">
       <DependentUpon>RestartDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\TimeLine\Apps.xaml.cs">
+      <DependentUpon>Apps.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\TimeLine\HistoryTime.xaml.cs">
+      <DependentUpon>HistoryTime.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\TimeLine\Timeline.xaml.cs">
+      <DependentUpon>Timeline.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\WebContent.xaml.cs">
       <DependentUpon>WebContent.xaml</DependentUpon>
     </Compile>
@@ -201,6 +211,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\AccountPic\clippy.png" />
     <Content Include="Assets\BadgeLogo.scale-100.png" />
     <Content Include="Assets\BadgeLogo.scale-125.png" />
     <Content Include="Assets\BadgeLogo.scale-150.png" />
@@ -342,6 +353,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\SettingsPages\Restart\RestartDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\TimeLine\Apps.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\TimeLine\HistoryTime.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\TimeLine\Timeline.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

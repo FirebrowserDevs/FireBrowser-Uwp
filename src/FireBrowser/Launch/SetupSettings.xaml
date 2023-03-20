@@ -83,7 +83,7 @@
                     <labs:SettingsCard>
                         <ToggleSwitch x:Name="Frbl" Toggled="Frbl_Toggled" IsOn="True"/>
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE734;"/>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE728;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard>

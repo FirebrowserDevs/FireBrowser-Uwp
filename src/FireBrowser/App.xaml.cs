@@ -1,9 +1,15 @@
 ﻿using FireBrowser.Core;
 using FireBrowser.Launch;
 using Microsoft.Toolkit.Uwp.UI.Controls;
+using Newtonsoft.Json;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Background;
+using Windows.Storage;
+using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -150,17 +156,64 @@ namespace FireBrowser
             }
         }
 
-        
+        #region appdata
+
+        public class AppSettings
+        {
+            public bool IsFirstLaunch { get; set; }
+        }
+
+        // Check if it's the first launch of the app
+        async Task<bool> CheckFirstLaunchAsync()
+        {
+            bool isFirstLaunch = false;
+            StorageFile settingsFile = null;
+
+            try
+            {
+                // Try to get the settings file
+                settingsFile = await ApplicationData.Current.LocalFolder.GetFileAsync("Isettings.json");
+            }
+            catch (FileNotFoundException)
+            {
+                // The settings file doesn't exist yet, so this is the first launch
+                isFirstLaunch = true;
+            }
+
+            if (isFirstLaunch)
+            {
+                // Save the app settings to the file
+                AppSettings settings = new AppSettings { IsFirstLaunch = true };
+                string settingsJson = JsonConvert.SerializeObject(settings);
+                if (settingsFile != null)
+                {
+                    await FileIO.WriteTextAsync(settingsFile, settingsJson);
+                }
+                else
+                {
+                    // The settings file doesn't exist yet, so create it
+                    settingsFile = await ApplicationData.Current.LocalFolder.CreateFileAsync("Isettings.json", CreationCollisionOption.ReplaceExisting);
+                    await FileIO.WriteTextAsync(settingsFile, settingsJson);
+                }
+            }
+
+            return isFirstLaunch;
+        }
+
+
+        #endregion
+
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
             // CoreApplication.EnablePrelaunch was introduced in Windows 10 version 1607
             bool canEnablePrelaunch = Windows.Foundation.Metadata.ApiInformation.IsMethodPresent("Windows.ApplicationModel.Core.CoreApplication", "EnablePrelaunch");
 
+            
             // NOTE: Only enable this code if you are targeting a version of Windows 10 prior to version 1607,
             // and you want to opt out of prelaunch.
             // In Windows 10 version 1511, all UWP apps were candidates for prelaunch.
@@ -193,6 +246,7 @@ namespace FireBrowser
 
             if (e.PrelaunchActivated == false)
             {
+              
                 AppLaunchPasser passer = new AppLaunchPasser()
                 {
                     LaunchType = AppLaunchType.LaunchBasic,
@@ -206,10 +260,9 @@ namespace FireBrowser
                     TryEnablePrelaunch();
                 }
 
-                IsFirstLaunch = FireBrowserInterop.SettingsHelper.GetSetting("LaunchFirst");
-                if (IsFirstLaunch == "1")
+                bool isFirstLaunch = await CheckFirstLaunchAsync();
+                if (isFirstLaunch)
                 {
-                   
                     if (rootFrame == null)
                     {
                         rootFrame = new Frame();
@@ -225,12 +278,13 @@ namespace FireBrowser
                     {
                         // When the navigation stack isn't restored navigate to the first page,
                         // configuring the new page by passing required information as a navigation
-                        // parameter
+
                         rootFrame.Navigate(typeof(MainPage), passer);
                     }
                     // Ensure the current window is active
                     Window.Current.Activate();
                 }
+
             }
         }
 

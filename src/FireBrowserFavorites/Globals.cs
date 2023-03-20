@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace FireBrowserFavorites
 {
@@ -13,6 +15,8 @@ namespace FireBrowserFavorites
         {
             public string Title { get; set; }
             public string Url { get; set; }
+
+          
         }
 
         // Global variables
@@ -20,5 +24,6 @@ namespace FireBrowserFavorites
 
         public static List<JsonItems> JsonItemsList;
 
+       
     }
 }

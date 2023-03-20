@@ -10,10 +10,46 @@
     >
 
     <Grid>
-        <Button Click="Button_Click">
-            Reset
-        </Button>
-      
-   
+        <StackPanel Margin="0,5,0,0">
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <PersonPicture ProfilePicture="ms-appx:///Assets/AccountPic/clippy.png" Width="64"/>
+                <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                    <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" FontSize="15" Text="FireBrowser User"/>
+                    <TextBlock Text="Browser account" FontSize="12"/>
+                    <TextBlock>Pre - Alpha Temp Disabled - Coming Soon</TextBlock>
+                </StackPanel>
+            </StackPanel>
+            <labs:SettingsCard Margin="0,10,0,0" VerticalAlignment="Bottom">
+                <labs:SettingsCard.Header>
+                    Reset App
+                </labs:SettingsCard.Header>
+                    <Button Click="Button_Click">
+                        Reset Browser - Settings
+                    </Button>
+            </labs:SettingsCard>
+            <labs:SettingsCard>
+                <labs:SettingsCard.Header>
+                    Maybe Added In Future *Bluetooth Control Center
+                </labs:SettingsCard.Header>
+            </labs:SettingsCard>
+            <labs:SettingsCard>
+                <labs:SettingsCard.Header>
+                    Maybe Added In Future *Microsoft Account Link Easy Login
+                </labs:SettingsCard.Header>
+            </labs:SettingsCard>
+            <labs:SettingsCard>
+                <labs:SettingsCard.Header>
+                   Coming Later MultiProfile Eta*30-12-2024
+                </labs:SettingsCard.Header>
+            </labs:SettingsCard>
+        </StackPanel>
+        <TextBlock VerticalAlignment="Bottom">
+            ALPHA V1 RELEASE EXPECT BUGS 
+            V0.0.8.00035ap Build: 101.2302
+            Contact: firebrowserdevs@gmail.com
+        </TextBlock>
+        <TextBlock VerticalAlignment="Bottom" x:Name="SysInfoBox" Margin="0,0,0,20">
+            SysInfo: AMD64
+        </TextBlock>
     </Grid>
 </Page>

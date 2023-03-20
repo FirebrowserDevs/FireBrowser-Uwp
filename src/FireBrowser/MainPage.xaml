@@ -15,42 +15,87 @@
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <Page.Resources>
-        <MenuFlyout x:Key="TabContextMenu">
-                 
-        </MenuFlyout>
-
+       
         <Flyout
             x:Name="MoreFlyout"
-            FlyoutPresenterStyle="{ThemeResource NoPaddingFlyoutStyle}"
+            ShouldConstrainToRootBounds="False"
             Placement="Bottom">
-            <StackPanel>
-                <Border Background="{ThemeResource LayerFillColorDefaultBrush}">
-                    <Grid Width="318" Margin="20,24">
-                       
-                    </Grid>
-                </Border>
-                <Grid Padding="8" HorizontalAlignment="Stretch">
-                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                        <Button
-                            x:Uid="FlyoutEdit"
-                          Click="ActionClicked"
-                            Style="{StaticResource QuietButtonStyle}"
-                            Tag="Edit">
-                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE72D;" />
-                        </Button>
-                        <Button    
-                            Click="ActionClicked"
-                            Style="{StaticResource QuietButtonStyle}"
-                            Tag="Settings">
-                            <muxc:AnimatedIcon>
-                                <animatedvisuals:AnimatedSettingsVisualSource />
-                                <muxc:AnimatedIcon.FallbackIconSource>
-                                    <muxc:FontIconSource Glyph="&#xF6AA;" />
-                                </muxc:AnimatedIcon.FallbackIconSource>
-                            </muxc:AnimatedIcon>
-                        </Button>
-                    </StackPanel>
-                </Grid>
+            <StackPanel Width="250">
+                <StackPanel Name="menuheader">
+                    <Button IsEnabled="False" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" BorderBrush="Transparent" Background="Transparent" Margin="0,0,0,10">
+                        <StackPanel Orientation="Horizontal">
+                            <PersonPicture ProfilePicture="ms-appx:///Assets/AccountPic/clippy.png" Width="45"/>
+                            <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" FontSize="15" Text="FireBrowser User"/>
+                                <TextBlock Text="Local account" FontSize="12"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Button>
+                    <Border BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.3" Margin="10,5,10,10" BorderThickness="1"/>
+                    <Button Tag="NewTab" Click="TabMenuClick" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch"	HorizontalContentAlignment="Left" Margin="0,0,0,0" IsEnabled="True">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon Glyph="&#xF751;" FontSize="18"/>
+                            <TextBlock Margin="10,0,0,0" Text="New-Tab"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Tag="NewWindow" Click="TabMenuClick" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="0,0,0,0" IsEnabled="True">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xF7ED;" FontSize="18"/>
+                            <TextBlock Margin="10,0,0,0" Text="New-Window"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Tag="InPrivate" Click="TabMenuClick" IsEnabled="True" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon FontFamily="Segoe Fluent Icons"  Glyph="&#xE727;" FontSize="18"/>
+                            <TextBlock Margin="10,0,0,0" Text="New-Private"/>
+                        </StackPanel>
+                    </Button>
+                    <Border BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.3" Margin="10,10" BorderThickness="1"/>
+                    <Button Tag="History" Click="TabMenuClick"  Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE81C;" FontSize="18"/>
+                            <TextBlock Margin="10,0,0,0" Text="History"/>
+                        </StackPanel>
+                    </Button>
+                    <Button IsEnabled="False"  Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE728;" FontSize="18"/>
+                            <TextBlock Margin="10,0,0,0" Text="Favorites"/>
+                        </StackPanel>
+                    </Button>
+                    <Button IsEnabled="False"  Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE749;" FontSize="18"/>
+                            <TextBlock Margin="10,0,0,0" Text="Print"/>
+                        </StackPanel>
+                    </Button>
+                    <Border BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.3" Margin="10,10" BorderThickness="1"/>
+                    <Button Tag="FullScreen" Click="TabMenuClick" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon x:Name="Icon" FontFamily="Segoe Fluent Icons" Glyph="&#xE740;" FontSize="18"/>
+                            <TextBlock x:Name="TextFull" Margin="10,0,0,0" Text="Full Screen"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Tag="Share" Click="TabMenuClick" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE72D;" FontSize="18"/>
+                            <TextBlock Margin="10,0,0,0" Text="Share"/>
+                        </StackPanel>
+                    </Button>
+                    <Border BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.3" Margin="10,10" BorderThickness="1"/>
+                    <Button Tag="DevTools" Click="TabMenuClick" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC7A;" FontSize="18"/>
+                            <TextBlock Margin="10,0,0,0" Text="Dev Tools"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Tag="Settings" Click="TabMenuClick" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE713;" FontSize="18"/>
+                            <TextBlock Margin="10,0,0,0" Text="Settings"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
             </StackPanel>
         </Flyout>
         <DataTemplate x:Key="DefaultDataTemplate">
@@ -218,12 +263,12 @@
                                     BorderThickness="0">
                                     <Button.Flyout>
                                         <MenuFlyout Placement="Bottom">
-                                            <MenuFlyoutItem x:Name="ClearHistoryDataMenuItem" Text="Clear History Data" >
+                                            <MenuFlyoutItem x:Name="ClearHistoryDataMenuItem" Click="ClearHistoryDataMenuItem_Click" Text="Clear History Data" >
                                                 <MenuFlyoutItem.Icon>
                                                     <SymbolIcon Symbol="Clear" />
                                                 </MenuFlyoutItem.Icon>
                                             </MenuFlyoutItem>
-                                            <MenuFlyoutItem x:Name="OpenHistoryMenuItem" Text="Open History Page" >
+                                            <MenuFlyoutItem x:Name="OpenHistoryMenuItem" Text="Open History Page" Click="OpenHistoryMenuItem_Click">
                                                 <MenuFlyoutItem.Icon>
                                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8A7;" />
                                                 </MenuFlyoutItem.Icon>
@@ -347,7 +392,7 @@
             </muxc:TabView.TabStripHeader>
             <muxc:TabView.TabStripFooter>
                 <!--  Needs the Background="Transparent" or else it won't work  -->
-                <Border x:Name="CustomDragRegion" Background="Transparent" />
+                <Border x:Name="CustomDragRegion" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </muxc:TabView.TabStripFooter>
         </firebrowser:CustomTabView>
         <ContentDialog
@@ -452,37 +497,36 @@
                     ActionButtonContent="Allow"
                     ActionButtonStyle="{ThemeResource AccentButtonStyle}">
                 </muxc:TeachingTip>
-
-                <StackPanel HorizontalAlignment="Right">
-                    <Button
+            </Grid>
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <Button
+                        x:Name="AddFav"
                         Style="{ThemeResource QuietButtonStyle}"
                         Tag="AddFavoriteFlyout"
                         Click="ToolbarButtonClick"
+                        Visibility="Visible"
                         >
-                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe734;"/>
-                        <Button.Flyout>
-                            <Flyout>
-                                <StackPanel>
-                                    <TextBlock MinWidth="300" FontSize="20">
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe734;"/>
+                    <Button.Flyout>
+                        <Flyout>
+                            <StackPanel>
+                                <TextBlock MinWidth="300" FontSize="20">
                                         Add favorite
-                                    </TextBlock>
-                                    <TextBlock>Name</TextBlock>
-                                    <TextBox x:Name="FavoriteTitle" />
-                                    <TextBlock>Url</TextBlock>
-                                    <TextBox x:Name="FavoriteUrl" />
-                                    <Button
+                                </TextBlock>
+                                <TextBlock>Name</TextBlock>
+                                <TextBox x:Name="FavoriteTitle" />
+                                <TextBlock>Url</TextBlock>
+                                <TextBox x:Name="FavoriteUrl" />
+                                <Button
                                      
                                         Content="Add"
                                         Tag="AddFavorite" 
                                         Click="ToolbarButtonClick"
                                         Margin="0,8,0,0"/>
-                                </StackPanel>
-                            </Flyout>
-                        </Button.Flyout>
-                    </Button>
-                </StackPanel>
-            </Grid>
-            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
                 <Button
                     x:Name="ReadBtn"
                     Click="ToolbarButtonClick"
@@ -512,31 +556,21 @@
                     >
                     <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE87E;" />
                 </Button>
-                <muxc:ItemsRepeater>
-                    <DataTemplate>
-                        <Button
-                            AutomationProperties.Name="{Binding Text}"
-                           
-                            Style="{ThemeResource QuietButtonStyle}"
-                            Tag="{Binding ID}"
-                            ToolTipService.ToolTip="{Binding Text}">
-                            <FontIcon Glyph="{Binding Icon}" />
-                        </Button>
-                    </DataTemplate>
-                </muxc:ItemsRepeater>
+               
                 <Button
                     x:Name="FavoritesButton"                 
                     Style="{ThemeResource QuietButtonStyle}"
                     Tag="Favorites"
                     Click="ToolbarButtonClick">
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE734;" />
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE728;" />
                     <Button.Flyout>
                         <Flyout>
                             <StackPanel
                                 MinWidth="300"
                                 MaxWidth="300"
-                                MaxHeight="600">
-                                <TextBox />
+                                MaxHeight="600"
+                                >
+                                <TextBlock>Favorites</TextBlock>
                                 <ListView x:Name="FavoritesListView" Margin="0,7,0,0" SelectionChanged="FavoritesListView_SelectionChanged">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>

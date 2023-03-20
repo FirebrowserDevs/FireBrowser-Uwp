@@ -8,12 +8,12 @@
   xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4"
   xmlns:iot2="http://schemas.microsoft.com/appx/manifest/iot/windows10/2" 
   xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
-  IgnorableNamespaces="uap mp iot2 desktop4 uap3">
+  IgnorableNamespaces="uap mp uap3 desktop4 iot2">
 
   <Identity
     Name="57443TechFireX.30017BED6DE0B"
     Publisher="CN=Jarno Beerten"
-    Version="0.0.6.0" />
+    Version="0.0.8.0" />
 
   <mp:PhoneIdentity PhoneProductId="000e3518-11a8-42f6-8c44-a7cc1af06c44" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
@@ -85,9 +85,9 @@
   </Applications>
 
   <Capabilities>
-    <Capability Name="privateNetworkClientServer"/>
-	<uap3:Capability Name="backgroundMediaPlayback"/>
-    <uap:Capability Name="userAccountInformation"/>
-    <Capability Name="internetClientServer"/>
+	  <Capability Name="privateNetworkClientServer"/>
+	  <uap3:Capability Name="backgroundMediaPlayback"/>
+	  <uap:Capability Name="userAccountInformation"/>
+      <Capability Name="internetClientServer"/>
   </Capabilities>
 </Package>

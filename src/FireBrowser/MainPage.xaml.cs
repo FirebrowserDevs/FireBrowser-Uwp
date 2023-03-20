@@ -31,6 +31,9 @@ using System.Diagnostics;
 using FireBrowserFavorites;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Data.SqlClient;
+using Windows.UI.Core.Preview;
+using static FireBrowserQr.PayloadGenerator;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -74,8 +77,7 @@ namespace FireBrowser
                 }
             };
 
-            Window.Current.SetTitleBar(CustomDragRegion);
-          
+            Window.Current.SetTitleBar(CustomDragRegion);          
         }
 
         #region buttons
@@ -156,10 +158,6 @@ namespace FireBrowser
 
         #endregion
 
-        public static WebContent WebPageContent
-        {
-            get { return (Window.Current.Content as Frame)?.Content as WebContent; }
-        }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -181,7 +179,7 @@ namespace FireBrowser
                         History.IsEnabled = false;
                         DownBtn.IsEnabled = false;
                         FavoritesButton.IsEnabled = false;
-                        WebPageContent.incog = true;
+                       
                         //To-Do...
                         Tabs.TabItems.Add(CreateNewTab(typeof(Incognito)));
                         
@@ -195,8 +193,8 @@ namespace FireBrowser
                        
                         break;
                     case AppLaunchType.URIHttp:
-                        Tabs.TabItems.Add(CreateNewTab(typeof(WebContent),
-                                                       new Uri(passer.LaunchData.ToString())));
+                        Tabs.TabItems.Add(CreateNewTab(typeof(NewTab)));
+                        
                         break;
                     case AppLaunchType.URIFireBrowser:
                         Tabs.TabItems.Add(CreateNewTab(typeof(NewTab)));
@@ -351,12 +349,6 @@ namespace FireBrowser
 
             newItem.Style = (Style)Application.Current.Resources["FloatingTabViewItemStyle"];
 
-            var contextMenu = (FlyoutBase)Resources["TabContextMenu"];
-
-            newItem.ContextFlyout = contextMenu;
-            newItem.ContextFlyout.ShouldConstrainToRootBounds = true;
-
-
             // The content of the tab is often a frame that contains a page, though it could be any UIElement.
             double Margin = 0;
             Margin = ClassicToolbar.Height;
@@ -425,7 +417,7 @@ namespace FireBrowser
             UrlBox.Text = text;
             UrlBox.Focus(FocusState.Programmatic);
         }
-        private void NavigateToUrl(string uri)
+        public void NavigateToUrl(string uri)
         {
             if (TabWebView != null)
             {
@@ -466,7 +458,7 @@ namespace FireBrowser
             else
             {
                 string searchurl;
-                if (SearchUrl == null) searchurl = "https://lite.qwant.com/?q=";
+                if (SearchUrl == null) searchurl = "https://www.google.nl/search?q=";
                 else
                 {
                     searchurl = SearchUrl;
@@ -553,23 +545,6 @@ namespace FireBrowser
                 ViewModel.CurrentAddress = null;
             }
             ViewModel.FavoriteIcon = "\uF714";
-        }
-
-        private async void ActionClicked(object sender, RoutedEventArgs e)
-        {
-            switch ((sender as FrameworkElement)?.Tag)
-            {
-                case "Settings":
-                    Tabs.TabItems.Add(CreateNewTab(typeof(SettingsPage), CreatePasser()
-                                     ));
-                  
-                    SelectNewTab();
-                    break;
-                case "Edit":
-                    if (TabWebView != null)
-                        FireBrowserInterop.SystemHelper.ShowShareUIURL(TabWebView.CoreWebView2.DocumentTitle, TabWebView.CoreWebView2.Source);
-                    break;
-            }
         }
 
         public static MainPage MainPageContent
@@ -741,7 +716,7 @@ namespace FireBrowser
                     connection.Open();
 
                     // Define the SQL query to fetch the browser history
-                    string sql = "SELECT url, title, visit_count, last_visit_time FROM urls ORDER BY last_visit_time DESC";
+                    string sql = "SELECT url, title, visit_count, last_visit_time FROM urlsDb ORDER BY last_visit_time DESC";
 
                     // Create a command object with the SQL query and connection
                     using (SqliteCommand command = new SqliteCommand(sql, connection))
@@ -773,6 +748,7 @@ namespace FireBrowser
                             HistoryTemp.ItemsSource = historyItems;
                         }
                     }
+                   
                 }
             }
             catch (Exception ex)
@@ -846,5 +822,86 @@ namespace FireBrowser
         {
           
         }
+
+        private void ClearHistoryDataMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+            // open a connection to the database
+            using (var connection = new SqliteConnection($"Data Source={ApplicationData.Current.LocalFolder.Path}\\History.db"))
+            {
+                connection.Open();
+
+                // create a command that deletes all rows from the table
+                var command = new SqliteCommand("DELETE FROM urlsDb", connection);
+
+                // execute the command to clear the table
+                command.ExecuteNonQuery();
+
+                connection.Close();
+
+                HistoryTemp.ItemsSource = null;
+            }
+        }
+
+        private void OpenHistoryMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            TabContent.Navigate(typeof(Pages.TimeLine.Timeline));
+        }
+
+
+        public static async void OpenNewWindow(Uri uri)
+        {
+            await Windows.System.Launcher.LaunchUriAsync(uri);
+        }
+
+
+        private void TabMenuClick(object sender, RoutedEventArgs e)
+        {
+            switch((sender as Button).Tag)
+            {
+                case "NewTab":
+                    Tabs.TabItems.Add(CreateNewTab());
+                    SelectNewTab();
+                    break;
+                case "NewWindow":
+                    OpenNewWindow(new Uri("firebrowser://"));
+                    break;
+                case "Share":
+                    if (TabWebView != null)
+                        FireBrowserInterop.SystemHelper.ShowShareUIURL(TabWebView.CoreWebView2.DocumentTitle, TabWebView.CoreWebView2.Source);
+                    break;
+                case "DevTools":
+                    if (TabContent.Content is WebContent) (TabContent.Content as WebContent).WebViewElement.CoreWebView2.OpenDevToolsWindow();
+                    break;
+                case "Settings":
+                    Tabs.TabItems.Add(CreateNewTab(typeof(SettingsPage)));
+                    SelectNewTab();
+                    break;
+                case "FullScreen":
+                    ApplicationView view = ApplicationView.GetForCurrentView();
+                    bool isfullmode = view.IsFullScreenMode;
+                    if (!isfullmode)
+                    {
+                        view.TryEnterFullScreenMode();
+                        TextFull.Text = "Exit FullScreen";
+                        Icon.Glyph = "\uE73f";
+                    }
+                    else
+                    {
+                        view.ExitFullScreenMode();
+                        TextFull.Text = "Full Screen";
+                        Icon.Glyph = "\uE740";
+                    }
+                    break;
+                case "History":
+                    TabContent.Navigate(typeof(Pages.TimeLine.Timeline));
+                    break;
+                case "InPrivate":
+                    OpenNewWindow(new Uri("firebrowser://incognito"));
+                    break;
+            }
+        }
+
+    
     }
 }
