@@ -1,4 +1,5 @@
 ﻿using FireBrowser.Core;
+using FireBrowser.Pages.SettingsPages;
 using Microsoft.Data.Sqlite;
 using Newtonsoft.Json;
 using System;
@@ -195,6 +196,12 @@ namespace FireBrowser.Launch
             if (selection == "Default") FireBrowserInterop.SettingsHelper.SetSetting("Background", "0");
             if (selection == "Featured") FireBrowserInterop.SettingsHelper.SetSetting("Background", "1");
             checkcombobox();
+        }
+
+        private void ConnectBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MsLogin ms = new MsLogin();
+            ms.ShowAsync();
         }
     }
 }

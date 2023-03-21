@@ -6,7 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
+    
     >
 
     <Grid>
@@ -23,23 +25,30 @@
                 <labs:SettingsCard.Header>
                     Reset App
                 </labs:SettingsCard.Header>
-                    <Button Click="Button_Click">
-                        Reset Browser - Settings
-                    </Button>
+                <Button Click="Button_Click">
+                    Reset Browser - Settings
+                </Button>
             </labs:SettingsCard>
             <labs:SettingsCard>
                 <labs:SettingsCard.Header>
-                    Maybe Added In Future *Bluetooth Control Center
+                    Microsoft Account Link
                 </labs:SettingsCard.Header>
-            </labs:SettingsCard>
-            <labs:SettingsCard>
-                <labs:SettingsCard.Header>
-                    Maybe Added In Future *Microsoft Account Link Easy Login
-                </labs:SettingsCard.Header>
+                <Button x:Name="MsAccount" Click="MsAccount_Click" Width="150">
+                    <StackPanel>
+                        <TextBlock x:Name="TextStat" Text="Connect"/>
+                        <StackPanel x:Name="Status" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-30,-20,0,0" Width="16" Height="16" Background="Red" CornerRadius="10"/>
+                    </StackPanel>
+                   
+                </Button>
             </labs:SettingsCard>
             <labs:SettingsCard>
                 <labs:SettingsCard.Header>
                    Coming Later MultiProfile Eta*30-12-2024
+                </labs:SettingsCard.Header>
+            </labs:SettingsCard>
+            <labs:SettingsCard>
+                <labs:SettingsCard.Header>
+                    Maybe Added In Future *Bluetooth Control Center
                 </labs:SettingsCard.Header>
             </labs:SettingsCard>
         </StackPanel>

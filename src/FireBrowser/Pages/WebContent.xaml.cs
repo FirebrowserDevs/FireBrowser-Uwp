@@ -112,6 +112,11 @@ namespace FireBrowser.Pages
             }
         }
 
+        private class SizePasser
+        {
+            public int Height { get; set; }
+            public int Width { get; set; }
+        }
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {        
             base.OnNavigatedTo(e);
@@ -206,21 +211,25 @@ namespace FireBrowser.Pages
                 if (param.TabView.SelectedItem == param.Tab)
                 {
                     param.ViewModel.CurrentAddress = sender.Source;
-                  
-                }              
+                    param.ViewModel.SecurityIcon = sender.Source.Contains("https") ? "\uE72E" : "\uE785";
+                }           
             };
             s.CoreWebView2.NewWindowRequested += (sender, args) =>
             {
                 //To-Do: Check if it should be a popup or tab. Can use args.something for that.
                 //To-Do: Get the currently selected tab's position and launch the new one next to it
-              
-                MainPage mp = new();
+
+                MainPage mp = new();            
                 param?.TabView.TabItems.Add(mp.CreateNewTab(typeof(WebContent), args.Uri));
                 args.Handled = true;
+                select();
             };
         }
         string SelectionText;
-
+        public void select()
+        {
+            MainPageContent.SelectNewTab();
+        }
         public void AddHistData()
         {
             string address = WebViewElement.CoreWebView2.Source.ToString();

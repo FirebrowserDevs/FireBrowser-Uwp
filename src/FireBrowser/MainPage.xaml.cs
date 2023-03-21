@@ -193,8 +193,8 @@ namespace FireBrowser
                        
                         break;
                     case AppLaunchType.URIHttp:
-                        Tabs.TabItems.Add(CreateNewTab(typeof(NewTab)));
-                        
+                        Tabs.TabItems.Add(CreateNewTab(typeof(WebContent),
+                                                       new Uri(passer.LaunchData.ToString())));
                         break;
                     case AppLaunchType.URIFireBrowser:
                         Tabs.TabItems.Add(CreateNewTab(typeof(NewTab)));
@@ -343,6 +343,7 @@ namespace FireBrowser
             {
                 Tab = newItem,
                 TabView = Tabs,
+                ViewModel = ViewModel,
                 Param = param
             };
 
@@ -681,7 +682,7 @@ namespace FireBrowser
             SelectNewTab();
         }
 
-        private void SelectNewTab()
+        public void SelectNewTab()
         {
             var tabToSelect = Tabs.TabItems.Count - 1;
             Tabs.SelectedIndex = tabToSelect;

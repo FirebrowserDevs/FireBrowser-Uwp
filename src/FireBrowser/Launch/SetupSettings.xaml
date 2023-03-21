@@ -100,6 +100,17 @@
                     </labs:SettingsCard>
                 </labs:SettingsExpander.Items>
             </labs:SettingsExpander>
+            <labs:SettingsCard  Width="600" Margin="0,5,0,0">
+                <labs:SettingsCard.Header>
+                    Microsoft Account Connect
+                </labs:SettingsCard.Header>
+                <labs:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE910;"/>
+                </labs:SettingsCard.HeaderIcon>
+                <Button x:Name="ConnectBtn" Click="ConnectBtn_Click">
+                    Connect
+                </Button>
+            </labs:SettingsCard>
             <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,0" FontStyle="Normal" FontWeight="Bold">* All Values Need To By Set Else App Crash *</TextBlock>
             <Button Click="Install_Click" x:Name="Install" Margin="0,8,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
                Confirm Setup

@@ -161,10 +161,12 @@ namespace FireBrowser
         public class AppSettings
         {
             public bool IsFirstLaunch { get; set; }
+
+            public bool IsConnected { get; set; }
         }
 
         // Check if it's the first launch of the app
-        async Task<bool> CheckFirstLaunchAsync()
+        public async Task<bool> CheckFirstLaunchAsync()
         {
             bool isFirstLaunch = false;
             StorageFile settingsFile = null;
@@ -183,7 +185,7 @@ namespace FireBrowser
             if (isFirstLaunch)
             {
                 // Save the app settings to the file
-                AppSettings settings = new AppSettings { IsFirstLaunch = true };
+                AppSettings settings = new AppSettings { IsFirstLaunch = true, IsConnected = false };
                 string settingsJson = JsonConvert.SerializeObject(settings);
                 if (settingsFile != null)
                 {
@@ -199,6 +201,8 @@ namespace FireBrowser
 
             return isFirstLaunch;
         }
+
+      
 
 
         #endregion
@@ -261,6 +265,7 @@ namespace FireBrowser
                 }
 
                 bool isFirstLaunch = await CheckFirstLaunchAsync();
+     
                 if (isFirstLaunch)
                 {
                     if (rootFrame == null)

@@ -181,6 +181,9 @@
     <Compile Include="Pages\SettingsPages\Look.xaml.cs">
       <DependentUpon>Look.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\SettingsPages\Link\MsLogin.xaml.cs">
+      <DependentUpon>MsLogin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\SettingsPages\NewTab.xaml.cs">
       <DependentUpon>NewTab.xaml</DependentUpon>
     </Compile>
@@ -341,6 +344,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\SettingsPages\Look.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsPages\Link\MsLogin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

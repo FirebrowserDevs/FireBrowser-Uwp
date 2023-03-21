@@ -7,6 +7,13 @@ using System;
 using Windows.Devices.Bluetooth.GenericAttributeProfile;
 using Windows.Devices.Bluetooth;
 using Windows.UI.Popups;
+using Windows.UI.WebUI;
+using Microsoft.UI.Xaml.Controls;
+using Newtonsoft.Json;
+using static FireBrowser.App;
+using System.Threading.Tasks;
+using System.Drawing;
+using Windows.UI.Xaml.Media;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -22,14 +29,48 @@ namespace FireBrowser.Pages.SettingsPages
         {
             this.InitializeComponent();
             SysInfoBox.Text = "SysInfo: " + FireBrowserInterop.SystemHelper.GetSystemArchitecture();
+            check();         
         }
 
+        public async void check()
+        {
+            // Get the local folder object
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
 
+            // Get the file object
+            StorageFile file = await localFolder.GetFileAsync("Isettings.json");
+
+            // Read the contents of the file
+            string fileContent = await FileIO.ReadTextAsync(file);
+
+            // Parse the JSON string to a dynamic object
+            dynamic jsonObject = JsonConvert.DeserializeObject(fileContent);
+
+            // Access the "IsConnected" parameter and check if it's true or false
+            bool isConnected = jsonObject.IsConnected;
+
+            if (isConnected == true)
+            {
+                Status.Background = new SolidColorBrush(Windows.UI.Colors.Green);
+                TextStat.Text = "Connected";
+            }
+            else
+            {
+                Status.Background = new SolidColorBrush(Windows.UI.Colors.Red);
+                TextStat.Text = "Connect";
+            }
+        }
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             StorageFile fileToDelete = await ApplicationData.Current.LocalFolder.GetFileAsync("Isettings.json");
             await fileToDelete.DeleteAsync();
             FireBrowserInterop.SystemHelper.RestartApp();
+        }
+
+        private async void MsAccount_Click(object sender, RoutedEventArgs e)
+        {
+            MsLogin login = new MsLogin();
+            login.ShowAsync();  
         }
     }
 }
