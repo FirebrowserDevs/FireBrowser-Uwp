@@ -1,5 +1,4 @@
-﻿using FireBrowser.Core;
-using FireBrowser.Pages.SettingsPages;
+﻿using FireBrowser.Pages.SettingsPages;
 using Microsoft.Data.Sqlite;
 using Newtonsoft.Json;
 using System;
@@ -101,7 +100,7 @@ namespace FireBrowser.Launch
                 string updatedSettingsJson = JsonConvert.SerializeObject(settings);
                 await FileIO.WriteTextAsync(settingsFile, updatedSettingsJson); // Save the updated settings
             }
-            FireBrowserInterop.SystemHelper.RestartApp();         
+            FireBrowserInterop.SystemHelper.RestartApp();
         }
 
         private void Read_Toggled(object sender, RoutedEventArgs e)

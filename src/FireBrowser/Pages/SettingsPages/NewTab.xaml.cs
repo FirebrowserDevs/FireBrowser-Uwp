@@ -1,11 +1,7 @@
-﻿using FireBrowser.Core;
-using FireBrowserQr;
+﻿using FireBrowser.Pages.SettingsPages.Restart;
 using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using static FireBrowser.Core.UserData;
-using FireBrowser;
-using FireBrowser.Pages.SettingsPages.Restart;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -19,7 +15,6 @@ namespace FireBrowser.Pages.SettingsPages
         public NewTab()
         {
             this.InitializeComponent();
-       
             ButtonVisible();
             IfChanged();
         }
@@ -62,7 +57,7 @@ namespace FireBrowser.Pages.SettingsPages
             FireBrowserInterop.SettingsHelper.SetSetting("EngineFriendlyName", EngineFriendlyName);
             FireBrowserInterop.SettingsHelper.SetSetting("SearchUrl", SearchUrl);
         }
-   
+
 
         public string ReadButton = FireBrowserInterop.SettingsHelper.GetSetting("Readbutton");
         public string AdblockBtn = FireBrowserInterop.SettingsHelper.GetSetting("AdBtn");
@@ -71,14 +66,14 @@ namespace FireBrowser.Pages.SettingsPages
         public string Favorites = FireBrowserInterop.SettingsHelper.GetSetting("FavBtn");
         public string Historybtn = FireBrowserInterop.SettingsHelper.GetSetting("HisBtn");
         public string QrCode = FireBrowserInterop.SettingsHelper.GetSetting("QrBtn");
-        
+
         public void ButtonVisible()
         {
             if (ReadButton == "True")
             {
                 Read.IsOn = true;
             }
-            else if(ReadButton == "0")
+            else if (ReadButton == "0")
             {
                 Read.IsOn = false;
             }
@@ -88,19 +83,19 @@ namespace FireBrowser.Pages.SettingsPages
             }
             else if (AdblockBtn == "0")
             {
-               Adbl.IsOn = false;
+                Adbl.IsOn = false;
             }
             if (Downloads == "True")
             {
-               Dwbl.IsOn = true;
+                Dwbl.IsOn = true;
             }
             else if (Downloads == "0")
             {
-               Dwbl.IsOn = false;
+                Dwbl.IsOn = false;
             }
             if (Translate == "True")
             {
-                 Trbl.IsOn = true;
+                Trbl.IsOn = true;
             }
             else if (Translate == "0")
             {
@@ -108,15 +103,15 @@ namespace FireBrowser.Pages.SettingsPages
             }
             if (Favorites == "True")
             {
-              Frbl.IsOn = true;
+                Frbl.IsOn = true;
             }
             else if (Favorites == "0")
             {
-                Frbl.IsOn= false;
+                Frbl.IsOn = false;
             }
             if (Historybtn == "True")
             {
-               Hsbl.IsOn = true;
+                Hsbl.IsOn = true;
             }
             else if (Historybtn == "0")
             {
@@ -131,11 +126,6 @@ namespace FireBrowser.Pages.SettingsPages
                 Qrbl.IsOn = false;
             }
         }
-        private void Page_Loading(FrameworkElement sender, object args)
-        {
-           
-        }
-
         private void Read_Toggled(object sender, RoutedEventArgs e)
         {
             if (Read.IsOn == true)

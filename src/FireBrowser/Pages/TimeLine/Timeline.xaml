@@ -9,7 +9,6 @@
     xmlns:firebrowser="using:FireBrowser.Controls"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     >
-
     <Grid>
         <muxc:NavigationView x:Name="NavigationView" 
                              PaneDisplayMode="Top"
@@ -43,5 +42,4 @@
             </ScrollViewer>
         </muxc:NavigationView>
     </Grid>
-
 </Page>

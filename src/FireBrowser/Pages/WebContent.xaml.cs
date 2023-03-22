@@ -1,14 +1,9 @@
 ﻿using FireBrowser.Core;
-using FireBrowserInterop;
 using Microsoft.Data.Sqlite;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Reflection;
-using System.Threading;
 using Windows.Storage;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -16,7 +11,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
-using Windows.Web.UI.Interop;
 using static FireBrowser.MainPage;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -28,15 +22,13 @@ namespace FireBrowser.Pages
     /// </summary>
     public sealed partial class WebContent : Page
     {
-    
+
         public WebContent()
         {
             this.InitializeComponent();
-        } 
+        }
 
         private bool fullScreen = false;
-        
-
         public static MainPage MainPageContent
         {
             get { return (Window.Current.Content as Frame)?.Content as MainPage; }
@@ -45,7 +37,6 @@ namespace FireBrowser.Pages
         [DefaultValue(false)]
         public bool FullScreen
         {
-
             get { return fullScreen; }
             set
             {
@@ -60,29 +51,25 @@ namespace FireBrowser.Pages
                 {
                     view.TryEnterFullScreenMode();
                     MainPageContent.HideToolbar(true);
-
                 }
             }
         }
 
-        string javasc = FireBrowserInterop.SettingsHelper.GetSetting("DisableJavaScript");  
+        string javasc = FireBrowserInterop.SettingsHelper.GetSetting("DisableJavaScript");
         string pass = FireBrowserInterop.SettingsHelper.GetSetting("DisablePassSave");
         string webmes = FireBrowserInterop.SettingsHelper.GetSetting("DisableWebMess");
         string autogen = FireBrowserInterop.SettingsHelper.GetSetting("DisableGenAutoFill");
 
         Passer param;
-        public bool incog = false;
-
-        public void loadSetting()
+        public async void loadSetting()
         {
             if (javasc.Equals("true"))
             {
-               WebViewElement.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = false;
+                WebViewElement.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = false;
             }
             else
             {
                 WebViewElement.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = true;
-
                 var PageParam = @"{""format"": ""png"", ""captureBeyondViewport"": true, ""clip"": {""x"": 0, ""y"": 0, ""width"":" + "document.body.scrollWidth" + @", ""height"":" + "document.body.scrollHeight" + @", ""scale"": 1.0" + "}}";
                 WebViewElement.CoreWebView2.CallDevToolsProtocolMethodAsync("Page.captureScreenshot", PageParam);
             }
@@ -94,7 +81,7 @@ namespace FireBrowser.Pages
             {
                 WebViewElement.CoreWebView2.Settings.IsPasswordAutosaveEnabled = true;
             }
-            if(webmes.Equals("true"))
+            if (webmes.Equals("true"))
             {
                 WebViewElement.CoreWebView2.Settings.IsWebMessageEnabled = false;
             }
@@ -102,7 +89,7 @@ namespace FireBrowser.Pages
             {
                 WebViewElement.CoreWebView2.Settings.IsWebMessageEnabled = true;
             }
-            if(autogen.Equals("true"))
+            if (autogen.Equals("true"))
             {
                 WebViewElement.CoreWebView2.Settings.IsGeneralAutofillEnabled = false;
             }
@@ -111,14 +98,13 @@ namespace FireBrowser.Pages
                 WebViewElement.CoreWebView2.Settings.IsGeneralAutofillEnabled = true;
             }
         }
-
         private class SizePasser
         {
             public int Height { get; set; }
             public int Width { get; set; }
         }
         protected override async void OnNavigatedTo(NavigationEventArgs e)
-        {        
+        {
             base.OnNavigatedTo(e);
             param = e.Parameter as Passer;
             await WebViewElement.EnsureCoreWebView2Async();
@@ -126,30 +112,20 @@ namespace FireBrowser.Pages
 
             if (param?.Param != null)
             {
-              
+
                 WebViewElement.CoreWebView2.Navigate(param.Param.ToString());
             }
 
-            if (incog == true)
-            {
-                var userAgent = s?.CoreWebView2.Settings.UserAgent;
-                userAgent = userAgent.Substring(0, userAgent.IndexOf("Edg/"));
-                userAgent = userAgent.Replace("BlackIncog/1", "BlackIncog/1");
-                s.CoreWebView2.Settings.UserAgent = userAgent;
-            }
-            else
-            {
-                var userAgent = s?.CoreWebView2.Settings.UserAgent;
-                userAgent = userAgent.Substring(0, userAgent.IndexOf("Edg/"));
-                userAgent = userAgent.Replace("Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.44", "Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.44");
-                s.CoreWebView2.Settings.UserAgent = userAgent;
-            }
+            var userAgent = s?.CoreWebView2.Settings.UserAgent;
+            userAgent = userAgent.Substring(0, userAgent.IndexOf("Edg/"));
+            userAgent = userAgent.Replace("Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.44", "Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.44");
+            s.CoreWebView2.Settings.UserAgent = userAgent;
 
             //MESS
             loadSetting();
-            s.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = true;         
+            s.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = true;
             s.CoreWebView2.Settings.IsStatusBarEnabled = true;
-            s.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = true;        
+            s.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = true;
             s.CoreWebView2.Settings.AreDefaultContextMenusEnabled = true;
 
             s.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
@@ -170,7 +146,7 @@ namespace FireBrowser.Pages
             };
             s.CoreWebView2.PermissionRequested += async (sender, args) =>
             {
-               
+
             };
             s.CoreWebView2.FaviconChanged += async (sender, args) =>
             {
@@ -182,17 +158,18 @@ namespace FireBrowser.Pages
                 }
                 catch { }
             };
-            s.CoreWebView2.NavigationStarting += async (sender, args) => {
+            s.CoreWebView2.NavigationStarting += async (sender, args) =>
+            {
                 MainPageContent.LoadingRing.Visibility = Visibility.Visible;
                 MainPageContent.LoadingRing.IsActive = true;
                 MainPageContent.RefreshBtn.Visibility = Visibility.Collapsed;
             };
-        
+
             s.CoreWebView2.NavigationCompleted += (sender, args) =>
             {
                 if (!args.IsSuccess)
                 {
-                   
+
                 }
 
                 MainPageContent.LoadingRing.Visibility = Visibility.Collapsed;
@@ -212,14 +189,11 @@ namespace FireBrowser.Pages
                 {
                     param.ViewModel.CurrentAddress = sender.Source;
                     param.ViewModel.SecurityIcon = sender.Source.Contains("https") ? "\uE72E" : "\uE785";
-                }           
+                }
             };
             s.CoreWebView2.NewWindowRequested += (sender, args) =>
             {
-                //To-Do: Check if it should be a popup or tab. Can use args.something for that.
-                //To-Do: Get the currently selected tab's position and launch the new one next to it
-
-                MainPage mp = new();            
+                MainPage mp = new();
                 param?.TabView.TabItems.Add(mp.CreateNewTab(typeof(WebContent), args.Uri));
                 args.Handled = true;
                 select();
@@ -320,7 +294,6 @@ namespace FireBrowser.Pages
 
                     break;
                 case "Copy":
-                    
                     FireBrowserInterop.SystemHelper.WriteStringToClipboard(SelectionText);
                     break;
                 case "Taskmgr":

@@ -1,8 +1,7 @@
-﻿using FireBrowser.Core;
-using FireBrowser.ViewModel;
-using Microsoft.UI.Xaml.Controls;
+﻿using FireBrowser.ViewModel;
 using System;
 using System.Net.Http;
+using System.Text.Json;
 using Windows.ApplicationModel.Resources;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -10,8 +9,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
-using System.Text.Json;
-using Windows.UI.Xaml.Shapes;
 using static FireBrowser.MainPage;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -23,7 +20,6 @@ namespace FireBrowser.Pages
     /// </summary>
     public sealed partial class NewTab : Page
     {
-       
         public HomeViewModel ViewModel { get; set; }
         public NewTab()
         {
@@ -36,8 +32,8 @@ namespace FireBrowser.Pages
                 ViewModel = new HomeViewModel()
                 {
                     BackgroundType = Core.Settings.NewTabBackground.None,
-                   
-                };          
+
+                };
             }
             else
             {
@@ -60,8 +56,6 @@ namespace FireBrowser.Pages
             param = e.Parameter as Passer;
             ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView();
             param.Tab.Header = resourceLoader.GetString("NewTabHeader");
-            
-            //ViewModel.Background = await GetGridBackgroundAsync();
         }
 
         private class ImageRoot
@@ -76,7 +70,7 @@ namespace FireBrowser.Pages
             public string title { get; set; }
         }
         public static Brush GetGridBackgroundAsync(Core.Settings.NewTabBackground backgroundType)
-        { 
+        {
             switch (backgroundType)
             {
                 case Core.Settings.NewTabBackground.None:
@@ -108,7 +102,7 @@ namespace FireBrowser.Pages
                         }
                         catch (Exception ex)
                         {
-                           
+
                             throw;
                         }
                     }
@@ -120,21 +114,21 @@ namespace FireBrowser.Pages
             return new SolidColorBrush();
         }
 
-       
-        private async void ActionClicked(object sender, RoutedEventArgs e)
+
+        private void ActionClicked(object sender, RoutedEventArgs e)
         {
             switch ((sender as Button)?.Tag)
             {
                 case "Google":
-                  
+
                     break;
                 case "Youtube":
-                    
+
                     break;
             }
         }
 
-        private async void BackgroundGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void BackgroundGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selection = (sender as GridView).SelectedItem as GridViewItem;
 
@@ -144,19 +138,19 @@ namespace FireBrowser.Pages
                 case "None":
                     FireBrowserInterop.SettingsHelper.SetSetting("Background", "0");
                     ViewModel.BackgroundType = Core.Settings.NewTabBackground.None;
-                    
+
                     break;
                 case "Featured":
 
                     FireBrowserInterop.SettingsHelper.SetSetting("Background", "1");
                     ViewModel.BackgroundType = Core.Settings.NewTabBackground.Featured;
-                    
+
                     break;
                 default:
-                  
+
                     break;
             }
-         
+
 
         }
 
@@ -164,7 +158,5 @@ namespace FireBrowser.Pages
         {
             MainPage.FocusUrlBox(NewTabSearchBox.Text);
         }
-
-     
     }
 }

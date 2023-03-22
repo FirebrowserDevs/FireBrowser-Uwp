@@ -15,7 +15,6 @@
             <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="22" FontWeight="Bold">
                 Setup Settings
             </TextBlock>
-           
             <labs:SettingsCard VerticalAlignment="Top" Margin="0,5,0,0" Width="600">
                 <labs:SettingsCard.Header>
                     Search Engine

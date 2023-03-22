@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.Media.Core;
 using Windows.Media.Playback;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -33,13 +32,8 @@ namespace FireBrowser.Launch
             FrameNext.Navigate(typeof(SetupSettings));
             _mediaPlayerElement.Visibility = Visibility.Collapsed;
             txt2.Visibility = Visibility.Collapsed;
-            txt.Visibility= Visibility.Collapsed;
+            txt.Visibility = Visibility.Collapsed;
             btn.Visibility = Visibility.Collapsed;
-        }
-
-        private void FrameNext_BringIntoViewRequested(UIElement sender, BringIntoViewRequestedEventArgs args)
-        {
-
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System;
-using Windows.UI.Xaml.Controls;
-using Newtonsoft.Json;
-using static FireBrowser.App;
-using Windows.Storage;
 using Windows.Data.Json;
+using Windows.Storage;
+using Windows.UI.Xaml.Controls;
 
 // The Content Dialog item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -17,16 +15,11 @@ namespace FireBrowser.Pages.SettingsPages
             this.InitializeComponent();
             Login();
         }
-
-
         public async void Login()
         {
-
             await WebApp.EnsureCoreWebView2Async();
             WebApp.Source = new Uri("https://login.live.com/");
         }
-
-        string file = "Isettings.json";
         private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             WebApp.Close();
@@ -49,7 +42,7 @@ namespace FireBrowser.Pages.SettingsPages
         }
 
         private async void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {         
+        {
             WebApp.Close();
 
             // Load the JSON file

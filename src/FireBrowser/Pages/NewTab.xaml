@@ -18,10 +18,6 @@
                              window width is >=640 effective pixels. -->
                         <AdaptiveTrigger MinWindowWidth="640" />
                     </VisualState.StateTriggers>
-
-                    <VisualState.Setters>
-                        <!-- <Setter Target="Grid.Background" Value="Red"/> -->
-                    </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
@@ -82,7 +78,7 @@
             </AutoSuggestBox>
             <StackPanel Grid.Row="1"
                         Orientation="Horizontal" Spacing="4">
-                
+
                 <Button Click="ActionClicked" Tag="Google" CornerRadius="16" Background="Transparent" BorderThickness="1" BorderBrush="Red">
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <Image Source="/Assets/Logo.png" Width="16"></Image>
@@ -96,7 +92,6 @@
                     </StackPanel>
                 </Button>
             </StackPanel>
-            
         </Grid>
         <Grid>
             <Grid.ColumnDefinitions>

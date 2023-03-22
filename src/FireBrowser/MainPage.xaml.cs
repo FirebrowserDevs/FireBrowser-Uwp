@@ -1,39 +1,33 @@
-﻿using System;
-using Windows.ApplicationModel.Core;
-using Windows.UI.ViewManagement;
-using Windows.UI;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Navigation;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using FireBrowser.Controls;
-using Microsoft.UI.Xaml.Controls;
+using FireBrowser.Core;
 using FireBrowser.Pages;
-using Windows.ApplicationModel;
-using CommunityToolkit.Mvvm.ComponentModel;
-using Windows.UI.Xaml.Media.Animation;
-using Windows.Storage.Streams;
-using Windows.UI.Xaml.Media.Imaging;
-using static FireBrowser.App;
+using FireBrowserFavorites;
+using FireBrowserHelpers.AdBlocker;
+using FireBrowserHelpers.ReadingMode;
 using FireBrowserQr;
 using FireBrowserUrlHelper;
-using FireBrowser.Core;
-using NewTab = FireBrowser.Pages.NewTab;
-using FireBrowserHelpers.ReadingMode;
-using FireBrowserHelpers.AdBlocker;
 using Microsoft.Data.Sqlite;
-using System.Collections.Generic;
-using Windows.Storage;
-using System.IO;
+using Microsoft.UI.Xaml.Controls;
 using SQLitePCL;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using FireBrowserFavorites;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Data.SqlClient;
-using Windows.UI.Core.Preview;
-using static FireBrowserQr.PayloadGenerator;
+using System.IO;
+using Windows.ApplicationModel;
+using Windows.ApplicationModel.Core;
+using Windows.Storage;
+using Windows.Storage.Streams;
+using Windows.UI;
+using Windows.UI.ViewManagement;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media.Animation;
+using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Navigation;
+using static FireBrowser.App;
+using NewTab = FireBrowser.Pages.NewTab;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -50,16 +44,16 @@ namespace FireBrowser
         public DataTemplate DefaultTemplate { get; set; }
     }
 
- 
+
 
     public sealed partial class MainPage : Page
     {
-      
+
         public MainPage()
         {
             this.InitializeComponent();
             ButtonVisible();
-            
+
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
@@ -77,7 +71,7 @@ namespace FireBrowser
                 }
             };
 
-            Window.Current.SetTitleBar(CustomDragRegion);          
+            Window.Current.SetTitleBar(CustomDragRegion);
         }
 
         #region buttons
@@ -179,18 +173,18 @@ namespace FireBrowser
                         History.IsEnabled = false;
                         DownBtn.IsEnabled = false;
                         FavoritesButton.IsEnabled = false;
-                       
+
                         //To-Do...
                         Tabs.TabItems.Add(CreateNewTab(typeof(Incognito)));
-                        
+
                         break;
-                    case AppLaunchType.LaunchStartup:                 
+                    case AppLaunchType.LaunchStartup:
                         //this works for some reason when set startup first it fails to add newtab        
                         Tabs.TabItems.Add(CreateNewTab(typeof(NewTab)));
                         var startup = await StartupTask.GetAsync("FireBrowserStartUp");
                         break;
                     case AppLaunchType.FirstLaunch:
-                       
+
                         break;
                     case AppLaunchType.URIHttp:
                         Tabs.TabItems.Add(CreateNewTab(typeof(WebContent),
@@ -206,8 +200,8 @@ namespace FireBrowser
                 Tabs.TabItems.Add(CreateNewTab());
             }
         }
-            
-        
+
+
 
         #region toolbar
         public ToolbarViewModel ViewModel { get; set; }
@@ -360,7 +354,7 @@ namespace FireBrowser
                 Margin = new Thickness(0, Margin, 0, 0)
             };
 
-            
+
 
             if (page != null)
             {
@@ -398,18 +392,18 @@ namespace FireBrowser
 
         }
 
-     
+
 
         private void UrlBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-               
+
 
             }
             else if (args.Reason == AutoSuggestionBoxTextChangeReason.SuggestionChosen)
             {
-               
+
             }
         }
 
@@ -445,7 +439,7 @@ namespace FireBrowser
                 {
                     TabContent.Navigate(typeof(SettingsPage), CreatePasser(),
                                        new DrillInNavigationTransitionInfo());
-                  
+
                 }
             }
             else if (inputtype == "url")
@@ -565,7 +559,7 @@ namespace FireBrowser
             switch ((sender as Button).Tag)
             {
                 case "Back":
-                   GoBack();
+                    GoBack();
                     break;
                 case "Forward":
                     GoForward();
@@ -587,14 +581,14 @@ namespace FireBrowser
                 case "DownloadFlyout":
                     if (TabContent.Content is WebContent)
                     {
-                        if(TabWebView.CoreWebView2.IsDefaultDownloadDialogOpen == true)
+                        if (TabWebView.CoreWebView2.IsDefaultDownloadDialogOpen == true)
                         {
                             (TabContent.Content as WebContent).WebViewElement.CoreWebView2.CloseDefaultDownloadDialog();
                         }
                         else
                         {
                             (TabContent.Content as WebContent).WebViewElement.CoreWebView2.OpenDefaultDownloadDialog();
-                        }                    
+                        }
                     }
                     break;
                 case "Translate":
@@ -634,7 +628,7 @@ namespace FireBrowser
                             await UI.ShowDialog("Information", "No Webcontent Detected ( Url )");
                             QRCodeFlyout.Hide();
                         }
-                     
+
                     }
                     catch
                     {
@@ -665,7 +659,7 @@ namespace FireBrowser
                     }
                     break;
                 case "AddFavorite":
-                    FavoritesHelper.AddFavoritesItem(FavoriteTitle.Text, FavoriteUrl.Text);               
+                    FavoritesHelper.AddFavoritesItem(FavoriteTitle.Text, FavoriteUrl.Text);
                     break;
                 case "Favorites":
                     Globals.JsonItemsList = await Json.GetListFromJsonAsync("Favorites.json");
@@ -674,7 +668,7 @@ namespace FireBrowser
                     break;
             }
         }
-        
+
         #region tabsbuttons
         private void Tabs_AddTabButtonClick(TabView sender, object args)
         {
@@ -697,10 +691,10 @@ namespace FireBrowser
             {
                 (tabcontent.Content as WebContent).WebViewElement.Close();
             }
-            sender.TabItems.Remove(args.Tab); 
+            sender.TabItems.Remove(args.Tab);
         }
         #endregion
-       
+
         private void FetchBrowserHistory()
         {
             Batteries.Init();
@@ -749,7 +743,7 @@ namespace FireBrowser
                             HistoryTemp.ItemsSource = historyItems;
                         }
                     }
-                   
+
                 }
             }
             catch (Exception ex)
@@ -782,7 +776,7 @@ namespace FireBrowser
 
         private void History_Click(object sender, RoutedEventArgs e)
         {
-            FetchBrowserHistory();       
+            FetchBrowserHistory();
         }
         private void HistoryTemp_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -793,7 +787,7 @@ namespace FireBrowser
                 HistoryItem item = (HistoryItem)listView.SelectedItem;
                 string launchurlfav = item.Url;
                 if (TabContent.Content is WebContent)
-                {                
+                {
                     (TabContent.Content as WebContent).WebViewElement.CoreWebView2.Navigate(launchurlfav);
                 }
                 else
@@ -821,7 +815,7 @@ namespace FireBrowser
 
         private void HistorySearchMenuItem_TextChanged(object sender, TextChangedEventArgs e)
         {
-          
+
         }
 
         private void ClearHistoryDataMenuItem_Click(object sender, RoutedEventArgs e)
@@ -858,7 +852,7 @@ namespace FireBrowser
 
         private void TabMenuClick(object sender, RoutedEventArgs e)
         {
-            switch((sender as Button).Tag)
+            switch ((sender as Button).Tag)
             {
                 case "NewTab":
                     Tabs.TabItems.Add(CreateNewTab());
@@ -903,6 +897,6 @@ namespace FireBrowser
             }
         }
 
-    
+
     }
 }

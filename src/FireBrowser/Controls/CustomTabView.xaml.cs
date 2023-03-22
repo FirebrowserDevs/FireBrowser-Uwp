@@ -25,7 +25,7 @@ namespace FireBrowser.Controls
         public Core.Settings.UILayout Mode
         {
             get => (Core.Settings.UILayout)GetValue(ModeProperty);
-            set 
+            set
             {
                 switch (value)
                 {
@@ -48,6 +48,5 @@ namespace FireBrowser.Controls
 
         public static readonly DependencyProperty ModeProperty =
             DependencyProperty.Register(nameof(Mode), typeof(Core.Settings.UILayout), typeof(CustomTabView), null);
-
     }
 }

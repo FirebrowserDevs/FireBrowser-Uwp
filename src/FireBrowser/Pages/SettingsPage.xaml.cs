@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using muxc = Microsoft.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
-using Windows.UI.Core;
 using Windows.System;
-using Windows.UI.Xaml.Controls;
-using System;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 using static FireBrowser.MainPage;
+using muxc = Microsoft.UI.Xaml.Controls;
 
 //Szablon elementu Pusta strona jest udokumentowany na stronie https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -23,7 +23,6 @@ namespace FireBrowser.Pages
         public SettingsPage()
         {
             this.InitializeComponent();
-
         }
         private double NavViewCompactModeThresholdWidth { get { return NavView.CompactModeThresholdWidth; } }
 
@@ -76,13 +75,11 @@ namespace FireBrowser.Pages
 
         private Passer passer;
         protected async override void OnNavigatedTo(NavigationEventArgs e)
-        {         
+        {
             passer = e.Parameter as Passer;
             passer.Tab.IconSource = new muxc.FontIconSource()
             {
                 Glyph = "\uF6AA"
-                
-
             };
         }
 
@@ -91,7 +88,6 @@ namespace FireBrowser.Pages
         private async void NavView_SelectionChanged(muxc.NavigationView sender,
                                              muxc.NavigationViewSelectionChangedEventArgs args)
         {
-
             if (args.IsSettingsSelected == true)
             {
                 NavView_Navigate("settings", args.RecommendedNavigationTransitionInfo);

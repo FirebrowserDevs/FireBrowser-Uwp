@@ -142,7 +142,6 @@
       <DependentUpon>Toolbar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Core\ColorConverter.cs" />
-    <Compile Include="Core\FavItem.cs" />
     <Compile Include="Core\Icons.cs" />
     <Compile Include="Core\HistoryItem.cs" />
     <Compile Include="Core\Settings.cs" />

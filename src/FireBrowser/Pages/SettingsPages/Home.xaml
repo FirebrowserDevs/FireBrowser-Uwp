@@ -7,10 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    mc:Ignorable="d"
-    
-    >
-
+    mc:Ignorable="d">
     <Grid>
         <StackPanel Margin="0,5,0,0">
             <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
@@ -38,7 +35,6 @@
                         <TextBlock x:Name="TextStat" Text="Connect"/>
                         <StackPanel x:Name="Status" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-30,-20,0,0" Width="16" Height="16" Background="Red" CornerRadius="10"/>
                     </StackPanel>
-                   
                 </Button>
             </labs:SettingsCard>
             <labs:SettingsCard>

@@ -7,9 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
-    Loading="Page_Loading"
     >
-
     <StackPanel>
         <Frame x:Name="FrameRestart" Visibility="Collapsed">
             

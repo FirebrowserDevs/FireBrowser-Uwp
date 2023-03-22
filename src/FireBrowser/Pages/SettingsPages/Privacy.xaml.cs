@@ -1,6 +1,4 @@
-﻿using FireBrowser.Core;
-using FireBrowser.Pages.SettingsPages.Restart;
-using Microsoft.Toolkit.Uwp.UI;
+﻿using FireBrowser.Pages.SettingsPages.Restart;
 using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -29,11 +27,11 @@ namespace FireBrowser.Pages.SettingsPages
         {
             if (javasc == "true")
             {
-                    DisableJavaScriptToggle.IsOn = true;
+                DisableJavaScriptToggle.IsOn = true;
             }
             else
             {
-                    DisableJavaScriptToggle.IsOn = false;
+                DisableJavaScriptToggle.IsOn = false;
             }
             if (webmes == "true")
             {
@@ -51,7 +49,7 @@ namespace FireBrowser.Pages.SettingsPages
             {
                 DisableGenaralAutoFillToggle.IsOn = false;
             }
-            if(pass == "true")
+            if (pass == "true")
             {
                 PasswordWebMessFillToggle.IsOn = true;
             }
@@ -72,14 +70,14 @@ namespace FireBrowser.Pages.SettingsPages
                 3 => "High",
                 4 => "Extreme"
             };
-            
+
         }
 
         public async void IfChanged()
         {
-         
+
             RestartFrame.Navigate(typeof(RestartDialog));
-                RestartFrame.Visibility = Visibility.Visible;
+            RestartFrame.Visibility = Visibility.Visible;
         }
 
         private void DisableJavaScriptToggle_Toggled(object sender, RoutedEventArgs e)
@@ -88,13 +86,13 @@ namespace FireBrowser.Pages.SettingsPages
             {
                 FireBrowserInterop.SettingsHelper.SetSetting("DisableJavaScript", "true");
                 trueCount++;
-         
+
             }
             else
             {
                 trueCount--;
                 FireBrowserInterop.SettingsHelper.SetSetting("DisableJavaScript", "false");
-              
+
             }
             IfChanged();
             UpdateText();
@@ -106,19 +104,19 @@ namespace FireBrowser.Pages.SettingsPages
             {
                 FireBrowserInterop.SettingsHelper.SetSetting("DisableGenAutoFill", "true");
                 trueCount++;
-              
+
             }
             else
             {
                 FireBrowserInterop.SettingsHelper.SetSetting("DisableGenAutoFill", "false");
                 trueCount--;
-              
+
             }
             IfChanged();
             UpdateText();
         }
 
-      
+
         private void DisablWebMessFillToggle_Toggled(object sender, RoutedEventArgs e)
         {
             if (DisablWebMessFillToggle.IsOn)

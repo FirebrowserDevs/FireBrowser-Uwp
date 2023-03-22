@@ -23,7 +23,6 @@ namespace FireBrowser.Core
         public class FavoriteIcon
         {
             public FavoriteIconType Type { get; set; }
-       
         }
 
         public class Profile
@@ -38,7 +37,6 @@ namespace FireBrowser.Core
         public class Favorite
         {
             public string Name { get; set; }
-       
             public string URL { get; set; }
             public List<Site> Content { get; set; }
         }
@@ -48,7 +46,6 @@ namespace FireBrowser.Core
             public string Name { get; set; }
             public string Icon { get; set; }
             public FocusMode Mode { get; set; }
-         
         }
 
         public class Collection

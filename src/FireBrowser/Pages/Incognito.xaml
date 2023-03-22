@@ -8,7 +8,6 @@
     mc:Ignorable="d"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
-
     <Grid>
         <TextBlock>
             INCOGNITO ON

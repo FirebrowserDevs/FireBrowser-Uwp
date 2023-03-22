@@ -16,8 +16,6 @@ namespace FireBrowserInterop
                
             }
         }
-
-
         public static void WriteStringToClipboard(string text)
         {
             DataPackage dataPackage = new DataPackage()
@@ -32,7 +30,6 @@ namespace FireBrowserInterop
             string architecture = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
             return architecture;
         }
-
         public static void ShowShareUIURL(string title, string url)
         {
             var dt = DataTransferManager.GetForCurrentView();

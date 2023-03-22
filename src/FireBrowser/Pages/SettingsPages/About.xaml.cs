@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Labs.WinUI;
-using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -25,13 +24,6 @@ namespace FireBrowser.Pages.SettingsPages
             this.InitializeComponent();
         }
 
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-
         public static MainPage MainPageContent
         {
             get { return (Window.Current.Content as Frame)?.Content as MainPage; }
@@ -53,9 +45,7 @@ namespace FireBrowser.Pages.SettingsPages
                     break;
             }
             MainPage mp = new();
-            //To-Do: Get the currently selected tab's position and launch the new one next to it
-
-            MainPageContent.NavigateToUrl(url);       
+            MainPageContent.NavigateToUrl(url);
         }
     }
 }

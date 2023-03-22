@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using Windows.ApplicationModel.DataTransfer;
-using Windows.Storage;
+﻿using Windows.Storage;
 
 namespace FireBrowserInterop
 {
@@ -18,6 +16,5 @@ namespace FireBrowserInterop
         {
             localSettings.Values[Setting] = SettingValue;
         }
-
     }
 }

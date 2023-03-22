@@ -32,7 +32,7 @@
             Margin="0,-350,0,0"
             AreTransportControlsEnabled="True"/>
 
-        <Frame x:Name="FrameNext" BringIntoViewRequested="FrameNext_BringIntoViewRequested" Visibility="Collapsed">
+        <Frame x:Name="FrameNext" Visibility="Collapsed">
 
         </Frame>
     </StackPanel>

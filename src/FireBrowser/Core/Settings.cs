@@ -1,17 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using Windows.ApplicationModel.Resources;
-using Windows.Storage;
-using static FireBrowser.Core.UserData;
+﻿using System.Collections.Generic;
 
 namespace FireBrowser.Core
 {
     public class Settings
     {
-      
+
         public enum FavoritesBarVisibility
         {
             Always,
@@ -106,7 +99,7 @@ namespace FireBrowser.Core
             public string ID { get; set; }
             public string TextResource { get; set; }
             //Only used for 3rd party extensions that don't have a built in resource
-            public LocalizedText TextLocalized { get;set;}
+            public LocalizedText TextLocalized { get; set; }
         }
         //Ignore for now
         public class LocalizedText
@@ -117,7 +110,7 @@ namespace FireBrowser.Core
 
 
         // Define a class to represent the app settings
-      
+
 
     }
 }

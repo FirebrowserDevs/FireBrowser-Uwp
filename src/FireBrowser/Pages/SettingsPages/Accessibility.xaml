@@ -7,9 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
-    >
-
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI">
     <Grid>
         <StackPanel>
             <labs:SettingsExpander x:Uid="FireBrowser - StartUp" Margin="0,30,0,0">

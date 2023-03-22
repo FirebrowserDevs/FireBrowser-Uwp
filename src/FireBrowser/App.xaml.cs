@@ -1,20 +1,14 @@
-﻿using FireBrowser.Core;
-using FireBrowser.Launch;
-using Microsoft.Toolkit.Uwp.UI.Controls;
+﻿using FireBrowser.Launch;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.ApplicationModel.Background;
 using Windows.Storage;
-using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using static FireBrowser.Core.UserData;
 using static FireBrowser.MainPage;
 
 namespace FireBrowser
@@ -23,8 +17,8 @@ namespace FireBrowser
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
     sealed partial class App : Application
-    {  
-      
+    {
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -105,7 +99,7 @@ namespace FireBrowser
                         {
                             case "incognito":
                                 kind = AppLaunchType.LaunchIncognito;
-                                break;                         
+                                break;
                         }
 
                     }
@@ -202,7 +196,7 @@ namespace FireBrowser
             return isFirstLaunch;
         }
 
-      
+
 
 
         #endregion
@@ -217,7 +211,7 @@ namespace FireBrowser
             // CoreApplication.EnablePrelaunch was introduced in Windows 10 version 1607
             bool canEnablePrelaunch = Windows.Foundation.Metadata.ApiInformation.IsMethodPresent("Windows.ApplicationModel.Core.CoreApplication", "EnablePrelaunch");
 
-            
+
             // NOTE: Only enable this code if you are targeting a version of Windows 10 prior to version 1607,
             // and you want to opt out of prelaunch.
             // In Windows 10 version 1511, all UWP apps were candidates for prelaunch.
@@ -243,14 +237,14 @@ namespace FireBrowser
                     //TODO: Load state from previously suspended application
                 }
 
-             
+
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
 
             if (e.PrelaunchActivated == false)
             {
-              
+
                 AppLaunchPasser passer = new AppLaunchPasser()
                 {
                     LaunchType = AppLaunchType.LaunchBasic,
@@ -265,7 +259,7 @@ namespace FireBrowser
                 }
 
                 bool isFirstLaunch = await CheckFirstLaunchAsync();
-     
+
                 if (isFirstLaunch)
                 {
                     if (rootFrame == null)

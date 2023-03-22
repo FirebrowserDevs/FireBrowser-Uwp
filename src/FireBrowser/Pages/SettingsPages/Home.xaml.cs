@@ -1,18 +1,8 @@
-﻿using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using FireBrowser.Core;
-using Windows.Storage;
-using System.IO;
+﻿using Newtonsoft.Json;
 using System;
-using Windows.Devices.Bluetooth.GenericAttributeProfile;
-using Windows.Devices.Bluetooth;
-using Windows.UI.Popups;
-using Windows.UI.WebUI;
-using Microsoft.UI.Xaml.Controls;
-using Newtonsoft.Json;
-using static FireBrowser.App;
-using System.Threading.Tasks;
-using System.Drawing;
+using Windows.Storage;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -29,7 +19,7 @@ namespace FireBrowser.Pages.SettingsPages
         {
             this.InitializeComponent();
             SysInfoBox.Text = "SysInfo: " + FireBrowserInterop.SystemHelper.GetSystemArchitecture();
-            check();         
+            check();
         }
 
         public async void check()
@@ -70,7 +60,7 @@ namespace FireBrowser.Pages.SettingsPages
         private async void MsAccount_Click(object sender, RoutedEventArgs e)
         {
             MsLogin login = new MsLogin();
-            login.ShowAsync();  
+            login.ShowAsync();
         }
     }
 }
