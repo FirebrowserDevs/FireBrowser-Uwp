@@ -8,7 +8,7 @@ namespace FireBrowserUrlHelper
         public static string KnownDomains { get; set; }
         public static async void LoadKnownDomains()
         {
-            StorageFile assets = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///FireBrowserUrlHelper/List/public_domains.txt"));  
+            StorageFile assets = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///FireBrowserUrlHelper/List/public_domains.txt"));
             KnownDomains = await FileIO.ReadTextAsync(assets);
         }
 

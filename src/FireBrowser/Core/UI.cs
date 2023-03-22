@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -8,25 +7,24 @@ namespace FireBrowser.Core
 {
     public static class UI
     {
-        public static IAsyncOperation<ContentDialogResult> ShowWithAnimationAsync(this ContentDialog contentDialog)
+        public static async Task<ContentDialogResult> ShowWithAnimationAsync(this ContentDialog contentDialog)
         {
-            if (contentDialog.Style == null)
-            {
-                contentDialog.Style = (Style)Application.Current.Resources["DefaultContentDialogStyle"];
-            }
+            contentDialog.Style ??= (Style)Application.Current.Resources["DefaultContentDialogStyle"];
 
-            return contentDialog.ShowAsync();
+            return await contentDialog.ShowAsync();
         }
 
-        public async static Task ShowDialog(string title, string message)
+        public static async Task ShowDialog(string title, string message)
         {
-            ContentDialog dialog = new()
+            var dialog = new ContentDialog
             {
                 Title = title,
                 Content = message,
                 PrimaryButtonText = "OK"
             };
+
             await dialog.ShowWithAnimationAsync();
         }
+
     }
 }

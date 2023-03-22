@@ -1,10 +1,10 @@
-﻿using System;
+﻿using FireBrowserQr.FrameworkMethods;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using FireBrowserQr.FrameworkMethods;
 #if NETSTANDARD1_3
 using System.Reflection;
 #endif
@@ -2576,7 +2576,8 @@ namespace FireBrowserQr
 #else
                 return oFields.GetType().GetProperties()
                         .Where(field => field.GetValue(oFields, null) != null)
-                        .Select(field => {
+                        .Select(field =>
+                        {
                             var objValue = field.GetValue(oFields, null);
                             var value = field.PropertyType.Equals(typeof(DateTime?)) ? ((DateTime)objValue).ToString("dd.MM.yyyy") : objValue.ToString();
                             return $"{field.Name}={value}";
@@ -2604,7 +2605,8 @@ namespace FireBrowserQr
 #else
                 return mFields.GetType().GetFields()
                         .Where(field => field.GetValue(mFields) != null)
-                        .Select(field => {
+                        .Select(field =>
+                        {
                             var objValue = field.GetValue(mFields);
                             var value = field.FieldType.Equals(typeof(DateTime?)) ? ((DateTime)objValue).ToString("dd.MM.yyyy") : objValue.ToString();
                             return $"{field.Name}={value}";

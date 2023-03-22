@@ -4,11 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:firebrowser="using:FireBrowser.Controls"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
-    xmlns:controls="using:FireBrowser.Controls"
-    xmlns:core="using:FireBrowser.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:data="using:FireBrowser.Core"
-    xmlns:local="using:FireBrowser"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
@@ -34,7 +30,7 @@
                     <Border BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.3" Margin="10,5,10,10" BorderThickness="1"/>
                     <Button Tag="NewTab" Click="TabMenuClick" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch"	HorizontalContentAlignment="Left" Margin="0,0,0,0" IsEnabled="True">
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon Glyph="&#xF751;" FontSize="18"/>
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE710;" FontSize="18"/>
                             <TextBlock Margin="10,0,0,0" Text="New-Tab"/>
                         </StackPanel>
                     </Button>
@@ -379,9 +375,6 @@
             >
             <muxc:TabView.TabStripHeader>
                 <StackPanel Orientation="Horizontal">
-                    <Button Style="{ThemeResource QuietButtonStyle}">
-                        <FontIcon Glyph="&#xF77B;" />
-                    </Button>
                     <Button RenderTransformOrigin="0.5,0.5" Style="{ThemeResource QuietButtonStyle}">
                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE746;" />
                         <Button.RenderTransform>
@@ -448,9 +441,9 @@
                     Width="32"
                     x:FieldModifier="Public"
                     x:Name="RefreshBtn"
-                    Click="ToolbarButtonClick"                  
+                    Click="ToolbarButtonClick" 
+                    Content="{firebrowser:FluentIcon Glyph=&#xE72C;}"
                     >
-                    <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xe72c;" />
                 </Button>
                 <muxc:ProgressRing
                         x:Name="LoadingRing"
@@ -458,11 +451,11 @@
                         IsActive="False" Margin="3,0,3,0" Width="16" Height="16" Visibility="Collapsed"/>
                 <Button
                     
-                    Style="{StaticResource QuietButtonStyle}"
-                    Tag="Home"
-                    Click="ToolbarButtonClick"
+                   Style="{StaticResource QuietButtonStyle}"
+                   Tag="Home"
+                   Click="ToolbarButtonClick"
+                   Content="{firebrowser:FluentIcon Glyph=&#xE80F;}"
                    >
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE80F;" />
                 </Button>
             </StackPanel>
 
@@ -505,8 +498,8 @@
                         Tag="AddFavoriteFlyout"
                         Click="ToolbarButtonClick"
                         Visibility="Visible"
+                        Content="{firebrowser:FluentIcon Glyph=&#xE734;}"
                         >
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe734;"/>
                     <Button.Flyout>
                         <Flyout>
                             <StackPanel>
@@ -531,38 +524,39 @@
                     x:Name="ReadBtn"
                     Click="ToolbarButtonClick"
                     Style="{ThemeResource QuietButtonStyle}"
-                    Tag="ReadingMode">
-                    <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE736;" />
+                    Tag="ReadingMode"
+                    Content="{firebrowser:FluentIcon Glyph=&#xE736;}"
+                   >
                 </Button>
                 <Button
                     x:Name="AdBlock"
                    Click="ToolbarButtonClick"
                     Style="{ThemeResource QuietButtonStyle}"
-                    Tag="AdBlock">
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEA18;" />
+                    Tag="AdBlock"
+                    Content="{firebrowser:FluentIcon Glyph=&#xEA18;}">
                 </Button>
                 <Button
                     x:Name="DownBtn"
                     Click="ToolbarButtonClick"
                     Style="{ThemeResource QuietButtonStyle}"
-                    Tag="DownloadFlyout">
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE896;" />
+                    Tag="DownloadFlyout"
+                    Content="{firebrowser:FluentIcon Glyph=&#xE896;}">
                 </Button>
                 <Button 
                     x:Name="BtnTrans"
                     Click="ToolbarButtonClick"
                     Style="{ThemeResource QuietButtonStyle}"
                     Tag="Translate"
+                    Content="{firebrowser:FluentIcon Glyph=&#xE87E;}"
                     >
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE87E;" />
                 </Button>
-               
                 <Button
                     x:Name="FavoritesButton"                 
                     Style="{ThemeResource QuietButtonStyle}"
                     Tag="Favorites"
-                    Click="ToolbarButtonClick">
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE728;" />
+                    Click="ToolbarButtonClick"
+                    Content="{firebrowser:FluentIcon Glyph=&#xE728;}"
+                    >
                     <Button.Flyout>
                         <Flyout>
                             <StackPanel
@@ -592,22 +586,24 @@
                     Flyout="{x:Bind HistoryFlyoutMenu}"
                     IsEnabled="True"
                     Style="{ThemeResource QuietButtonStyle}"
-                    Click="History_Click">
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE81C;" />
+                    Click="History_Click"
+                    Content="{firebrowser:FluentIcon Glyph=&#xE81C;}">
+                    
                 </Button>
                 <Button
                     x:Name="QrBtn"
                   Click="ToolbarButtonClick"
                     Flyout="{x:Bind QRCodeFlyout}"
                     Style="{ThemeResource QuietButtonStyle}"
-                    Tag="QRCode">
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xED14;" />
+                    Tag="QRCode"
+                    Content="{firebrowser:FluentIcon Glyph=&#xED14;}">
+                    
                 </Button>
               
                 <Button
                     x:Uid="ToolbarMoreButton"
                     VerticalAlignment="Center"
-                    Content="{firebrowser:FluentIcon Glyph=&#xE825;}"
+                    Content="{firebrowser:FluentIcon Glyph=&#xE712;}"
                     Flyout="{StaticResource MoreFlyout}"
                     Style="{ThemeResource QuietButtonStyle}" />
             </StackPanel>

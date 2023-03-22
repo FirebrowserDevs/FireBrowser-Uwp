@@ -13,7 +13,7 @@ namespace FireBrowserInterop
             if (result == AppRestartFailureReason.NotInForeground
                 || result == AppRestartFailureReason.Other)
             {
-               
+
             }
         }
         public static void WriteStringToClipboard(string text)

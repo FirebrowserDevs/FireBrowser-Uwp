@@ -141,8 +141,6 @@
     <Compile Include="Controls\Toolbar.xaml.cs">
       <DependentUpon>Toolbar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Core\ColorConverter.cs" />
-    <Compile Include="Core\Icons.cs" />
     <Compile Include="Core\HistoryItem.cs" />
     <Compile Include="Core\Settings.cs" />
     <Compile Include="Core\UI.cs" />
@@ -275,6 +273,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="Assets\Icons\Segoe Fluent Icons.ttf" />
     <None Include="FireBrowser_TemporaryKey.pfx" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
@@ -432,16 +431,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Icons\FluentIcons.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Assets\Icons\FluentIcons-Filled.ttf" />
-  </ItemGroup>
-  <ItemGroup>
     <PRIResource Include="Assets\Strings\en-US\Resources.resw" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Fonts\Segoe Fluent Icons.ttf" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FireBrowserFavorites\FireBrowserFavorites.csproj">

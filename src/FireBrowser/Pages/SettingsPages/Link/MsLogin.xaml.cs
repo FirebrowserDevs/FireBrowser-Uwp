@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Web.WebView2.Core;
+using System;
 using Windows.Data.Json;
 using Windows.Storage;
 using Windows.UI.Xaml.Controls;
@@ -16,8 +17,9 @@ namespace FireBrowser.Pages.SettingsPages
             Login();
         }
         public async void Login()
-        {
+        {       
             await WebApp.EnsureCoreWebView2Async();
+            WebApp.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
             WebApp.Source = new Uri("https://login.live.com/");
         }
         private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

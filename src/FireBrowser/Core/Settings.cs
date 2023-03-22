@@ -4,7 +4,6 @@ namespace FireBrowser.Core
 {
     public class Settings
     {
-
         public enum FavoritesBarVisibility
         {
             Always,
@@ -107,10 +106,5 @@ namespace FireBrowser.Core
             public string Default { get; set; }
             public string en { get; set; }
         }
-
-
-        // Define a class to represent the app settings
-
-
     }
 }

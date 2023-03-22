@@ -2,7 +2,6 @@
     x:Class="FireBrowser.Pages.WebContent"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:FireBrowser.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
@@ -12,72 +11,44 @@
 
     <Page.Resources>
         <muxc:CommandBarFlyout x:Name="Ctx" Placement="BottomEdgeAlignedLeft">
-            <AppBarButton  Click="ContextMenuItem_Click" x:Uid="Back" Tag="MenuBack" Icon="{firebrowser:FluentIcon Glyph=&#xF15C;}"/>
-            <AppBarButton  Click="ContextMenuItem_Click" Tag="Forward">
-                <AppBarButton.Icon>
-                    <FontIcon Glyph="&#xF182;"/>
-                </AppBarButton.Icon>
-            </AppBarButton>
-            <AppBarButton  Click="ContextMenuItem_Click" Icon="Share" ToolTipService.ToolTip="Share" Tag="Share"/>
-            <AppBarButton  Click="ContextMenuItem_Click" Tag="Print" >
-                <AppBarButton.Icon>
-                    <FontIcon Glyph="&#xF62B;"/>
-                </AppBarButton.Icon>
-            </AppBarButton>
+            <AppBarButton  Click="ContextMenuItem_Click" x:Uid="Back" Tag="MenuBack" Icon="{firebrowser:FluentIcon Glyph=&#xE72B;}"/>
+            <AppBarButton  Click="ContextMenuItem_Click" Tag="Forward" Icon="{firebrowser:FluentIcon Glyph=&#xE72A;}"/>
+            <AppBarButton  Click="ContextMenuItem_Click" ToolTipService.ToolTip="Share" Tag="Share" Icon="{firebrowser:FluentIcon Glyph=&#xE72D;}"/>
+            <AppBarButton  Click="ContextMenuItem_Click" Tag="Print" Icon="{firebrowser:FluentIcon Glyph=&#xE749;}"/>
             <muxc:CommandBarFlyout.SecondaryCommands>
-                <AppBarButton  Click="ContextMenuItem_Click" Label="Copy" Tag="Copy">
+                <AppBarButton  Click="ContextMenuItem_Click" Label="Copy" Tag="Copy" Icon="{firebrowser:FluentIcon Glyph=&#xE8C8;}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator 
                         Modifiers="Control" 
                         Key="C" />
                     </AppBarButton.KeyboardAccelerators>
-                    <AppBarButton.Icon>
-                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xe8c8;"/>
-                    </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton  Click="ContextMenuItem_Click" Label="Select all" Tag="Select">
+                <AppBarButton  Click="ContextMenuItem_Click" Label="Select all" Tag="Select" Icon="{firebrowser:FluentIcon Glyph=&#xE8B3;}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator 
                         Modifiers="Control" 
                         Key="A" />
                     </AppBarButton.KeyboardAccelerators>
-                    <AppBarButton.Icon>
-                        <FontIcon Glyph="&#xF66A;"/>
-                    </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton  Click="ContextMenuItem_Click"  Label="Read aloud" Tag="Read">
+                <AppBarButton  Click="ContextMenuItem_Click"  Label="Read aloud" Tag="Read" Content="{firebrowser:FluentIcon Glyph=&#xEFA9;}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator 
                         Modifiers="Control" 
                         Key="R"
                         />
                     </AppBarButton.KeyboardAccelerators>
-                    <AppBarButton.Icon>
-                        <FontIcon Glyph="&#xF64E;"/>
-                    </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton  Click="ContextMenuItem_Click" Label="Save" Tag="Save">
+                <AppBarButton  Click="ContextMenuItem_Click" Label="Save" Tag="Save" Content="{firebrowser:FluentIcon Glyph=&#xE74E;}">
                     <AppBarButton.KeyboardAccelerators>
                         <KeyboardAccelerator 
                         Modifiers="Control" 
                         Key="S"
                         />
                     </AppBarButton.KeyboardAccelerators>
-                    <AppBarButton.Icon>
-                        <FontIcon Glyph="&#xF680;"/>
-                    </AppBarButton.Icon>
                 </AppBarButton>
                 <!-- Todo: add inspect and possibly a separator for these dev options-->
-                <AppBarButton  Click="ContextMenuItem_Click"  Label="View source" Tag="Source">
-                    <AppBarButton.Icon>
-                        <FontIcon Glyph="&#xF2EF;"/>
-                    </AppBarButton.Icon>
-                </AppBarButton>
-                <AppBarButton Click="ContextMenuItem_Click" Label="TaskManager" Tag="Taskmgr">
-                    <AppBarButton.Icon>
-                        <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE9F5;"/>
-                    </AppBarButton.Icon>
-                </AppBarButton>
+                <AppBarButton  Click="ContextMenuItem_Click"  Label="View source" Tag="Source" Content="{firebrowser:FluentIcon Glyph=&#xE74C;}"/>
+                <AppBarButton Click="ContextMenuItem_Click" Label="TaskManager" Tag="Taskmgr" Content="{firebrowser:FluentIcon Glyph=&#xF259;}"/>
             </muxc:CommandBarFlyout.SecondaryCommands>
         </muxc:CommandBarFlyout>
     </Page.Resources>

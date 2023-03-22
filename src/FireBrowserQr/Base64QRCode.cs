@@ -1,8 +1,8 @@
 ﻿using System;
-using System.IO;
-using static FireBrowserQr.Base64QRCode;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using static FireBrowserQr.Base64QRCode;
 using static FireBrowserQr.QRCodeGenerator;
 
 namespace FireBrowserQr

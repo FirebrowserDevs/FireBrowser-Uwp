@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Windows.Storage;
 
 namespace FireBrowserFavorites
@@ -9,7 +8,7 @@ namespace FireBrowserFavorites
         public class JsonItems
         {
             public string Title { get; set; }
-            public string Url { get; set; }   
+            public string Url { get; set; }
         }
 
         // Global variables
