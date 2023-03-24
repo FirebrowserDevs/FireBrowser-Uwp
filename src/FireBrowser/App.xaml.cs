@@ -26,8 +26,8 @@ namespace FireBrowser
         public App()
         {
             this.InitializeComponent();
-            this.Suspending += OnSuspending;
             LoadSettings();
+            this.Suspending += OnSuspending;
         }
 
         public enum AppLaunchType

@@ -171,7 +171,7 @@
                 <Grid>
                     <Button
                         HorizontalAlignment="Left"
-                        Content="{firebrowser:FluentIcon Glyph=&#xF4A4;}"
+                        Content="{firebrowser:FluentIcon Glyph=&#xE946;}"
                         Style="{ThemeResource QuietButtonStyle}">
                         <Button.Flyout>
                             <Flyout Placement="Bottom">
@@ -469,17 +469,18 @@
                     x:Uid="SearchBar"
                     QuerySubmitted="UrlBox_QuerySubmitted"
                     Padding="32,5,5,0"
-                    KeyDown="UrlBox_KeyDown"
                     TextChanged="UrlBox_TextChanged"
                     Style="{ThemeResource PortalBarStyle}"
                     Text="{x:Bind ViewModel.CurrentAddress, Mode=OneWay}"                 
                   />
                 <Button
-                    x:Name="SecurityButtonToDoName"
+                    x:Name="Secure"
                     Flyout="{x:Bind SecurityFlyout}"
                     Foreground="{ThemeResource TextFillColorDisabledBrush}"
-                    Style="{StaticResource QuietButtonStyle}">
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE72E;" />
+                    Style="{StaticResource QuietButtonStyle}"
+                    x:FieldModifier="Public"
+                    Content="{firebrowser:FluentIcon Glyph=&#xE72E;}"
+                    FontFamily="Segoe Fluent Icons">
                 </Button>
 
 

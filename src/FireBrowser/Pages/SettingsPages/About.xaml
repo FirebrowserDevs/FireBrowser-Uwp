@@ -6,7 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:icp="using:FireBrowser.Controls">
     <StackPanel>
@@ -27,7 +26,7 @@
                     Discord
                 </labs:SettingsCard.Header>
                 <labs:SettingsCard.HeaderIcon>
-                    <icp:FluentIcon Glyph="&#xF686;"/>
+                    <icp:FluentIcon Glyph="&#xE71B;"/>
                 </labs:SettingsCard.HeaderIcon>
             </labs:SettingsCard>
             <labs:SettingsCard x:Uid="AboutGitHubLink"
@@ -39,12 +38,12 @@
                     Github
                 </labs:SettingsCard.Header>
                 <labs:SettingsCard.HeaderIcon>
-                    <icp:FluentIcon Glyph="&#xF686;"/>
+                    <icp:FluentIcon Glyph="&#xE71B;"/>
                 </labs:SettingsCard.HeaderIcon>
             </labs:SettingsCard>
             <labs:SettingsExpander x:Uid="AboutCredits" HorizontalAlignment="Stretch">
                 <labs:SettingsExpander.HeaderIcon>
-                    <icp:FluentIcon Glyph="&#xF5A9;"/>
+                    <icp:FluentIcon Glyph="&#xE771;"/>
                 </labs:SettingsExpander.HeaderIcon>
                 <labs:SettingsExpander.Header>
                     Contributors (4)
@@ -52,7 +51,7 @@
                 <labs:SettingsExpander.Items>
                     <labs:SettingsCard Header="Jakub">
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon Glyph="&#xF686;"/>
+                            <FontIcon Glyph="&#xEC7A;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard Header="jarno9981">
@@ -65,7 +64,6 @@
                             <FontIcon Glyph="&#xEC7A;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
-                    <labs:SettingsCard Header="shef3r"/>
                     <labs:SettingsCard Header="Blindside - Labs">
                         <labs:SettingsCard.HeaderIcon>
                             <FontIcon Glyph="&#xEC7A;"/>
@@ -75,7 +73,7 @@
             </labs:SettingsExpander>
             <labs:SettingsExpander x:Uid="SettingsAboutTranslators" HorizontalAlignment="Stretch">
                 <labs:SettingsExpander.HeaderIcon>
-                    <icp:FluentIcon Glyph="&#xF5A9;"/>
+                    <icp:FluentIcon Glyph="&#xE87E;"/>
                 </labs:SettingsExpander.HeaderIcon>
                 <labs:SettingsExpander.Header>
                     Translators (7)
@@ -123,7 +121,7 @@
                     Builded Using
                 </labs:SettingsExpander.Header>
                 <labs:SettingsExpander.HeaderIcon>
-                    <icp:FluentIcon Glyph="&#xF5A9;"/>
+                    <icp:FluentIcon Glyph="&#xEC7A;"/>
                 </labs:SettingsExpander.HeaderIcon>
                 <labs:SettingsExpander.Items>
                     <labs:SettingsCard Header="This app is built using: codepen animation, wct toolkit, weatherapi.com, to-do">
@@ -144,12 +142,12 @@
                     License
                 </labs:SettingsCard.Header>
                 <labs:SettingsCard.HeaderIcon>
-                    <icp:FluentIcon Glyph="&#xE4EC;"/>
+                    <icp:FluentIcon Glyph="&#xEB95;"/>
                 </labs:SettingsCard.HeaderIcon>
             </labs:SettingsCard>
         </StackPanel>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
-            <FontIcon Glyph="&#xF47A;"/>
+            <FontIcon Glyph="&#xEB51;"/>
             <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" x:Uid="SpecialThanksNote"/>
         </StackPanel>
     </StackPanel>

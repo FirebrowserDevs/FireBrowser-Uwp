@@ -44,11 +44,8 @@ namespace FireBrowser
         public DataTemplate DefaultTemplate { get; set; }
     }
 
-
-
     public sealed partial class MainPage : Page
     {
-
         public MainPage()
         {
             this.InitializeComponent();
@@ -387,13 +384,6 @@ namespace FireBrowser
             return newItem;
         }
 
-        private void UrlBox_KeyDown(object sender, KeyRoutedEventArgs e)
-        {
-
-        }
-
-
-
         private void UrlBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
@@ -424,7 +414,7 @@ namespace FireBrowser
                 TabContent.Navigate(typeof(WebContent), CreatePasser(uri));
             }
         }
-        private async void UrlBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        private void UrlBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             string input = UrlBox.Text.ToString();
             string inputtype = UrlHelper.GetInputType(input);

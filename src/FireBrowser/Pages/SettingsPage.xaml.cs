@@ -79,7 +79,7 @@ namespace FireBrowser.Pages
             passer = e.Parameter as Passer;
             passer.Tab.IconSource = new muxc.FontIconSource()
             {
-                Glyph = "\uF6AA"
+                Glyph = "\uE713"
             };
         }
 

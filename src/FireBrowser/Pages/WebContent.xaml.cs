@@ -6,9 +6,11 @@ using System;
 using System.ComponentModel;
 using Windows.Storage;
 using Windows.UI.ViewManagement;
+using Windows.UI.WebUI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using static FireBrowser.MainPage;
@@ -112,7 +114,6 @@ namespace FireBrowser.Pages
 
             if (param?.Param != null)
             {
-
                 WebViewElement.CoreWebView2.Navigate(param.Param.ToString());
             }
 
@@ -188,7 +189,6 @@ namespace FireBrowser.Pages
                 if (param.TabView.SelectedItem == param.Tab)
                 {
                     param.ViewModel.CurrentAddress = sender.Source;
-                    param.ViewModel.SecurityIcon = sender.Source.Contains("https") ? "\uE72E" : "\uE785";
                 }
             };
             s.CoreWebView2.NewWindowRequested += (sender, args) =>
@@ -196,7 +196,7 @@ namespace FireBrowser.Pages
                 MainPage mp = new();
                 param?.TabView.TabItems.Add(mp.CreateNewTab(typeof(WebContent), args.Uri));
                 args.Handled = true;
-                select();
+                //select();
             };
         }
         string SelectionText;
@@ -291,7 +291,6 @@ namespace FireBrowser.Pages
                     break;
                 case "Select":
 
-
                     break;
                 case "Copy":
                     FireBrowserInterop.SystemHelper.WriteStringToClipboard(SelectionText);
@@ -309,12 +308,12 @@ namespace FireBrowser.Pages
                     FireBrowserInterop.SystemHelper.ShowShareUIURL(WebViewElement.CoreWebView2.DocumentTitle, WebViewElement.CoreWebView2.Source);
                     break;
                 case "Print":
-
+                   
                     break;
             }
             Ctx.Hide();
         }
-
+       
         private void Grid_Loaded_1(object sender, RoutedEventArgs e)
         {
             if (Grid.Children.Count == 0) Grid.Children.Add(WebViewElement);
