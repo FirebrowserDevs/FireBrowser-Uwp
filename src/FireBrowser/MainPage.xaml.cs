@@ -64,7 +64,7 @@ namespace FireBrowser
                 UserName = "", //Settings.currentProfile.AccountData.Name,
                 LoadingState = new FontIcon()
                 {
-                    Glyph = "\uF13E",
+                    Glyph = "\uE72C",
                 }
             };
 
@@ -414,7 +414,7 @@ namespace FireBrowser
                 TabContent.Navigate(typeof(WebContent), CreatePasser(uri));
             }
         }
-        private void UrlBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        private async void UrlBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             string input = UrlBox.Text.ToString();
             string inputtype = UrlHelper.GetInputType(input);

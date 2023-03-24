@@ -442,7 +442,8 @@
                     x:FieldModifier="Public"
                     x:Name="RefreshBtn"
                     Click="ToolbarButtonClick" 
-                    Content="{firebrowser:FluentIcon Glyph=&#xE72C;}"
+                    Content="{x:Bind ViewModel.LoadingState, Mode=OneWay}"
+                  
                     >
                 </Button>
                 <muxc:ProgressRing

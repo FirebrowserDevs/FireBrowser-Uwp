@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using Windows.Storage;
 using Windows.UI.ViewManagement;
 using Windows.UI.WebUI;
@@ -71,9 +72,7 @@ namespace FireBrowser.Pages
             }
             else
             {
-                WebViewElement.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = true;
-                var PageParam = @"{""format"": ""png"", ""captureBeyondViewport"": true, ""clip"": {""x"": 0, ""y"": 0, ""width"":" + "document.body.scrollWidth" + @", ""height"":" + "document.body.scrollHeight" + @", ""scale"": 1.0" + "}}";
-                WebViewElement.CoreWebView2.CallDevToolsProtocolMethodAsync("Page.captureScreenshot", PageParam);
+                
             }
             if (pass.Equals("true"))
             {
@@ -100,11 +99,7 @@ namespace FireBrowser.Pages
                 WebViewElement.CoreWebView2.Settings.IsGeneralAutofillEnabled = true;
             }
         }
-        private class SizePasser
-        {
-            public int Height { get; set; }
-            public int Width { get; set; }
-        }
+        public bool incog;
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -117,13 +112,23 @@ namespace FireBrowser.Pages
                 WebViewElement.CoreWebView2.Navigate(param.Param.ToString());
             }
 
-            var userAgent = s?.CoreWebView2.Settings.UserAgent;
-            userAgent = userAgent.Substring(0, userAgent.IndexOf("Edg/"));
-            userAgent = userAgent.Replace("Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.44", "Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.44");
-            s.CoreWebView2.Settings.UserAgent = userAgent;
+            if (incog == true)
+            {
+                var userAgent = s?.CoreWebView2.Settings.UserAgent;
+                userAgent = userAgent.Substring(0, userAgent.IndexOf("Edg/"));
+                userAgent = userAgent.Replace("Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.51", "BlackIncog/1");
+                s.CoreWebView2.Settings.UserAgent = userAgent;
+            }
+            else
+            {
+                var userAgent = s?.CoreWebView2.Settings.UserAgent;
+                userAgent = userAgent.Substring(0, userAgent.IndexOf("Edg/"));
+                userAgent = userAgent.Replace("Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.51", "Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.51");
+                s.CoreWebView2.Settings.UserAgent = userAgent;
+            }
 
             //MESS
-            loadSetting();
+            //loadSetting();
             s.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = true;
             s.CoreWebView2.Settings.IsStatusBarEnabled = true;
             s.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = true;
@@ -159,11 +164,13 @@ namespace FireBrowser.Pages
                 }
                 catch { }
             };
-            s.CoreWebView2.NavigationStarting += async (sender, args) =>
-            {
-                MainPageContent.LoadingRing.Visibility = Visibility.Visible;
-                MainPageContent.LoadingRing.IsActive = true;
-                MainPageContent.RefreshBtn.Visibility = Visibility.Collapsed;
+            s.CoreWebView2.NavigationStarting += async (sender, args) => {
+              
+                param.ViewModel.LoadingState = new Microsoft.UI.Xaml.Controls.ProgressRing()
+                {
+                    Width = 16,
+                    Height = 16
+                };
             };
 
             s.CoreWebView2.NavigationCompleted += (sender, args) =>
@@ -173,9 +180,13 @@ namespace FireBrowser.Pages
 
                 }
 
-                MainPageContent.LoadingRing.Visibility = Visibility.Collapsed;
-                MainPageContent.LoadingRing.IsActive = false;
-                MainPageContent.RefreshBtn.Visibility = Visibility.Visible;
+                param.ViewModel.LoadingState = new FontIcon()
+                {
+                    Glyph = "\uE72C",
+                    FontSize = 16
+                };
+
+             
 
                 s.CoreWebView2.ContainsFullScreenElementChanged += (sender, args) =>
                 {
@@ -189,14 +200,18 @@ namespace FireBrowser.Pages
                 if (param.TabView.SelectedItem == param.Tab)
                 {
                     param.ViewModel.CurrentAddress = sender.Source;
+                    param.ViewModel.SecurityIcon = sender.Source.Contains("https") ? "\uE72E" : "\uE785";
                 }
             };
             s.CoreWebView2.NewWindowRequested += (sender, args) =>
             {
+                //To-Do: Check if it should be a popup or tab. Can use args.something for that.
+                //To-Do: Get the currently selected tab's position and launch the new one next to it
+
                 MainPage mp = new();
                 param?.TabView.TabItems.Add(mp.CreateNewTab(typeof(WebContent), args.Uri));
                 args.Handled = true;
-                //select();
+                select();
             };
         }
         string SelectionText;
@@ -314,7 +329,7 @@ namespace FireBrowser.Pages
             Ctx.Hide();
         }
        
-        private void Grid_Loaded_1(object sender, RoutedEventArgs e)
+        private async void Grid_Loaded_1(object sender, RoutedEventArgs e)
         {
             if (Grid.Children.Count == 0) Grid.Children.Add(WebViewElement);
         }
