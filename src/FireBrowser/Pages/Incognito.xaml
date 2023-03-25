@@ -6,10 +6,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
+    RequestedTheme="Dark">
     <Grid>
-        <TextBlock>
-            INCOGNITO ON
-        </TextBlock>
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Padding="20" CornerRadius="44" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}">
+            <FontIcon FontSize="48" FontFamily="Segoe Fluent Icons" Glyph="&#xE727;"/>
+        </Grid>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,135,0,0" x:Uid="NewTabIncognitoTitle" Style="{ThemeResource TitleTextBlockStyle}" d:Text="You're browsing in Incognito mode"/>
     </Grid>
 </Page>

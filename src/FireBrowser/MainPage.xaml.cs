@@ -8,6 +8,7 @@ using FireBrowserHelpers.ReadingMode;
 using FireBrowserQr;
 using FireBrowserUrlHelper;
 using Microsoft.Data.Sqlite;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using Microsoft.UI.Xaml.Controls;
 using SQLitePCL;
 using System;
@@ -16,18 +17,21 @@ using System.Diagnostics;
 using System.IO;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
+using Windows.Graphics.Display;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using static FireBrowser.App;
 using NewTab = FireBrowser.Pages.NewTab;
+
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -51,13 +55,19 @@ namespace FireBrowser
             this.InitializeComponent();
             ButtonVisible();
 
+            DisplayInformation displayInformation = DisplayInformation.GetForCurrentView();
+
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
 
             ApplicationViewTitleBar formattableTitleBar = ApplicationView.GetForCurrentView().TitleBar;
             formattableTitleBar.ButtonBackgroundColor = Colors.Transparent;
+            formattableTitleBar.ButtonHoverBackgroundColor = Colors.Transparent;
             formattableTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            formattableTitleBar.InactiveBackgroundColor = Colors.Transparent;
+            formattableTitleBar.ButtonPressedBackgroundColor = Colors.Transparent;
+      
 
             ViewModel = new ToolbarViewModel
             {
@@ -69,6 +79,11 @@ namespace FireBrowser
             };
 
             Window.Current.SetTitleBar(CustomDragRegion);
+        }
+        private void ResetOutput()
+        {
+            DisplayInformation displayInformation = DisplayInformation.GetForCurrentView();
+            String scaleValue = (displayInformation.RawPixelsPerViewPixel * 100.0).ToString("F0");
         }
 
         #region buttons
@@ -153,7 +168,7 @@ namespace FireBrowser
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-
+            ResetOutput();
 
             if (e.Parameter != null)
             {
@@ -165,14 +180,15 @@ namespace FireBrowser
                         Tabs.TabItems.Add(CreateNewTab(typeof(NewTab)));
                         break;
                     case AppLaunchType.LaunchIncognito:
-                        RequestedTheme = ElementTheme.Default;
+                        RequestedTheme = ElementTheme.Dark;
                         ViewModel.IsIncognito = true;
                         History.IsEnabled = false;
                         DownBtn.IsEnabled = false;
+                        AddFav.IsEnabled = false;
                         FavoritesButton.IsEnabled = false;
-
+                        WebContent.IsIncognitoModeEnabled = true;
                         //To-Do...
-                        Tabs.TabItems.Add(CreateNewTab(typeof(Incognito)));
+                        Tabs.TabItems.Add(CreateNewIncog());
 
                         break;
                     case AppLaunchType.LaunchStartup:
@@ -317,6 +333,44 @@ namespace FireBrowser
 
         #endregion
 
+        public CustomTabViewItem CreateNewIncog(Type page = null, object param = null, int index = -1)
+        {
+            if (index == -1) index = Tabs.TabItems.Count;
+
+            UrlBox.Text = "";
+          
+
+            CustomTabViewItem newItem = new()
+            {
+                Header = $"Incognito",
+                IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = Symbol.BlockContact }
+            };
+
+
+            Passer passer = new()
+            {
+                Tab = newItem,
+                TabView = Tabs,
+                ViewModel = ViewModel,
+            };
+
+            newItem.Style = (Style)Application.Current.Resources["FloatingTabViewItemStyle"];
+
+            // The content of the tab is often a frame that contains a page, though it could be any UIElement.
+            double Margin = 0;
+            Margin = ClassicToolbar.Height;
+            Frame frame = new()
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                Margin = new Thickness(0, Margin, 0, 0)
+            };
+            
+            frame.Navigate(typeof(Pages.Incognito));
+
+            newItem.Content = frame;
+            return newItem;
+        }
         public CustomTabViewItem CreateNewTab(Type page = null, object param = null, int index = -1)
         {
             if (index == -1) index = Tabs.TabItems.Count;
@@ -530,6 +584,11 @@ namespace FireBrowser
                 ViewModel.CurrentAddress = null;
             }
             ViewModel.FavoriteIcon = "\uF714";
+        }
+
+        public static WebContent WebContent
+        {
+            get { return (Window.Current.Content as Frame)?.Content as WebContent; }
         }
 
         public static MainPage MainPageContent
@@ -802,12 +861,6 @@ namespace FireBrowser
                 HistorySmallTitle.Visibility = Visibility.Visible;
             }
         }
-
-        private void HistorySearchMenuItem_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private void ClearHistoryDataMenuItem_Click(object sender, RoutedEventArgs e)
         {
 
@@ -886,7 +939,5 @@ namespace FireBrowser
                     break;
             }
         }
-
-
     }
 }

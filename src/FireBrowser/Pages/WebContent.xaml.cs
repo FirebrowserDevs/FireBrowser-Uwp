@@ -64,6 +64,13 @@ namespace FireBrowser.Pages
         string autogen = FireBrowserInterop.SettingsHelper.GetSetting("DisableGenAutoFill");
 
         Passer param;
+
+        public static bool IsIncognitoModeEnabled { get; set; } = false;
+
+        private void ToggleIncognitoMode(object sender, RoutedEventArgs e)
+        {
+            IsIncognitoModeEnabled = !IsIncognitoModeEnabled;
+        }
         public async void loadSetting()
         {
             if (javasc.Equals("true"))
@@ -99,7 +106,7 @@ namespace FireBrowser.Pages
                 WebViewElement.CoreWebView2.Settings.IsGeneralAutofillEnabled = true;
             }
         }
-        public bool incog;
+        
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -107,17 +114,19 @@ namespace FireBrowser.Pages
             await WebViewElement.EnsureCoreWebView2Async();
             WebView2 s = WebViewElement;
 
+
             if (param?.Param != null)
             {
                 WebViewElement.CoreWebView2.Navigate(param.Param.ToString());
             }
 
-            if (incog == true)
+            if(IsIncognitoModeEnabled == true)
             {
                 var userAgent = s?.CoreWebView2.Settings.UserAgent;
                 userAgent = userAgent.Substring(0, userAgent.IndexOf("Edg/"));
-                userAgent = userAgent.Replace("Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.51", "BlackIncog/1");
+                userAgent = userAgent.Replace("Incog", "Incog");
                 s.CoreWebView2.Settings.UserAgent = userAgent;
+                await s.CoreWebView2.ExecuteScriptAsync("navigator.userAgent");
             }
             else
             {
@@ -126,8 +135,7 @@ namespace FireBrowser.Pages
                 userAgent = userAgent.Replace("Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.51", "Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.51");
                 s.CoreWebView2.Settings.UserAgent = userAgent;
             }
-
-            //MESS
+      
             //loadSetting();
             s.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = true;
             s.CoreWebView2.Settings.IsStatusBarEnabled = true;
@@ -141,14 +149,14 @@ namespace FireBrowser.Pages
             };
             s.CoreWebView2.DocumentTitleChanged += (sender, args) =>
             {
-                if (WebViewElement.CoreWebView2.IsMuted == true)
+                if (IsIncognitoModeEnabled == true)
                 {
-                    param.Tab.Header = "Muted -" + WebViewElement.CoreWebView2.DocumentTitle;
+                   
                 }
                 else
                 {
                     param.Tab.Header = WebViewElement.CoreWebView2.DocumentTitle;
-                }
+                }      
             };
             s.CoreWebView2.PermissionRequested += async (sender, args) =>
             {
@@ -156,13 +164,20 @@ namespace FireBrowser.Pages
             };
             s.CoreWebView2.FaviconChanged += async (sender, args) =>
             {
-                try
+                if(IsIncognitoModeEnabled == true)
                 {
-                    BitmapImage bitmapImage = new();
-                    await bitmapImage.SetSourceAsync(await sender.GetFaviconAsync(0));
-                    param.Tab.IconSource = new ImageIconSource() { ImageSource = bitmapImage };
+
                 }
-                catch { }
+                else
+                {
+                    try
+                    {
+                        BitmapImage bitmapImage = new();
+                        await bitmapImage.SetSourceAsync(await sender.GetFaviconAsync(0));
+                        param.Tab.IconSource = new ImageIconSource() { ImageSource = bitmapImage };
+                    }
+                    catch { }
+                }     
             };
             s.CoreWebView2.NavigationStarting += async (sender, args) => {
               
@@ -193,14 +208,20 @@ namespace FireBrowser.Pages
                     this.FullScreen = s.CoreWebView2.ContainsFullScreenElement;
                 };
 
-                AddHistData();
+                if(IsIncognitoModeEnabled == true)
+                {
+
+                }
+                else
+                {
+                    AddHistData();
+                }     
             };
             s.CoreWebView2.SourceChanged += (sender, args) =>
             {
                 if (param.TabView.SelectedItem == param.Tab)
                 {
-                    param.ViewModel.CurrentAddress = sender.Source;
-                    param.ViewModel.SecurityIcon = sender.Source.Contains("https") ? "\uE72E" : "\uE785";
+                    param.ViewModel.CurrentAddress = sender.Source;                  
                 }
             };
             s.CoreWebView2.NewWindowRequested += (sender, args) =>

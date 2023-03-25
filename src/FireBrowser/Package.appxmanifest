@@ -15,6 +15,7 @@
     Publisher="CN=Jarno Beerten"
     Version="0.1.0.0" />
 
+	
   <mp:PhoneIdentity PhoneProductId="000e3518-11a8-42f6-8c44-a7cc1af06c44" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
@@ -47,6 +48,7 @@
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
         <uap:LockScreen BadgeLogo="Assets\BadgeLogo.png" Notification="badgeAndTileText"/>
       </uap:VisualElements>
+		
 		<Extensions>
 			<uap5:Extension
 		Category="windows.startupTask"
@@ -80,7 +82,7 @@
 					<Task Type="audio"/>
 				</BackgroundTasks>
 			</Extension>
-		</Extensions>
+		</Extensions>		
     </Application>
   </Applications>
 

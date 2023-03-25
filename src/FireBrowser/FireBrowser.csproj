@@ -404,10 +404,10 @@
       <Version>0.0.13</Version>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm">
-      <Version>8.1.0</Version>
+      <Version>8.2.0-preview1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Data.Sqlite.Core">
-      <Version>7.0.4</Version>
+      <Version>8.0.0-preview.2.23128.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
