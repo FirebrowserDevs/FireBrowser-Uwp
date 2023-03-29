@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace FireBrowserUrlHelper
 {
@@ -6,9 +7,10 @@ namespace FireBrowserUrlHelper
     {
         public static string GetInputType(string input)
         {
-            string type;
+            string type = "searchquery";
             string tld = TLD.GetTLDfromURL(input);
-            if (input.Contains("http://") || input.Contains("https://"))
+
+            if (Uri.TryCreate(input, UriKind.Absolute, out Uri uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
             {
                 type = "url";
             }
@@ -16,10 +18,7 @@ namespace FireBrowserUrlHelper
             {
                 type = "urlNOProtocol";
             }
-            else
-            {
-                type = "searchquery";
-            }
+
             return type;
         }
     }

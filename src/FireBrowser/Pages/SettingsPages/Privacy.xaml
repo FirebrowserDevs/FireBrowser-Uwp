@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     >
     <StackPanel>
         <labs:SettingsCard Header="Privacy Level" Description="See You Privacy Level Here" Margin="0,10,0,0">

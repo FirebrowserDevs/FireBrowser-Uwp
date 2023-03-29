@@ -9,7 +9,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     muxc:AnimatedIcon.State="True"
-    NavigationCacheMode="Disabled"
+    NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <Page.Resources>
        
@@ -376,7 +376,7 @@
             >
             <muxc:TabView.TabStripHeader>
                 <StackPanel Orientation="Horizontal">
-                    <Button RenderTransformOrigin="0.5,0.5" Style="{ThemeResource QuietButtonStyle}">
+                    <Button x:Name="VBtn" RenderTransformOrigin="0.5,0.5" Style="{ThemeResource QuietButtonStyle}">
                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE746;" />
                         <Button.RenderTransform>
                             <RotateTransform />
@@ -411,7 +411,9 @@
                 <Button
                     Style="{StaticResource QuietButtonStyle}"
                     Tag="Back"
+                    x:Name="Back"
                     Click="ToolbarButtonClick"
+                    x:FieldModifier="Public"
                     >
                     <muxc:AnimatedIcon>
                         <animatedvisuals:AnimatedBackVisualSource />
@@ -423,6 +425,8 @@
                 <Button
                     Style="{StaticResource QuietButtonStyle}"
                     Tag="Forward"
+                    x:Name="Forward"
+                    x:FieldModifier="Public"
                     Click="ToolbarButtonClick"
                     >
                     <muxc:AnimatedIcon>
@@ -469,9 +473,9 @@
                 <AutoSuggestBox
                     x:Name="UrlBox"
                     x:Uid="SearchBar"
+                    x:FieldModifier="Public"
                     QuerySubmitted="UrlBox_QuerySubmitted"
                     Padding="32,5,5,0"
-                    TextChanged="UrlBox_TextChanged"
                     Style="{ThemeResource PortalBarStyle}"
                     Text="{x:Bind ViewModel.CurrentAddress, Mode=OneWay}"                 
                   />

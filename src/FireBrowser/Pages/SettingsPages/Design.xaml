@@ -5,8 +5,29 @@
     xmlns:local="using:FireBrowser.Pages.SettingsPages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
-    <Grid>
-
-    </Grid>
+    mc:Ignorable="d"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    >
+    <StackPanel>
+        <labs:SettingsCard Header="Auto Fill TextBox" Description="This Will Auto Fill The Address Bar From The MiniBar" Margin="0,5,0,0">
+            <labs:SettingsCard.HeaderIcon>
+                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEDA8;" />
+            </labs:SettingsCard.HeaderIcon>
+            <ToggleSwitch x:Name="AutoTog" Toggled="AutoTog_Toggled"/>
+        </labs:SettingsCard>
+        <labs:SettingsCard Header="Tabs Layout Model" Description="Change Here Default Or Featured" Margin="0,1,0,0">
+            <labs:SettingsCard.HeaderIcon>
+                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE790;" />
+            </labs:SettingsCard.HeaderIcon>
+            <ComboBox x:Name="Type" SelectionChanged="Type_SelectionChanged">
+                <x:String>
+                    Default
+                </x:String>
+                <x:String>
+                    Featured
+                </x:String>
+            </ComboBox>
+        </labs:SettingsCard>
+    </StackPanel>
 </Page>

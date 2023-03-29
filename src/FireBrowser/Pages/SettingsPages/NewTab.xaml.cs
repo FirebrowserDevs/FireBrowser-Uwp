@@ -16,25 +16,13 @@ namespace FireBrowser.Pages.SettingsPages
         {
             this.InitializeComponent();
             ButtonVisible();
-            IfChanged();
         }
 
-        public async void IfChanged()
-        {
-            FrameRestart.Navigate(typeof(RestartDialog));
-            FrameRestart.Visibility = Visibility.Visible;
-        }
         private void SearchengineSelection_Loaded(object sender, RoutedEventArgs e)
         {
             string selection = FireBrowserInterop.SettingsHelper.GetSetting("EngineFriendlyName");
-            if (selection != null)
-            {
-                SearchengineSelection.PlaceholderText = selection;
-            }
-            else
-            {
-                SearchengineSelection.PlaceholderText = "Google";
-            }
+
+            SearchengineSelection.PlaceholderText = selection ?? "Google";
         }
 
         private void SearchengineSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -58,7 +46,7 @@ namespace FireBrowser.Pages.SettingsPages
             FireBrowserInterop.SettingsHelper.SetSetting("SearchUrl", SearchUrl);
         }
 
-
+        #region buttons
         public string ReadButton = FireBrowserInterop.SettingsHelper.GetSetting("Readbutton");
         public string AdblockBtn = FireBrowserInterop.SettingsHelper.GetSetting("AdBtn");
         public string Downloads = FireBrowserInterop.SettingsHelper.GetSetting("DwBtn");
@@ -69,147 +57,90 @@ namespace FireBrowser.Pages.SettingsPages
 
         public void ButtonVisible()
         {
-            if (ReadButton == "True")
+            Read.IsOn = ReadButton switch
             {
-                Read.IsOn = true;
-            }
-            else if (ReadButton == "0")
+                "True" => true,
+                "0" => false,
+                _ => Read.IsOn
+            };
+
+            Adbl.IsOn = AdblockBtn switch
             {
-                Read.IsOn = false;
-            }
-            if (AdblockBtn == "True")
+                "True" => true,
+                "0" => false,
+                _ => Adbl.IsOn
+            };
+
+            Dwbl.IsOn = Downloads switch
             {
-                Adbl.IsOn = true;
-            }
-            else if (AdblockBtn == "0")
+                "True" => true,
+                "0" => false,
+                _ => Dwbl.IsOn
+            };
+
+            Trbl.IsOn = Translate switch
             {
-                Adbl.IsOn = false;
-            }
-            if (Downloads == "True")
+                "True" => true,
+                "0" => false,
+                _ => Trbl.IsOn
+            };
+
+            Frbl.IsOn = Favorites switch
             {
-                Dwbl.IsOn = true;
-            }
-            else if (Downloads == "0")
+                "True" => true,
+                "0" => false,
+                _ => Frbl.IsOn
+            };
+
+            Hsbl.IsOn = Historybtn switch
             {
-                Dwbl.IsOn = false;
-            }
-            if (Translate == "True")
+                "True" => true,
+                "0" => false,
+                _ => Hsbl.IsOn
+            };
+
+            Qrbl.IsOn = QrCode switch
             {
-                Trbl.IsOn = true;
-            }
-            else if (Translate == "0")
-            {
-                Trbl.IsOn = false;
-            }
-            if (Favorites == "True")
-            {
-                Frbl.IsOn = true;
-            }
-            else if (Favorites == "0")
-            {
-                Frbl.IsOn = false;
-            }
-            if (Historybtn == "True")
-            {
-                Hsbl.IsOn = true;
-            }
-            else if (Historybtn == "0")
-            {
-                Hsbl.IsOn = false;
-            }
-            if (QrCode == "True")
-            {
-                Qrbl.IsOn = true;
-            }
-            else if (QrCode == "0")
-            {
-                Qrbl.IsOn = false;
-            }
+                "True" => true,
+                "0" => false,
+                _ => Qrbl.IsOn
+            };
         }
+
+        #endregion
         private void Read_Toggled(object sender, RoutedEventArgs e)
         {
-            if (Read.IsOn == true)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("Readbutton", "True");
-            }
-            else if (Read.IsOn == false)
-            {
-
-                FireBrowserInterop.SettingsHelper.SetSetting("Readbutton", "0");
-            }
+            FireBrowserInterop.SettingsHelper.SetSetting("Readbutton", Read.IsOn ? "True" : "0");
         }
 
         private void Adbl_Toggled(object sender, RoutedEventArgs e)
         {
-            if (Adbl.IsOn == true)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("AdBtn", "True");
-            }
-            else if (Adbl.IsOn == false)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("AdBtn", "0");
-            }
+            FireBrowserInterop.SettingsHelper.SetSetting("AdBtn", Adbl.IsOn ? "True" : "0");
         }
 
         private void Dwbl_Toggled(object sender, RoutedEventArgs e)
         {
-            if (Dwbl.IsOn == true)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("DwBtn", "True");
-            }
-            else if (Dwbl.IsOn == false)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("DwBtn", "0");
-            }
+            FireBrowserInterop.SettingsHelper.SetSetting("DwBtn", Dwbl.IsOn ? "True" : "0");         
         }
 
         private void Trbl_Toggled(object sender, RoutedEventArgs e)
         {
-            if (Trbl.IsOn == true)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("TransBtn", "True");
-            }
-            else if (Trbl.IsOn == false)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("TransBtn", "0");
-            }
+            FireBrowserInterop.SettingsHelper.SetSetting("TransBtn", Trbl.IsOn ? "True" : "0");
         }
 
         private void Frbl_Toggled(object sender, RoutedEventArgs e)
         {
-            if (Frbl.IsOn == true)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("FavBtn", "True");
-            }
-            else if (Frbl.IsOn == false)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("FavBtn", "0");
-            }
+            FireBrowserInterop.SettingsHelper.SetSetting("FavBtn", Frbl.IsOn ? "True" : "0");
         }
 
         private void Hsbl_Toggled(object sender, RoutedEventArgs e)
         {
-            if (Hsbl.IsOn == true)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("HisBtn", "True");
-            }
-            else if (Hsbl.IsOn == false)
-            {
-
-                FireBrowserInterop.SettingsHelper.SetSetting("HisBtn", "0");
-            }
+            FireBrowserInterop.SettingsHelper.SetSetting("HisBtn", Hsbl.IsOn ? "True" : "0");
         }
 
         private void Qrbl_Toggled(object sender, RoutedEventArgs e)
         {
-            if (Qrbl.IsOn == true)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("QrBtn", "True");
-            }
-            else if (Qrbl.IsOn == false)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("QrBtn", "0");
-            }
+            FireBrowserInterop.SettingsHelper.SetSetting("QrBtn", Qrbl.IsOn ? "True" : "0");
         }
     }
 }

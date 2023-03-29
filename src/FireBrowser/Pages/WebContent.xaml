@@ -7,7 +7,8 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:firebrowser="using:FireBrowser.Controls"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    NavigationCacheMode="Enabled">
 
     <Page.Resources>
         <muxc:CommandBarFlyout x:Name="Ctx" Placement="BottomEdgeAlignedLeft">

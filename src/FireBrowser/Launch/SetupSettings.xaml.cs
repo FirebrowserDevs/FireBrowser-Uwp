@@ -86,6 +86,13 @@ namespace FireBrowser.Launch
         private async void Install_Click(object sender, RoutedEventArgs e)
         {
             CreateDatabase();
+
+            FireBrowserInterop.SettingsHelper.SetSetting("DisableJavaScript", "false");
+            FireBrowserInterop.SettingsHelper.SetSetting("DisableGenAutoFill", "false");
+            FireBrowserInterop.SettingsHelper.SetSetting("DisableWebMess", "false");
+            FireBrowserInterop.SettingsHelper.SetSetting("DisablePassSave", "false");
+            FireBrowserInterop.SettingsHelper.SetSetting("Auto", "0");
+
             bool isFirstLaunch = true;
 
             var settingsFile = await ApplicationData.Current.LocalFolder.GetFileAsync("Isettings.json");

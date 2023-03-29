@@ -31,6 +31,17 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using static FireBrowser.App;
 using NewTab = FireBrowser.Pages.NewTab;
+using System.Runtime.InteropServices;
+using Windows.UI.WindowManagement;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+using System.Xml.Serialization;
+using Windows.Web.Http;
+using System.Linq;
+using Windows.UI.Xaml.Media;
+using Brush = Windows.UI.Xaml.Media.Brush;
+using Windows.ApplicationModel.Store;
+using Windows.Devices.Enumeration;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -50,6 +61,7 @@ namespace FireBrowser
 
     public sealed partial class MainPage : Page
     {
+        private AppWindow appWindow;
         public MainPage()
         {
             this.InitializeComponent();
@@ -164,11 +176,10 @@ namespace FireBrowser
 
         #endregion
 
-
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            ResetOutput();
+            ResetOutput();        
 
             if (e.Parameter != null)
             {
@@ -182,14 +193,13 @@ namespace FireBrowser
                     case AppLaunchType.LaunchIncognito:
                         RequestedTheme = ElementTheme.Dark;
                         ViewModel.IsIncognito = true;
+                        VBtn.Visibility = Visibility.Collapsed;
                         History.IsEnabled = false;
                         DownBtn.IsEnabled = false;
                         AddFav.IsEnabled = false;
                         FavoritesButton.IsEnabled = false;
                         WebContent.IsIncognitoModeEnabled = true;
-                        //To-Do...
                         Tabs.TabItems.Add(CreateNewIncog());
-
                         break;
                     case AppLaunchType.LaunchStartup:
                         //this works for some reason when set startup first it fails to add newtab        
@@ -274,6 +284,8 @@ namespace FireBrowser
             public TabView TabView { get; set; }
             public object Param { get; set; }
 
+            public string Num { get ; set; }
+
             public ToolbarViewModel ViewModel { get; set; }
 
         }
@@ -299,14 +311,14 @@ namespace FireBrowser
                 Tab = Tabs.SelectedItem as TabViewItem,
                 TabView = Tabs,
                 ViewModel = ViewModel,
-                Param = parameter
+                Param = parameter,
             };
             return passer;
         }
         #endregion
 
         #region frames
-        Frame TabContent
+        public Frame TabContent
         {
             get
             {
@@ -319,7 +331,7 @@ namespace FireBrowser
             }
         }
 
-        WebView2 TabWebView
+        public WebView2 TabWebView
         {
             get
             {
@@ -344,14 +356,6 @@ namespace FireBrowser
             {
                 Header = $"Incognito",
                 IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = Symbol.BlockContact }
-            };
-
-
-            Passer passer = new()
-            {
-                Tab = newItem,
-                TabView = Tabs,
-                ViewModel = ViewModel,
             };
 
             newItem.Style = (Style)Application.Current.Resources["FloatingTabViewItemStyle"];
@@ -438,19 +442,6 @@ namespace FireBrowser
             return newItem;
         }
 
-        private void UrlBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
-        {
-            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
-            {
-
-
-            }
-            else if (args.Reason == AutoSuggestionBoxTextChangeReason.SuggestionChosen)
-            {
-
-            }
-        }
-
         public void FocusUrlBox(string text)
         {
             UrlBox.Text = text;
@@ -458,32 +449,41 @@ namespace FireBrowser
         }
         public void NavigateToUrl(string uri)
         {
-            if (TabWebView != null)
+            if (TabContent.Content is WebContent webContent)
             {
-                (TabContent.Content as WebContent).WebViewElement.CoreWebView2.Navigate(uri.ToString());
+                webContent.WebViewElement.CoreWebView2.Navigate(uri.ToString());
             }
             else
             {
-                launchurl = uri;
+                launchurl ??= uri;
                 TabContent.Navigate(typeof(WebContent), CreatePasser(uri));
             }
         }
+
+
         private async void UrlBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             string input = UrlBox.Text.ToString();
             string inputtype = UrlHelper.GetInputType(input);
             if (input.Contains("firebrowser://"))
             {
-                if (input == "firebrowser://newtab")
+                switch (input)
                 {
-                    Tabs.TabItems.Add(CreateNewTab());
-                    SelectNewTab();
-                }
-                if (input == "firebrowser://settings")
-                {
-                    TabContent.Navigate(typeof(SettingsPage), CreatePasser(),
-                                       new DrillInNavigationTransitionInfo());
-
+                    case "firebrowser://newtab":
+                        Tabs.TabItems.Add(CreateNewTab());
+                        SelectNewTab();
+                        break;
+                    case "firebrowser://settings":
+                    case "firebrowser://design":
+                    case "firebrowser://privacy":
+                    case "firebrowser://newtabset":
+                    case "firebrowser://access":
+                    case "firebrowser://about":
+                        TabContent.Navigate(typeof(SettingsPage), CreatePasser(), new DrillInNavigationTransitionInfo());
+                        break;
+                    default:
+                        // default behavior
+                        break;
                 }
             }
             else if (inputtype == "url")
@@ -528,7 +528,7 @@ namespace FireBrowser
                 ? TabWebView?.CoreWebView2.CanGoForward
                 : TabContent?.CanGoForward);
             return ViewModel.CanGoForward;*/
-            return false;
+            return true;
         }
 
 
@@ -594,6 +594,11 @@ namespace FireBrowser
         public static MainPage MainPageContent
         {
             get { return (Window.Current.Content as Frame)?.Content as MainPage; }
+        }
+
+        public static SettingsPage SettingsContent
+        {
+            get { return (Window.Current.Content as Frame)?.Content as SettingsPage; }
         }
 
         private async void ToolbarButtonClick(object sender, RoutedEventArgs e)
@@ -712,8 +717,10 @@ namespace FireBrowser
                     break;
                 case "Favorites":
                     Globals.JsonItemsList = await Json.GetListFromJsonAsync("Favorites.json");
-                    if (Globals.JsonItemsList != null)
+                    if (Globals.JsonItemsList is not null)
+                    {
                         FavoritesListView.ItemsSource = Globals.JsonItemsList;
+                    }
                     break;
             }
         }
@@ -744,6 +751,7 @@ namespace FireBrowser
         }
         #endregion
 
+       
         private void FetchBrowserHistory()
         {
             Batteries.Init();
@@ -863,7 +871,6 @@ namespace FireBrowser
         }
         private void ClearHistoryDataMenuItem_Click(object sender, RoutedEventArgs e)
         {
-
             // open a connection to the database
             using (var connection = new SqliteConnection($"Data Source={ApplicationData.Current.LocalFolder.Path}\\History.db"))
             {

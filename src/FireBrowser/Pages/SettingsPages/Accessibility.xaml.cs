@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FireBrowser.Core;
+using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.UI.Popups;
@@ -29,24 +30,18 @@ namespace FireBrowser.Pages.SettingsPages
         private void UpdateToggleState(StartupTaskState state)
         {
             LaunchOnStartupToggle.IsEnabled = true;
-            switch (state)
+            LaunchOnStartupToggle.IsChecked = state switch
             {
-                case StartupTaskState.Enabled:
-                    LaunchOnStartupToggle.IsChecked = true;
-                    break;
-                case StartupTaskState.Disabled:
-                case StartupTaskState.DisabledByUser:
-                    LaunchOnStartupToggle.IsChecked = false;
-                    break;
-                default:
-                    LaunchOnStartupToggle.IsEnabled = false;
-                    break;
-            }
-
+                StartupTaskState.Enabled => true,
+                StartupTaskState.Disabled => false,
+                StartupTaskState.DisabledByUser => false,
+                _ => LaunchOnStartupToggle.IsEnabled = false
+            };
         }
         private async Task ToggleLaunchOnStartup(bool enable)
         {
             var startup = await StartupTask.GetAsync("FireBrowserStartUp");
+
             switch (startup.State)
             {
                 case StartupTaskState.Enabled when !enable:
@@ -57,10 +52,17 @@ namespace FireBrowser.Pages.SettingsPages
                     UpdateToggleState(updatedState);
                     break;
                 case StartupTaskState.DisabledByUser when enable:
-                    await new MessageDialog("Unable to change state of startup task via the application - enable via Startup tab on Task Manager (Ctrl+Shift+Esc)").ShowAsync();
+                    ContentDialog cs = new ContentDialog();
+                    cs.Title = "Unable to change state of startup task via the application";
+                    cs.Content = "Enable via Startup tab on Task Manager (Ctrl+Shift+Esc)";
+                    cs.PrimaryButtonText = "OK";
+                    cs.ShowAsync();
                     break;
                 default:
-                    await new MessageDialog("Unable to change state of startup task").ShowAsync();
+                    ContentDialog cs2 = new ContentDialog();
+                    cs2.Title = "Unable to change state of startup task";
+                    cs2.PrimaryButtonText = "OK";
+                    cs2.ShowAsync();
                     break;
             }
         }

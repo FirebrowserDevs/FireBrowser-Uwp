@@ -35,13 +35,13 @@ namespace FireBrowser.Pages.SettingsPages
             switch ((sender as SettingsCard).Tag)
             {
                 case "Discord":
-                    url = "https://discord.gg/CWGHdGVFFV";
+                    url = "https://discord.gg/kYStRKBHwy";
                     break;
                 case "GitHub":
-                    url = "https://github.com/jarno9981/FireBrowser-Uwp";
+                    url = "https://github.com/FirebrowserDevs/FireBrowser-Uwp";
                     break;
                 case "License":
-                    url = "https://github.com/jarno9981/FireBrowser-Uwp/blob/main/LICENSE";
+                    url = "https://github.com/FirebrowserDevs/FireBrowser-Uwp/blob/main/LICENSE";
                     break;
             }
             MainPage mp = new();

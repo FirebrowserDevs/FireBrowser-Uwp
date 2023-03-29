@@ -5,8 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d" 
+    NavigationCacheMode="Enabled" >
     <Grid>
         <muxc:NavigationView x:Name="NavView"
                         Loaded="NavView_Loaded"
@@ -20,7 +20,7 @@
                         <muxc:ImageIcon Source="ms-appx:///Assets/Icons/Home.svg"/>
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
-                <muxc:NavigationViewItem Tag="SettingsLook" Content="Style">
+                <muxc:NavigationViewItem Tag="Design" Content="Design">
                     <muxc:NavigationViewItem.Icon>
                         <muxc:ImageIcon Source="ms-appx:///Assets/Icons/Style.svg"/>
                     </muxc:NavigationViewItem.Icon>

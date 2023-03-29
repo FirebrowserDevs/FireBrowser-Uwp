@@ -26,10 +26,11 @@ namespace FireBrowser.Pages
         }
         private double NavViewCompactModeThresholdWidth { get { return NavView.CompactModeThresholdWidth; } }
 
+        string pagenum = "0";
+
         private readonly List<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)>
         {
-            ("SettingsHome", typeof(SettingsPages.Home)),
-            ("SettingsLook", typeof(SettingsPages.Look)),
+            ("SettingsHome", typeof(SettingsPages.Home)),            
             ("Privacy", typeof(SettingsPages.Privacy)),
             ("NewTab", typeof(SettingsPages.NewTab)),
             ("Design", typeof(SettingsPages.Design)),
@@ -41,12 +42,33 @@ namespace FireBrowser.Pages
             // Add handler for ContentFrame navigation.
             ContentFrame.Navigated += On_Navigated;
 
-            // NavView doesn't load any page by default, so load home page.
-            NavView.SelectedItem = NavView.MenuItems[0];
+            var urlBoxText = mainFrame.UrlBox.Text;
+            var navigateTo = urlBoxText switch
+            {
+                string s when s.Contains("firebrowser://settings") => ("SettingsHome", NavView.MenuItems[0]),
+                string s when s.Contains("firebrowser://design") => ("Design", NavView.MenuItems[1]),
+                string s when s.Contains("firebrowser://privacy") => ("Privacy", NavView.MenuItems[2]),
+                string s when s.Contains("firebrowser://newtabset") => ("NewTab", NavView.MenuItems[3]),
+                string s when s.Contains("firebrowser://access") => ("Accessibility", NavView.MenuItems[4]),
+                string s when s.Contains("firebrowser://about") => ("About", NavView.MenuItems[5]),
+                _ => (null,null),// default case
+            };
+
+            if (navigateTo.Item1 != null && navigateTo.Item2 != null)
+            {
+                NavView.SelectedItem = navigateTo.Item2;
+                NavView_Navigate(navigateTo.Item1, new Windows.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
+            }
+            else
+            {
+                NavView.SelectedItem = NavView.MenuItems[0];
+                NavView_Navigate("SettingsHome", new Windows.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
+            } // Default behavior
+        
             // If navigation occurs on SelectionChanged, this isn't needed.
             // Because we use ItemInvoked to navigate, we need to call Navigate
             // here to load the home page.
-            NavView_Navigate("SettingsHome", new Windows.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
+
 
             // Listen to the window directly so the app responds
             // to accelerator keys regardless of which element has focus.

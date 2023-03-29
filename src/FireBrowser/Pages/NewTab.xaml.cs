@@ -20,28 +20,48 @@ namespace FireBrowser.Pages
     /// </summary>
     public sealed partial class NewTab : Page
     {
+
+        bool isAuto;
         public HomeViewModel ViewModel { get; set; }
         public NewTab()
         {
-            this.InitializeComponent();
+            this.InitializeComponent();       
+            HomeSync();
+        }
 
+        public void HomeSync()
+        {
             var set = FireBrowserInterop.SettingsHelper.GetSetting("Background");
+            var ison = FireBrowserInterop.SettingsHelper.GetSetting("Auto");
+
+            if (ison.Equals("0"))
+            {
+                isAuto = false;
+                Type.IsOn = false;
+            }
+            else if (ison.Equals("1"))
+            {
+                isAuto = true;
+                Type.IsOn = true;
+            }
 
             if (set.Equals("0"))
             {
                 ViewModel = new HomeViewModel()
                 {
                     BackgroundType = Core.Settings.NewTabBackground.None,
-
                 };
+                GridSelect.SelectedValue = "None";
             }
-            else
+            else if (set.Equals("1"))
             {
                 ViewModel = new HomeViewModel()
                 {
                     BackgroundType = Core.Settings.NewTabBackground.Featured,
                 };
+                GridSelect.SelectedValue = "Featured";
             }
+          
         }
 
         Passer param;
@@ -69,6 +89,9 @@ namespace FireBrowser.Pages
             public string copyrightlink { get; set; }
             public string title { get; set; }
         }
+
+    
+
         public static Brush GetGridBackgroundAsync(Core.Settings.NewTabBackground backgroundType)
         {
             switch (backgroundType)
@@ -109,7 +132,8 @@ namespace FireBrowser.Pages
                     catch
                     {
                         return new SolidColorBrush(Colors.Transparent);
-                    }
+                    }            
+
             }
             return new SolidColorBrush();
         }
@@ -138,25 +162,57 @@ namespace FireBrowser.Pages
                 case "None":
                     FireBrowserInterop.SettingsHelper.SetSetting("Background", "0");
                     ViewModel.BackgroundType = Core.Settings.NewTabBackground.None;
-
                     break;
                 case "Featured":
-
                     FireBrowserInterop.SettingsHelper.SetSetting("Background", "1");
                     ViewModel.BackgroundType = Core.Settings.NewTabBackground.Featured;
-
                     break;
                 default:
 
                     break;
             }
+        }
 
+        private void NewTabSearchBox_PreviewKeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if (isAuto)
+            {
 
+            }
+            else if (e.Key is Windows.System.VirtualKey.Enter)
+            {
+                MainPage.FocusUrlBox(NewTabSearchBox.Text);
+            }
+        }
+
+        private void Type_Toggled(object sender, RoutedEventArgs e)
+        {
+            ToggleSwitch toggleSwitch = sender as ToggleSwitch;
+            if (toggleSwitch != null)
+            {
+                if (toggleSwitch.IsOn)
+                {
+                    isAuto = true;
+                    FireBrowserInterop.SettingsHelper.SetSetting("Auto", "1");
+                }
+                else
+                {
+                    isAuto = false;
+                    FireBrowserInterop.SettingsHelper.SetSetting("Auto", "0");
+                }
+            }
         }
 
         private void NewTabSearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
-            MainPage.FocusUrlBox(NewTabSearchBox.Text);
+            if (isAuto)
+            {
+                MainPage.FocusUrlBox(NewTabSearchBox.Text);
+            }
+            else
+            {
+               
+            }
         }
     }
 }

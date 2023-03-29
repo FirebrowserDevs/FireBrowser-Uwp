@@ -125,9 +125,6 @@
                 </labs:SettingsExpander.HeaderIcon>
                 <labs:SettingsExpander.Items>
                     <labs:SettingsCard Header="This app is built using: codepen animation, wct toolkit, weatherapi.com, to-do">
-                        <labs:SettingsCard.HeaderIcon>
-                            <icp:FluentIcon Glyph="&#xF686;"/>
-                        </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard Header="Do you want to be in this list? You can contribute on GitHub.">
                     </labs:SettingsCard>

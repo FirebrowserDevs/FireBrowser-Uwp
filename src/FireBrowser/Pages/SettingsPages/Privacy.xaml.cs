@@ -25,38 +25,10 @@ namespace FireBrowser.Pages.SettingsPages
         string pass = FireBrowserInterop.SettingsHelper.GetSetting("DisablePassSave");
         public async void Stack()
         {
-            if (javasc == "true")
-            {
-                DisableJavaScriptToggle.IsOn = true;
-            }
-            else
-            {
-                DisableJavaScriptToggle.IsOn = false;
-            }
-            if (webmes == "true")
-            {
-                DisablWebMessFillToggle.IsOn = true;
-            }
-            else
-            {
-                DisablWebMessFillToggle.IsOn = false;
-            }
-            if (autogen == "true")
-            {
-                DisableGenaralAutoFillToggle.IsOn = true;
-            }
-            else
-            {
-                DisableGenaralAutoFillToggle.IsOn = false;
-            }
-            if (pass == "true")
-            {
-                PasswordWebMessFillToggle.IsOn = true;
-            }
-            else
-            {
-                PasswordWebMessFillToggle.IsOn = false;
-            }
+            DisableJavaScriptToggle.IsOn = javasc == "true";
+            DisablWebMessFillToggle.IsOn = webmes == "true";
+            DisableGenaralAutoFillToggle.IsOn = autogen == "true";
+            PasswordWebMessFillToggle.IsOn = pass == "true";
         }
 
         int trueCount = 0;
@@ -70,30 +42,27 @@ namespace FireBrowser.Pages.SettingsPages
                 3 => "High",
                 4 => "Extreme"
             };
-
         }
 
         public async void IfChanged()
         {
-
             RestartFrame.Navigate(typeof(RestartDialog));
             RestartFrame.Visibility = Visibility.Visible;
         }
 
         private void DisableJavaScriptToggle_Toggled(object sender, RoutedEventArgs e)
         {
-            if (DisableJavaScriptToggle.IsOn)
+            if (DisableJavaScriptToggle.IsOn == true)
             {
                 FireBrowserInterop.SettingsHelper.SetSetting("DisableJavaScript", "true");
                 trueCount++;
-
             }
             else
             {
                 trueCount--;
                 FireBrowserInterop.SettingsHelper.SetSetting("DisableJavaScript", "false");
-
             }
+
             IfChanged();
             UpdateText();
         }

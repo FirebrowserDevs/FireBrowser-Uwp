@@ -8,41 +8,56 @@ namespace FireBrowserFavorites
 {
     public class Json
     {
-        public static StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-        public static async void CreateJsonFile(string file, string title, string url)
+        private static StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+
+        public static async Task CreateJsonFileAsync(string file, string title, string url)
         {
             // Generate json
-            string json = "[{\"title\":\"" + title + "\"," + "\"url\":\"" + url + "\"}]";
+            string json = JsonConvert.SerializeObject(new List<Globals.JsonItems> {
+            new Globals.JsonItems
+            {
+                Title = title,
+                Url = url
+            }
+            });
+
             // create json file
             await localFolder.CreateFileAsync(file, CreationCollisionOption.ReplaceExisting);
+
             // get json file
-            var fileData = await ApplicationData.Current.LocalFolder.GetFileAsync(file);
+            var fileData = await localFolder.GetFileAsync(file);
+
             // write json to json file
             await FileIO.WriteTextAsync(fileData, json);
         }
 
-        public static async void AddItemToJson(string file, string title, string url)
+        public static async Task AddItemToJson(string file, string title, string url)
         {
             var fileData = await localFolder.TryGetItemAsync(file);
-            if (fileData == null) CreateJsonFile(file, title, url);
+            if (fileData == null) await CreateJsonFileAsync(file, title, url);
             else
             {
                 // get json file content
-                string json = await FileIO.ReadTextAsync((IStorageFile)fileData);
+                string json = await FileIO.ReadTextAsync(fileData as IStorageFile);
+
                 // new historyitem
                 Globals.JsonItems newHistoryitem = new Globals.JsonItems()
                 {
                     Title = title,
                     Url = url
                 };
+
                 // Convert json to list
                 List<Globals.JsonItems> historylist = JsonConvert.DeserializeObject<List<Globals.JsonItems>>(json);
+
                 // Add new historyitem
                 historylist.Insert(0, newHistoryitem);
+
                 // Convert list to json
                 string newJson = JsonConvert.SerializeObject(historylist);
+
                 // Write json to json file
-                await FileIO.WriteTextAsync((IStorageFile)fileData, newJson);
+                await FileIO.WriteTextAsync(fileData as IStorageFile, newJson);
             }
         }
 
@@ -52,9 +67,10 @@ namespace FireBrowserFavorites
             if (fileData == null) return null;
             else
             {
-                string filecontent = await FileIO.ReadTextAsync((IStorageFile)fileData);
+                string filecontent = await FileIO.ReadTextAsync(fileData as IStorageFile);
                 return JsonConvert.DeserializeObject<List<Globals.JsonItems>>(filecontent);
             }
         }
     }
+
 }

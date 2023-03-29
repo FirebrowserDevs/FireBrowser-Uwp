@@ -9,6 +9,7 @@
     mc:Ignorable="d"
     Height="Auto"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    NavigationCacheMode="Enabled"
      >
     <Grid  x:Name="Grid" Background="{x:Bind local:NewTab.GetGridBackgroundAsync(ViewModel.BackgroundType), Mode=OneWay}">
         <VisualStateManager.VisualStateGroups>
@@ -23,6 +24,22 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
+        <Button x:Uid="NewTabEditButton"
+                Style="{ThemeResource QuietButtonStyle}"
+                Padding="6" Margin="0,31,64,0"
+                VerticalAlignment="Top" HorizontalAlignment="Right"
+                Content="{firebrowser:FluentIcon Glyph=&#xE70F;}">
+            <Button.Flyout>
+                <Flyout Placement="Bottom">
+                    <StackPanel>
+                        <ToggleSwitch x:Name="Type" Toggled="Type_Toggled">
+                            Enable Auto Fill TextBox
+                        </ToggleSwitch>
+                    </StackPanel>
+                </Flyout>
+            </Button.Flyout>
+        </Button>
+        
         <Button x:Uid="NewTabSettingsButton"
                 Style="{ThemeResource QuietButtonStyle}"
                 Padding="6" Margin="0,31,32,0"
@@ -30,26 +47,27 @@
                 Content="{firebrowser:FluentIcon Glyph=&#xE713;}">
             <Button.Flyout>
                 <Flyout Placement="Bottom">
-                    <StackPanel>
-                        <GridView  SelectionChanged="BackgroundGridView_SelectionChanged">
-                            <GridViewItem x:Name="NoneGrid" Padding="12" Tag="None">
+                    <StackPanel Background="Transparent">
+                        <GridView  x:Name="GridSelect" SelectionChanged="BackgroundGridView_SelectionChanged" Background="{ThemeResource SystemControlBackgroundTransparentRevealBorderBrush}">
+                            <GridViewItem x:Name="NoneGrid" Padding="12" Tag="None" x:FieldModifier="Public">
                                 <StackPanel>
-                                    <Image Width="100" Source="ms-appx:///Assets/Illustrations/NewTab/BackgroundNone.svg"/>
+                                    <Image Width="100" Source="ms-appx:///Assets/Illustrations/NewTab/BackgroundNone.png"/>
                                     <TextBlock x:Uid="NewTabBackgroundNone" d:Text="None"
                                    HorizontalAlignment="Center"
                                    Margin="0,8,0,0"/>
                                 </StackPanel>
                             </GridViewItem>
-                            <GridViewItem x:Name="FsGrid" Padding="12" Tag="Featured">
+                            <GridViewItem x:Name="FsGrid" Padding="12" Tag="Featured" x:FieldModifier="Public">
                                 <StackPanel>
-                                    <Image Width="100" Source="ms-appx:///Assets/Illustrations/NewTab/BackgroundBing.svg"/>
-                                    <TextBlock x:Uid="NewTabBackgroundBing" d:Text="Bing Image"
+                                    <Image Width="100" Source="ms-appx:///Assets/Illustrations/NewTab/BackgroundBing.png"/>
+                                    <TextBlock x:Uid="NewTabBackgroundBing"
                                    HorizontalAlignment="Center"
-                                   Margin="0,8,0,0"/>
+                                   Margin="0,8,0,0">
+                                        Bind Image
+                                    </TextBlock>
                                 </StackPanel>
                             </GridViewItem>
                         </GridView>
-
                     </StackPanel>
                 </Flyout>
             </Button.Flyout>
@@ -64,13 +82,14 @@
                             x:Uid="SearchBar"
                             Grid.Row="0"
                             Height="40"                         
-                            BorderThickness="0,0,0,2"
-                            CornerRadius="0"
+                            BorderThickness="1,1,1,1"
+                            CornerRadius="5"
                             BorderBrush="{ThemeResource SystemAltHighColor}"
                             Background="Transparent"
-                            VerticalContentAlignment="Center"
-                            d:PlaceholderText="Type here to search"
+                            VerticalContentAlignment="Center"    
                             TextChanged="NewTabSearchBox_TextChanged"
+                            PreviewKeyDown="NewTabSearchBox_PreviewKeyDown"
+                            x:FieldModifier="Public"
                             >
                 <AutoSuggestBox.Resources>
                     <SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="{ThemeResource SystemAltHighColor}"/>
@@ -78,7 +97,7 @@
                 </AutoSuggestBox.Resources>
             </AutoSuggestBox>
             <StackPanel Grid.Row="1"
-                        Orientation="Horizontal" Spacing="4">
+                        Orientation="Horizontal" Spacing="4" x:Name="Igrid">
 
                 <Button Click="ActionClicked" Tag="Google" CornerRadius="16" Background="Transparent" BorderThickness="1" BorderBrush="Red">
                     <StackPanel Orientation="Horizontal" Spacing="8">

@@ -20,11 +20,11 @@ namespace FireBrowser.Core
             {
                 Title = title,
                 Content = message,
-                PrimaryButtonText = "OK"
+                PrimaryButtonText = "OK",
+                CloseButtonText = "Cancel"
             };
 
             await dialog.ShowWithAnimationAsync();
         }
-
     }
 }

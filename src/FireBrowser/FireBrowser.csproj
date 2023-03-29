@@ -30,7 +30,7 @@
     </PackageCertificateThumbprint>
     <PackageCertificateKeyFile>FireBrowser_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+    <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -176,9 +176,6 @@
     <Compile Include="Pages\SettingsPages\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SettingsPages\Look.xaml.cs">
-      <DependentUpon>Look.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\SettingsPages\Link\MsLogin.xaml.cs">
       <DependentUpon>MsLogin.xaml</DependentUpon>
     </Compile>
@@ -225,8 +222,8 @@
     <Content Include="Assets\Icons\Privacy.svg" />
     <Content Include="Assets\Icons\Style.svg" />
     <Content Include="Assets\Icons\Tabs.svg" />
-    <Content Include="Assets\Illustrations\NewTab\BackgroundBing.svg" />
-    <Content Include="Assets\Illustrations\NewTab\BackgroundNone.svg" />
+    <Content Include="Assets\Illustrations\NewTab\BackgroundBing.png" />
+    <Content Include="Assets\Illustrations\NewTab\BackgroundNone.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
@@ -275,6 +272,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <Content Include="Assets\Icons\Segoe Fluent Icons.ttf" />
+    <None Include="firebrowser.manifest" />
     <None Include="FireBrowser_TemporaryKey.pfx" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
@@ -342,10 +340,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\SettingsPages\Look.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\SettingsPages\Link\MsLogin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -404,7 +398,7 @@
       <Version>0.0.13</Version>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm">
-      <Version>8.2.0-preview1</Version>
+      <Version>8.2.0-preview2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Data.Sqlite.Core">
       <Version>8.0.0-preview.2.23128.3</Version>
@@ -458,6 +452,9 @@
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>firebrowser.manifest</ApplicationManifest>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

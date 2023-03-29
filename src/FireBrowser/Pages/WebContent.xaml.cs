@@ -4,14 +4,11 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
 using System.ComponentModel;
-using System.Drawing;
 using Windows.Storage;
 using Windows.UI.ViewManagement;
-using Windows.UI.WebUI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using static FireBrowser.MainPage;
@@ -25,7 +22,6 @@ namespace FireBrowser.Pages
     /// </summary>
     public sealed partial class WebContent : Page
     {
-
         public WebContent()
         {
             this.InitializeComponent();
@@ -64,9 +60,7 @@ namespace FireBrowser.Pages
         string autogen = FireBrowserInterop.SettingsHelper.GetSetting("DisableGenAutoFill");
 
         Passer param;
-
         public static bool IsIncognitoModeEnabled { get; set; } = false;
-
         private void ToggleIncognitoMode(object sender, RoutedEventArgs e)
         {
             IsIncognitoModeEnabled = !IsIncognitoModeEnabled;
@@ -79,7 +73,7 @@ namespace FireBrowser.Pages
             }
             else
             {
-                
+                WebViewElement.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = true;
             }
             if (pass.Equals("true"))
             {
@@ -106,7 +100,18 @@ namespace FireBrowser.Pages
                 WebViewElement.CoreWebView2.Settings.IsGeneralAutofillEnabled = true;
             }
         }
-        
+
+        public void checkif()
+        {
+            if (WebViewElement.CoreWebView2.CanGoBack == true)
+            {
+                MainPageContent.Back.IsEnabled = true;
+            }
+            else
+            {
+                MainPageContent.Back.IsEnabled = false;
+            }
+        }
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -114,29 +119,18 @@ namespace FireBrowser.Pages
             await WebViewElement.EnsureCoreWebView2Async();
             WebView2 s = WebViewElement;
 
-
             if (param?.Param != null)
             {
                 WebViewElement.CoreWebView2.Navigate(param.Param.ToString());
             }
+           
+            var userAgent = s?.CoreWebView2.Settings.UserAgent;
+            userAgent = userAgent.Substring(1, userAgent.IndexOf("Edg/"));
+            userAgent = userAgent.Replace("Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.51", "Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.51");
+            s.CoreWebView2.Settings.UserAgent = userAgent;
 
-            if(IsIncognitoModeEnabled == true)
-            {
-                var userAgent = s?.CoreWebView2.Settings.UserAgent;
-                userAgent = userAgent.Substring(0, userAgent.IndexOf("Edg/"));
-                userAgent = userAgent.Replace("Incog", "Incog");
-                s.CoreWebView2.Settings.UserAgent = userAgent;
-                await s.CoreWebView2.ExecuteScriptAsync("navigator.userAgent");
-            }
-            else
-            {
-                var userAgent = s?.CoreWebView2.Settings.UserAgent;
-                userAgent = userAgent.Substring(0, userAgent.IndexOf("Edg/"));
-                userAgent = userAgent.Replace("Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.51", "Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.51");
-                s.CoreWebView2.Settings.UserAgent = userAgent;
-            }
-      
-            //loadSetting();
+
+            loadSetting();
             s.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = true;
             s.CoreWebView2.Settings.IsStatusBarEnabled = true;
             s.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = true;
@@ -151,12 +145,12 @@ namespace FireBrowser.Pages
             {
                 if (IsIncognitoModeEnabled == true)
                 {
-                   
+
                 }
                 else
                 {
                     param.Tab.Header = WebViewElement.CoreWebView2.DocumentTitle;
-                }      
+                }
             };
             s.CoreWebView2.PermissionRequested += async (sender, args) =>
             {
@@ -164,7 +158,7 @@ namespace FireBrowser.Pages
             };
             s.CoreWebView2.FaviconChanged += async (sender, args) =>
             {
-                if(IsIncognitoModeEnabled == true)
+                if (IsIncognitoModeEnabled == true)
                 {
 
                 }
@@ -177,10 +171,10 @@ namespace FireBrowser.Pages
                         param.Tab.IconSource = new ImageIconSource() { ImageSource = bitmapImage };
                     }
                     catch { }
-                }     
+                }
             };
-            s.CoreWebView2.NavigationStarting += async (sender, args) => {
-              
+            s.CoreWebView2.NavigationStarting += async (sender, args) =>
+            {
                 param.ViewModel.LoadingState = new Microsoft.UI.Xaml.Controls.ProgressRing()
                 {
                     Width = 16,
@@ -194,6 +188,10 @@ namespace FireBrowser.Pages
                 {
 
                 }
+                else
+                {
+
+                }
 
                 param.ViewModel.LoadingState = new FontIcon()
                 {
@@ -201,28 +199,28 @@ namespace FireBrowser.Pages
                     FontSize = 16
                 };
 
-             
-
                 s.CoreWebView2.ContainsFullScreenElementChanged += (sender, args) =>
                 {
                     this.FullScreen = s.CoreWebView2.ContainsFullScreenElement;
                 };
 
-                if(IsIncognitoModeEnabled == true)
+                if (IsIncognitoModeEnabled == true)
                 {
 
                 }
                 else
                 {
                     AddHistData();
-                }     
+                }
+
             };
             s.CoreWebView2.SourceChanged += (sender, args) =>
             {
                 if (param.TabView.SelectedItem == param.Tab)
                 {
-                    param.ViewModel.CurrentAddress = sender.Source;                  
+                    param.ViewModel.CurrentAddress = sender.Source;
                 }
+                //checkif();
             };
             s.CoreWebView2.NewWindowRequested += (sender, args) =>
             {
@@ -232,7 +230,6 @@ namespace FireBrowser.Pages
                 MainPage mp = new();
                 param?.TabView.TabItems.Add(mp.CreateNewTab(typeof(WebContent), args.Uri));
                 args.Handled = true;
-                select();
             };
         }
         string SelectionText;
@@ -344,12 +341,12 @@ namespace FireBrowser.Pages
                     FireBrowserInterop.SystemHelper.ShowShareUIURL(WebViewElement.CoreWebView2.DocumentTitle, WebViewElement.CoreWebView2.Source);
                     break;
                 case "Print":
-                   
+
                     break;
             }
             Ctx.Hide();
         }
-       
+
         private async void Grid_Loaded_1(object sender, RoutedEventArgs e)
         {
             if (Grid.Children.Count == 0) Grid.Children.Add(WebViewElement);
