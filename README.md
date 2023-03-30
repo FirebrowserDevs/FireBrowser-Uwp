@@ -22,9 +22,9 @@
 # Screenshots
 
 <div style="display: flex; align-items: center;">
-   <img src="src/Readme/HomePage.png" />
-   <img src="src/Readme/WebPage.png" />
-   <img src="src/Readme/settings.png" />
+   <img src="src/FireBrowser/Assets/HomePage.png" />
+   <img src="src/FireBrowser/Assets/Webpage.png" />
+   <img src="src/FireBrowser/Assets/settings.png" />
    <img src="src/Readme/compact.png" />
 </div>
 
