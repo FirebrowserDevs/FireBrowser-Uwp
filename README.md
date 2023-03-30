@@ -3,7 +3,7 @@
   <h1>FireBrowser</h1>
 </div>
 
-### A modern Web browser with a beautiful UI built with the UWP and the WebView2 SDK.
+### A modern Web browser with a beautiful UI built with the UWP/WinUI3 and the WebView2 SDK.
 
 # Features:
 - Blazingly fast
