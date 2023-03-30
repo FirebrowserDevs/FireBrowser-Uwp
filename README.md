@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="src/Readme/Logo.png" height="75" width="75" />
+  <img src="src/FireBrowser/Assets/logo.png" height="75" width="75" />
   <h1>FireBrowser</h1>
 </div>
 
