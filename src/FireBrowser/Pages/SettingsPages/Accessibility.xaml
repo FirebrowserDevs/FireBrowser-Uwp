@@ -23,6 +23,12 @@
                     </labs:SettingsCard>
                 </labs:SettingsExpander.Items>
             </labs:SettingsExpander>
+            <labs:SettingsCard Header="FireBrowser - Light Mode" Description="This Will Enable Light Mode Or Not ( This Will Disable Stuff To Optimize Performance )" Margin="0,5,0,0">
+                <labs:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC4A;" />
+                </labs:SettingsCard.HeaderIcon>
+                <ToggleSwitch x:Name="LiteMode" Toggled="LiteMode_Toggled"/>
+            </labs:SettingsCard>
         </StackPanel>
     </Grid>
 </Page>

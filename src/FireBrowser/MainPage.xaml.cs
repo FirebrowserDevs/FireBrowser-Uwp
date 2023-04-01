@@ -8,7 +8,6 @@ using FireBrowserHelpers.ReadingMode;
 using FireBrowserQr;
 using FireBrowserUrlHelper;
 using Microsoft.Data.Sqlite;
-using Microsoft.Toolkit.Uwp.UI.Controls;
 using Microsoft.UI.Xaml.Controls;
 using SQLitePCL;
 using System;
@@ -24,25 +23,11 @@ using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using static FireBrowser.App;
 using NewTab = FireBrowser.Pages.NewTab;
-using System.Runtime.InteropServices;
-using Windows.UI.WindowManagement;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using System.Xml.Serialization;
-using Windows.Web.Http;
-using System.Linq;
-using Windows.UI.Xaml.Media;
-using Brush = Windows.UI.Xaml.Media.Brush;
-using Windows.ApplicationModel.Store;
-using Windows.Devices.Enumeration;
-
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -57,29 +42,43 @@ namespace FireBrowser
         public DataTemplate StringTemplate { get; set; }
         public DataTemplate IntTemplate { get; set; }
         public DataTemplate DefaultTemplate { get; set; }
+
+        protected override DataTemplate SelectTemplateCore(object item)
+        {
+            if (item is string)
+            {
+                return StringTemplate;
+            }
+            else if (item is int)
+            {
+                return IntTemplate;
+            }
+            else
+            {
+                return DefaultTemplate;
+            }
+        }
     }
+
 
     public sealed partial class MainPage : Page
     {
-        private AppWindow appWindow;
         public MainPage()
         {
             this.InitializeComponent();
             ButtonVisible();
 
-            DisplayInformation displayInformation = DisplayInformation.GetForCurrentView();
-
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
 
-            ApplicationViewTitleBar formattableTitleBar = ApplicationView.GetForCurrentView().TitleBar;
+            var formattableTitleBar = ApplicationView.GetForCurrentView().TitleBar;
             formattableTitleBar.ButtonBackgroundColor = Colors.Transparent;
             formattableTitleBar.ButtonHoverBackgroundColor = Colors.Transparent;
             formattableTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
             formattableTitleBar.InactiveBackgroundColor = Colors.Transparent;
-            formattableTitleBar.ButtonPressedBackgroundColor = Colors.Transparent;
-      
+            formattableTitleBar.ButtonPressedBackgroundColor = Colors.Transparent; 
+
 
             ViewModel = new ToolbarViewModel
             {
@@ -89,7 +88,6 @@ namespace FireBrowser
                     Glyph = "\uE72C",
                 }
             };
-
             Window.Current.SetTitleBar(CustomDragRegion);
         }
         private void ResetOutput()
@@ -99,6 +97,14 @@ namespace FireBrowser
         }
 
         #region buttons
+
+        public static string ReadButton { get; set; }
+        public static string AdblockBtn { get; set; }
+        public static string Downloads { get; set; }
+        public static string Translate { get; set; }
+        public static string Favorites { get; set; }
+        public static string Historybtn { get; set; }
+        public static string QrCode { get; set; }
         public void ButtonVisible()
         {
             ReadButton = FireBrowserInterop.SettingsHelper.GetSetting("Readbutton");
@@ -108,83 +114,53 @@ namespace FireBrowser
             Favorites = FireBrowserInterop.SettingsHelper.GetSetting("FavBtn");
             Historybtn = FireBrowserInterop.SettingsHelper.GetSetting("HisBtn");
             QrCode = FireBrowserInterop.SettingsHelper.GetSetting("QrBtn");
-            if (ReadButton == "True")
-            {
-                ReadBtn.Visibility = Visibility.Visible;
-            }
-            else if (ReadButton == "0")
-            {
-                ReadBtn.Visibility = Visibility.Collapsed;
-            }
-            if (AdblockBtn == "True")
-            {
-                AdBlock.Visibility = Visibility.Visible;
-            }
-            else if (AdblockBtn == "0")
-            {
-                AdBlock.Visibility = Visibility.Collapsed;
-            }
-            if (Downloads == "True")
-            {
-                DownBtn.Visibility = Visibility.Visible;
-            }
-            else if (Downloads == "0")
-            {
-                DownBtn.Visibility = Visibility.Collapsed;
-            }
-            if (Translate == "True")
-            {
-                BtnTrans.Visibility = Visibility.Visible;
-            }
-            else if (Translate == "0")
-            {
-                BtnTrans.Visibility = Visibility.Collapsed;
-            }
-            if (Favorites == "True")
-            {
-                FavoritesButton.Visibility = Visibility.Visible;
-            }
-            else if (Favorites == "0")
-            {
-                FavoritesButton.Visibility = Visibility.Collapsed;
-            }
-            if (Historybtn == "True")
-            {
-                History.Visibility = Visibility.Visible;
-            }
-            else if (Historybtn == "0")
-            {
-                History.Visibility = Visibility.Collapsed;
-            }
-            if (QrCode == "True")
-            {
-                QrBtn.Visibility = Visibility.Visible;
-            }
-            else if (QrCode == "0")
-            {
-                QrBtn.Visibility = Visibility.Collapsed;
-            }
-        }
 
-        public static string ReadButton { get; set; }
-        public static string AdblockBtn { get; set; }
-        public static string Downloads { get; set; }
-        public static string Translate { get; set; }
-        public static string Favorites { get; set; }
-        public static string Historybtn { get; set; }
-        public static string QrCode { get; set; }
+            ReadBtn.Visibility = ReadButton switch
+            {
+                "True" => Visibility.Visible,
+                _ => Visibility.Collapsed,
+            };
+            AdBlock.Visibility = AdblockBtn switch
+            {
+                "True" => Visibility.Visible,
+                _ => Visibility.Collapsed,
+            };
+            DownBtn.Visibility = Downloads switch
+            {
+                "True" => Visibility.Visible,
+                _ => Visibility.Collapsed,
+            };
+            BtnTrans.Visibility = Translate switch
+            {
+                "True" => Visibility.Visible,
+                _ => Visibility.Collapsed,
+            };
+            FavoritesButton.Visibility = Favorites switch
+            {
+                "True" => Visibility.Visible,
+                _ => Visibility.Collapsed,
+            };
+            History.Visibility = Historybtn switch
+            {
+                "True" => Visibility.Visible,
+                _ => Visibility.Collapsed,
+            };
+            QrBtn.Visibility = QrCode switch
+            {
+                "True" => Visibility.Visible,
+                _ => Visibility.Collapsed,
+            };
+        }
 
         #endregion
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            ResetOutput();        
+            ResetOutput();
 
-            if (e.Parameter != null)
+            if (e.Parameter is AppLaunchPasser passer)
             {
-                AppLaunchPasser passer = (AppLaunchPasser)e.Parameter;
-
                 switch (passer.LaunchType)
                 {
                     case AppLaunchType.LaunchBasic:
@@ -202,16 +178,14 @@ namespace FireBrowser
                         Tabs.TabItems.Add(CreateNewIncog());
                         break;
                     case AppLaunchType.LaunchStartup:
-                        //this works for some reason when set startup first it fails to add newtab        
                         Tabs.TabItems.Add(CreateNewTab(typeof(NewTab)));
                         var startup = await StartupTask.GetAsync("FireBrowserStartUp");
                         break;
                     case AppLaunchType.FirstLaunch:
-
+                        Tabs.TabItems.Add(CreateNewTab());
                         break;
                     case AppLaunchType.URIHttp:
-                        Tabs.TabItems.Add(CreateNewTab(typeof(WebContent),
-                                                       new Uri(passer.LaunchData.ToString())));
+                        Tabs.TabItems.Add(CreateNewTab(typeof(WebContent), new Uri(passer.LaunchData.ToString())));
                         break;
                     case AppLaunchType.URIFireBrowser:
                         Tabs.TabItems.Add(CreateNewTab(typeof(NewTab)));
@@ -283,9 +257,6 @@ namespace FireBrowser
             public TabViewItem Tab { get; set; }
             public TabView TabView { get; set; }
             public object Param { get; set; }
-
-            public string Num { get ; set; }
-
             public ToolbarViewModel ViewModel { get; set; }
 
         }
@@ -293,17 +264,13 @@ namespace FireBrowser
         #region hidepasser
         public void HideToolbar(bool hide)
         {
-            if (hide)
-            {
-                ClassicToolbar.Visibility = Visibility.Collapsed;
-                TabContent.Margin = new Thickness(0, -40, 0, 0);
-            }
-            else
-            {
-                ClassicToolbar.Visibility = Visibility.Visible;
-                TabContent.Margin = new Thickness(0, 35, 0, 0);
-            }
+            var visibility = hide ? Visibility.Collapsed : Visibility.Visible;
+            var margin = hide ? new Thickness(0, -40, 0, 0) : new Thickness(0, 35, 0, 0);
+
+            ClassicToolbar.Visibility = visibility;
+            TabContent.Margin = margin;
         }
+
         private Passer CreatePasser(object parameter = null)
         {
             Passer passer = new()
@@ -322,7 +289,7 @@ namespace FireBrowser
         {
             get
             {
-                TabViewItem selectedItem = (TabViewItem)Tabs.SelectedItem;
+                CustomTabViewItem selectedItem = (FireBrowser.Controls.CustomTabViewItem)Tabs.SelectedItem;
                 if (selectedItem != null)
                 {
                     return (Frame)selectedItem.Content;
@@ -350,7 +317,6 @@ namespace FireBrowser
             if (index == -1) index = Tabs.TabItems.Count;
 
             UrlBox.Text = "";
-          
 
             CustomTabViewItem newItem = new()
             {
@@ -362,19 +328,27 @@ namespace FireBrowser
 
             // The content of the tab is often a frame that contains a page, though it could be any UIElement.
             double Margin = 0;
-            Margin = ClassicToolbar.Height;
+            Margin = ClassicToolbar.ActualHeight;
             Frame frame = new()
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
                 Margin = new Thickness(0, Margin, 0, 0)
             };
-            
-            frame.Navigate(typeof(Pages.Incognito));
+
+            if (page != null)
+            {
+                frame.Navigate(page, param);
+            }
+            else
+            {
+                frame.Navigate(typeof(Pages.Incognito));
+            }
 
             newItem.Content = frame;
             return newItem;
         }
+
         public CustomTabViewItem CreateNewTab(Type page = null, object param = null, int index = -1)
         {
             if (index == -1) index = Tabs.TabItems.Count;
@@ -625,12 +599,25 @@ namespace FireBrowser
                 case "Home":
                     if (TabContent.Content is WebContent)
                     {
+                        Hmbtn.IsEnabled = true;
                         TabWebView.Close();
+                        if (WebContent.IsIncognitoModeEnabled)
+                        {
+                            TabContent.Navigate(typeof(Pages.Incognito), passer, new DrillInNavigationTransitionInfo());
+                            passer.Tab.Header = "Incognito";
+                            passer.Tab.IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = Symbol.BlockContact };
+                            UrlBox.Text = "";
+                        }
+                        else
+                        {
+                            TabContent.Navigate(typeof(Pages.NewTab), passer, new DrillInNavigationTransitionInfo());
+                            passer.Tab.Header = "New Tab";
+                            passer.Tab.IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = Symbol.Home };
+                            UrlBox.Text = "";
+                        }
+
                     }
-                    TabContent.Navigate(typeof(Pages.NewTab), passer, new DrillInNavigationTransitionInfo());
-                    passer.Tab.Header = "New Tab";
-                    passer.Tab.IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = Symbol.Home };
-                    UrlBox.Text = "";
+                    Hmbtn.IsEnabled = false;
                     break;
                 case "DownloadFlyout":
                     if (TabContent.Content is WebContent)
@@ -746,8 +733,12 @@ namespace FireBrowser
             if (tabcontent.Content is WebContent)
             {
                 (tabcontent.Content as WebContent).WebViewElement.Close();
-            }
+            }        
             sender.TabItems.Remove(args.Tab);
+            if (Tabs.TabItems.Count == 0)
+            {
+                CoreApplication.Exit();
+            }
         }
         #endregion
 
@@ -946,5 +937,16 @@ namespace FireBrowser
                     break;
             }
         }
-    }
+
+        public void userMenuExpend(object sender, RoutedEventArgs e)
+        {
+            UserBorder.Visibility = UserBorder.Visibility == Visibility.Visible
+               ? Visibility.Collapsed
+               : Visibility.Visible;
+
+            UserFrame.Visibility = UserFrame.Visibility == Visibility.Visible
+                ? Visibility.Collapsed
+                : Visibility.Visible;
+        }
+    }  
 }

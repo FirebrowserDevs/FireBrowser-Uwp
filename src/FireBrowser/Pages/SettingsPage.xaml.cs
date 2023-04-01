@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Windows.Storage;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using static FireBrowser.MainPage;
 using muxc = Microsoft.UI.Xaml.Controls;
@@ -23,10 +26,12 @@ namespace FireBrowser.Pages
         public SettingsPage()
         {
             this.InitializeComponent();
+            if (ApplicationData.Current.LocalSettings.Values.ContainsKey("SelectedNavViewItemId"))
+            {
+                string selectedItemId = (string)ApplicationData.Current.LocalSettings.Values["SelectedNavViewItemId"];
+                NavView_Navigate(selectedItemId, new EntranceNavigationTransitionInfo()); // Navigate to the previously selected item
+            }
         }
-        private double NavViewCompactModeThresholdWidth { get { return NavView.CompactModeThresholdWidth; } }
-
-        string pagenum = "0";
 
         private readonly List<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)>
         {
@@ -110,14 +115,19 @@ namespace FireBrowser.Pages
         private async void NavView_SelectionChanged(muxc.NavigationView sender,
                                              muxc.NavigationViewSelectionChangedEventArgs args)
         {
-            if (args.IsSettingsSelected == true)
+            if (args.IsSettingsSelected) // Ignore the Settings item
             {
                 NavView_Navigate("settings", args.RecommendedNavigationTransitionInfo);
+                return;
             }
-            else if (args.SelectedItemContainer != null)
+
+            if (args.SelectedItemContainer != null)
             {
-                var navItemTag = args.SelectedItemContainer.Tag.ToString();
-                NavView_Navigate(navItemTag, args.RecommendedNavigationTransitionInfo);
+                // Save the selected item tag in the LocalSettings object
+                string selectedItemTag = args.SelectedItemContainer.Tag.ToString();
+                ApplicationData.Current.LocalSettings.Values["SelectedNavViewItemId"] = selectedItemTag;
+
+                NavView_Navigate(selectedItemTag, args.RecommendedNavigationTransitionInfo);
             }
         }
 

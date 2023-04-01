@@ -3,9 +3,17 @@ using Microsoft.Data.Sqlite;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
+using Windows.Security.Authorization.AppCapabilityAccess;
+using Windows.Security.Cryptography.Certificates;
 using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.UI.ViewManagement;
+using Windows.UI.WebUI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -101,17 +109,7 @@ namespace FireBrowser.Pages
             }
         }
 
-        public void checkif()
-        {
-            if (WebViewElement.CoreWebView2.CanGoBack == true)
-            {
-                MainPageContent.Back.IsEnabled = true;
-            }
-            else
-            {
-                MainPageContent.Back.IsEnabled = false;
-            }
-        }
+
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -119,6 +117,7 @@ namespace FireBrowser.Pages
             await WebViewElement.EnsureCoreWebView2Async();
             WebView2 s = WebViewElement;
 
+            var permissionSystem = new WebViewPermissionSystem();
             if (param?.Param != null)
             {
                 WebViewElement.CoreWebView2.Navigate(param.Param.ToString());
@@ -136,6 +135,7 @@ namespace FireBrowser.Pages
             s.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = true;
             s.CoreWebView2.Settings.AreDefaultContextMenusEnabled = true;
 
+           
             s.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
             s.CoreWebView2.ScriptDialogOpening += async (sender, args) =>
             {
@@ -154,7 +154,7 @@ namespace FireBrowser.Pages
             };
             s.CoreWebView2.PermissionRequested += async (sender, args) =>
             {
-
+                await permissionSystem.HandlePermissionRequested(args, WebViewElement.CoreWebView2.Source.ToString());
             };
             s.CoreWebView2.FaviconChanged += async (sender, args) =>
             {
@@ -166,11 +166,24 @@ namespace FireBrowser.Pages
                 {
                     try
                     {
-                        BitmapImage bitmapImage = new();
-                        await bitmapImage.SetSourceAsync(await sender.GetFaviconAsync(0));
-                        param.Tab.IconSource = new ImageIconSource() { ImageSource = bitmapImage };
+                        BitmapImage bitmapImage = new BitmapImage();
+                        var stream = await sender.GetFaviconAsync(0);
+                        if (stream != null)
+                        {
+                            await bitmapImage.SetSourceAsync(stream);
+                            param.Tab.IconSource = new ImageIconSource() { ImageSource = bitmapImage };
+                        }
+                        else
+                        {
+                            BitmapImage bitmapImage2 = new BitmapImage();
+                            await bitmapImage2.SetSourceAsync(await sender.GetFaviconAsync(CoreWebView2FaviconImageFormat.Jpeg));
+                            param.Tab.IconSource = new ImageIconSource() { ImageSource = bitmapImage2 };
+                        }
                     }
-                    catch { }
+                    catch
+                    {
+                        await UI.ShowDialog(".ico Not Supported Yet", "Test");
+                    }
                 }
             };
             s.CoreWebView2.NavigationStarting += async (sender, args) =>
@@ -184,15 +197,6 @@ namespace FireBrowser.Pages
 
             s.CoreWebView2.NavigationCompleted += (sender, args) =>
             {
-                if (!args.IsSuccess)
-                {
-
-                }
-                else
-                {
-
-                }
-
                 param.ViewModel.LoadingState = new FontIcon()
                 {
                     Glyph = "\uE72C",
@@ -210,9 +214,9 @@ namespace FireBrowser.Pages
                 }
                 else
                 {
+
                     AddHistData();
                 }
-
             };
             s.CoreWebView2.SourceChanged += (sender, args) =>
             {
@@ -220,7 +224,7 @@ namespace FireBrowser.Pages
                 {
                     param.ViewModel.CurrentAddress = sender.Source;
                 }
-                //checkif();
+               
             };
             s.CoreWebView2.NewWindowRequested += (sender, args) =>
             {
@@ -232,6 +236,9 @@ namespace FireBrowser.Pages
                 args.Handled = true;
             };
         }
+
+       
+       
         string SelectionText;
         public void select()
         {
@@ -249,25 +256,45 @@ namespace FireBrowser.Pages
             selectCmd.Parameters.AddWithValue("@url", address);
             selectCmd.Parameters.AddWithValue("@title", title);
 
-            var reader = selectCmd.ExecuteReader();
-            if (reader.Read())
+            try
             {
-                var updateCmd = m_dbConnection.CreateCommand();
-                updateCmd.CommandText = "UPDATE urlsDb SET visit_count = visit_count + 1, last_visit_time = @lastVisitTime WHERE url = @url AND title = @title";
-                updateCmd.Parameters.AddWithValue("@url", address);
-                updateCmd.Parameters.AddWithValue("@title", title);
-                updateCmd.Parameters.AddWithValue("@lastVisitTime", DateTimeOffset.Now.ToUnixTimeSeconds());
-                updateCmd.ExecuteNonQuery();
+                var reader = selectCmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    var updateCmd = m_dbConnection.CreateCommand();
+                    updateCmd.CommandText = "UPDATE urlsDb SET visit_count = visit_count + 1, last_visit_time = @lastVisitTime WHERE url = @url AND title = @title";
+                    updateCmd.Parameters.AddWithValue("@url", address);
+                    updateCmd.Parameters.AddWithValue("@title", title);
+                    updateCmd.Parameters.AddWithValue("@lastVisitTime", DateTimeOffset.Now.ToUnixTimeSeconds());
+                    updateCmd.ExecuteNonQuery();
+                }
+                else
+                {
+                    var insertCmd = m_dbConnection.CreateCommand();
+                    insertCmd.CommandText = "INSERT OR IGNORE INTO urlsDb (url, title, visit_count, last_visit_time) VALUES (@url, @title, @visitCount, @lastVisitTime)";
+                    insertCmd.Parameters.AddWithValue("@url", address);
+                    insertCmd.Parameters.AddWithValue("@title", title);
+                    insertCmd.Parameters.AddWithValue("@visitCount", 1);
+                    insertCmd.Parameters.AddWithValue("@lastVisitTime", DateTimeOffset.Now.ToUnixTimeSeconds());
+                    insertCmd.ExecuteNonQuery();
+                }
             }
-            else
+            catch (Microsoft.Data.Sqlite.SqliteException ex)
             {
-                var insertCmd = m_dbConnection.CreateCommand();
-                insertCmd.CommandText = "INSERT INTO urlsDb (url, title, visit_count, last_visit_time) VALUES (@url, @title, @visitCount, @lastVisitTime)";
-                insertCmd.Parameters.AddWithValue("@url", address);
-                insertCmd.Parameters.AddWithValue("@title", title);
-                insertCmd.Parameters.AddWithValue("@visitCount", 1);
-                insertCmd.Parameters.AddWithValue("@lastVisitTime", DateTimeOffset.Now.ToUnixTimeSeconds());
-                insertCmd.ExecuteNonQuery();
+                if (ex.ErrorCode == 19) // constraint violation error code
+                {
+                    // execute the update command
+                    var updateCmd = m_dbConnection.CreateCommand();
+                    updateCmd.CommandText = "UPDATE urlsDb SET visit_count = visit_count + 1, last_visit_time = @lastVisitTime WHERE url = @url AND title = @title";
+                    updateCmd.Parameters.AddWithValue("@url", address);
+                    updateCmd.Parameters.AddWithValue("@title", title);
+                    updateCmd.Parameters.AddWithValue("@lastVisitTime", DateTimeOffset.Now.ToUnixTimeSeconds());
+                    updateCmd.ExecuteNonQuery();
+                }
+                else
+                {
+                    throw; // rethrow the exception if it's not a constraint violation error
+                }
             }
 
             m_dbConnection.Close();

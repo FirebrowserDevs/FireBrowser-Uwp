@@ -19,8 +19,18 @@ namespace FireBrowser.Pages.SettingsPages
         {
             this.InitializeComponent();
             id();
+            check();
         }
 
+        public void check()
+        {
+            var Mode = FireBrowserInterop.SettingsHelper.GetSetting("LightMode");
+            LiteMode.IsOn = Mode switch
+            {
+                "0" => false,
+                "1" => true
+            };
+        }
         private async void id()
         {
             var startup = await StartupTask.GetAsync("FireBrowserStartUp");
@@ -69,6 +79,14 @@ namespace FireBrowser.Pages.SettingsPages
         private async void LaunchOnStartupToggle_Click(object sender, RoutedEventArgs e)
         {
             await ToggleLaunchOnStartup(LaunchOnStartupToggle.IsChecked ?? false);
+        }
+
+        private void LiteMode_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (sender is ToggleSwitch toggleSwitch)
+            {
+                FireBrowserInterop.SettingsHelper.SetSetting("LightMode", toggleSwitch.IsOn ? "1" : "0");
+            }
         }
     }
 }

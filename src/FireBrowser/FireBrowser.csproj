@@ -143,6 +143,7 @@
       <DependentUpon>Toolbar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Core\HistoryItem.cs" />
+    <Compile Include="Core\WebViewPermissionSystem.cs" />
     <Compile Include="Core\Settings.cs" />
     <Compile Include="Core\UI.cs" />
     <Compile Include="Core\UserData.cs" />

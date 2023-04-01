@@ -80,8 +80,10 @@ namespace FireBrowser
                 Window.Current.Content = rootFrame;
             }
         }
+
         protected override void OnActivated(IActivatedEventArgs args)
         {
+                      
             if (args.Kind == ActivationKind.Protocol)
             {
                 ProtocolActivatedEventArgs eventArgs = args as ProtocolActivatedEventArgs;

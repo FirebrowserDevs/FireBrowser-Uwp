@@ -28,7 +28,8 @@
                 Style="{ThemeResource QuietButtonStyle}"
                 Padding="6" Margin="0,31,64,0"
                 VerticalAlignment="Top" HorizontalAlignment="Right"
-                Content="{firebrowser:FluentIcon Glyph=&#xE70F;}">
+                Content="{firebrowser:FluentIcon Glyph=&#xE70F;}"
+                x:Name="Edit">
             <Button.Flyout>
                 <Flyout Placement="Bottom">
                     <StackPanel>
@@ -44,7 +45,8 @@
                 Style="{ThemeResource QuietButtonStyle}"
                 Padding="6" Margin="0,31,32,0"
                 VerticalAlignment="Top" HorizontalAlignment="Right"
-                Content="{firebrowser:FluentIcon Glyph=&#xE713;}">
+                Content="{firebrowser:FluentIcon Glyph=&#xE713;}"
+                x:Name="SetTab">
             <Button.Flyout>
                 <Flyout Placement="Bottom">
                     <StackPanel Background="Transparent">
@@ -73,7 +75,7 @@
             </Button.Flyout>
         </Button>
         <!-- To-Do: Acrylic background, voice search, search suggestions -->
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" RowSpacing="4">
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" RowSpacing="4" x:Name="BigGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>

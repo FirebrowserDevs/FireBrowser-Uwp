@@ -12,22 +12,37 @@
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <Page.Resources>
-       
         <Flyout
             x:Name="MoreFlyout"
             ShouldConstrainToRootBounds="False"
             Placement="Bottom">
             <StackPanel Width="250">
                 <StackPanel Name="menuheader">
-                    <Button IsEnabled="False" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" BorderBrush="Transparent" Background="Transparent" Margin="0,0,0,10">
+                    <Button IsEnabled="True" HorizontalAlignment="Stretch" Click="userMenuExpend" HorizontalContentAlignment="Left" BorderBrush="Transparent" Background="Transparent" Margin="0,0,0,10">
                         <StackPanel Orientation="Horizontal">
                             <PersonPicture ProfilePicture="ms-appx:///Assets/AccountPic/clippy.png" Width="45"/>
                             <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
                                 <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" FontSize="15" Text="FireBrowser User"/>
-                                <TextBlock Text="Local account" FontSize="12"/>
+                                <TextBlock Text="Local Account" FontSize="12"/>
                             </StackPanel>
                         </StackPanel>
                     </Button>
+                    <Border x:Name="UserBorder" Visibility="Collapsed" BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.3" Margin="10,5,10,10" BorderThickness="1"/>
+                    <StackPanel>
+                        <Frame x:Name="UserFrame" Visibility="Collapsed">
+                            <StackPanel>
+                                <TextBlock HorizontalAlignment="Center" Margin="0,3,0,0">Select Different User</TextBlock>
+                                <Button  IsEnabled="True" HorizontalAlignment="Stretch" Click="userMenuExpend" HorizontalContentAlignment="Left" BorderBrush="Transparent" Background="Transparent" Margin="0,3,0,10">
+                                    <StackPanel Orientation="Horizontal">
+                                        <PersonPicture ProfilePicture="ms-appx:///Assets/AccountPic/clippy.png" Width="22"/>
+                                        <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" FontSize="15" Text="FireBrowser User New"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </Frame>
+                    </StackPanel>
                     <Border BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.3" Margin="10,5,10,10" BorderThickness="1"/>
                     <Button Tag="NewTab" Click="TabMenuClick" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch"	HorizontalContentAlignment="Left" Margin="0,0,0,0" IsEnabled="True">
                         <StackPanel Orientation="Horizontal">
@@ -313,32 +328,6 @@
                 </MenuFlyoutItem.ContextFlyout>
             </MenuFlyoutItem>
         </Flyout>
-        <Flyout x:Name="UserFlyout" Placement="Bottom">
-            <StackPanel Orientation="Vertical">
-                <TextBlock
-                    x:Name="requestResult"
-                    Width="120"
-                    Margin="8,0,0,0"
-                    HorizontalAlignment="Left"
-                    FontWeight="Bold"
-                    IsTapEnabled="False"
-                    Text="Disabled"
-                    Visibility="Collapsed" />
-
-                <StackPanel Orientation="Horizontal">
-
-                </StackPanel>
-                <ListView />
-                <Button
-                    x:Name="Incognito"
-                    x:Uid="UserFlyoutIncognito"
-                    Margin="0,10,0,0" />
-                <Button
-                    x:Name="Profile"
-                    x:Uid="UserFlyoutNewProfile"
-                    Margin="0,10,0,0" />
-            </StackPanel>
-        </Flyout>
         <Flyout
             x:Name="SecurityFlyout"
             FlyoutPresenterStyle="{ThemeResource NoPaddingFlyoutStyle}"
@@ -376,7 +365,7 @@
             >
             <muxc:TabView.TabStripHeader>
                 <StackPanel Orientation="Horizontal">
-                    <Button x:Name="VBtn" RenderTransformOrigin="0.5,0.5" Style="{ThemeResource QuietButtonStyle}">
+                    <Button x:Name="VBtn" Margin="2,0,0,0" RenderTransformOrigin="0.5,0.5" Style="{ThemeResource QuietButtonStyle}">
                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE746;" />
                         <Button.RenderTransform>
                             <RotateTransform />
@@ -459,6 +448,7 @@
                     
                    Style="{StaticResource QuietButtonStyle}"
                    Tag="Home"
+                    x:Name="Hmbtn"
                    Click="ToolbarButtonClick"
                    Content="{firebrowser:FluentIcon Glyph=&#xE80F;}"
                    >

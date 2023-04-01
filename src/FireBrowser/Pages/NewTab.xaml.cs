@@ -31,37 +31,25 @@ namespace FireBrowser.Pages
 
         public void HomeSync()
         {
-            var set = FireBrowserInterop.SettingsHelper.GetSetting("Background");
             var ison = FireBrowserInterop.SettingsHelper.GetSetting("Auto");
+            isAuto = ison.Equals("1");
+            Type.IsOn = isAuto;
 
-            if (ison.Equals("0"))
+            var set = FireBrowserInterop.SettingsHelper.GetSetting("Background");
+            ViewModel = new HomeViewModel
             {
-                isAuto = false;
-                Type.IsOn = false;
-            }
-            else if (ison.Equals("1"))
-            {
-                isAuto = true;
-                Type.IsOn = true;
-            }
+                BackgroundType = set switch
+                {
+                    "1" => Core.Settings.NewTabBackground.Featured,
+                    _ => Core.Settings.NewTabBackground.None,
+                },
+            };
+            GridSelect.SelectedValue = ViewModel.BackgroundType.ToString();
 
-            if (set.Equals("0"))
-            {
-                ViewModel = new HomeViewModel()
-                {
-                    BackgroundType = Core.Settings.NewTabBackground.None,
-                };
-                GridSelect.SelectedValue = "None";
-            }
-            else if (set.Equals("1"))
-            {
-                ViewModel = new HomeViewModel()
-                {
-                    BackgroundType = Core.Settings.NewTabBackground.Featured,
-                };
-                GridSelect.SelectedValue = "Featured";
-            }
-          
+            var isLightMode = FireBrowserInterop.SettingsHelper.GetSetting("LightMode").Equals("1");
+            Edit.Visibility = isLightMode ? Visibility.Collapsed : Visibility.Visible;
+            SetTab.Visibility = isLightMode ? Visibility.Collapsed : Visibility.Visible;
+            BigGrid.Visibility = isLightMode ? Visibility.Collapsed : Visibility.Visible;
         }
 
         Passer param;
@@ -214,5 +202,7 @@ namespace FireBrowser.Pages
                
             }
         }
+
+     
     }
 }
