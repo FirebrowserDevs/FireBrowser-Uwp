@@ -20,6 +20,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using static FireBrowser.MainPage;
+using FireBrowser.Controls;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -134,8 +135,8 @@ namespace FireBrowser.Pages
             s.CoreWebView2.Settings.IsStatusBarEnabled = true;
             s.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = true;
             s.CoreWebView2.Settings.AreDefaultContextMenusEnabled = true;
+            s.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);
 
-           
             s.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
             s.CoreWebView2.ScriptDialogOpening += async (sender, args) =>
             {
@@ -154,7 +155,9 @@ namespace FireBrowser.Pages
             };
             s.CoreWebView2.PermissionRequested += async (sender, args) =>
             {
+                var def = args.GetDeferral();
                 await permissionSystem.HandlePermissionRequested(args, WebViewElement.CoreWebView2.Source.ToString());
+                def.Complete();
             };
             s.CoreWebView2.FaviconChanged += async (sender, args) =>
             {
@@ -235,10 +238,12 @@ namespace FireBrowser.Pages
                 param?.TabView.TabItems.Add(mp.CreateNewTab(typeof(WebContent), args.Uri));
                 args.Handled = true;
             };
+         
+
         }
 
-       
-       
+
+
         string SelectionText;
         public void select()
         {

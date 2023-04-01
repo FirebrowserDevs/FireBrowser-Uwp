@@ -82,8 +82,7 @@ public class WebViewPermissionSystem
 
     public async Task HandlePermissionRequested(CoreWebView2PermissionRequestedEventArgs args, string url)
     {
-        var uri = new Uri(url);
-        var website = GetWebsiteFromUrl(uri);
+        var website = GetWebsiteFromUrl(new Uri(url));
 
         if (string.IsNullOrEmpty(website))
         {
@@ -93,6 +92,7 @@ public class WebViewPermissionSystem
 
         var permissionKind = args.PermissionKind;
         var permissionState = CheckPermission(website, permissionKind);
+
 
         if (permissionState == CoreWebView2PermissionState.Allow)
         {
@@ -111,11 +111,11 @@ public class WebViewPermissionSystem
             {
                 args.State = CoreWebView2PermissionState.Allow;
             }
-            else if(result == CoreWebView2PermissionState.Deny) // Deny or Default
+            else if (result == CoreWebView2PermissionState.Deny) // Deny or Default
             {
                 args.State = CoreWebView2PermissionState.Deny;
             }
-           else if(result == CoreWebView2PermissionState.Default)
+            else if (result == CoreWebView2PermissionState.Default)
             {
                 args.State = CoreWebView2PermissionState.Default;
             }
@@ -123,6 +123,7 @@ public class WebViewPermissionSystem
             SetPermission(website, permissionKind, args.State);
         }
     }
+
 
     private string GetWebsiteFromUrl(Uri uri)
     {
@@ -145,7 +146,16 @@ public class WebViewPermissionSystem
     private async Task<CoreWebView2PermissionState> PromptUserForPermission(CoreWebView2PermissionKind permissionKind, string website)
     {
         // Show a dialog box asking the user for permission
-        var dialogResult = await ShowPermissionDialogBox(permissionKind, website);
+        var dialog = new ContentDialog
+        {
+            Title = $"Allow {website} to access {permissionKind}?",
+            PrimaryButtonText = "Allow",
+            SecondaryButtonText = "Deny",
+            DefaultButton = ContentDialogButton.Primary,
+            CloseButtonText = "Cancel"
+        };
+
+        var dialogResult = await dialog.ShowAsync();
 
         if (dialogResult == ContentDialogResult.Primary)
         {
@@ -155,20 +165,6 @@ public class WebViewPermissionSystem
         {
             return CoreWebView2PermissionState.Deny;
         }
-    }
-
-    private async Task<ContentDialogResult> ShowPermissionDialogBox(CoreWebView2PermissionKind permissionKind, string website)
-    {
-        var message = $"The website {website} is requesting permission to access {permissionKind}. Do you want to allow or deny?";
-        var dialog = new ContentDialog
-        {
-            Title = "Permission Request",
-            Content = message,
-            PrimaryButtonText = "Allow",
-            SecondaryButtonText = "Deny"
-        };
-
-        return await dialog.ShowAsync();
     }
 }
 
