@@ -19,6 +19,9 @@
 - Split browsing
 - Freeform
 
+# NOTE:
+when compiling this on windows 10 make sure you have the latest install of windows SDK so you dont encounter any issues when building te project, also change the target framework to version 2004 if your on windows 10.
+
 # Screenshots
 
 <div style="display: flex; align-items: center;">
