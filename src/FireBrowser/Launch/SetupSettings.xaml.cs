@@ -112,88 +112,37 @@ namespace FireBrowser.Launch
 
         private void Read_Toggled(object sender, RoutedEventArgs e)
         {
-            if (Read.IsOn == true)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("Readbutton", "True");
-            }
-            else if (Read.IsOn == false)
-            {
-
-                FireBrowserInterop.SettingsHelper.SetSetting("Readbutton", "0");
-            }
+            FireBrowserInterop.SettingsHelper.SetSetting("Readbutton", Read.IsOn ? "True" : "0");
         }
 
         private void Adbl_Toggled(object sender, RoutedEventArgs e)
         {
-            if (Adbl.IsOn == true)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("AdBtn", "True");
-            }
-            else if (Adbl.IsOn == false)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("AdBtn", "0");
-            }
+            FireBrowserInterop.SettingsHelper.SetSetting("AdBtn", Adbl.IsOn ? "True" : "0");
         }
 
         private void Dwbl_Toggled(object sender, RoutedEventArgs e)
         {
-            if (Dwbl.IsOn == true)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("DwBtn", "True");
-            }
-            else if (Dwbl.IsOn == false)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("DwBtn", "0");
-            }
+            FireBrowserInterop.SettingsHelper.SetSetting("DwBtn", Dwbl.IsOn ? "True" : "0");
         }
 
         private void Trbl_Toggled(object sender, RoutedEventArgs e)
         {
-            if (Trbl.IsOn == true)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("TransBtn", "True");
-            }
-            else if (Trbl.IsOn == false)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("TransBtn", "0");
-            }
+            FireBrowserInterop.SettingsHelper.SetSetting("TransBtn", Trbl.IsOn ? "True" : "0");
         }
 
         private void Frbl_Toggled(object sender, RoutedEventArgs e)
         {
-            if (Frbl.IsOn == true)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("FavBtn", "True");
-            }
-            else if (Frbl.IsOn == false)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("FavBtn", "0");
-            }
+            FireBrowserInterop.SettingsHelper.SetSetting("FavBtn", Frbl.IsOn ? "True" : "0");
         }
 
         private void Hsbl_Toggled(object sender, RoutedEventArgs e)
         {
-            if (Hsbl.IsOn == true)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("HisBtn", "True");
-            }
-            else if (Hsbl.IsOn == false)
-            {
-
-                FireBrowserInterop.SettingsHelper.SetSetting("HisBtn", "0");
-            }
+            FireBrowserInterop.SettingsHelper.SetSetting("HisBtn", Hsbl.IsOn ? "True" : "0");
         }
 
         private void Qrbl_Toggled(object sender, RoutedEventArgs e)
         {
-            if (Qrbl.IsOn == true)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("QrBtn", "True");
-            }
-            else if (Qrbl.IsOn == false)
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("QrBtn", "0");
-            }
+            FireBrowserInterop.SettingsHelper.SetSetting("QrBtn", Qrbl.IsOn ? "True" : "0");
         }
 
         private void Background_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -208,6 +157,11 @@ namespace FireBrowser.Launch
         {
             MsLogin ms = new MsLogin();
             ms.ShowAsync();
+        }
+
+        private void LgMode_Toggled(object sender, RoutedEventArgs e)
+        {
+            FireBrowserInterop.SettingsHelper.SetSetting("LightMode", LgMode.IsOn ? "1" : "0");
         }
     }
 }

@@ -1,5 +1,12 @@
-﻿using FireBrowser.Pages.SettingsPages.Restart;
+﻿using FireBrowser.Core;
+using FireBrowser.Pages.SettingsPages.Restart;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Security;
+using System.Threading.Tasks;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -18,6 +25,7 @@ namespace FireBrowser.Pages.SettingsPages
             UpdateText();
             Stack();
         }
+
 
         string javasc = FireBrowserInterop.SettingsHelper.GetSetting("DisableJavaScript");
         string webmes = FireBrowserInterop.SettingsHelper.GetSetting("DisableWebMess");
@@ -117,5 +125,7 @@ namespace FireBrowser.Pages.SettingsPages
             IfChanged();
             UpdateText();
         }
+
+    
     }
 }

@@ -7,7 +7,7 @@
     mc:Ignorable="d"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
-    <StackPanel Margin="0,0,0,0" Width="1200" Height="700" VerticalAlignment="Center" HorizontalAlignment="Center" >
+    <StackPanel Margin="0,0,0,0" Width="Auto" Height="700" VerticalAlignment="Center" HorizontalAlignment="Center" >
         <TextBlock HorizontalAlignment="Center" x:Name="txt2" Width="500" Height="40" Margin="500,200,0,0" TextAlignment="Center" FontWeight="Bold" FontSize="24"><Run Text="Introduction"/></TextBlock>
         <TextBlock HorizontalAlignment="Center" x:Name="txt" Width="700" Height="150" Margin="500,25,0,0" TextAlignment="Center" TextLineBounds="Full" MaxLines="50" LineStackingStrategy="MaxHeight" TextWrapping="Wrap">
             FireBrowser is a top-notch web browser that has all the features you need for an effortless and enjoyable browsing experience. 

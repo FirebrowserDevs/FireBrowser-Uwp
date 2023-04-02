@@ -10,6 +10,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using static FireBrowser.MainPage;
+using FireBrowser.Core;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -68,17 +69,9 @@ namespace FireBrowser.Pages
 
         private class ImageRoot
         {
-            public Image[] images { get; set; }
+            public ImageTab[] images { get; set; }
         }
-        private class Image
-        {
-            public string url { get; set; }
-            public string copyright { get; set; }
-            public string copyrightlink { get; set; }
-            public string title { get; set; }
-        }
-
-    
+   
 
         public static Brush GetGridBackgroundAsync(Core.Settings.NewTabBackground backgroundType)
         {

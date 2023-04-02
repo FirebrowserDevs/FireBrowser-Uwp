@@ -13,7 +13,7 @@
   <Identity
     Name="57443TechFireX.30017BED6DE0B"
     Publisher="CN=Bluebird Devs"
-    Version="0.1.2.0" />
+    Version="0.1.3.0" />
 
 	
   <mp:PhoneIdentity PhoneProductId="a573fde3-153b-468c-93b4-2e742f27c3f4" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
@@ -91,8 +91,6 @@
 	  <uap3:Capability Name="backgroundMediaPlayback"/>
 	  <uap:Capability Name="userAccountInformation"/>
       <Capability Name="internetClientServer"/>
-	  <uap:Capability Name="contacts"/>
-	  <uap:Capability Name="voipCall"/>
 	  <DeviceCapability Name="microphone"/>
 	  <DeviceCapability Name="location"/>
 	  <DeviceCapability Name="webcam"/>

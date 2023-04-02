@@ -45,5 +45,11 @@
             </labs:SettingsCard.HeaderIcon>
             <ToggleSwitch  x:Name="PasswordWebMessFillToggle" Toggled="PasswordWebMessFillToggle_Toggled"/>
         </labs:SettingsCard>
+
+        <labs:SettingsCard Header="WebSite Permissions" Description="See The Permission Of The Websites" Margin="0,10,0,0" IsEnabled="False">
+            <labs:SettingsCard.HeaderIcon>
+                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEA18;" />
+            </labs:SettingsCard.HeaderIcon>
+        </labs:SettingsCard>
     </StackPanel>
 </Page>

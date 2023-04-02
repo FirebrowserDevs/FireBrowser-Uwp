@@ -99,7 +99,16 @@
             </labs:SettingsExpander>
             <labs:SettingsCard  Width="600" Margin="0,5,0,0">
                 <labs:SettingsCard.Header>
-                    Microsoft Account Connect
+                    FireBrowser Light Mode ( This Is Optionel )
+                </labs:SettingsCard.Header>
+                <labs:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC4A;"/>
+                </labs:SettingsCard.HeaderIcon>
+                <ToggleSwitch x:Name="LgMode" Toggled="LgMode_Toggled"/>
+            </labs:SettingsCard>
+            <labs:SettingsCard  Width="600" Margin="0,5,0,0">
+                <labs:SettingsCard.Header>
+                    Microsoft Account Connect ( This Is Optionel )
                 </labs:SettingsCard.Header>
                 <labs:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE910;"/>

@@ -118,7 +118,7 @@ namespace FireBrowser.Pages
             await WebViewElement.EnsureCoreWebView2Async();
             WebView2 s = WebViewElement;
 
-            var permissionSystem = new WebViewPermissionSystem();
+            var permissionSystem = new WebPermissionSystem();
             if (param?.Param != null)
             {
                 WebViewElement.CoreWebView2.Navigate(param.Param.ToString());
@@ -126,7 +126,7 @@ namespace FireBrowser.Pages
            
             var userAgent = s?.CoreWebView2.Settings.UserAgent;
             userAgent = userAgent.Substring(1, userAgent.IndexOf("Edg/"));
-            userAgent = userAgent.Replace("Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.51", "Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.51");
+            userAgent = userAgent.Replace("Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.62", "Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.62");
             s.CoreWebView2.Settings.UserAgent = userAgent;
 
 
@@ -156,7 +156,7 @@ namespace FireBrowser.Pages
             s.CoreWebView2.PermissionRequested += async (sender, args) =>
             {
                 var def = args.GetDeferral();
-                await permissionSystem.HandlePermissionRequested(args, WebViewElement.CoreWebView2.Source.ToString());
+                await permissionSystem.HandlePermissionRequested(args, WebViewElement.CoreWebView2.Source.ToString());          
                 def.Complete();
             };
             s.CoreWebView2.FaviconChanged += async (sender, args) =>
