@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Storage;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -39,6 +40,7 @@ namespace FireBrowser
             FilePDF,
             URIHttp,
             URIFireBrowser,
+            Reset,
         }
         public class AppLaunchPasser
         {
@@ -81,9 +83,8 @@ namespace FireBrowser
             }
         }
 
-        protected override void OnActivated(IActivatedEventArgs args)
-        {
-                      
+        protected async override void OnActivated(IActivatedEventArgs args)
+        {                              
             if (args.Kind == ActivationKind.Protocol)
             {
                 ProtocolActivatedEventArgs eventArgs = args as ProtocolActivatedEventArgs;
@@ -102,6 +103,12 @@ namespace FireBrowser
                             case "incognito":
                                 kind = AppLaunchType.LaunchIncognito;
                                 break;
+                            case "reset":
+                                kind = AppLaunchType.Reset;
+                                StorageFile fileToDelete = await ApplicationData.Current.LocalFolder.GetFileAsync("Params.json");
+                                await fileToDelete.DeleteAsync();
+                                FireBrowserInterop.SystemHelper.RestartApp();
+                                break;
                         }
 
                     }
@@ -110,6 +117,7 @@ namespace FireBrowser
                         kind = AppLaunchType.URIHttp;
                     }
 
+                  
                     AppLaunchPasser passer = new AppLaunchPasser()
                     {
                         LaunchType = kind,
@@ -170,7 +178,7 @@ namespace FireBrowser
             try
             {
                 // Try to get the settings file
-                settingsFile = await ApplicationData.Current.LocalFolder.GetFileAsync("Isettings.json");
+                settingsFile = await ApplicationData.Current.LocalFolder.GetFileAsync("Params.json");
             }
             catch (FileNotFoundException)
             {
@@ -190,7 +198,7 @@ namespace FireBrowser
                 else
                 {
                     // The settings file doesn't exist yet, so create it
-                    settingsFile = await ApplicationData.Current.LocalFolder.CreateFileAsync("Isettings.json", CreationCollisionOption.ReplaceExisting);
+                    settingsFile = await ApplicationData.Current.LocalFolder.CreateFileAsync("Params.json", CreationCollisionOption.ReplaceExisting);
                     await FileIO.WriteTextAsync(settingsFile, settingsJson);
                 }
             }
@@ -222,6 +230,7 @@ namespace FireBrowser
             //{
             //    return;
             //}
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Maximized;
 
             Frame rootFrame = Window.Current.Content as Frame;
 

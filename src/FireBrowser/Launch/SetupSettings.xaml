@@ -8,19 +8,19 @@
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
-    <Frame>
-        <StackPanel VerticalAlignment="Center">
-            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="22" FontWeight="Bold">
+    <Frame x:Name="Content">
+        <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="22" FontWeight="Bold" Margin="0,10,0,0">
                 Setup Settings
             </TextBlock>
-            <labs:SettingsCard VerticalAlignment="Top" Margin="0,5,0,0" Width="600">
+            <labs:SettingsCard VerticalAlignment="Top" Margin="0,75,0,0" Width="600">
                 <labs:SettingsCard.Header>
                     Search Engine
                 </labs:SettingsCard.Header>
                 <labs:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE721;"/>
                 </labs:SettingsCard.HeaderIcon>
-                <ComboBox  x:Name="SearchengineSelection" SelectionChanged="SearchengineSelection_SelectionChanged">
+                <ComboBox  x:Name="SearchengineSelection" SelectionChanged="SearchengineSelection_SelectionChanged" SelectedItem="Google">
                     <x:String>Google</x:String>
                     <x:String>Ask</x:String>
                     <x:String>Baidu</x:String>
@@ -33,21 +33,21 @@
                     <x:String>Yahoo!</x:String>
                 </ComboBox>
             </labs:SettingsCard>
-            <labs:SettingsCard VerticalAlignment="Top" Margin="0,5,0,0" Width="600">
+            <labs:SettingsCard VerticalAlignment="Top" Margin="0,2,0,0" Width="600">
                 <labs:SettingsCard.Header>
                     Set BackGround Type
                 </labs:SettingsCard.Header>
                 <labs:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xeb3c;"/>
                 </labs:SettingsCard.HeaderIcon>
-                <ComboBox  x:Name="Background" SelectionChanged="Background_SelectionChanged">
+                <ComboBox  x:Name="Background" SelectionChanged="Background_SelectionChanged" SelectedItem="Default">
                     <x:String>Default</x:String>
                     <x:String>Featured</x:String>
                 </ComboBox>
             </labs:SettingsCard>
-            <labs:SettingsExpander VerticalAlignment="Top" Margin="0,5,0,0" Width="600">
+            <labs:SettingsExpander VerticalAlignment="Top" Margin="0,2,0,0" Width="600">
                 <labs:SettingsExpander.Header>
-                    Toolbar Icons
+                    Toolbar Icons ( Optional )
                 </labs:SettingsExpander.Header>
                 <labs:SettingsExpander.HeaderIcon>
                     <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE70F;"/>
@@ -97,29 +97,75 @@
                     </labs:SettingsCard>
                 </labs:SettingsExpander.Items>
             </labs:SettingsExpander>
-            <labs:SettingsCard  Width="600" Margin="0,5,0,0">
-                <labs:SettingsCard.Header>
-                    FireBrowser Light Mode ( This Is Optionel )
-                </labs:SettingsCard.Header>
-                <labs:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC4A;"/>
-                </labs:SettingsCard.HeaderIcon>
-                <ToggleSwitch x:Name="LgMode" Toggled="LgMode_Toggled"/>
-            </labs:SettingsCard>
-            <labs:SettingsCard  Width="600" Margin="0,5,0,0">
-                <labs:SettingsCard.Header>
-                    Microsoft Account Connect ( This Is Optionel )
-                </labs:SettingsCard.Header>
-                <labs:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE910;"/>
-                </labs:SettingsCard.HeaderIcon>
-                <Button x:Name="ConnectBtn" Click="ConnectBtn_Click">
-                    Connect
-                </Button>
-            </labs:SettingsCard>
-            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,0" FontStyle="Normal" FontWeight="Bold">* All Values Need To By Set Else App Crash *</TextBlock>
+            <labs:SettingsExpander VerticalAlignment="Top" Margin="0,2,0,0" Width="600" >
+                <labs:SettingsExpander.Header>
+                    Privacy Settings ( Optional )
+                </labs:SettingsExpander.Header>
+                <labs:SettingsExpander.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEA18;"/>
+                </labs:SettingsExpander.HeaderIcon>
+                <labs:SettingsExpander.Items>
+                    <labs:SettingsCard>
+                        <ToggleSwitch x:Name="Javascript" Toggled="Javascript_Toggled" IsOn="False"/>
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE943;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                        <labs:SettingsCard.Header>
+                            Disable JavaScript ( Might Break Some Websites )
+                        </labs:SettingsCard.Header>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard>
+                        <ToggleSwitch x:Name="AutoFillGen" Toggled="AutoFillGen_Toggled" IsOn="False"/>
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE8DA;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                        <labs:SettingsCard.Header>
+                            Disable Genaral AutoFill
+                        </labs:SettingsCard.Header>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard>
+                        <ToggleSwitch x:Name="Messages"  Toggled="Messages_Toggled" IsOn="False"/>
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE8BD;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                        <labs:SettingsCard.Header>
+                            Disable WebMessages
+                        </labs:SettingsCard.Header>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard>
+                        <ToggleSwitch x:Name="Passwords" Toggled="Passwords_Toggled" IsOn="False"/>
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xF427;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                        <labs:SettingsCard.Header>
+                            Disable AutoFill Passwords
+                        </labs:SettingsCard.Header>
+                    </labs:SettingsCard>
+                </labs:SettingsExpander.Items>
+            </labs:SettingsExpander>
+            <labs:SettingsExpander Margin="0,2,0,0" Width="600">
+                <labs:SettingsExpander.Header>
+                    Allow App Location Permission
+                </labs:SettingsExpander.Header>
+                <labs:SettingsExpander.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE707;"/>
+                </labs:SettingsExpander.HeaderIcon>
+                <labs:SettingsExpander.Items>
+                    <labs:SettingsCard>
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE707;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                        <labs:SettingsCard.Header>
+                            Allow Location ( For WebView2 )
+                        </labs:SettingsCard.Header>
+                        <Button x:Name="Permissions" Click="Permissions_Click">
+                            Accept
+                        </Button>
+                    </labs:SettingsCard>
+                </labs:SettingsExpander.Items>
+            </labs:SettingsExpander>
             <Button Click="Install_Click" x:Name="Install" Margin="0,8,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
-               Confirm Setup
+                Next Step
             </Button>
         </StackPanel>
     </Frame>

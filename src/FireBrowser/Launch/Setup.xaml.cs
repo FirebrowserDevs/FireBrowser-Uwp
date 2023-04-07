@@ -1,6 +1,9 @@
 ﻿using System;
+using Windows.ApplicationModel.Core;
 using Windows.Media.Core;
 using Windows.Media.Playback;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -18,12 +21,31 @@ namespace FireBrowser.Launch
         {
             this.InitializeComponent();
 
+            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            coreTitleBar.ExtendViewIntoTitleBar = true;
+            coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
+
+            var formattableTitleBar = ApplicationView.GetForCurrentView().TitleBar;
+            formattableTitleBar.ButtonBackgroundColor = Colors.Transparent;
+            formattableTitleBar.ButtonHoverBackgroundColor = Colors.Transparent;
+            formattableTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            formattableTitleBar.InactiveBackgroundColor = Colors.Transparent;
+            formattableTitleBar.ButtonPressedBackgroundColor = Colors.Transparent;
+
+            Window.Current.SetTitleBar(TitleBar);
+
             mediaPlayer = new MediaPlayer();
             mediaPlayer.Source = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Launch/firebrowser.mp4"));
             _mediaPlayerElement.SetMediaPlayer(mediaPlayer);
 
             mediaPlayer.CommandManager.IsEnabled = false;
             mediaPlayer.Play();
+        }
+
+        private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
+        {
+            TitleBar.MinWidth = (FlowDirection == FlowDirection.LeftToRight) ? sender.SystemOverlayRightInset : sender.SystemOverlayLeftInset;
+            TitleBar.Height = sender.Height;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

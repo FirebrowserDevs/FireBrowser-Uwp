@@ -1,13 +1,22 @@
 ﻿using FireBrowser.Pages.SettingsPages;
 using Microsoft.Data.Sqlite;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Windows.ApplicationModel.Store;
 using System;
 using System.IO;
+using System.Net.NetworkInformation;
 using System.Threading;
 using Windows.Storage;
+using Windows.Storage.AccessCache;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using static FireBrowser.App;
+using Windows.Devices.Geolocation;
+using Windows.UI.Popups;
+using Windows.Media.Capture;
+using Windows.UI.Core;
+
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -21,7 +30,10 @@ namespace FireBrowser.Launch
         public SetupSettings()
         {
             this.InitializeComponent();
-            checkcombobox();
+            FireBrowserInterop.SettingsHelper.SetSetting("DisableJavaScript", "false");
+            FireBrowserInterop.SettingsHelper.SetSetting("DisablePassSave", "false");
+            FireBrowserInterop.SettingsHelper.SetSetting("DisableWebMess", "false");
+            FireBrowserInterop.SettingsHelper.SetSetting("DisableGenAutoFill", "false");
         }
 
 
@@ -38,7 +50,6 @@ namespace FireBrowser.Launch
             if (selection == "Qwant") SetEngine("Qwant", "https://www.qwant.com/?q=");
             if (selection == "Qwant Lite") SetEngine("Qwant Lite", "https://lite.qwant.com/?q=");
             if (selection == "Yahoo!") SetEngine("Yahoo!", "https://search.yahoo.com/search?p=");
-            checkcombobox();
         }
 
         private void SetEngine(string EngineFriendlyName, string SearchUrl)
@@ -47,17 +58,10 @@ namespace FireBrowser.Launch
             FireBrowserInterop.SettingsHelper.SetSetting("SearchUrl", SearchUrl);
         }
 
-        private void checkcombobox()
+
+        public void setdefault()
         {
-            Thread.Sleep(100);
-            if (!string.IsNullOrEmpty(SearchengineSelection.SelectedItem?.ToString()) && !string.IsNullOrEmpty(Background.SelectedItem?.ToString()))
-            {
-                Install.IsEnabled = true;
-            }
-            else
-            {
-                Install.IsEnabled = false;
-            }
+            FireBrowserInterop.SettingsHelper.SetSetting("Auto", "0");
         }
 
         public async void CreateDatabase()
@@ -84,31 +88,12 @@ namespace FireBrowser.Launch
             }
         }
         private async void Install_Click(object sender, RoutedEventArgs e)
-        {
+        {       
+            setdefault();
             CreateDatabase();
-
-            FireBrowserInterop.SettingsHelper.SetSetting("DisableJavaScript", "false");
-            FireBrowserInterop.SettingsHelper.SetSetting("DisableGenAutoFill", "false");
-            FireBrowserInterop.SettingsHelper.SetSetting("DisableWebMess", "false");
-            FireBrowserInterop.SettingsHelper.SetSetting("DisablePassSave", "false");
-            FireBrowserInterop.SettingsHelper.SetSetting("Auto", "0");
-
-            bool isFirstLaunch = true;
-
-            var settingsFile = await ApplicationData.Current.LocalFolder.GetFileAsync("Isettings.json");
-            string settingsJson = await FileIO.ReadTextAsync(settingsFile);
-            AppSettings settings = JsonConvert.DeserializeObject<AppSettings>(settingsJson);
-
-            if (settings != null && settings.IsFirstLaunch)
-            {
-                // The app has been launched before, but this is the first launch after an update
-                isFirstLaunch = true;
-                settings.IsFirstLaunch = false; // Set the IsFirstLaunch property to false
-                string updatedSettingsJson = JsonConvert.SerializeObject(settings);
-                await FileIO.WriteTextAsync(settingsFile, updatedSettingsJson); // Save the updated settings
-            }
-            FireBrowserInterop.SystemHelper.RestartApp();
+            Content.Navigate(typeof(SetupStep2));
         }
+
 
         private void Read_Toggled(object sender, RoutedEventArgs e)
         {
@@ -150,18 +135,45 @@ namespace FireBrowser.Launch
             string selection = e.AddedItems[0].ToString();
             if (selection == "Default") FireBrowserInterop.SettingsHelper.SetSetting("Background", "0");
             if (selection == "Featured") FireBrowserInterop.SettingsHelper.SetSetting("Background", "1");
-            checkcombobox();
+        }
+   
+        private async void Permissions_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new MessageDialog("This app needs access to your location to function properly. Do you want to allow location access?");
+            dialog.Commands.Add(new UICommand("Allow", async (command) =>
+            {
+                // Request permission to access location
+                var accessStatus = await Geolocator.RequestAccessAsync();
+                if (accessStatus == GeolocationAccessStatus.Allowed)
+                {
+                    // Location access granted
+                }
+            }));
+            dialog.Commands.Add(new UICommand("Deny", (command) =>
+            {
+                // Location access denied
+            }));
+            await dialog.ShowAsync();
         }
 
-        private void ConnectBtn_Click(object sender, RoutedEventArgs e)
+        private void Javascript_Toggled(object sender, RoutedEventArgs e)
         {
-            MsLogin ms = new MsLogin();
-            ms.ShowAsync();
+            FireBrowserInterop.SettingsHelper.SetSetting("DisableJavaScript", Javascript.IsOn ? "true" : "false");
         }
 
-        private void LgMode_Toggled(object sender, RoutedEventArgs e)
+        private void AutoFillGen_Toggled(object sender, RoutedEventArgs e)
         {
-            FireBrowserInterop.SettingsHelper.SetSetting("LightMode", LgMode.IsOn ? "1" : "0");
+            FireBrowserInterop.SettingsHelper.SetSetting("DisableGenAutoFill", AutoFillGen.IsOn ? "true" : "false");
+        }
+
+        private void Messages_Toggled(object sender, RoutedEventArgs e)
+        {
+            FireBrowserInterop.SettingsHelper.SetSetting("DisableWebMess", Messages.IsOn ? "true" : "false");
+        }
+
+        private void Passwords_Toggled(object sender, RoutedEventArgs e)
+        {
+            FireBrowserInterop.SettingsHelper.SetSetting("DisablePassSave", Passwords.IsOn ? "true" : "false");
         }
     }
 }

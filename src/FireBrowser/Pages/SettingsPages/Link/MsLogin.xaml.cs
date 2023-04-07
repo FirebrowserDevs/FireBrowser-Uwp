@@ -30,7 +30,7 @@ namespace FireBrowser.Pages.SettingsPages
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
 
             // Get a reference to the JSON file
-            StorageFile file = await localFolder.GetFileAsync("Isettings.json");
+            StorageFile file = await localFolder.GetFileAsync("Params.json");
 
             string jsonText = await FileIO.ReadTextAsync(file);
 
@@ -52,7 +52,7 @@ namespace FireBrowser.Pages.SettingsPages
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
 
             // Get a reference to the JSON file
-            StorageFile file = await localFolder.GetFileAsync("Isettings.json");
+            StorageFile file = await localFolder.GetFileAsync("Params.json");
 
             string jsonText = await FileIO.ReadTextAsync(file);
 

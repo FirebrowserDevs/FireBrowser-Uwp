@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using Windows.Storage;
+using Windows.System;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -28,7 +31,7 @@ namespace FireBrowser.Pages.SettingsPages
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
 
             // Get the file object
-            StorageFile file = await localFolder.GetFileAsync("Isettings.json");
+            StorageFile file = await localFolder.GetFileAsync("Params.json");
 
             // Read the contents of the file
             string fileContent = await FileIO.ReadTextAsync(file);
@@ -52,7 +55,7 @@ namespace FireBrowser.Pages.SettingsPages
         }
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            StorageFile fileToDelete = await ApplicationData.Current.LocalFolder.GetFileAsync("Isettings.json");
+            StorageFile fileToDelete = await ApplicationData.Current.LocalFolder.GetFileAsync("Params.json");
             await fileToDelete.DeleteAsync();
             FireBrowserInterop.SystemHelper.RestartApp();
         }
@@ -61,6 +64,11 @@ namespace FireBrowser.Pages.SettingsPages
         {
             MsLogin login = new MsLogin();
             login.ShowAsync();
+        }
+
+        private async void Add_Click(object sender, RoutedEventArgs e)
+        {
+           
         }
     }
 }
