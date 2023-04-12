@@ -5,11 +5,6 @@ using Microsoft.Web.WebView2.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
-using Windows.Security.Authorization.AppCapabilityAccess;
-using Windows.Security.Cryptography.Certificates;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.ViewManagement;
@@ -20,8 +15,14 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using static FireBrowser.MainPage;
-using FireBrowser.Controls;
-
+using System.IO;
+using System.Linq;
+using System.Threading;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Graphics.Printing;
+using Microsoft.Toolkit.Uwp.Helpers;
+using Windows.UI.Xaml.Printing;
+using FireExceptions;
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace FireBrowser.Pages
@@ -53,7 +54,7 @@ namespace FireBrowser.Pages
                 if (isfullmode)
                 {
                     view.ExitFullScreenMode();
-                    MainPageContent.HideToolbar(false);
+                    MainPageContent.HideToolbar(false);                 
                 }
                 else
                 {
@@ -62,6 +63,8 @@ namespace FireBrowser.Pages
                 }
             }
         }
+
+
 
         string javasc = FireBrowserInterop.SettingsHelper.GetSetting("DisableJavaScript");
         string pass = FireBrowserInterop.SettingsHelper.GetSetting("DisablePassSave");
@@ -110,6 +113,7 @@ namespace FireBrowser.Pages
             }
         }
 
+       
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -126,7 +130,7 @@ namespace FireBrowser.Pages
            
             var userAgent = s?.CoreWebView2.Settings.UserAgent;
             userAgent = userAgent.Substring(1, userAgent.IndexOf("Edg/"));
-            userAgent = userAgent.Replace("Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.62", "Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.62");
+            userAgent = userAgent.Replace("Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.39", "Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.39");
             s.CoreWebView2.Settings.UserAgent = userAgent;
 
 
@@ -155,9 +159,16 @@ namespace FireBrowser.Pages
             };
             s.CoreWebView2.PermissionRequested += async (sender, args) =>
             {
-                var def = args.GetDeferral();
-                await permissionSystem.HandlePermissionRequested(args, WebViewElement.CoreWebView2.Source.ToString());          
-                def.Complete();
+                try
+                {
+                    var def = args.GetDeferral();
+                    await permissionSystem.HandlePermissionRequested(args, WebViewElement.CoreWebView2.Source.ToString());
+                    def.Complete();
+                }
+                catch (Exception ex)
+                {
+                    ExceptionsHelper.LogException(ex);
+                }
             };
             s.CoreWebView2.FaviconChanged += async (sender, args) =>
             {
@@ -190,12 +201,12 @@ namespace FireBrowser.Pages
                 }
             };
             s.CoreWebView2.NavigationStarting += async (sender, args) =>
-            {
+            {            
                 param.ViewModel.LoadingState = new Microsoft.UI.Xaml.Controls.ProgressRing()
                 {
                     Width = 16,
                     Height = 16
-                };
+                };  
             };
 
             s.CoreWebView2.NavigationCompleted += (sender, args) =>
@@ -206,6 +217,11 @@ namespace FireBrowser.Pages
                     FontSize = 16
                 };
 
+                if (MainPageContent.UrlBox.Text.Contains("drive"))
+                {
+                    WebViewElement.AllowDrop = false;
+                }
+             
                 s.CoreWebView2.ContainsFullScreenElementChanged += (sender, args) =>
                 {
                     this.FullScreen = s.CoreWebView2.ContainsFullScreenElement;
@@ -219,7 +235,7 @@ namespace FireBrowser.Pages
                 {
 
                     AddHistData();
-                }
+                }           
             };
             s.CoreWebView2.SourceChanged += (sender, args) =>
             {
@@ -253,13 +269,15 @@ namespace FireBrowser.Pages
         {
             string address = WebViewElement.CoreWebView2.Source.ToString();
             string title = WebViewElement.CoreWebView2.DocumentTitle;
+
             SqliteConnection m_dbConnection = new SqliteConnection($"Data Source={ApplicationData.Current.LocalFolder.Path}/History.db;");
             m_dbConnection.Open();
 
             var selectCmd = m_dbConnection.CreateCommand();
-            selectCmd.CommandText = "SELECT * FROM urlsDb WHERE url = @url AND title = @title";
+            selectCmd.CommandText = "SELECT * FROM urlsDb WHERE url = @url AND title = @title AND last_visit_time = @lastVisitTime";
             selectCmd.Parameters.AddWithValue("@url", address);
             selectCmd.Parameters.AddWithValue("@title", title);
+            selectCmd.Parameters.AddWithValue("@lastVisitTime", DateTimeOffset.Now.ToUnixTimeSeconds());
 
             try
             {
@@ -267,7 +285,7 @@ namespace FireBrowser.Pages
                 if (reader.Read())
                 {
                     var updateCmd = m_dbConnection.CreateCommand();
-                    updateCmd.CommandText = "UPDATE urlsDb SET visit_count = visit_count + 1, last_visit_time = @lastVisitTime WHERE url = @url AND title = @title";
+                    updateCmd.CommandText = "UPDATE urlsDb SET visit_count = visit_count + 1, last_visit_time = @lastVisitTime WHERE url = @url AND title = @title AND last_visit_time = @lastVisitTime";
                     updateCmd.Parameters.AddWithValue("@url", address);
                     updateCmd.Parameters.AddWithValue("@title", title);
                     updateCmd.Parameters.AddWithValue("@lastVisitTime", DateTimeOffset.Now.ToUnixTimeSeconds());
@@ -290,7 +308,7 @@ namespace FireBrowser.Pages
                 {
                     // execute the update command
                     var updateCmd = m_dbConnection.CreateCommand();
-                    updateCmd.CommandText = "UPDATE urlsDb SET visit_count = visit_count + 1, last_visit_time = @lastVisitTime WHERE url = @url AND title = @title";
+                    updateCmd.CommandText = "UPDATE urlsDb SET visit_count = visit_count + 1, last_visit_time = @lastVisitTime WHERE url = @url AND title = @title AND last_visit_time = @lastVisitTime";
                     updateCmd.Parameters.AddWithValue("@url", address);
                     updateCmd.Parameters.AddWithValue("@title", title);
                     updateCmd.Parameters.AddWithValue("@lastVisitTime", DateTimeOffset.Now.ToUnixTimeSeconds());
@@ -303,6 +321,7 @@ namespace FireBrowser.Pages
             }
 
             m_dbConnection.Close();
+
 
         }
         private void CoreWebView2_ContextMenuRequested(CoreWebView2 sender, CoreWebView2ContextMenuRequestedEventArgs args)
@@ -335,7 +354,8 @@ namespace FireBrowser.Pages
             args.Handled = true;
         }
 
-        private void ContextMenuItem_Click(object sender, RoutedEventArgs e)
+  
+        private async void ContextMenuItem_Click(object sender, RoutedEventArgs e)
         {
             switch ((sender as AppBarButton).Tag)
             {
@@ -373,15 +393,43 @@ namespace FireBrowser.Pages
                     FireBrowserInterop.SystemHelper.ShowShareUIURL(WebViewElement.CoreWebView2.DocumentTitle, WebViewElement.CoreWebView2.Source);
                     break;
                 case "Print":
-
+                    WebViewElement.CoreWebView2.ShowPrintUI(CoreWebView2PrintDialogKind.Browser);
+          
                     break;
             }
             Ctx.Hide();
         }
 
+   
+
         private async void Grid_Loaded_1(object sender, RoutedEventArgs e)
         {
             if (Grid.Children.Count == 0) Grid.Children.Add(WebViewElement);
+        }
+
+        private async void WebViewElement_Drop(object sender, DragEventArgs e)
+        {
+            if (e.DataView.Contains(StandardDataFormats.StorageItems))
+            {
+                var items = await e.DataView.GetStorageItemsAsync();
+                if (items.Any() && items[0] is StorageFile file)
+                {
+                    var fileStream = await file.OpenReadAsync();
+                    using (var reader = new StreamReader(fileStream.AsStream()))
+                    {
+                        var fileContent = await reader.ReadToEndAsync();
+                        WebViewElement.CoreWebView2.NavigateToString(fileContent);
+                    }
+                }
+            }
+        }
+
+        private async void WebViewElement_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.DataView.Contains(StandardDataFormats.StorageItems))
+            {
+                e.AcceptedOperation = DataPackageOperation.Copy;
+            }
         }
     }
 }

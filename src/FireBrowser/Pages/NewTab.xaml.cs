@@ -11,6 +11,10 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using static FireBrowser.MainPage;
 using FireBrowser.Core;
+using System.Collections.Generic;
+using Windows.Storage;
+using System.Xml.Linq;
+using System.IO;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -103,6 +107,7 @@ namespace FireBrowser.Pages
                                 ImageSource = btpImg,
                                 Stretch = Stretch.UniformToFill
                             };
+                            client.Dispose();
                         }
                         catch (Exception ex)
                         {
@@ -195,7 +200,5 @@ namespace FireBrowser.Pages
                
             }
         }
-
-     
     }
 }

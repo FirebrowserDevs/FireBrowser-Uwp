@@ -8,9 +8,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Height="Auto"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     NavigationCacheMode="Enabled"
-     >
+    >
     <Grid  x:Name="Grid" Background="{x:Bind local:NewTab.GetGridBackgroundAsync(ViewModel.BackgroundType), Mode=OneWay}">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
@@ -100,7 +99,7 @@
             </AutoSuggestBox>
             <StackPanel Grid.Row="1"
                         Orientation="Horizontal" Spacing="4" x:Name="Igrid">
-
+ 
                 <Button Click="ActionClicked" Tag="Google" CornerRadius="16" Background="Transparent" BorderThickness="1" BorderBrush="Red">
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <Image Source="/Assets/Logo.png" Width="16"></Image>

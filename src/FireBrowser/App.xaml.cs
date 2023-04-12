@@ -1,11 +1,16 @@
 ﻿using FireBrowser.Launch;
+using FireExceptions;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Storage;
+using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -20,6 +25,7 @@ namespace FireBrowser
     sealed partial class App : Application
     {
 
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -29,6 +35,24 @@ namespace FireBrowser
             this.InitializeComponent();
             LoadSettings();
             this.Suspending += OnSuspending;
+            this.UnhandledException += App_UnhandledException;
+        }
+
+        private async void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+
+            try
+            {
+                // Log the exception
+                ExceptionsHelper.LogException(e.Exception);
+            }
+            catch
+            {
+
+            }
+
+          
         }
 
         public enum AppLaunchType
@@ -233,6 +257,7 @@ namespace FireBrowser
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Maximized;
 
             Frame rootFrame = Window.Current.Content as Frame;
+
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active

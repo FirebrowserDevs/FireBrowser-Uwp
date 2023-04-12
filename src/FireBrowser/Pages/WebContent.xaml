@@ -12,10 +12,10 @@
 
     <Page.Resources>
         <muxc:CommandBarFlyout x:Name="Ctx" Placement="BottomEdgeAlignedLeft">
-            <AppBarButton  Click="ContextMenuItem_Click" x:Uid="Back" Tag="MenuBack" Icon="{firebrowser:FluentIcon Glyph=&#xE72B;}"/>
-            <AppBarButton  Click="ContextMenuItem_Click" Tag="Forward" Icon="{firebrowser:FluentIcon Glyph=&#xE72A;}"/>
+            <AppBarButton  Click="ContextMenuItem_Click" ToolTipService.ToolTip="Back" x:Uid="Back" Tag="MenuBack" Icon="{firebrowser:FluentIcon Glyph=&#xE72B;}"/>
+            <AppBarButton  Click="ContextMenuItem_Click" ToolTipService.ToolTip="Forward" Tag="Forward" Icon="{firebrowser:FluentIcon Glyph=&#xE72A;}"/>
             <AppBarButton  Click="ContextMenuItem_Click" ToolTipService.ToolTip="Share" Tag="Share" Icon="{firebrowser:FluentIcon Glyph=&#xE72D;}"/>
-            <AppBarButton  Click="ContextMenuItem_Click" Tag="Print" Icon="{firebrowser:FluentIcon Glyph=&#xE749;}"/>
+            <AppBarButton  Click="ContextMenuItem_Click" ToolTipService.ToolTip="Print" Tag="Print" Icon="{firebrowser:FluentIcon Glyph=&#xE749;}"/>
             <muxc:CommandBarFlyout.SecondaryCommands>
                 <AppBarButton  Click="ContextMenuItem_Click" Label="Copy" Tag="Copy" Icon="{firebrowser:FluentIcon Glyph=&#xE8C8;}">
                     <AppBarButton.KeyboardAccelerators>
@@ -57,6 +57,9 @@
         <muxc:WebView2
             x:Name="WebViewElement"
             x:FieldModifier="public"
-           />
+            DragOver="WebViewElement_DragOver"
+            AllowDrop="True"
+           Drop="WebViewElement_Drop"
+            />
     </Grid>
 </Page>

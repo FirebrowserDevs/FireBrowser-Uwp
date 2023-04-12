@@ -28,6 +28,9 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using static FireBrowser.App;
 using NewTab = FireBrowser.Pages.NewTab;
+using Windows.Foundation;
+using System.Linq;
+
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -203,6 +206,8 @@ namespace FireBrowser
         #region toolbar
         public ToolbarViewModel ViewModel { get; set; }
 
+        private bool isDragging = false;
+        private Point lastPosition;
         public partial class ToolbarViewModel : ObservableObject
         {
             [ObservableProperty]
@@ -773,25 +778,37 @@ namespace FireBrowser
                             // Iterate through the query results and create a BrowserHistoryItem for each row
                             while (reader.Read())
                             {
-                                HistoryItem historyItem = new HistoryItem
+                                // Get the URL and last visit time of the history item
+                                string url = reader.GetString(0);
+                                DateTime lastVisitTime = DateTimeOffset.FromFileTime(reader.GetInt64(3)).DateTime;
+
+                                // Check if a history item with the same URL and time already exists in the list
+                                HistoryItem existingItem = historyItems.FirstOrDefault(item => item.Url == url && item.LastVisitTime == lastVisitTime);
+
+                                if (existingItem != null)
                                 {
-                                    Url = reader.GetString(0),
-                                    Title = reader.IsDBNull(1) ? null : reader.GetString(1),
-                                    VisitCount = reader.GetInt32(2),
-                                    LastVisitTime = DateTimeOffset.FromFileTime(reader.GetInt64(3)).DateTime
-                                };
-
-                                var item = historyItem;
-                                item.ImageSource = new BitmapImage(new Uri("https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=" + item.Url + "&size=32"));
-                                historyItems.Add(historyItem);
+                                    // If an existing history item is found, increment its visit count
+                                    existingItem.VisitCount++;
+                                }
+                                else
+                                {
+                                    // Otherwise, create a new history item and add it to the list
+                                    HistoryItem historyItem = new HistoryItem
+                                    {
+                                        Url = url,
+                                        Title = reader.IsDBNull(1) ? null : reader.GetString(1),
+                                        VisitCount = reader.GetInt32(2),
+                                        LastVisitTime = lastVisitTime
+                                    };
+                                    historyItem.ImageSource = new BitmapImage(new Uri("https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=" + historyItem.Url + "&size=32"));
+                                    historyItems.Add(historyItem);
+                                }
                             }
-
 
                             // Bind the browser history items to the ListView
                             HistoryTemp.ItemsSource = historyItems;
                         }
                     }
-
                 }
             }
             catch (Exception ex)
@@ -799,6 +816,7 @@ namespace FireBrowser
                 // Handle any exceptions that might be thrown during the execution of the code
                 Debug.WriteLine($"Error: {ex.Message}");
             }
+
         }
         private void FavoritesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -947,6 +965,31 @@ namespace FireBrowser
             UserFrame.Visibility = UserFrame.Visibility == Visibility.Visible
                 ? Visibility.Collapsed
                 : Visibility.Visible;
+        }
+
+        private void CustomDragRegion_PointerPressed(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            isDragging = true;
+            lastPosition = e.GetCurrentPoint(null).Position;
+        }
+
+        private void CustomDragRegion_PointerMoved(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            if (isDragging)
+            {
+                var currentPosition = e.GetCurrentPoint(null).Position;
+                var delta = new Point(currentPosition.X - lastPosition.X, currentPosition.Y - lastPosition.Y);
+                lastPosition = currentPosition;
+
+                var stackPanel = (StackPanel)sender;
+                Canvas.SetLeft(stackPanel, Canvas.GetLeft(stackPanel) + delta.X);
+                Canvas.SetTop(stackPanel, Canvas.GetTop(stackPanel) + delta.Y);
+            }
+        }
+
+        private void CustomDragRegion_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            isDragging = false;
         }
     }  
 }

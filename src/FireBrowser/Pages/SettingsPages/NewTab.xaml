@@ -30,6 +30,7 @@
                 <x:String>Qwant</x:String>
                 <x:String>Qwant Lite</x:String>
                 <x:String>Yahoo!</x:String>
+                <x:String>Presearch</x:String>
             </ComboBox>
         </labs:SettingsCard>
         <labs:SettingsExpander VerticalAlignment="Top" Margin="0,2,0,0">

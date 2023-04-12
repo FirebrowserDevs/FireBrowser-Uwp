@@ -417,7 +417,7 @@
       <Version>8.2.0-preview2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Data.Sqlite.Core">
-      <Version>8.0.0-preview.2.23128.3</Version>
+      <Version>8.0.0-preview.3.23174.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
@@ -432,7 +432,7 @@
       <Version>2.8.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Web.WebView2">
-      <Version>1.0.1724-prerelease</Version>
+      <Version>1.0.1777-prerelease</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>
@@ -464,6 +464,10 @@
     <ProjectReference Include="..\FireBrowserUrlHelper\FireBrowserUrlHelper.csproj">
       <Project>{57797dc9-ce3f-4ecf-b2d4-db5b724bfcee}</Project>
       <Name>FireBrowserUrlHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FireExceptions\FireExceptions.csproj">
+      <Project>{b9fba9d4-b20e-4dd9-92dd-497870bc85ed}</Project>
+      <Name>FireExceptions</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

@@ -26,7 +26,13 @@ namespace FireBrowser.Pages.SettingsPages.Dialog
         public PermissionWindow()
         {
             this.InitializeComponent();
-            this.Result = ProtectResult.Nothing;
+            this.Result = ProtectResult.Random;
+            Closed += PermissionWindow_Closed;
+        }
+
+        private void PermissionWindow_Closed(ContentDialog sender, ContentDialogClosedEventArgs args)
+        {
+           
         }
 
         public enum ProtectResult
@@ -34,7 +40,8 @@ namespace FireBrowser.Pages.SettingsPages.Dialog
             Allow,
             Deny,
             Cancel,
-            Nothing
+            Nothing,
+            Random
         }
         private void Allow_Click(object sender, RoutedEventArgs e)
         {

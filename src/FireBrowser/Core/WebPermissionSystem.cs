@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.Storage;
+using Windows.UI.Core;
 
 public class WebPermissionSystem
 {
@@ -148,26 +150,77 @@ public class WebPermissionSystem
         return null;
     }
 
+    PermissionWindow dialog;
+    private readonly Queue<PermissionWindow> dialogQueue = new Queue<PermissionWindow>();
 
-    private async Task<CoreWebView2PermissionState> PromptUserForPermission(CoreWebView2PermissionKind permissionKind, string website)
+    public async Task<CoreWebView2PermissionState> PromptUserForPermission(CoreWebView2PermissionKind permissionKind, string website)
     {
-        var dialog = new PermissionWindow
+        var defaultState = CoreWebView2PermissionState.Default;
+        // If there are no other dialogs in the queue, show the first dialog
+        if (dialogQueue.Count == 0)
         {
-            Title = $"Allow {website} to access {permissionKind}?",
-        };
+            dialog = new PermissionWindow
+            {
+                Title = $"Allow {website} to access {permissionKind}?",
+            };
+          
+            // Enqueue the first dialog
+            dialogQueue.Enqueue(dialog);
 
-        await dialog.ShowAsync();
-
-        switch (dialog.Result)
+            // Show the first dialog
+            await dialog.ShowAsync();
+        }
+        else
         {
-            case PermissionWindow.ProtectResult.Allow:
-                return CoreWebView2PermissionState.Allow;
-            case PermissionWindow.ProtectResult.Deny:
-                return CoreWebView2PermissionState.Deny;
-            default:
-                return CoreWebView2PermissionState.Default;
+            // Get the next dialog in the queue
+            dialog = dialogQueue.Peek();
         }
 
+        // Wait for the dialog to close
+        while (dialogQueue.Count > 0 && dialog.Result == PermissionWindow.ProtectResult.Random)
+        {
+            await Task.Delay(50);
+        }
+
+        // If the dialog was closed by the user, return the chosen permission state
+        if (dialog.Result != PermissionWindow.ProtectResult.Nothing)
+        {
+            // Dequeue the dialog
+            dialogQueue.Dequeue();
+
+            switch (dialog.Result)
+            {
+                case PermissionWindow.ProtectResult.Allow:
+                    return CoreWebView2PermissionState.Allow;
+                case PermissionWindow.ProtectResult.Deny:
+                    return CoreWebView2PermissionState.Deny;
+            }
+            dialog.Closed += Dialog_Closed;
+        }
+
+        // If there are more dialogs in the queue, show the next one
+        if (dialogQueue.Count < 10)
+        {
+            dialog = new PermissionWindow
+            {
+                Title = $"Allow {website} to access {permissionKind}?",
+            };
+
+            // Enqueue the next dialog
+            dialogQueue.Enqueue(dialog);
+
+            // Show the next dialog
+            await dialog.ShowAsync();
+        }
+
+        // Return the default permission state
+        return defaultState;
+    }
+
+    private void Dialog_Closed(Windows.UI.Xaml.Controls.ContentDialog sender, Windows.UI.Xaml.Controls.ContentDialogClosedEventArgs args)
+    {
+        // Unsubscribe from the dialog's Closed event
+        dialog.Closed -= Dialog_Closed;
     }
 }
 

@@ -50,6 +50,7 @@ namespace FireBrowser.Launch
             if (selection == "Qwant") SetEngine("Qwant", "https://www.qwant.com/?q=");
             if (selection == "Qwant Lite") SetEngine("Qwant Lite", "https://lite.qwant.com/?q=");
             if (selection == "Yahoo!") SetEngine("Yahoo!", "https://search.yahoo.com/search?p=");
+            if (selection == "Presearch") SetEngine("Presearch", "https://presearch.com/search?q=");
         }
 
         private void SetEngine(string EngineFriendlyName, string SearchUrl)

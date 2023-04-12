@@ -374,7 +374,7 @@
             </muxc:TabView.TabStripHeader>
             <muxc:TabView.TabStripFooter>
                 <!--  Needs the Background="Transparent" or else it won't work  -->
-                <Border x:Name="CustomDragRegion" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                <StackPanel x:Name="CustomDragRegion" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" PointerPressed="CustomDragRegion_PointerPressed" PointerMoved="CustomDragRegion_PointerMoved" PointerReleased="CustomDragRegion_PointerReleased"/>
             </muxc:TabView.TabStripFooter>
         </firebrowser:CustomTabView>
         <ContentDialog
