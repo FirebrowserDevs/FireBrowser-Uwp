@@ -5,9 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Core;
 using Windows.Storage;
-using Windows.UI.Core;
 
 public class WebPermissionSystem
 {
@@ -163,7 +161,7 @@ public class WebPermissionSystem
             {
                 Title = $"Allow {website} to access {permissionKind}?",
             };
-          
+
             // Enqueue the first dialog
             dialogQueue.Enqueue(dialog);
 

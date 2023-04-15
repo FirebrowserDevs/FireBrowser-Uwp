@@ -1,21 +1,11 @@
-﻿using FireBrowser.Pages.SettingsPages;
-using Microsoft.Data.Sqlite;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Windows.ApplicationModel.Store;
+﻿using Microsoft.Data.Sqlite;
 using System;
 using System.IO;
-using System.Net.NetworkInformation;
-using System.Threading;
+using Windows.Devices.Geolocation;
 using Windows.Storage;
-using Windows.Storage.AccessCache;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using static FireBrowser.App;
-using Windows.Devices.Geolocation;
-using Windows.UI.Popups;
-using Windows.Media.Capture;
-using Windows.UI.Core;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -89,7 +79,7 @@ namespace FireBrowser.Launch
             }
         }
         private async void Install_Click(object sender, RoutedEventArgs e)
-        {       
+        {
             setdefault();
             CreateDatabase();
             Content.Navigate(typeof(SetupStep2));
@@ -137,7 +127,7 @@ namespace FireBrowser.Launch
             if (selection == "Default") FireBrowserInterop.SettingsHelper.SetSetting("Background", "0");
             if (selection == "Featured") FireBrowserInterop.SettingsHelper.SetSetting("Background", "1");
         }
-   
+
         private async void Permissions_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new MessageDialog("This app needs access to your location to function properly. Do you want to allow location access?");

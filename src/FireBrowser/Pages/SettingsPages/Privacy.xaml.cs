@@ -1,12 +1,4 @@
-﻿using FireBrowser.Core;
-using FireBrowser.Pages.SettingsPages.Restart;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Security;
-using System.Threading.Tasks;
-using Windows.Storage;
+﻿using FireBrowser.Pages.SettingsPages.Restart;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -126,6 +118,6 @@ namespace FireBrowser.Pages.SettingsPages
             UpdateText();
         }
 
-    
+
     }
 }

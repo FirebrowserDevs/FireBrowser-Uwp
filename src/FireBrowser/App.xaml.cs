@@ -2,15 +2,11 @@
 using FireExceptions;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Storage;
-using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -52,7 +48,7 @@ namespace FireBrowser
 
             }
 
-          
+
         }
 
         public enum AppLaunchType
@@ -108,7 +104,7 @@ namespace FireBrowser
         }
 
         protected async override void OnActivated(IActivatedEventArgs args)
-        {                              
+        {
             if (args.Kind == ActivationKind.Protocol)
             {
                 ProtocolActivatedEventArgs eventArgs = args as ProtocolActivatedEventArgs;
@@ -141,7 +137,7 @@ namespace FireBrowser
                         kind = AppLaunchType.URIHttp;
                     }
 
-                  
+
                     AppLaunchPasser passer = new AppLaunchPasser()
                     {
                         LaunchType = kind,

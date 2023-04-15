@@ -1,6 +1,4 @@
-﻿using FireBrowser.Pages.SettingsPages.Restart;
-using System;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -121,7 +119,7 @@ namespace FireBrowser.Pages.SettingsPages
 
         private void Dwbl_Toggled(object sender, RoutedEventArgs e)
         {
-            FireBrowserInterop.SettingsHelper.SetSetting("DwBtn", Dwbl.IsOn ? "True" : "0");         
+            FireBrowserInterop.SettingsHelper.SetSetting("DwBtn", Dwbl.IsOn ? "True" : "0");
         }
 
         private void Trbl_Toggled(object sender, RoutedEventArgs e)

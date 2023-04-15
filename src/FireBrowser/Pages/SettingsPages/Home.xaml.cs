@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using Windows.Storage;
-using Windows.System;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -68,7 +65,7 @@ namespace FireBrowser.Pages.SettingsPages
 
         private async void Add_Click(object sender, RoutedEventArgs e)
         {
-           
+
         }
     }
 }

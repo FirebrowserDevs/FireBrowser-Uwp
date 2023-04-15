@@ -1,28 +1,21 @@
 ﻿using FireBrowser.Core;
+using FireExceptions;
 using Microsoft.Data.Sqlite;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
-using Windows.Storage.Streams;
 using Windows.UI.ViewManagement;
-using Windows.UI.WebUI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using static FireBrowser.MainPage;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using Windows.ApplicationModel.DataTransfer;
-using Windows.Graphics.Printing;
-using Microsoft.Toolkit.Uwp.Helpers;
-using Windows.UI.Xaml.Printing;
-using FireExceptions;
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace FireBrowser.Pages
@@ -37,11 +30,8 @@ namespace FireBrowser.Pages
             this.InitializeComponent();
         }
 
+
         private bool fullScreen = false;
-        public static MainPage MainPageContent
-        {
-            get { return (Window.Current.Content as Frame)?.Content as MainPage; }
-        }
 
         [DefaultValue(false)]
         public bool FullScreen
@@ -50,17 +40,31 @@ namespace FireBrowser.Pages
             set
             {
                 ApplicationView view = ApplicationView.GetForCurrentView();
-                bool isfullmode = view.IsFullScreenMode;
-                if (isfullmode)
+                if (value)
                 {
-                    view.ExitFullScreenMode();
-                    MainPageContent.HideToolbar(false);                 
+                    try
+                    {
+                        view.TryEnterFullScreenMode();
+                        FireBrowser.Core.UseContent.MainPageContent.HideToolbar(true);
+                    }
+                    catch (Exception ex)
+                    {
+                        FireExceptions.ExceptionsHelper.LogException(ex);
+                    }
                 }
                 else
                 {
-                    view.TryEnterFullScreenMode();
-                    MainPageContent.HideToolbar(true);
+                    try
+                    {
+                        view.ExitFullScreenMode();
+                        FireBrowser.Core.UseContent.MainPageContent.HideToolbar(false);
+                    }
+                    catch (Exception ex)
+                    {
+                        FireExceptions.ExceptionsHelper.LogException(ex);
+                    }
                 }
+                fullScreen = value;
             }
         }
 
@@ -113,7 +117,7 @@ namespace FireBrowser.Pages
             }
         }
 
-       
+
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -127,7 +131,7 @@ namespace FireBrowser.Pages
             {
                 WebViewElement.CoreWebView2.Navigate(param.Param.ToString());
             }
-           
+
             var userAgent = s?.CoreWebView2.Settings.UserAgent;
             userAgent = userAgent.Substring(1, userAgent.IndexOf("Edg/"));
             userAgent = userAgent.Replace("Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.39", "Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.39");
@@ -201,12 +205,12 @@ namespace FireBrowser.Pages
                 }
             };
             s.CoreWebView2.NavigationStarting += async (sender, args) =>
-            {            
+            {
                 param.ViewModel.LoadingState = new Microsoft.UI.Xaml.Controls.ProgressRing()
                 {
                     Width = 16,
                     Height = 16
-                };  
+                };
             };
 
             s.CoreWebView2.NavigationCompleted += (sender, args) =>
@@ -217,11 +221,11 @@ namespace FireBrowser.Pages
                     FontSize = 16
                 };
 
-                if (MainPageContent.UrlBox.Text.Contains("drive"))
+                if (FireBrowser.Core.UseContent.MainPageContent.UrlBox.Text.Contains("drive"))
                 {
                     WebViewElement.AllowDrop = false;
                 }
-             
+
                 s.CoreWebView2.ContainsFullScreenElementChanged += (sender, args) =>
                 {
                     this.FullScreen = s.CoreWebView2.ContainsFullScreenElement;
@@ -235,7 +239,7 @@ namespace FireBrowser.Pages
                 {
 
                     AddHistData();
-                }           
+                }
             };
             s.CoreWebView2.SourceChanged += (sender, args) =>
             {
@@ -243,7 +247,7 @@ namespace FireBrowser.Pages
                 {
                     param.ViewModel.CurrentAddress = sender.Source;
                 }
-               
+
             };
             s.CoreWebView2.NewWindowRequested += (sender, args) =>
             {
@@ -254,7 +258,7 @@ namespace FireBrowser.Pages
                 param?.TabView.TabItems.Add(mp.CreateNewTab(typeof(WebContent), args.Uri));
                 args.Handled = true;
             };
-         
+
 
         }
 
@@ -263,7 +267,7 @@ namespace FireBrowser.Pages
         string SelectionText;
         public void select()
         {
-            MainPageContent.SelectNewTab();
+            FireBrowser.Core.UseContent.MainPageContent.SelectNewTab();
         }
         public void AddHistData()
         {
@@ -354,7 +358,7 @@ namespace FireBrowser.Pages
             args.Handled = true;
         }
 
-  
+
         private async void ContextMenuItem_Click(object sender, RoutedEventArgs e)
         {
             switch ((sender as AppBarButton).Tag)
@@ -394,13 +398,13 @@ namespace FireBrowser.Pages
                     break;
                 case "Print":
                     WebViewElement.CoreWebView2.ShowPrintUI(CoreWebView2PrintDialogKind.Browser);
-          
+
                     break;
             }
             Ctx.Hide();
         }
 
-   
+
 
         private async void Grid_Loaded_1(object sender, RoutedEventArgs e)
         {

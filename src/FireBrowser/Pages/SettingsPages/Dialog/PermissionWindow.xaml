@@ -28,8 +28,8 @@
         </Grid.ColumnDefinitions>
         <TextBlock FontStyle="Italic" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Light" Foreground="LightSlateGray" Grid.ColumnSpan="3" Text="Managed In firebrowser://privacy" Margin="5" />
         <Button HorizontalAlignment="Stretch" Grid.Row="1" x:Name="Allow" Click="Allow_Click" Margin="5,0" Width="100" >
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Stretch">
-                <muxc:AnimatedIcon  Width="16" Height="16">
+            <StackPanel Orientation="Horizontal">
+                <muxc:AnimatedIcon Margin="0,0,8,0"  Width="16" Height="16">
                     <muxc:AnimatedIcon.FallbackIconSource>
                         <muxc:ImageIconSource ImageSource="ms-appx:///Assets/Icons/Privacy.svg"/>
                     </muxc:AnimatedIcon.FallbackIconSource>
@@ -38,8 +38,8 @@
             </StackPanel>
         </Button>
         <Button HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1" x:Name="Deny" Click="Deny_Click" Margin="5,0" Width="100" >
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Stretch">
-                <muxc:AnimatedIcon Width="16" Height="16">
+            <StackPanel Orientation="Horizontal">
+                <muxc:AnimatedIcon Margin="0,0,8,0" Width="16" Height="16">
                     <muxc:AnimatedIcon.FallbackIconSource>
                         <muxc:ImageIconSource ImageSource="ms-appx:///Assets/Icons/Privacy.svg"/>
                     </muxc:AnimatedIcon.FallbackIconSource>

@@ -25,7 +25,7 @@ namespace FireBrowser.Pages.SettingsPages
             AutoTog.IsOn = auto switch
             {
                 "0" => false,
-               "1" => true
+                "1" => true
             };
 
             Type.SelectedItem = layout switch

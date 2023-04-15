@@ -24,13 +24,14 @@ namespace FireExceptions
                     writer.WriteLine("-------------------------------------------------------------");
                 }
 
-                var dialog = new MessageDialog("The app encountered an error. Would you like to send the bug report to the developers?", "Error");
+                var dialog = new MessageDialog($"The app encountered an error. Would you like to send the bug report to the developers?, {ex.Message}", "Error");
                 dialog.Commands.Add(new UICommand("Yes", async (command) =>
                 {
                     var email = new EmailMessage();
                     email.Subject = "Bug Report";
                     email.To.Add(new EmailRecipient("firebrowserdevs@gmail.com"));
-                    email.Body = "Please find attached the bug report file.";
+                    email.Body = "Any Extra Info Can Help Find The Bug" +
+                    "Please find attached file for the bug report above.";
                     var fileStream = await file.OpenReadAsync();
                     var contentType = file.ContentType;
                     var streamRef = RandomAccessStreamReference.CreateFromStream(fileStream);

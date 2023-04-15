@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 using Windows.Graphics.Display;
@@ -27,9 +28,9 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using static FireBrowser.App;
+using Image = Windows.UI.Xaml.Controls.Image;
 using NewTab = FireBrowser.Pages.NewTab;
-using Windows.Foundation;
-using System.Linq;
+using Point = Windows.Foundation.Point;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -64,6 +65,7 @@ namespace FireBrowser
     }
 
 
+
     public sealed partial class MainPage : Page
     {
         public MainPage()
@@ -80,8 +82,7 @@ namespace FireBrowser
             formattableTitleBar.ButtonHoverBackgroundColor = Colors.Transparent;
             formattableTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
             formattableTitleBar.InactiveBackgroundColor = Colors.Transparent;
-            formattableTitleBar.ButtonPressedBackgroundColor = Colors.Transparent; 
-
+            formattableTitleBar.ButtonPressedBackgroundColor = Colors.Transparent;
 
             ViewModel = new ToolbarViewModel
             {
@@ -157,6 +158,8 @@ namespace FireBrowser
 
         #endregion
 
+        bool incog = false;
+
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -176,8 +179,10 @@ namespace FireBrowser
                         History.IsEnabled = false;
                         DownBtn.IsEnabled = false;
                         AddFav.IsEnabled = false;
+                        incog = true;
                         FavoritesButton.IsEnabled = false;
                         WebContent.IsIncognitoModeEnabled = true;
+                        ClassicToolbar.Height = 35;
                         Tabs.TabItems.Add(CreateNewIncog());
                         break;
                     case AppLaunchType.LaunchStartup:
@@ -329,25 +334,30 @@ namespace FireBrowser
                 IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = Symbol.BlockContact }
             };
 
+            Passer passer = new()
+            {
+                ViewModel = ViewModel,
+                Param = param
+            };
+
             newItem.Style = (Style)Application.Current.Resources["FloatingTabViewItemStyle"];
 
             // The content of the tab is often a frame that contains a page, though it could be any UIElement.
-            double Margin = 0;
-            Margin = ClassicToolbar.ActualHeight;
+
             Frame frame = new()
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
-                Margin = new Thickness(0, Margin, 0, 0)
+                Margin = new Thickness(0, 37, 0, 0)
             };
 
             if (page != null)
             {
-                frame.Navigate(page, param);
+                frame.Navigate(page, passer);
             }
             else
             {
-                frame.Navigate(typeof(Pages.Incognito));
+                frame.Navigate(typeof(Pages.Incognito), passer);
             }
 
             newItem.Content = frame;
@@ -565,20 +575,7 @@ namespace FireBrowser
             ViewModel.FavoriteIcon = "\uF714";
         }
 
-        public static WebContent WebContent
-        {
-            get { return (Window.Current.Content as Frame)?.Content as WebContent; }
-        }
-
-        public static MainPage MainPageContent
-        {
-            get { return (Window.Current.Content as Frame)?.Content as MainPage; }
-        }
-
-        public static SettingsPage SettingsContent
-        {
-            get { return (Window.Current.Content as Frame)?.Content as SettingsPage; }
-        }
+      
 
         private async void ToolbarButtonClick(object sender, RoutedEventArgs e)
         {
@@ -720,7 +717,15 @@ namespace FireBrowser
         #region tabsbuttons
         private void Tabs_AddTabButtonClick(TabView sender, object args)
         {
-            sender.TabItems.Add(CreateNewTab());
+            if (incog == true)
+            {
+                sender.TabItems.Add(CreateNewIncog());
+            }
+            else
+            {
+                sender.TabItems.Add(CreateNewTab());
+            }
+
             SelectNewTab();
         }
 
@@ -738,7 +743,7 @@ namespace FireBrowser
             if (tabcontent.Content is WebContent)
             {
                 (tabcontent.Content as WebContent).WebViewElement.Close();
-            }        
+            }
             sender.TabItems.Remove(args.Tab);
             if (Tabs.TabItems.Count == 0)
             {
@@ -747,7 +752,7 @@ namespace FireBrowser
         }
         #endregion
 
-       
+
         private void FetchBrowserHistory()
         {
             Batteries.Init();
@@ -991,5 +996,5 @@ namespace FireBrowser
         {
             isDragging = false;
         }
-    }  
+    }
 }

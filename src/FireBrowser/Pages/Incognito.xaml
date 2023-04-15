@@ -13,5 +13,11 @@
             <FontIcon FontSize="48" FontFamily="Segoe Fluent Icons" Glyph="&#xE727;"/>
         </Grid>
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,135,0,0" x:Uid="NewTabIncognitoTitle" Style="{ThemeResource TitleTextBlockStyle}" d:Text="You're browsing in Incognito mode"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+        </Grid>
     </Grid>
 </Page>

@@ -25,7 +25,7 @@ namespace FireBrowser.Core
             Productive
         }
 
-      
+
         public enum NewTabBackground
         {
             None,

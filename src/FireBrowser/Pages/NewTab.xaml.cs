@@ -1,4 +1,5 @@
-﻿using FireBrowser.ViewModel;
+﻿using FireBrowser.Core;
+using FireBrowser.ViewModel;
 using System;
 using System.Net.Http;
 using System.Text.Json;
@@ -10,11 +11,6 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using static FireBrowser.MainPage;
-using FireBrowser.Core;
-using System.Collections.Generic;
-using Windows.Storage;
-using System.Xml.Linq;
-using System.IO;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -30,7 +26,7 @@ namespace FireBrowser.Pages
         public HomeViewModel ViewModel { get; set; }
         public NewTab()
         {
-            this.InitializeComponent();       
+            this.InitializeComponent();
             HomeSync();
         }
 
@@ -75,7 +71,7 @@ namespace FireBrowser.Pages
         {
             public ImageTab[] images { get; set; }
         }
-   
+
 
         public static Brush GetGridBackgroundAsync(Core.Settings.NewTabBackground backgroundType)
         {
@@ -118,7 +114,7 @@ namespace FireBrowser.Pages
                     catch
                     {
                         return new SolidColorBrush(Colors.Transparent);
-                    }            
+                    }
 
             }
             return new SolidColorBrush();
@@ -197,7 +193,7 @@ namespace FireBrowser.Pages
             }
             else
             {
-               
+
             }
         }
     }
