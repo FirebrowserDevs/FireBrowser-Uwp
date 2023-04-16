@@ -1,6 +1,6 @@
 ﻿using FireBrowser.Pages;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace FireBrowser.Core
 {

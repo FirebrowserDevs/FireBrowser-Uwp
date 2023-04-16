@@ -1,12 +1,11 @@
 ﻿<Page
     x:Class="FireBrowser.Pages.SettingsPages.Accessibility"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:FireBrowser.Pages.SettingsPages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    xmlns:labs="using:CommunityToolkit.Labs.WinUI">
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    mc:Ignorable="d">
     <Grid>
         <StackPanel>
             <labs:SettingsExpander x:Uid="FireBrowser - StartUp" Margin="0,30,0,0">

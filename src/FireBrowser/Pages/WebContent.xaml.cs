@@ -1,6 +1,6 @@
 ﻿using FireBrowser.Core;
+using FireBrowserDataBase;
 using FireExceptions;
-using Microsoft.Data.Sqlite;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
@@ -85,11 +85,11 @@ namespace FireBrowser.Pages
         {
             if (javasc.Equals("true"))
             {
-                WebViewElement.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = false;
+                WebViewElement.CoreWebView2.Settings.IsScriptEnabled = false;
             }
             else
             {
-                WebViewElement.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = true;
+                WebViewElement.CoreWebView2.Settings.IsScriptEnabled = true;
             }
             if (pass.Equals("true"))
             {
@@ -124,13 +124,15 @@ namespace FireBrowser.Pages
             base.OnNavigatedTo(e);
             param = e.Parameter as Passer;
             await WebViewElement.EnsureCoreWebView2Async();
+            loadSetting();
             WebView2 s = WebViewElement;
 
-            var permissionSystem = new WebPermissionSystem();
+            //var permissionSystem = new WebPermissionSystem();
             if (param?.Param != null)
             {
                 WebViewElement.CoreWebView2.Navigate(param.Param.ToString());
             }
+
 
             var userAgent = s?.CoreWebView2.Settings.UserAgent;
             userAgent = userAgent.Substring(1, userAgent.IndexOf("Edg/"));
@@ -138,7 +140,7 @@ namespace FireBrowser.Pages
             s.CoreWebView2.Settings.UserAgent = userAgent;
 
 
-            loadSetting();
+            s.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = false;
             s.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = true;
             s.CoreWebView2.Settings.IsStatusBarEnabled = true;
             s.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = true;
@@ -165,9 +167,9 @@ namespace FireBrowser.Pages
             {
                 try
                 {
-                    var def = args.GetDeferral();
-                    await permissionSystem.HandlePermissionRequested(args, WebViewElement.CoreWebView2.Source.ToString());
-                    def.Complete();
+                    // var def = args.GetDeferral();
+                    // await permissionSystem.HandlePermissionRequested(args, WebViewElement.CoreWebView2.Source.ToString());
+                    // def.Complete();
                 }
                 catch (Exception ex)
                 {
@@ -237,8 +239,10 @@ namespace FireBrowser.Pages
                 }
                 else
                 {
-
-                    AddHistData();
+                    string address = WebViewElement.CoreWebView2.Source.ToString();
+                    string title = WebViewElement.CoreWebView2.DocumentTitle.ToString();
+                    var dbAddHis = new DbAddHis();
+                    dbAddHis.AddHistData(address, title);
                 }
             };
             s.CoreWebView2.SourceChanged += (sender, args) =>
@@ -247,87 +251,21 @@ namespace FireBrowser.Pages
                 {
                     param.ViewModel.CurrentAddress = sender.Source;
                 }
-
             };
             s.CoreWebView2.NewWindowRequested += (sender, args) =>
             {
-                //To-Do: Check if it should be a popup or tab. Can use args.something for that.
-                //To-Do: Get the currently selected tab's position and launch the new one next to it
-
                 MainPage mp = new();
                 param?.TabView.TabItems.Add(mp.CreateNewTab(typeof(WebContent), args.Uri));
                 args.Handled = true;
             };
-
-
         }
-
-
 
         string SelectionText;
         public void select()
         {
             FireBrowser.Core.UseContent.MainPageContent.SelectNewTab();
         }
-        public void AddHistData()
-        {
-            string address = WebViewElement.CoreWebView2.Source.ToString();
-            string title = WebViewElement.CoreWebView2.DocumentTitle;
 
-            SqliteConnection m_dbConnection = new SqliteConnection($"Data Source={ApplicationData.Current.LocalFolder.Path}/History.db;");
-            m_dbConnection.Open();
-
-            var selectCmd = m_dbConnection.CreateCommand();
-            selectCmd.CommandText = "SELECT * FROM urlsDb WHERE url = @url AND title = @title AND last_visit_time = @lastVisitTime";
-            selectCmd.Parameters.AddWithValue("@url", address);
-            selectCmd.Parameters.AddWithValue("@title", title);
-            selectCmd.Parameters.AddWithValue("@lastVisitTime", DateTimeOffset.Now.ToUnixTimeSeconds());
-
-            try
-            {
-                var reader = selectCmd.ExecuteReader();
-                if (reader.Read())
-                {
-                    var updateCmd = m_dbConnection.CreateCommand();
-                    updateCmd.CommandText = "UPDATE urlsDb SET visit_count = visit_count + 1, last_visit_time = @lastVisitTime WHERE url = @url AND title = @title AND last_visit_time = @lastVisitTime";
-                    updateCmd.Parameters.AddWithValue("@url", address);
-                    updateCmd.Parameters.AddWithValue("@title", title);
-                    updateCmd.Parameters.AddWithValue("@lastVisitTime", DateTimeOffset.Now.ToUnixTimeSeconds());
-                    updateCmd.ExecuteNonQuery();
-                }
-                else
-                {
-                    var insertCmd = m_dbConnection.CreateCommand();
-                    insertCmd.CommandText = "INSERT OR IGNORE INTO urlsDb (url, title, visit_count, last_visit_time) VALUES (@url, @title, @visitCount, @lastVisitTime)";
-                    insertCmd.Parameters.AddWithValue("@url", address);
-                    insertCmd.Parameters.AddWithValue("@title", title);
-                    insertCmd.Parameters.AddWithValue("@visitCount", 1);
-                    insertCmd.Parameters.AddWithValue("@lastVisitTime", DateTimeOffset.Now.ToUnixTimeSeconds());
-                    insertCmd.ExecuteNonQuery();
-                }
-            }
-            catch (Microsoft.Data.Sqlite.SqliteException ex)
-            {
-                if (ex.ErrorCode == 19) // constraint violation error code
-                {
-                    // execute the update command
-                    var updateCmd = m_dbConnection.CreateCommand();
-                    updateCmd.CommandText = "UPDATE urlsDb SET visit_count = visit_count + 1, last_visit_time = @lastVisitTime WHERE url = @url AND title = @title AND last_visit_time = @lastVisitTime";
-                    updateCmd.Parameters.AddWithValue("@url", address);
-                    updateCmd.Parameters.AddWithValue("@title", title);
-                    updateCmd.Parameters.AddWithValue("@lastVisitTime", DateTimeOffset.Now.ToUnixTimeSeconds());
-                    updateCmd.ExecuteNonQuery();
-                }
-                else
-                {
-                    throw; // rethrow the exception if it's not a constraint violation error
-                }
-            }
-
-            m_dbConnection.Close();
-
-
-        }
         private void CoreWebView2_ContextMenuRequested(CoreWebView2 sender, CoreWebView2ContextMenuRequestedEventArgs args)
         {
             var flyout1 = (Microsoft.UI.Xaml.Controls.CommandBarFlyout)Resources["Ctx"];

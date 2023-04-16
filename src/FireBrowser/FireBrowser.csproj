@@ -142,7 +142,6 @@
     <Compile Include="Controls\Toolbar.xaml.cs">
       <DependentUpon>Toolbar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Core\HistoryItem.cs" />
     <Compile Include="Core\ImageTab.cs" />
     <Compile Include="Core\UseContent.cs" />
     <Compile Include="Core\WebPermissionSystem.cs" />
@@ -417,9 +416,6 @@
     <PackageReference Include="CommunityToolkit.Mvvm">
       <Version>8.2.0-preview2</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Data.Sqlite.Core">
-      <Version>8.0.0-preview.3.23174.2</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
     </PackageReference>
@@ -430,7 +426,7 @@
       <Version>7.1.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.8.3</Version>
+      <Version>2.8.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Web.WebView2">
       <Version>1.0.1777-prerelease</Version>
@@ -438,14 +434,15 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>
     </PackageReference>
-    <PackageReference Include="SQLitePCLRaw.bundle_green">
-      <Version>2.1.4</Version>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Assets\Strings\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FireBrowserDataBase\FireBrowserDataBase.csproj">
+      <Project>{1503d939-3b97-4b04-8517-1363e4b2f293}</Project>
+      <Name>FireBrowserDataBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FireBrowserFavorites\FireBrowserFavorites.csproj">
       <Project>{dde74d86-09fc-49cb-b8f4-4efa46ea469d}</Project>
       <Name>FireBrowserFavorites</Name>

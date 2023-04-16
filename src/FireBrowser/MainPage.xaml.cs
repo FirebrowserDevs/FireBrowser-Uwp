@@ -2,6 +2,7 @@
 using FireBrowser.Controls;
 using FireBrowser.Core;
 using FireBrowser.Pages;
+using FireBrowserDataBase;
 using FireBrowserFavorites;
 using FireBrowserHelpers.AdBlocker;
 using FireBrowserHelpers.ReadingMode;
@@ -97,7 +98,7 @@ namespace FireBrowser
         private void ResetOutput()
         {
             DisplayInformation displayInformation = DisplayInformation.GetForCurrentView();
-            String scaleValue = (displayInformation.RawPixelsPerViewPixel * 100.0).ToString("F0");
+            String scaleValue = (displayInformation.RawPixelsPerViewPixel * 100.0).ToString();
         }
 
         #region buttons
@@ -575,7 +576,7 @@ namespace FireBrowser
             ViewModel.FavoriteIcon = "\uF714";
         }
 
-      
+
 
         private async void ToolbarButtonClick(object sender, RoutedEventArgs e)
         {
@@ -752,7 +753,6 @@ namespace FireBrowser
         }
         #endregion
 
-
         private void FetchBrowserHistory()
         {
             Batteries.Init();
@@ -821,8 +821,8 @@ namespace FireBrowser
                 // Handle any exceptions that might be thrown during the execution of the code
                 Debug.WriteLine($"Error: {ex.Message}");
             }
-
         }
+
         private void FavoritesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListView listView = sender as ListView;
@@ -885,21 +885,8 @@ namespace FireBrowser
         }
         private void ClearHistoryDataMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            // open a connection to the database
-            using (var connection = new SqliteConnection($"Data Source={ApplicationData.Current.LocalFolder.Path}\\History.db"))
-            {
-                connection.Open();
-
-                // create a command that deletes all rows from the table
-                var command = new SqliteCommand("DELETE FROM urlsDb", connection);
-
-                // execute the command to clear the table
-                command.ExecuteNonQuery();
-
-                connection.Close();
-
-                HistoryTemp.ItemsSource = null;
-            }
+            DbClear.ClearDb();
+            HistoryTemp.ItemsSource = null;
         }
 
         private void OpenHistoryMenuItem_Click(object sender, RoutedEventArgs e)

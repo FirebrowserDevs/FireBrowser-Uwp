@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("FireBrowserHelpers")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("FireBrowser - Helpers")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Bluebird Devs")]
 [assembly: AssemblyProduct("FireBrowserHelpers")]
 [assembly: AssemblyCopyright("Copyright ©  2023")]
 [assembly: AssemblyTrademark("")]

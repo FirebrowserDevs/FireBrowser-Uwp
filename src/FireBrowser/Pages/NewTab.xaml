@@ -1,11 +1,11 @@
 ﻿<Page
     x:Class="FireBrowser.Pages.NewTab"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:FireBrowser.Pages"
-    xmlns:firebrowser="using:FireBrowser.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:firebrowser="using:FireBrowser.Controls"
+    xmlns:local="using:FireBrowser.Pages"
     mc:Ignorable="d"
     Height="Auto"
     NavigationCacheMode="Enabled"
@@ -39,7 +39,6 @@
                 </Flyout>
             </Button.Flyout>
         </Button>
-        
         <Button x:Uid="NewTabSettingsButton"
                 Style="{ThemeResource QuietButtonStyle}"
                 Padding="6" Margin="0,31,32,0"
@@ -73,7 +72,6 @@
                 </Flyout>
             </Button.Flyout>
         </Button>
-        <!-- To-Do: Acrylic background, voice search, search suggestions -->
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center" RowSpacing="4" x:Name="BigGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -99,7 +97,6 @@
             </AutoSuggestBox>
             <StackPanel Grid.Row="1"
                         Orientation="Horizontal" Spacing="4" x:Name="Igrid">
- 
                 <Button Click="ActionClicked" Tag="Google" CornerRadius="16" Background="Transparent" BorderThickness="1" BorderBrush="Red">
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <Image Source="/Assets/Logo.png" Width="16"></Image>

@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace FireBrowser.Core
+namespace FireBrowserDataBase
 {
     public class HistoryItem
     {

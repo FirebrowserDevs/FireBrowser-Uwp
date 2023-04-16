@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using Windows.Storage;
-using Windows.UI.Popups;
 using Windows.ApplicationModel.Email;
+using Windows.Storage;
 using Windows.Storage.Streams;
+using Windows.UI.Popups;
 
 namespace FireExceptions
 {

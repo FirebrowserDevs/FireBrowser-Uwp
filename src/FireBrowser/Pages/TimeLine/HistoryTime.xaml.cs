@@ -1,4 +1,4 @@
-﻿using FireBrowser.Core;
+﻿using FireBrowserDataBase;
 using Microsoft.Data.Sqlite;
 using SQLitePCL;
 using System;

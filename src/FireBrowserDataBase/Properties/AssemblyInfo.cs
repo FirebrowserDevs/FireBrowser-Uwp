@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("FireBrowserUrlHelper")]
-[assembly: AssemblyDescription("FireBrowser - Passive Url Helper")]
+[assembly: AssemblyTitle("FireBrowserDataBase")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Bluebird Devs")]
-[assembly: AssemblyProduct("FireBrowserUrlHelper")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("FireBrowserDataBase")]
 [assembly: AssemblyCopyright("Copyright ©  2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
