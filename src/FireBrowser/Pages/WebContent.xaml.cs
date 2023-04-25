@@ -1,4 +1,4 @@
-﻿using FireBrowser.Core;
+﻿using FireBrowserCore.Models;
 using FireBrowserDataBase;
 using FireExceptions;
 using Microsoft.UI.Xaml.Controls;

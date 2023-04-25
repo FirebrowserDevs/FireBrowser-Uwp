@@ -13,6 +13,12 @@
             </labs:SettingsCard.HeaderIcon>
             <ToggleSwitch x:Name="AutoTog" Toggled="AutoTog_Toggled"/>
         </labs:SettingsCard>
+        <labs:SettingsCard Header="Color ToolBar" Description="Change The Color Of The ToolBar" Margin="0,1,0,0">
+            <labs:SettingsCard.HeaderIcon>
+                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEB3C;" />
+            </labs:SettingsCard.HeaderIcon>
+            <TextBox x:Name="ColorTB" Text="#282828" TextChanged="ColorTB_TextChanged"/>
+        </labs:SettingsCard>
         <labs:SettingsCard Header="Tabs Layout Model" Description="Change Here Default Or Featured" Margin="0,1,0,0">
             <labs:SettingsCard.HeaderIcon>
                 <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE790;" />

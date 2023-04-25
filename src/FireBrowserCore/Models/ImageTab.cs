@@ -1,4 +1,4 @@
-﻿namespace FireBrowser.Core
+﻿namespace FireBrowserCore.Models
 {
     public class ImageTab
     {

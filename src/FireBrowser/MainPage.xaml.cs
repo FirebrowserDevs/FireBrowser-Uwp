@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using FireBrowser.Controls;
-using FireBrowser.Core;
+using FireBrowserCore.Models;
 using FireBrowser.Pages;
 using FireBrowserDataBase;
 using FireBrowserFavorites;
@@ -174,8 +174,7 @@ namespace FireBrowser
                         Tabs.TabItems.Add(CreateNewTab(typeof(NewTab)));
                         break;
                     case AppLaunchType.LaunchIncognito:
-                        RequestedTheme = ElementTheme.Dark;
-                        ViewModel.IsIncognito = true;
+                        RequestedTheme = ElementTheme.Dark;                      
                         VBtn.Visibility = Visibility.Collapsed;
                         History.IsEnabled = false;
                         DownBtn.IsEnabled = false;
@@ -231,12 +230,6 @@ namespace FireBrowser
             [ObservableProperty]
             private string permissionDialogTitle;
             [ObservableProperty]
-            private Microsoft.UI.Xaml.Controls.FontIconSource permissionDialogIcon;
-            [ObservableProperty]
-            private bool isIncognito;
-            [ObservableProperty]
-            private bool translatableSite;
-            [ObservableProperty]
             private string currentAddress;
             [ObservableProperty]
             private string securityIcon;
@@ -269,8 +262,8 @@ namespace FireBrowser
             public TabView TabView { get; set; }
             public object Param { get; set; }
             public ToolbarViewModel ViewModel { get; set; }
-
         }
+
 
         #region hidepasser
         public void HideToolbar(bool hide)
@@ -337,6 +330,8 @@ namespace FireBrowser
 
             Passer passer = new()
             {
+                Tab = newItem,
+                TabView = Tabs,
                 ViewModel = ViewModel,
                 Param = param
             };
@@ -361,6 +356,7 @@ namespace FireBrowser
                 frame.Navigate(typeof(Pages.Incognito), passer);
             }
 
+        
             newItem.Content = frame;
             return newItem;
         }
@@ -428,6 +424,7 @@ namespace FireBrowser
             toolTip.Content = grid;
             ToolTipService.SetToolTip(newItem, toolTip);
 
+        
             newItem.Content = frame;
             return newItem;
         }
@@ -575,8 +572,6 @@ namespace FireBrowser
             }
             ViewModel.FavoriteIcon = "\uF714";
         }
-
-
 
         private async void ToolbarButtonClick(object sender, RoutedEventArgs e)
         {
@@ -894,12 +889,10 @@ namespace FireBrowser
             TabContent.Navigate(typeof(Pages.TimeLine.Timeline));
         }
 
-
         public static async void OpenNewWindow(Uri uri)
         {
             await Windows.System.Launcher.LaunchUriAsync(uri);
         }
-
 
         private void TabMenuClick(object sender, RoutedEventArgs e)
         {

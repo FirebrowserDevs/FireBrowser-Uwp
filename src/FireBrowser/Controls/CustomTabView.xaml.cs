@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Controls;
 using Windows.UI.Xaml;
+using FireBrowserCore.Models;
 
 // Szablon elementu Kontrolka użytkownika jest udokumentowany na stronie https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -22,20 +23,20 @@ namespace FireBrowser.Controls
             [ObservableProperty]
             private Style style;
         }
-        public Core.Settings.UILayout Mode
+        public Settings.UILayout Mode
         {
-            get => (Core.Settings.UILayout)GetValue(ModeProperty);
+            get => (Settings.UILayout)GetValue(ModeProperty);
             set
             {
                 switch (value)
                 {
-                    case Core.Settings.UILayout.Classic:
+                    case Settings.UILayout.Classic:
                         ViewModel.Style = (Style)Application.Current.Resources["DefaultTabViewStyle"];
                         break;
-                    case Core.Settings.UILayout.Compact:
+                    case Settings.UILayout.Compact:
                         ViewModel.Style = (Style)Application.Current.Resources["CompactTabViewStyle"];
                         break;
-                    case Core.Settings.UILayout.Vertical:
+                    case Settings.UILayout.Vertical:
                         ViewModel.Style = (Style)Application.Current.Resources["VerticalTabViewStyle"];
                         break;
                     default:
@@ -47,6 +48,6 @@ namespace FireBrowser.Controls
         }
 
         public static readonly DependencyProperty ModeProperty =
-            DependencyProperty.Register(nameof(Mode), typeof(Core.Settings.UILayout), typeof(CustomTabView), null);
+            DependencyProperty.Register(nameof(Mode), typeof(Settings.UILayout), typeof(CustomTabView), null);
     }
 }

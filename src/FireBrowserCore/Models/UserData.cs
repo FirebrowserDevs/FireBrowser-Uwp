@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
 
-namespace FireBrowser.Core
+namespace FireBrowserCore.Models
 {
     public class UserData
     {

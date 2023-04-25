@@ -1,5 +1,5 @@
-﻿using FireBrowser.Core;
-using FireBrowser.ViewModel;
+﻿using FireBrowserCore.Models;
+using FireBrowserCore.ViewModel;
 using System;
 using System.Net.Http;
 using System.Text.Json;
@@ -41,8 +41,8 @@ namespace FireBrowser.Pages
             {
                 BackgroundType = set switch
                 {
-                    "1" => Core.Settings.NewTabBackground.Featured,
-                    _ => Core.Settings.NewTabBackground.None,
+                    "1" => Settings.NewTabBackground.Featured,
+                    _ => Settings.NewTabBackground.None,
                 },
             };
             GridSelect.SelectedValue = ViewModel.BackgroundType.ToString();
@@ -73,14 +73,14 @@ namespace FireBrowser.Pages
         }
 
 
-        public static Brush GetGridBackgroundAsync(Core.Settings.NewTabBackground backgroundType)
+        public static Brush GetGridBackgroundAsync(Settings.NewTabBackground backgroundType)
         {
             switch (backgroundType)
             {
-                case Core.Settings.NewTabBackground.None:
+                case Settings.NewTabBackground.None:
                     return new SolidColorBrush(Colors.Transparent);
 
-                case Core.Settings.NewTabBackground.Featured:
+                case Settings.NewTabBackground.Featured:
                     //get the cached bg, if there is a new one then set it, show the bing attribution label.
                     var client = new HttpClient();
                     try
@@ -143,11 +143,11 @@ namespace FireBrowser.Pages
             {
                 case "None":
                     FireBrowserInterop.SettingsHelper.SetSetting("Background", "0");
-                    ViewModel.BackgroundType = Core.Settings.NewTabBackground.None;
+                    ViewModel.BackgroundType = Settings.NewTabBackground.None;
                     break;
                 case "Featured":
                     FireBrowserInterop.SettingsHelper.SetSetting("Background", "1");
-                    ViewModel.BackgroundType = Core.Settings.NewTabBackground.Featured;
+                    ViewModel.BackgroundType = Settings.NewTabBackground.Featured;
                     break;
                 default:
 

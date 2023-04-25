@@ -18,7 +18,6 @@ namespace FireBrowser.Pages.SettingsPages
 
         public void loadValues()
         {
-
             var layout = FireBrowserInterop.SettingsHelper.GetSetting("Background");
             var auto = FireBrowserInterop.SettingsHelper.GetSetting("Auto");
 
@@ -53,6 +52,12 @@ namespace FireBrowser.Pages.SettingsPages
             {
                 FireBrowserInterop.SettingsHelper.SetSetting("Auto", toggleSwitch.IsOn ? "1" : "0");
             }
+        }
+
+        private void ColorTB_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string value = ColorTB.Text.ToString();
+            FireBrowserInterop.SettingsHelper.SetSetting("ColorTool", value);
         }
     }
 }

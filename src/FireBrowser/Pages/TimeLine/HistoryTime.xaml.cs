@@ -86,5 +86,16 @@ namespace FireBrowser.Pages.TimeLine
         {
             FetchBrowserHistory();
         }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            DbClear.ClearDb();
+            BigTemp.ItemsSource = null;
+        }
+
+        private void Ts_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

@@ -142,12 +142,8 @@
     <Compile Include="Controls\Toolbar.xaml.cs">
       <DependentUpon>Toolbar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Core\ImageTab.cs" />
     <Compile Include="Core\UseContent.cs" />
     <Compile Include="Core\WebPermissionSystem.cs" />
-    <Compile Include="Core\Settings.cs" />
-    <Compile Include="Core\UI.cs" />
-    <Compile Include="Core\UserData.cs" />
     <Compile Include="Launch\Setup.xaml.cs">
       <DependentUpon>Setup.xaml</DependentUpon>
     </Compile>
@@ -209,7 +205,6 @@
       <DependentUpon>WebContent.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel\HomeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -426,7 +421,7 @@
       <Version>7.1.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.8.2</Version>
+      <Version>2.8.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Web.WebView2">
       <Version>1.0.1777-prerelease</Version>
@@ -439,6 +434,10 @@
     <PRIResource Include="Assets\Strings\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FireBrowserCore\FireBrowserCore.csproj">
+      <Project>{643cc35c-f713-408e-a0bc-f210e4739c81}</Project>
+      <Name>FireBrowserCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FireBrowserDataBase\FireBrowserDataBase.csproj">
       <Project>{1503d939-3b97-4b04-8517-1363e4b2f293}</Project>
       <Name>FireBrowserDataBase</Name>

@@ -389,8 +389,7 @@
             x:Name="ClassicToolbar"
             Height="35"
             Margin="0,39,0,0"
-            VerticalAlignment="Top"
-            Background="#282828"
+            VerticalAlignment="Top"         
             >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />

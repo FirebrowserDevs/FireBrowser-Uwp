@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using FireBrowser.Core;
+using FireBrowserCore.Models;
 
-namespace FireBrowser.ViewModel
+namespace FireBrowserCore.ViewModel
 {
     public partial class HomeViewModel : ObservableObject
     {
