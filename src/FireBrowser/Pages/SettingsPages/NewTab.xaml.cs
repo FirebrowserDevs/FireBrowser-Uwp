@@ -19,7 +19,6 @@ namespace FireBrowser.Pages.SettingsPages
         private void SearchengineSelection_Loaded(object sender, RoutedEventArgs e)
         {
             string selection = FireBrowserInterop.SettingsHelper.GetSetting("EngineFriendlyName");
-
             SearchengineSelection.PlaceholderText = selection ?? "Google";
         }
 
@@ -53,6 +52,9 @@ namespace FireBrowser.Pages.SettingsPages
         public string Favorites = FireBrowserInterop.SettingsHelper.GetSetting("FavBtn");
         public string Historybtn = FireBrowserInterop.SettingsHelper.GetSetting("HisBtn");
         public string QrCode = FireBrowserInterop.SettingsHelper.GetSetting("QrBtn");
+        public string FavBtn = FireBrowserInterop.SettingsHelper.GetSetting("FlBtn");
+        public string ToolB = FireBrowserInterop.SettingsHelper.GetSetting("ToolBtn");
+        public string DarkTog = FireBrowserInterop.SettingsHelper.GetSetting("DarkBtn");
 
         public void ButtonVisible()
         {
@@ -104,6 +106,24 @@ namespace FireBrowser.Pages.SettingsPages
                 "0" => false,
                 _ => Qrbl.IsOn
             };
+            FlAd.IsOn = FavBtn switch
+            {
+                "True" => true,
+                "0" => false,
+                _ => FlAd.IsOn
+            };
+            Tlbl.IsOn = ToolB switch
+            {
+                "True" => true,
+                "0" => false,
+                _ => Tlbl.IsOn
+            };
+            Drbl.IsOn = DarkTog switch
+            {
+                "True" => true,
+                "0" => false,
+                _ => Drbl.IsOn
+            };
         }
 
         #endregion
@@ -140,6 +160,21 @@ namespace FireBrowser.Pages.SettingsPages
         private void Qrbl_Toggled(object sender, RoutedEventArgs e)
         {
             FireBrowserInterop.SettingsHelper.SetSetting("QrBtn", Qrbl.IsOn ? "True" : "0");
+        }
+
+        private void FlAd_Toggled(object sender, RoutedEventArgs e)
+        {
+            FireBrowserInterop.SettingsHelper.SetSetting("FlBtn", FlAd.IsOn ? "True" : "0");
+        }
+
+        private void Tlbl_Toggled(object sender, RoutedEventArgs e)
+        {
+            FireBrowserInterop.SettingsHelper.SetSetting("ToolBtn", Tlbl.IsOn ? "True" : "0");
+        }
+
+        private void Drbl_Toggled(object sender, RoutedEventArgs e)
+        {
+            FireBrowserInterop.SettingsHelper.SetSetting("DarkBtn", Drbl.IsOn ? "True" : "0");
         }
     }
 }

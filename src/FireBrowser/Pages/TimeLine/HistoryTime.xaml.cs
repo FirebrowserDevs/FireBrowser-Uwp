@@ -1,4 +1,5 @@
 ﻿using FireBrowserDataBase;
+using FireBrowserDialogs.DialogTypes.AreYouSureDialog;
 using Microsoft.Data.Sqlite;
 using SQLitePCL;
 using System;
@@ -87,10 +88,20 @@ namespace FireBrowser.Pages.TimeLine
             FetchBrowserHistory();
         }
 
-        private void Delete_Click(object sender, RoutedEventArgs e)
+        private async void Delete_Click(object sender, RoutedEventArgs e)
         {
-            DbClear.ClearDb();
-            BigTemp.ItemsSource = null;
+            SureDialog customDialog = new SureDialog(); // Create an instance of your custom content dialog class
+            customDialog.State = DialogState.History; // Set the state of the dialog 
+            ContentDialogResult result = await customDialog.ShowAsync(); // Show the dialog and wait for the user to respond
+            if (result == ContentDialogResult.Primary)
+            {
+                DbClear.ClearDb();
+                BigTemp.ItemsSource = null;
+            }
+            else
+            {
+                // User clicked "Cancel" button or closed the dialog
+            }
         }
 
         private void Ts_TextChanged(object sender, TextChangedEventArgs e)

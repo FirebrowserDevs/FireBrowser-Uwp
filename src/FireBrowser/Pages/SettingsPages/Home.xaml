@@ -47,8 +47,8 @@
             </labs:SettingsCard>
         </StackPanel>
         <TextBlock VerticalAlignment="Bottom">
-            ALPHA V1 RELEASE EXPECT BUGS 
-            V0.0.8.00035ap Build: 101.2302
+            ALPHA V2 RELEASE EXPECT BUGS 
+            V0.0.8.00325ap Build: 101.2332
             Contact: firebrowserdevs@gmail.com
         </TextBlock>
         <TextBlock VerticalAlignment="Bottom" x:Name="SysInfoBox" Margin="0,0,0,20">

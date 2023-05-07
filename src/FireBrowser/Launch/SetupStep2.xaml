@@ -13,7 +13,7 @@
             <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="22" FontWeight="Bold">
                 Account Stuff
             </TextBlock>
-            <labs:SettingsCard  Width="600" Margin="0,5,0,0">
+            <labs:SettingsCard  Width="600" Margin="0,50,0,0">
                 <labs:SettingsCard.Header>
                     FireBrowser Light Mode ( This Is Optional )
                 </labs:SettingsCard.Header>
@@ -22,6 +22,28 @@
                 </labs:SettingsCard.HeaderIcon>
                 <ToggleSwitch x:Name="LgMode" Toggled="LgMode_Toggled"/>
             </labs:SettingsCard>
+            <labs:SettingsExpander VerticalAlignment="Top" Margin="0,2,0,0" Width="600">
+                <labs:SettingsExpander.Header>
+                    Hex Colors
+                </labs:SettingsExpander.Header>
+                <labs:SettingsExpander.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE70F;"/>
+                </labs:SettingsExpander.HeaderIcon>
+                <labs:SettingsExpander.Items>
+                    <labs:SettingsCard>
+                        <labs:SettingsCard.Header>
+                            Color Toolbar
+                        </labs:SettingsCard.Header>
+                        <TextBox x:Name="tbc" Text="#000000" TextChanged="tbc_TextChanged"/>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard>
+                        <labs:SettingsCard.Header>
+                            Color TabView Background
+                        </labs:SettingsCard.Header>
+                        <TextBox x:Name="tbv" Text="#000000" TextChanged="tbv_TextChanged"/>
+                    </labs:SettingsCard>
+                </labs:SettingsExpander.Items>
+            </labs:SettingsExpander>
             <labs:SettingsCard  Width="600" Margin="0,5,0,0">
                 <labs:SettingsCard.Header>
                     Microsoft Account Connect ( This Is Optional )

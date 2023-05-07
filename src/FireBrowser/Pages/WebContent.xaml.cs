@@ -1,13 +1,18 @@
-﻿using FireBrowserCore.Models;
+﻿using FireBrowser.Core;
+using FireBrowserCore.Models;
 using FireBrowserDataBase;
 using FireExceptions;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Media.SpeechSynthesis;
 using Windows.Storage;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -68,8 +73,6 @@ namespace FireBrowser.Pages
             }
         }
 
-
-
         string javasc = FireBrowserInterop.SettingsHelper.GetSetting("DisableJavaScript");
         string pass = FireBrowserInterop.SettingsHelper.GetSetting("DisablePassSave");
         string webmes = FireBrowserInterop.SettingsHelper.GetSetting("DisableWebMess");
@@ -117,26 +120,74 @@ namespace FireBrowser.Pages
             }
         }
 
+        public class BaseViewModel : INotifyPropertyChanged
+        {
+            private bool _isLoading;
 
+            public bool IsLoading
+            {
+                get { return _isLoading; }
+                set
+                {
+                    if (_isLoading != value)
+                    {
+                        _isLoading = value;
+                        OnPropertyChanged(nameof(IsLoading));
+                    }
+                }
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            protected virtual void OnPropertyChanged(string propertyName)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             param = e.Parameter as Passer;
+
             await WebViewElement.EnsureCoreWebView2Async();
+
             loadSetting();
             WebView2 s = WebViewElement;
 
-            //var permissionSystem = new WebPermissionSystem();
             if (param?.Param != null)
             {
                 WebViewElement.CoreWebView2.Navigate(param.Param.ToString());
             }
 
-
             var userAgent = s?.CoreWebView2.Settings.UserAgent;
-            userAgent = userAgent.Substring(1, userAgent.IndexOf("Edg/"));
-            userAgent = userAgent.Replace("Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.39", "Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.39");
+            if (!string.IsNullOrEmpty(userAgent))
+            {
+                var edgIndex = userAgent.IndexOf("Edg/");
+                if (edgIndex >= 0)
+                {
+                    if (IsIncognitoModeEnabled == true)
+                    {
+                        userAgent = userAgent.Substring(25, edgIndex - 25);
+                        userAgent = userAgent.Replace("Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.64", "NewIncog/1");
+                    }
+                    else
+                    {
+                        // Modify the user agent string as needed
+
+                        if (!string.IsNullOrEmpty(userAgent))
+                        {
+
+                            if (edgIndex >= 0)
+                            {
+                                userAgent = userAgent.Substring(0, edgIndex - 0);
+                                userAgent = userAgent.Replace("Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.64", "Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.64");
+                                s.CoreWebView2.Settings.UserAgent = userAgent;
+                            }
+                        }
+                    }
+                }
+            }
             s.CoreWebView2.Settings.UserAgent = userAgent;
 
 
@@ -167,9 +218,7 @@ namespace FireBrowser.Pages
             {
                 try
                 {
-                    // var def = args.GetDeferral();
-                    // await permissionSystem.HandlePermissionRequested(args, WebViewElement.CoreWebView2.Source.ToString());
-                    // def.Complete();
+
                 }
                 catch (Exception ex)
                 {
@@ -208,20 +257,16 @@ namespace FireBrowser.Pages
             };
             s.CoreWebView2.NavigationStarting += async (sender, args) =>
             {
-                param.ViewModel.LoadingState = new Microsoft.UI.Xaml.Controls.ProgressRing()
-                {
-                    Width = 16,
-                    Height = 16
-                };
+                UseContent.MainPageContent.Hmbtn.IsEnabled = false;
+                Progress.IsIndeterminate = true;
+                Progress.Visibility = Visibility.Visible;
             };
 
             s.CoreWebView2.NavigationCompleted += (sender, args) =>
             {
-                param.ViewModel.LoadingState = new FontIcon()
-                {
-                    Glyph = "\uE72C",
-                    FontSize = 16
-                };
+                Progress.IsIndeterminate = false;
+                Progress.Visibility = Visibility.Collapsed;
+                UseContent.MainPageContent.Hmbtn.IsEnabled = true;
 
                 if (FireBrowser.Core.UseContent.MainPageContent.UrlBox.Text.Contains("drive"))
                 {
@@ -269,6 +314,7 @@ namespace FireBrowser.Pages
         private void CoreWebView2_ContextMenuRequested(CoreWebView2 sender, CoreWebView2ContextMenuRequestedEventArgs args)
         {
             var flyout1 = (Microsoft.UI.Xaml.Controls.CommandBarFlyout)Resources["Ctx"];
+            OpenLinks.Visibility = Visibility.Collapsed;
             FlyoutBase.SetAttachedFlyout(WebViewElement, flyout1);
             var flyout = FlyoutBase.GetAttachedFlyout(WebViewElement);
             var options = new FlyoutShowOptions()
@@ -283,6 +329,7 @@ namespace FireBrowser.Pages
             {
                 flyout = (Microsoft.UI.Xaml.Controls.CommandBarFlyout)Resources["Ctx"];
                 SelectionText = args.ContextMenuTarget.SelectionText;
+                OpenLinks.Visibility = Visibility.Collapsed;
             }
 
             else if (args.ContextMenuTarget.HasLinkUri)
@@ -290,59 +337,122 @@ namespace FireBrowser.Pages
                 flyout = (Microsoft.UI.Xaml.Controls.CommandBarFlyout)Resources["Ctx"];
                 SelectionText = args.ContextMenuTarget.LinkText;
                 SelectionText = args.ContextMenuTarget.LinkUri;
+                OpenLinks.Visibility = Visibility.Visible;
             }
+
 
             flyout?.ShowAt(WebViewElement, options);
             args.Handled = true;
         }
 
+        private async Task ReadAloudAsync()
+        {
+            try
+            {
+                // Get the currently focused element in the web view
+                var focusedElementId = await WebViewElement.CoreWebView2.ExecuteScriptAsync("document.activeElement.id");
 
+                // Get the text content of the focused element
+                var textContent = await WebViewElement.CoreWebView2.ExecuteScriptAsync($"document.getElementById('{focusedElementId}').textContent");
+
+                // Create a list of voices for the system language
+                var systemLanguage = Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride;
+                var voices = SpeechSynthesizer.AllVoices.Where(v => v.Language.Contains(systemLanguage)).ToList();
+
+                // If there are no voices for the system language, use the default language
+                if (voices.Count == 0)
+                {
+                    voices = (List<VoiceInformation>)SpeechSynthesizer.AllVoices;
+                }
+
+                // Create a new speech synthesizer
+                var synthesizer = new SpeechSynthesizer();
+
+                // Set the language for the speech synthesis
+                synthesizer.Voice = voices.First();
+
+                // Speak the text content
+                SpeechSynthesisStream stream = await synthesizer.SynthesizeTextToStreamAsync(textContent);
+                MediaElement mediaElement = new MediaElement();
+                mediaElement.SetSource(stream, stream.ContentType);
+                mediaElement.Play();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error reading aloud: {ex.Message}");
+            }
+        }
+
+        public static async void OpenNewWindow(Uri uri)
+        {
+            await Windows.System.Launcher.LaunchUriAsync(uri);
+        }
         private async void ContextMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            switch ((sender as AppBarButton).Tag)
+            if (sender is AppBarButton button && button.Tag != null)
             {
-                case "MenuBack":
-                    if (WebViewElement.CanGoBack == true)
-                    {
-                        WebViewElement.CoreWebView2.GoBack();
-                    }
-                    break;
-                case "Forward":
-                    if (WebViewElement.CanGoForward == true)
-                    {
-                        WebViewElement.CoreWebView2.GoForward();
-                    }
-                    break;
-                case "Source":
-                    WebViewElement.CoreWebView2.OpenDevToolsWindow();
-                    break;
-                case "Select":
+                switch ((sender as AppBarButton).Tag)
+                {
+                    case "MenuBack":
+                        if (WebViewElement.CanGoBack == true)
+                        {
+                            WebViewElement.CoreWebView2.GoBack();
+                        }
+                        break;
+                    case "Forward":
+                        if (WebViewElement.CanGoForward == true)
+                        {
+                            WebViewElement.CoreWebView2.GoForward();
+                        }
+                        break;
+                    case "Source":
+                        WebViewElement.CoreWebView2.OpenDevToolsWindow();
+                        break;
+                    case "Select":
+                        await WebViewElement.CoreWebView2.ExecuteScriptAsync("document.execCommand('selectAll', false, null);");
+                        break;
+                    case "Copy":
+                        FireBrowserInterop.SystemHelper.WriteStringToClipboard(SelectionText);
+                        break;
+                    case "Taskmgr":
+                        WebViewElement.CoreWebView2.OpenTaskManagerWindow();
+                        break;
+                    case "Save":
 
-                    break;
-                case "Copy":
-                    FireBrowserInterop.SystemHelper.WriteStringToClipboard(SelectionText);
-                    break;
-                case "Taskmgr":
-                    WebViewElement.CoreWebView2.OpenTaskManagerWindow();
-                    break;
-                case "Read":
-
-                    break;
-                case "Save":
-
-                    break;
-                case "Share":
-                    FireBrowserInterop.SystemHelper.ShowShareUIURL(WebViewElement.CoreWebView2.DocumentTitle, WebViewElement.CoreWebView2.Source);
-                    break;
-                case "Print":
-                    WebViewElement.CoreWebView2.ShowPrintUI(CoreWebView2PrintDialogKind.Browser);
-
-                    break;
+                        break;
+                    case "Share":
+                        FireBrowserInterop.SystemHelper.ShowShareUIURL(WebViewElement.CoreWebView2.DocumentTitle, WebViewElement.CoreWebView2.Source);
+                        break;
+                    case "Print":
+                        WebViewElement.CoreWebView2.ShowPrintUI(CoreWebView2PrintDialogKind.Browser);
+                        break;
+                }
             }
             Ctx.Hide();
         }
 
+        private async void ContextClicked_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuFlyoutItem button && button.Tag != null)
+            {
+                switch ((sender as MenuFlyoutItem).Tag)
+                {
+                    case "Read":
+                        await ReadAloudAsync();
+                        break;
+                    case "WebApp":
 
+                        break;
+                    case "OpenInTab":
+                        UI.ShowDialog("Disabled", "Coming Soon");
+                        break;
+                    case "OpenInWindow":
+                        OpenNewWindow(new Uri(SelectionText));
+                        break;
+                }
+            }
+            Ctx.Hide();
+        }
 
         private async void Grid_Loaded_1(object sender, RoutedEventArgs e)
         {

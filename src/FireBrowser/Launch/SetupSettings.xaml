@@ -34,38 +34,35 @@
                     <x:String>Presearch</x:String>
                 </ComboBox>
             </labs:SettingsCard>
-            <labs:SettingsCard VerticalAlignment="Top" Margin="0,2,0,0" Width="600">
-                <labs:SettingsCard.Header>
+            <labs:SettingsExpander VerticalAlignment="Top" Margin="0,2,0,0" Width="600">
+                <labs:SettingsExpander.Header>
                     Set BackGround Type
-                </labs:SettingsCard.Header>
-                <labs:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xeb3c;"/>
-                </labs:SettingsCard.HeaderIcon>
+                </labs:SettingsExpander.Header>
+                <labs:SettingsExpander.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE790;"/>
+                </labs:SettingsExpander.HeaderIcon>
+                <labs:SettingsExpander.Items>
+                    <labs:SettingsCard>
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE790;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                        <TextBox x:Name="Color" Text="#000000" TextChanged="Color_TextChanged"/>
+                    </labs:SettingsCard>
+                </labs:SettingsExpander.Items>
                 <ComboBox  x:Name="Background" SelectionChanged="Background_SelectionChanged" SelectedItem="Default">
                     <x:String>Default</x:String>
                     <x:String>Featured</x:String>
+                    <x:String>Costum</x:String>
                 </ComboBox>
-            </labs:SettingsCard>
+            </labs:SettingsExpander>
             <labs:SettingsExpander VerticalAlignment="Top" Margin="0,2,0,0" Width="600">
                 <labs:SettingsExpander.Header>
                     Toolbar Icons ( Optional )
                 </labs:SettingsExpander.Header>
                 <labs:SettingsExpander.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE70F;"/>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE737;"/>
                 </labs:SettingsExpander.HeaderIcon>
                 <labs:SettingsExpander.Items>
-                    <labs:SettingsCard>
-                        <ToggleSwitch x:Name="Read" Toggled="Read_Toggled" IsOn="True"/>
-                        <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE736;"/>
-                        </labs:SettingsCard.HeaderIcon>
-                    </labs:SettingsCard>
-                    <labs:SettingsCard>
-                        <ToggleSwitch x:Name="Adbl" Toggled="Adbl_Toggled" IsOn="True"/>
-                        <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xEA18;"/>
-                        </labs:SettingsCard.HeaderIcon>
-                    </labs:SettingsCard>
                     <labs:SettingsCard>
                         <ToggleSwitch x:Name="Dwbl"  Toggled="Dwbl_Toggled" IsOn="True"/>
                         <labs:SettingsCard.HeaderIcon>
@@ -73,15 +70,21 @@
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard>
-                        <ToggleSwitch x:Name="Trbl" Toggled="Trbl_Toggled" IsOn="True"/>
+                        <ToggleSwitch x:Name="FrL" Toggled="FrL_Toggled" IsOn="True"/>
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE87E;"/>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE734;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard>
                         <ToggleSwitch x:Name="Frbl" Toggled="Frbl_Toggled" IsOn="True"/>
                         <labs:SettingsCard.HeaderIcon>
                             <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE728;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard>
+                        <ToggleSwitch x:Name="Tooltl" Toggled="Tooltl_Toggled" IsOn="True"/>
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE70F;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard>
@@ -98,7 +101,41 @@
                     </labs:SettingsCard>
                 </labs:SettingsExpander.Items>
             </labs:SettingsExpander>
-            <labs:SettingsExpander VerticalAlignment="Top" Margin="0,2,0,0" Width="600" >
+            <labs:SettingsExpander VerticalAlignment="Top" Margin="0,2,0,0" Width="600">
+                <labs:SettingsExpander.Header>
+                    Tool Menu Icons ( Optional )
+                </labs:SettingsExpander.Header>
+                <labs:SettingsExpander.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE70F;"/>
+                </labs:SettingsExpander.HeaderIcon>
+                <labs:SettingsExpander.Items>
+                    <labs:SettingsCard>
+                        <ToggleSwitch x:Name="Darklg" Toggled="Darklg_Toggled" IsOn="True"/>
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE790;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard>
+                        <ToggleSwitch x:Name="Trbl" Toggled="Trbl_Toggled" IsOn="True"/>
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE87E;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard>
+                        <ToggleSwitch x:Name="Read" Toggled="Read_Toggled" IsOn="True"/>
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE736;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                    <labs:SettingsCard>
+                        <ToggleSwitch x:Name="Adbl" Toggled="Adbl_Toggled" IsOn="True"/>
+                        <labs:SettingsCard.HeaderIcon>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xEA18;"/>
+                        </labs:SettingsCard.HeaderIcon>
+                    </labs:SettingsCard>
+                </labs:SettingsExpander.Items>
+            </labs:SettingsExpander>
+                <labs:SettingsExpander VerticalAlignment="Top" Margin="0,2,0,0" Width="600" >
                 <labs:SettingsExpander.Header>
                     Privacy Settings ( Optional )
                 </labs:SettingsExpander.Header>

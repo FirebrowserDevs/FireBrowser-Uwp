@@ -42,7 +42,7 @@
             </labs:SettingsCard>
             <labs:SettingsExpander x:Uid="AboutCredits" HorizontalAlignment="Stretch">
                 <labs:SettingsExpander.HeaderIcon>
-                    <icp:FluentIcon Glyph="&#xE771;"/>
+                    <icp:FluentIcon Glyph="&#xEC7A;"/>
                 </labs:SettingsExpander.HeaderIcon>
                 <labs:SettingsExpander.Header>
                     Contributors (4)

@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.UI.Xaml.Controls;
+﻿using Windows.UI.Xaml.Controls;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -18,6 +17,10 @@ namespace FireBrowser.Pages.SettingsPages
 
         public void loadValues()
         {
+            var value = FireBrowserInterop.SettingsHelper.GetSetting("ColorTool");
+            var value2 = FireBrowserInterop.SettingsHelper.GetSetting("ColorTV");
+
+            var color = FireBrowserInterop.SettingsHelper.GetSetting("ColorBackground");
             var layout = FireBrowserInterop.SettingsHelper.GetSetting("Background");
             var auto = FireBrowserInterop.SettingsHelper.GetSetting("Auto");
 
@@ -30,20 +33,32 @@ namespace FireBrowser.Pages.SettingsPages
             Type.SelectedItem = layout switch
             {
                 "0" => "Default",
-                "1" => "Featured"
+                "1" => "Featured",
+                "2" => "Costum",
             };
+            ColorTB.Text = value;
+            ColorTV.Text = value2;
+            Color.Text = color;
         }
 
         private void Type_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selected = Type.SelectedItem as string;
-
-            FireBrowserInterop.SettingsHelper.SetSetting("Background", selected switch
+            string selection = e.AddedItems[0].ToString();
+            if (selection == "Default")
             {
-                "Default" => "0",
-                "Featured" => "1",
-                _ => throw new ArgumentException($"Invalid selection: {selected}")
-            });
+                Color.IsEnabled = false;
+                FireBrowserInterop.SettingsHelper.SetSetting("Background", "0");
+            }
+            if (selection == "Featured")
+            {
+                Color.IsEnabled = false;
+                FireBrowserInterop.SettingsHelper.SetSetting("Background", "1");
+            }
+            if (selection == "Costum")
+            {
+                Color.IsEnabled = true;
+                FireBrowserInterop.SettingsHelper.SetSetting("Background", "2");
+            }
         }
 
         private void AutoTog_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -58,6 +73,17 @@ namespace FireBrowser.Pages.SettingsPages
         {
             string value = ColorTB.Text.ToString();
             FireBrowserInterop.SettingsHelper.SetSetting("ColorTool", value);
+        }
+
+        private void ColorTV_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string value = ColorTV.Text.ToString();
+            FireBrowserInterop.SettingsHelper.SetSetting("ColorTV", value);
+        }
+
+        private void Color_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            FireBrowserInterop.SettingsHelper.SetSetting("ColorBackground", $"{Color.Text.ToString()}");
         }
     }
 }

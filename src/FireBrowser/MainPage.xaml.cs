@@ -1,10 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using FireBrowser.Controls;
-using FireBrowserCore.Models;
 using FireBrowser.Pages;
+using FireBrowserCore.Models;
 using FireBrowserDataBase;
+using FireBrowserDialogs.DialogTypes.UpdateChangelog;
 using FireBrowserFavorites;
 using FireBrowserHelpers.AdBlocker;
+using FireBrowserHelpers.DarkMode;
 using FireBrowserHelpers.ReadingMode;
 using FireBrowserQr;
 using FireBrowserUrlHelper;
@@ -16,6 +18,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 using Windows.Graphics.Display;
@@ -25,6 +28,8 @@ using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Markup;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
@@ -65,15 +70,21 @@ namespace FireBrowser
         }
     }
 
-
-
     public sealed partial class MainPage : Page
     {
         public MainPage()
         {
             this.InitializeComponent();
+            TitlebarUi();
             ButtonVisible();
+            UpdateYesNo();
+            ColorsTools();
+        }
 
+        #region MainWindowAndButtons
+
+        public async void TitlebarUi()
+        {
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
@@ -87,11 +98,7 @@ namespace FireBrowser
 
             ViewModel = new ToolbarViewModel
             {
-                UserName = "", //Settings.currentProfile.AccountData.Name,
-                LoadingState = new FontIcon()
-                {
-                    Glyph = "\uE72C",
-                }
+                UserName = "", //Settings.currentProfile.AccountData.Name,             
             };
             Window.Current.SetTitleBar(CustomDragRegion);
         }
@@ -101,8 +108,6 @@ namespace FireBrowser
             String scaleValue = (displayInformation.RawPixelsPerViewPixel * 100.0).ToString();
         }
 
-        #region buttons
-
         public static string ReadButton { get; set; }
         public static string AdblockBtn { get; set; }
         public static string Downloads { get; set; }
@@ -110,54 +115,103 @@ namespace FireBrowser
         public static string Favorites { get; set; }
         public static string Historybtn { get; set; }
         public static string QrCode { get; set; }
+        public static string FavoritesL { get; set; }
+        public static string ToolIcon { get; set; }
+        public static string DarkIcon { get; set; }
+
         public void ButtonVisible()
         {
-            ReadButton = FireBrowserInterop.SettingsHelper.GetSetting("Readbutton");
-            AdblockBtn = FireBrowserInterop.SettingsHelper.GetSetting("AdBtn");
-            Downloads = FireBrowserInterop.SettingsHelper.GetSetting("DwBtn");
-            Translate = FireBrowserInterop.SettingsHelper.GetSetting("TransBtn");
-            Favorites = FireBrowserInterop.SettingsHelper.GetSetting("FavBtn");
-            Historybtn = FireBrowserInterop.SettingsHelper.GetSetting("HisBtn");
-            QrCode = FireBrowserInterop.SettingsHelper.GetSetting("QrBtn");
+            var buttons = new Dictionary<Button, string>
+            {
+               { ReadBtn, "Readbutton" },
+               { AdBlock, "AdBtn" },
+               { DownBtn, "DwBtn" },
+               { BtnTrans, "TransBtn" },
+               { FavoritesButton, "FavBtn" },
+               { History, "HisBtn" },
+               { QrBtn, "QrBtn" },
+               { AddFav, "FlBtn" },
+               { ToolBoxMore, "ToolBtn" },
+               { BtnDark, "DarkBtn" }
+            };
 
-            ReadBtn.Visibility = ReadButton switch
+            foreach (var button in buttons)
             {
-                "True" => Visibility.Visible,
-                _ => Visibility.Collapsed,
-            };
-            AdBlock.Visibility = AdblockBtn switch
-            {
-                "True" => Visibility.Visible,
-                _ => Visibility.Collapsed,
-            };
-            DownBtn.Visibility = Downloads switch
-            {
-                "True" => Visibility.Visible,
-                _ => Visibility.Collapsed,
-            };
-            BtnTrans.Visibility = Translate switch
-            {
-                "True" => Visibility.Visible,
-                _ => Visibility.Collapsed,
-            };
-            FavoritesButton.Visibility = Favorites switch
-            {
-                "True" => Visibility.Visible,
-                _ => Visibility.Collapsed,
-            };
-            History.Visibility = Historybtn switch
-            {
-                "True" => Visibility.Visible,
-                _ => Visibility.Collapsed,
-            };
-            QrBtn.Visibility = QrCode switch
-            {
-                "True" => Visibility.Visible,
-                _ => Visibility.Collapsed,
-            };
+                var settingValue = FireBrowserInterop.SettingsHelper.GetSetting(button.Value);
+
+                if (settingValue == "True")
+                {
+                    button.Key.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    button.Key.Visibility = Visibility.Collapsed;
+                }
+            }
         }
 
+
         #endregion
+
+        public async void UpdateYesNo()
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            var currentVersion = localSettings.Values["AppVersion"] as string;
+            var appVersion = Windows.ApplicationModel.Package.Current.Id.Version;
+            var versionString = $"{appVersion.Major}.{appVersion.Minor}.{appVersion.Build}.{appVersion.Revision}";
+
+            if (currentVersion != versionString)
+            {
+                // Create and show content dialog
+                var dialog = new UpdateChangelog
+                {
+                    Title = "Update - Changelog",
+                    PrimaryButtonText = "OK"
+                };
+                await dialog.ShowAsync();
+
+                // Update current version in local settings
+                localSettings.Values["AppVersion"] = versionString;
+            }
+
+        }
+
+        private void SetBackground(string colorKey, Panel panel)
+        {
+            var colorString = FireBrowserInterop.SettingsHelper.GetSetting(colorKey);
+            if (colorString == "#000000")
+            {
+                panel.Background = new SolidColorBrush(Colors.Transparent);
+            }
+            else
+            {
+                var color = (Windows.UI.Color)XamlBindingHelper.ConvertValue(typeof(Windows.UI.Color), colorString);
+                var brush = new SolidColorBrush(color);
+                panel.Background = brush;
+            }
+        }
+
+        private void SetBackgroundTabs(string colorKey, TabView panel)
+        {
+            var colorString = FireBrowserInterop.SettingsHelper.GetSetting(colorKey);
+            if (colorString == "#000000")
+            {
+                panel.Background = new SolidColorBrush(Colors.Transparent);
+            }
+            else
+            {
+                var color = (Windows.UI.Color)XamlBindingHelper.ConvertValue(typeof(Windows.UI.Color), colorString);
+                var brush = new SolidColorBrush(color);
+                panel.Background = brush;
+            }
+        }
+
+
+        public void ColorsTools()
+        {
+            SetBackground("ColorTool", ClassicToolbar);
+            SetBackgroundTabs("ColorTv", Tabs);
+        }
 
         bool incog = false;
 
@@ -174,7 +228,7 @@ namespace FireBrowser
                         Tabs.TabItems.Add(CreateNewTab(typeof(NewTab)));
                         break;
                     case AppLaunchType.LaunchIncognito:
-                        RequestedTheme = ElementTheme.Dark;                      
+                        RequestedTheme = ElementTheme.Dark;
                         VBtn.Visibility = Visibility.Collapsed;
                         History.IsEnabled = false;
                         DownBtn.IsEnabled = false;
@@ -215,8 +269,6 @@ namespace FireBrowser
         private Point lastPosition;
         public partial class ToolbarViewModel : ObservableObject
         {
-            [ObservableProperty]
-            private UIElement loadingState;
             [ObservableProperty]
             private bool canRefresh;
             [ObservableProperty]
@@ -293,7 +345,7 @@ namespace FireBrowser
         {
             get
             {
-                CustomTabViewItem selectedItem = (FireBrowser.Controls.CustomTabViewItem)Tabs.SelectedItem;
+                TabViewItem selectedItem = (TabViewItem)Tabs.SelectedItem;
                 if (selectedItem != null)
                 {
                     return (Frame)selectedItem.Content;
@@ -356,10 +408,11 @@ namespace FireBrowser
                 frame.Navigate(typeof(Pages.Incognito), passer);
             }
 
-        
+
             newItem.Content = frame;
             return newItem;
         }
+
 
         public CustomTabViewItem CreateNewTab(Type page = null, object param = null, int index = -1)
         {
@@ -396,7 +449,6 @@ namespace FireBrowser
             };
 
 
-
             if (page != null)
             {
                 frame.Navigate(page, passer);
@@ -424,7 +476,7 @@ namespace FireBrowser
             toolTip.Content = grid;
             ToolTipService.SetToolTip(newItem, toolTip);
 
-        
+
             newItem.Content = frame;
             return newItem;
         }
@@ -467,6 +519,11 @@ namespace FireBrowser
                     case "firebrowser://access":
                     case "firebrowser://about":
                         TabContent.Navigate(typeof(SettingsPage), CreatePasser(), new DrillInNavigationTransitionInfo());
+                        break;
+                    case "firebrowser://apps":
+                    case "firebrowser://history":
+                    case "firebrowser://favorites":
+                        TabContent.Navigate(typeof(Pages.TimeLine.Timeline));
                         break;
                     default:
                         // default behavior
@@ -546,22 +603,20 @@ namespace FireBrowser
             {
                 TabContent.Navigated += async (s, e) =>
                 {
-                    CanGoBack(); CanGoForward();
-                    if (TabContent?.Content is WebContent)
-                    {
-                        await TabWebView.EnsureCoreWebView2Async();
-                        TabWebView.CoreWebView2.NavigationStarting += (s, e) =>
-                        {
-                            ViewModel.CanGoBack = CanGoBack();
-                            ViewModel.CanGoForward = CanGoForward();
-                        };
-                    }
+
                 };
             }
 
             if (TabContent?.Content is WebContent webContent)
             {
-                ViewModel.CanRefresh = true;
+                TabWebView.NavigationStarting += async (s, e) =>
+                {
+                    ViewModel.CanRefresh = false;
+                };
+                TabWebView.NavigationCompleted += async (s, e) =>
+                {
+                    ViewModel.CanRefresh = true;
+                };
                 await TabWebView.EnsureCoreWebView2Async();
                 ViewModel.CurrentAddress = TabWebView.CoreWebView2.Source.ToString();
             }
@@ -592,13 +647,12 @@ namespace FireBrowser
                     break;
                 case "Refresh":
                     if (TabContent.Content is WebContent) TabWebView.CoreWebView2.Reload();
-                    //else TabContent.Navigate(typeof(TabContent.Content));
                     break;
                 case "Home":
                     if (TabContent.Content is WebContent)
                     {
                         Hmbtn.IsEnabled = true;
-                        TabWebView.Close();
+
                         if (WebContent.IsIncognitoModeEnabled)
                         {
                             TabContent.Navigate(typeof(Pages.Incognito), passer, new DrillInNavigationTransitionInfo());
@@ -707,6 +761,13 @@ namespace FireBrowser
                         FavoritesListView.ItemsSource = Globals.JsonItemsList;
                     }
                     break;
+                case "DarkMode":
+                    if (TabContent.Content is WebContent)
+                    {
+                        string jscript = await ForceDarkHelper.GetForceDark();
+                        await (TabContent.Content as WebContent).WebViewElement.CoreWebView2.ExecuteScriptAsync(jscript);
+                    }
+                    break;
             }
         }
 
@@ -721,7 +782,6 @@ namespace FireBrowser
             {
                 sender.TabItems.Add(CreateNewTab());
             }
-
             SelectNewTab();
         }
 
@@ -886,6 +946,8 @@ namespace FireBrowser
 
         private void OpenHistoryMenuItem_Click(object sender, RoutedEventArgs e)
         {
+            UrlBox.Text = "firebrowser://history";
+            Thread.Sleep(5);
             TabContent.Navigate(typeof(Pages.TimeLine.Timeline));
         }
 
@@ -952,13 +1014,13 @@ namespace FireBrowser
                 : Visibility.Visible;
         }
 
-        private void CustomDragRegion_PointerPressed(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        private void Tabs_PointerPressed(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
             isDragging = true;
             lastPosition = e.GetCurrentPoint(null).Position;
         }
 
-        private void CustomDragRegion_PointerMoved(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        private void Tabs_PointerMoved(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
             if (isDragging)
             {
@@ -966,15 +1028,31 @@ namespace FireBrowser
                 var delta = new Point(currentPosition.X - lastPosition.X, currentPosition.Y - lastPosition.Y);
                 lastPosition = currentPosition;
 
-                var stackPanel = (StackPanel)sender;
-                Canvas.SetLeft(stackPanel, Canvas.GetLeft(stackPanel) + delta.X);
-                Canvas.SetTop(stackPanel, Canvas.GetTop(stackPanel) + delta.Y);
+                if (sender is TabView stackPanel)
+                {
+                    Canvas.SetLeft(stackPanel, Canvas.GetLeft(stackPanel) + delta.X);
+                    Canvas.SetTop(stackPanel, Canvas.GetTop(stackPanel) + delta.Y);
+                }
             }
+
         }
 
-        private void CustomDragRegion_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        private void Tabs_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
             isDragging = false;
+        }
+
+
+        private void HistorySearchMenuItem_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+
+        }
+
+        private void OpenFavoritesMenu_Click(object sender, RoutedEventArgs e)
+        {
+            UrlBox.Text = "firebrowser://favorites";
+            Thread.Sleep(5);
+            TabContent.Navigate(typeof(Pages.TimeLine.Timeline));
         }
     }
 }

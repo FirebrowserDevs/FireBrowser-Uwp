@@ -143,7 +143,6 @@
       <DependentUpon>Toolbar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Core\UseContent.cs" />
-    <Compile Include="Core\WebPermissionSystem.cs" />
     <Compile Include="Launch\Setup.xaml.cs">
       <DependentUpon>Setup.xaml</DependentUpon>
     </Compile>
@@ -174,9 +173,6 @@
     <Compile Include="Pages\SettingsPages\Design.xaml.cs">
       <DependentUpon>Design.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SettingsPages\Dialog\PermissionWindow.xaml.cs">
-      <DependentUpon>PermissionWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\SettingsPages\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
@@ -189,11 +185,11 @@
     <Compile Include="Pages\SettingsPages\Privacy.xaml.cs">
       <DependentUpon>Privacy.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SettingsPages\Restart\RestartDialog.xaml.cs">
-      <DependentUpon>RestartDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\TimeLine\Apps.xaml.cs">
       <DependentUpon>Apps.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\TimeLine\Favorites.xaml.cs">
+      <DependentUpon>Favorites.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\TimeLine\HistoryTime.xaml.cs">
       <DependentUpon>HistoryTime.xaml</DependentUpon>
@@ -226,6 +222,7 @@
     <Content Include="Assets\Icons\Style.svg" />
     <Content Include="Assets\Icons\Tabs.svg" />
     <Content Include="Assets\Illustrations\NewTab\BackgroundBing.png" />
+    <Content Include="Assets\Illustrations\NewTab\BackgroundCostum.png" />
     <Content Include="Assets\Illustrations\NewTab\BackgroundNone.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
@@ -343,10 +340,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\SettingsPages\Dialog\PermissionWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\SettingsPages\Home.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -363,11 +356,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\SettingsPages\Restart\RestartDialog.xaml">
+    <Page Include="Pages\TimeLine\Apps.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\TimeLine\Apps.xaml">
+    <Page Include="Pages\TimeLine\Favorites.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -409,7 +402,7 @@
       <Version>0.0.13</Version>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm">
-      <Version>8.2.0-preview2</Version>
+      <Version>8.2.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
@@ -441,6 +434,10 @@
     <ProjectReference Include="..\FireBrowserDataBase\FireBrowserDataBase.csproj">
       <Project>{1503d939-3b97-4b04-8517-1363e4b2f293}</Project>
       <Name>FireBrowserDataBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FireBrowserDialogs\FireBrowserDialogs.csproj">
+      <Project>{3dbe33c1-aa8f-4cb2-984d-4ca2e13a4af3}</Project>
+      <Name>FireBrowserDialogs</Name>
     </ProjectReference>
     <ProjectReference Include="..\FireBrowserFavorites\FireBrowserFavorites.csproj">
       <Project>{dde74d86-09fc-49cb-b8f4-4efa46ea469d}</Project>

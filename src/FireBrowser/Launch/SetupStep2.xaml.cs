@@ -49,8 +49,28 @@ namespace FireBrowser.Launch
                 await FileIO.WriteTextAsync(settingsFile, updatedSettingsJson); // Save the updated settings
             }
 
+            if (tbv.Text.Equals("#000000"))
+            {
+                FireBrowserInterop.SettingsHelper.SetSetting("ColorTool", "#000000");
+            }
+            if (tbc.Text.Equals("#000000"))
+            {
+                FireBrowserInterop.SettingsHelper.SetSetting("ColorTV", "#000000");
+            }
 
             FireBrowserInterop.SystemHelper.RestartApp();
+        }
+
+        private void tbv_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var value = tbv.Text;
+            FireBrowserInterop.SettingsHelper.SetSetting("ColorTool", value);
+        }
+
+        private void tbc_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var value = tbc.Text;
+            FireBrowserInterop.SettingsHelper.SetSetting("ColorTV", value);
         }
     }
 }

@@ -11,12 +11,18 @@
             <labs:SettingsCard.HeaderIcon>
                 <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEA18;" />
             </labs:SettingsCard.HeaderIcon>
-            <TextBlock
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
                 x:Name="TextLevel"
-                Width="150"
+                Width="85"
+                VerticalAlignment="Center"
                 Visibility="Visible">
                 Default
-            </TextBlock>
+                </TextBlock>
+                <Button x:Name="Confirm" Click="Confirm_Click">
+                    Confirm Changes
+                </Button>
+            </StackPanel>
         </labs:SettingsCard>
         <Frame x:Name="RestartFrame" Margin="0,5,0,0" Height="70" Visibility="Collapsed"/>
         <labs:SettingsCard Header="Disable Javascript" Description="This improves your privacy by blocking trackers but it can also break a lot sites" Margin="0,5,0,0">

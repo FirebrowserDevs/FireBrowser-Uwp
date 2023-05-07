@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using FireBrowserCore.Models;
 using Microsoft.UI.Xaml.Controls;
 using Windows.UI.Xaml;
-using FireBrowserCore.Models;
 
 // Szablon elementu Kontrolka użytkownika jest udokumentowany na stronie https://go.microsoft.com/fwlink/?LinkId=234236
 

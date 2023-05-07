@@ -29,7 +29,8 @@ namespace FireBrowserCore.Models
         public enum NewTabBackground
         {
             None,
-            Featured, //Bing for now, in the future Unsplash or our own service
+            Featured,
+            Costum, //Bing for now, in the future Unsplash or our own service
         }
 
         public enum FlyoutLayout

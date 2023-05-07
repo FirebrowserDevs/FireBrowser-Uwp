@@ -6,7 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d" 
-    NavigationCacheMode="Enabled" >
+    NavigationCacheMode="Enabled"
+    >
     <Grid>
         <muxc:NavigationView x:Name="NavView"
                         Loaded="NavView_Loaded"

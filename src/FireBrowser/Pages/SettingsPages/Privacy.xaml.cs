@@ -1,5 +1,4 @@
-﻿using FireBrowser.Pages.SettingsPages.Restart;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -17,7 +16,6 @@ namespace FireBrowser.Pages.SettingsPages
             UpdateText();
             Stack();
         }
-
 
         string javasc = FireBrowserInterop.SettingsHelper.GetSetting("DisableJavaScript");
         string webmes = FireBrowserInterop.SettingsHelper.GetSetting("DisableWebMess");
@@ -44,15 +42,9 @@ namespace FireBrowser.Pages.SettingsPages
             };
         }
 
-        public async void IfChanged()
-        {
-            RestartFrame.Navigate(typeof(RestartDialog));
-            RestartFrame.Visibility = Visibility.Visible;
-        }
-
         private void DisableJavaScriptToggle_Toggled(object sender, RoutedEventArgs e)
         {
-            if (DisableJavaScriptToggle.IsOn == true)
+            if (DisableJavaScriptToggle.IsOn)
             {
                 FireBrowserInterop.SettingsHelper.SetSetting("DisableJavaScript", "true");
                 trueCount++;
@@ -62,8 +54,6 @@ namespace FireBrowser.Pages.SettingsPages
                 trueCount--;
                 FireBrowserInterop.SettingsHelper.SetSetting("DisableJavaScript", "false");
             }
-
-            IfChanged();
             UpdateText();
         }
 
@@ -73,15 +63,12 @@ namespace FireBrowser.Pages.SettingsPages
             {
                 FireBrowserInterop.SettingsHelper.SetSetting("DisableGenAutoFill", "true");
                 trueCount++;
-
             }
             else
             {
                 FireBrowserInterop.SettingsHelper.SetSetting("DisableGenAutoFill", "false");
                 trueCount--;
-
             }
-            IfChanged();
             UpdateText();
         }
 
@@ -98,7 +85,6 @@ namespace FireBrowser.Pages.SettingsPages
                 FireBrowserInterop.SettingsHelper.SetSetting("DisableWebMess", "false");
                 trueCount--;
             }
-            IfChanged();
             UpdateText();
         }
 
@@ -114,10 +100,12 @@ namespace FireBrowser.Pages.SettingsPages
                 trueCount--;
                 FireBrowserInterop.SettingsHelper.SetSetting("DisablePassSave", "false");
             }
-            IfChanged();
             UpdateText();
         }
 
-
+        private void Confirm_Click(object sender, RoutedEventArgs e)
+        {
+            FireBrowserInterop.SystemHelper.RestartApp();
+        }
     }
 }

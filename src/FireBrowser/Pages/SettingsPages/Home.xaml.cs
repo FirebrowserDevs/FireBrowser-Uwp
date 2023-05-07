@@ -14,7 +14,6 @@ namespace FireBrowser.Pages.SettingsPages
     /// </summary>
     public sealed partial class Home : Page
     {
-
         public Home()
         {
             this.InitializeComponent();
@@ -61,11 +60,6 @@ namespace FireBrowser.Pages.SettingsPages
         {
             MsLogin login = new MsLogin();
             login.ShowAsync();
-        }
-
-        private async void Add_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

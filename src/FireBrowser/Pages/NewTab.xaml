@@ -22,7 +22,6 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-
         <Button x:Uid="NewTabEditButton"
                 Style="{ThemeResource QuietButtonStyle}"
                 Padding="6" Margin="0,31,64,0"
@@ -67,7 +66,19 @@
                                     </TextBlock>
                                 </StackPanel>
                             </GridViewItem>
+                            <GridViewItem x:Name="CsGrid" Padding="12" Tag="Costum" x:FieldModifier="Public">
+                                <StackPanel>
+                                    <Image Width="100" Source="ms-appx:///Assets/Illustrations/NewTab/BackgroundCostum.png"/>
+                                    <TextBlock x:Uid="NewTabBackgroundCostum"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,8,0,0">
+                                        Costum
+                                    </TextBlock>
+                                </StackPanel>
+                            </GridViewItem>
                         </GridView>
+                        <TextBlock FontWeight="Bold" Text="New-Tab Background Color ( ReOpen Or Apply To Change )"/>
+                        <TextBox Margin="0,5,0,0" x:Name="NewColor" TextChanged="NewColor_TextChanged" />
                     </StackPanel>
                 </Flyout>
             </Button.Flyout>

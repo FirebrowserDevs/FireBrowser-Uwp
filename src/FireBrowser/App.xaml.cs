@@ -30,6 +30,7 @@ namespace FireBrowser
         {
             this.InitializeComponent();
             LoadSettings();
+            nullcheck();
             this.Suspending += OnSuspending;
             this.UnhandledException += App_UnhandledException;
         }
@@ -49,6 +50,20 @@ namespace FireBrowser
             }
 
 
+        }
+
+        public void nullcheck()
+        {
+            var toolcl = FireBrowserInterop.SettingsHelper.GetSetting("ColorTool");
+            if (toolcl == "")
+            {
+                FireBrowserInterop.SettingsHelper.SetSetting("ColorTool", "#000000");
+            }
+            var toolvw = FireBrowserInterop.SettingsHelper.GetSetting("ColorTV");
+            if (toolvw == "")
+            {
+                FireBrowserInterop.SettingsHelper.SetSetting("ColorTV", "#000000");
+            }
         }
 
         public enum AppLaunchType
@@ -117,7 +132,7 @@ namespace FireBrowser
                     if (eventArgs.Uri.Scheme == "firebrowser")
                     {
                         kind = AppLaunchType.URIFireBrowser;
-                        //Part of the URL after airplane://
+                        //Part of the URL after firebrowser://
                         switch (eventArgs.Uri.Authority)
                         {
                             case "incognito":
@@ -202,7 +217,7 @@ namespace FireBrowser
             }
             catch (FileNotFoundException)
             {
-                // The settings file doesn't exist yet, so this is the first launch
+                // The settings file doesn't exist yet, so create it
                 isFirstLaunch = true;
             }
 
@@ -211,23 +226,12 @@ namespace FireBrowser
                 // Save the app settings to the file
                 AppSettings settings = new AppSettings { IsFirstLaunch = true, IsConnected = false };
                 string settingsJson = JsonConvert.SerializeObject(settings);
-                if (settingsFile != null)
-                {
-                    await FileIO.WriteTextAsync(settingsFile, settingsJson);
-                }
-                else
-                {
-                    // The settings file doesn't exist yet, so create it
-                    settingsFile = await ApplicationData.Current.LocalFolder.CreateFileAsync("Params.json", CreationCollisionOption.ReplaceExisting);
-                    await FileIO.WriteTextAsync(settingsFile, settingsJson);
-                }
+                settingsFile = await ApplicationData.Current.LocalFolder.CreateFileAsync("Params.json", CreationCollisionOption.ReplaceExisting);
+                await FileIO.WriteTextAsync(settingsFile, settingsJson);
             }
 
             return isFirstLaunch;
         }
-
-
-
 
         #endregion
 

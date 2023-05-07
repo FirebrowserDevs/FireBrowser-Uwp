@@ -6,9 +6,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:icon="using:FireBrowser.Controls"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     mc:Ignorable="d">
     <Grid>
-        <muxc:NavigationView x:Name="NavigationView" 
+        <muxc:NavigationView x:Name="NavigationView"                        
                              PaneDisplayMode="Top"
                              IsBackButtonVisible="Collapsed"
                              IsSettingsVisible="False"
@@ -32,6 +33,12 @@
                         <icon:FluentIcon Glyph="&#xE81C;"/>
                     </muxc:NavigationViewItem.Icon>
                     History
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem x:Name="NavViewItemFavorites" Tag="Favorites">
+                    <muxc:NavigationViewItem.Icon>
+                        <icon:FluentIcon Glyph="&#xE728;"/>
+                    </muxc:NavigationViewItem.Icon>
+                    Favorites
                 </muxc:NavigationViewItem>
             </muxc:NavigationView.MenuItems>
             <ScrollViewer x:Name="scroll"  Background="Transparent">

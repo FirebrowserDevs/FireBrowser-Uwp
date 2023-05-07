@@ -22,6 +22,7 @@ namespace FireBrowser.Launch
             FireBrowserInterop.SettingsHelper.SetSetting("DisablePassSave", "false");
             FireBrowserInterop.SettingsHelper.SetSetting("DisableWebMess", "false");
             FireBrowserInterop.SettingsHelper.SetSetting("DisableGenAutoFill", "false");
+            FireBrowserInterop.SettingsHelper.SetSetting("ColorBackground", "#000000");
         }
 
 
@@ -99,8 +100,21 @@ namespace FireBrowser.Launch
         private void Background_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string selection = e.AddedItems[0].ToString();
-            if (selection == "Default") FireBrowserInterop.SettingsHelper.SetSetting("Background", "0");
-            if (selection == "Featured") FireBrowserInterop.SettingsHelper.SetSetting("Background", "1");
+            if (selection == "Default")
+            {
+                Color.IsEnabled = false;
+                FireBrowserInterop.SettingsHelper.SetSetting("Background", "0");
+            }
+            if (selection == "Featured")
+            {
+                Color.IsEnabled = false;
+                FireBrowserInterop.SettingsHelper.SetSetting("Background", "1");
+            }
+            if (selection == "Costum")
+            {
+                Color.IsEnabled = true;
+                FireBrowserInterop.SettingsHelper.SetSetting("Background", "2");
+            }
         }
 
         private async void Permissions_Click(object sender, RoutedEventArgs e)
@@ -140,6 +154,26 @@ namespace FireBrowser.Launch
         private void Passwords_Toggled(object sender, RoutedEventArgs e)
         {
             FireBrowserInterop.SettingsHelper.SetSetting("DisablePassSave", Passwords.IsOn ? "true" : "false");
+        }
+
+        private void FrL_Toggled(object sender, RoutedEventArgs e)
+        {
+            FireBrowserInterop.SettingsHelper.SetSetting("FlBtn", FrL.IsOn ? "True" : "0");
+        }
+
+        private void Darklg_Toggled(object sender, RoutedEventArgs e)
+        {
+            FireBrowserInterop.SettingsHelper.SetSetting("DarkBtn", Darklg.IsOn ? "True" : "0");
+        }
+
+        private void Tooltl_Toggled(object sender, RoutedEventArgs e)
+        {
+            FireBrowserInterop.SettingsHelper.SetSetting("ToolBtn", Tooltl.IsOn ? "True" : "0");
+        }
+
+        private void Color_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            FireBrowserInterop.SettingsHelper.SetSetting("ColorBackground", $"{Color.Text.ToString()}");
         }
     }
 }

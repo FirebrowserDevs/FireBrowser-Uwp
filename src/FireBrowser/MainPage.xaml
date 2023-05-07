@@ -46,13 +46,13 @@
                     <Border BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.3" Margin="10,5,10,10" BorderThickness="1"/>
                     <Button Tag="NewTab" Click="TabMenuClick" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch"	HorizontalContentAlignment="Left" Margin="0,0,0,0" IsEnabled="True">
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE710;" FontSize="18"/>
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC6C;" FontSize="18"/>
                             <TextBlock Margin="10,0,0,0" Text="New-Tab"/>
                         </StackPanel>
                     </Button>
                     <Button Tag="NewWindow" Click="TabMenuClick" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="0,0,0,0" IsEnabled="True">
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xF7ED;" FontSize="18"/>
+                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE737;" FontSize="18"/>
                             <TextBlock Margin="10,0,0,0" Text="New-Window"/>
                         </StackPanel>
                     </Button>
@@ -242,7 +242,8 @@
                             <TextBox
                                 x:Name="HistorySearchMenuItem"
                                 Height="35"
-                                Visibility="Collapsed" />
+                                Visibility="Collapsed" 
+                                KeyDown="HistorySearchMenuItem_KeyDown"/>
                             <StackPanel
                                 Grid.Column="1"
                                 HorizontalAlignment="Right"
@@ -348,11 +349,13 @@
                 Tab Preview
             </TextBlock>
         </Flyout>
+
+        
     </Page.Resources>
     <Grid>
         <firebrowser:CustomTabView
             x:Name="Tabs"
-            Padding="0"         
+            Padding="0"   
             VerticalAlignment="Stretch"
             AllowDropTabs="True"
             CacheMode="BitmapCache"
@@ -361,6 +364,9 @@
             AddTabButtonClick="Tabs_AddTabButtonClick"
             SelectionChanged="Tabs_SelectionChanged"
             TabCloseRequested="Tabs_TabCloseRequested"
+            PointerPressed="Tabs_PointerPressed"
+            PointerMoved="Tabs_PointerMoved"
+            PointerReleased="Tabs_PointerReleased"
             Mode="Classic"
             >
             <muxc:TabView.TabStripHeader>
@@ -374,7 +380,7 @@
             </muxc:TabView.TabStripHeader>
             <muxc:TabView.TabStripFooter>
                 <!--  Needs the Background="Transparent" or else it won't work  -->
-                <StackPanel x:Name="CustomDragRegion" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" PointerPressed="CustomDragRegion_PointerPressed" PointerMoved="CustomDragRegion_PointerMoved" PointerReleased="CustomDragRegion_PointerReleased"/>
+                <StackPanel x:Name="CustomDragRegion" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </muxc:TabView.TabStripFooter>
         </firebrowser:CustomTabView>
         <ContentDialog
@@ -389,7 +395,7 @@
             x:Name="ClassicToolbar"
             Height="35"
             Margin="0,39,0,0"
-            VerticalAlignment="Top"         
+            VerticalAlignment="Top"        
             >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -401,6 +407,7 @@
                     Style="{StaticResource QuietButtonStyle}"
                     Tag="Back"
                     x:Name="Back"
+                  
                     Click="ToolbarButtonClick"
                     x:FieldModifier="Public"
                     >
@@ -414,7 +421,7 @@
                 <Button
                     Style="{StaticResource QuietButtonStyle}"
                     Tag="Forward"
-                    x:Name="Forward"
+                    x:Name="Forward"     
                     x:FieldModifier="Public"
                     Click="ToolbarButtonClick"
                     >
@@ -434,10 +441,9 @@
                     Height="32"
                     Width="32"
                     x:FieldModifier="Public"
-                    x:Name="RefreshBtn"
+                    x:Name="RefreshBtn"      
                     Click="ToolbarButtonClick" 
-                    Content="{x:Bind ViewModel.LoadingState, Mode=OneWay}"
-                  
+                    Content="{firebrowser:FluentIcon Glyph=&#xE72C;}"               
                     >
                 </Button>
                 <muxc:ProgressRing
@@ -445,10 +451,10 @@
                         x:FieldModifier="public"
                         IsActive="False" Margin="3,0,3,0" Width="16" Height="16" Visibility="Collapsed"/>
                 <Button
-                    
+                   x:FieldModifier="public"
                    Style="{StaticResource QuietButtonStyle}"
                    Tag="Home"
-                    x:Name="Hmbtn"
+                   x:Name="Hmbtn"
                    Click="ToolbarButtonClick"
                    Content="{firebrowser:FluentIcon Glyph=&#xE80F;}"
                    >
@@ -489,6 +495,57 @@
                 </muxc:TeachingTip>
             </Grid>
             <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <Button x:Name="ToolBoxMore" Style="{ThemeResource QuietButtonStyle}" Content="{firebrowser:FluentIcon Glyph=&#xE70F;}">
+                    <Button.Flyout>
+                        <Flyout>
+                            <StackPanel>
+                                <TextBlock Text="WebView Tools" FontWeight="Bold"  VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                    <Button
+                                     x:Name="ReadBtn"
+                                    HorizontalAlignment="Left"
+                                     Click="ToolbarButtonClick"
+                                     Style="{ThemeResource QuietButtonStyle}"
+                                     Tag="ReadingMode"
+                                    Width="32"
+                                    Content="{firebrowser:FluentIcon Glyph=&#xE736;}"
+                                        ToolTipService.ToolTip="Reading Mode"
+                                     />
+                                    <Button
+                                     x:Name="AdBlock"
+                                     Click="ToolbarButtonClick"
+                                     Style="{ThemeResource QuietButtonStyle}"
+                                     Tag="AdBlock"
+                                    HorizontalAlignment="Left"
+                                    Width="32"
+                                    Content="{firebrowser:FluentIcon Glyph=&#xEA18;}"
+                                         ToolTipService.ToolTip="Basic AdBlock"
+                                     />
+                                    <Button 
+                                     x:Name="BtnTrans"
+                                     Click="ToolbarButtonClick"
+                                     Style="{ThemeResource QuietButtonStyle}"
+                                     Tag="Translate"
+                                    HorizontalAlignment="Left"
+                                    Width="32"
+                                    Content="{firebrowser:FluentIcon Glyph=&#xE87E;}"
+                                          ToolTipService.ToolTip="Translate"
+                                     />
+                                    <Button 
+                                     x:Name="BtnDark"
+                                     Click="ToolbarButtonClick"
+                                     Style="{ThemeResource QuietButtonStyle}"
+                                     Tag="DarkMode"
+                                    HorizontalAlignment="Left"
+                                    Width="32"
+                                    Content="{firebrowser:FluentIcon Glyph=&#xE790;}"
+                                          ToolTipService.ToolTip="DarkMode Website"
+                                     />
+                                </StackPanel>
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
                 <Button
                         x:Name="AddFav"
                         Style="{ThemeResource QuietButtonStyle}"
@@ -499,53 +556,32 @@
                         >
                     <Button.Flyout>
                         <Flyout>
-                            <StackPanel>
-                                <TextBlock MinWidth="300" FontSize="20">
+                            <StackPanel MaxWidth="325">
+                                <StackPanel>
+                                    <TextBlock MinWidth="300" FontSize="20">
                                         Add favorite
-                                </TextBlock>
-                                <TextBlock>Name</TextBlock>
-                                <TextBox x:Name="FavoriteTitle" />
-                                <TextBlock>Url</TextBlock>
-                                <TextBox x:Name="FavoriteUrl" />
+                                    </TextBlock>
+                                    <TextBlock>Name</TextBlock>
+                                    <TextBox x:Name="FavoriteTitle" />
+                                    <TextBlock>Url - Website</TextBlock>
+                                    <TextBox x:Name="FavoriteUrl" />
+                                </StackPanel>
                                 <Button
-                                     
-                                        Content="Add"
+                                        Width="Auto"
                                         Tag="AddFavorite" 
                                         Click="ToolbarButtonClick"
-                                        Margin="0,8,0,0"/>
+                                        Margin="0,8,0,0"
+                                    >
+                                    <StackPanel Orientation="Horizontal">
+                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE710;"/>
+                                        <TextBlock>
+                                        Add Favorite
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </StackPanel>
                         </Flyout>
                     </Button.Flyout>
-                </Button>
-                <Button
-                    x:Name="ReadBtn"
-                    Click="ToolbarButtonClick"
-                    Style="{ThemeResource QuietButtonStyle}"
-                    Tag="ReadingMode"
-                    Content="{firebrowser:FluentIcon Glyph=&#xE736;}"
-                   >
-                </Button>
-                <Button
-                    x:Name="AdBlock"
-                   Click="ToolbarButtonClick"
-                    Style="{ThemeResource QuietButtonStyle}"
-                    Tag="AdBlock"
-                    Content="{firebrowser:FluentIcon Glyph=&#xEA18;}">
-                </Button>
-                <Button
-                    x:Name="DownBtn"
-                    Click="ToolbarButtonClick"
-                    Style="{ThemeResource QuietButtonStyle}"
-                    Tag="DownloadFlyout"
-                    Content="{firebrowser:FluentIcon Glyph=&#xE896;}">
-                </Button>
-                <Button 
-                    x:Name="BtnTrans"
-                    Click="ToolbarButtonClick"
-                    Style="{ThemeResource QuietButtonStyle}"
-                    Tag="Translate"
-                    Content="{firebrowser:FluentIcon Glyph=&#xE87E;}"
-                    >
                 </Button>
                 <Button
                     x:Name="FavoritesButton"                 
@@ -556,13 +592,61 @@
                     >
                     <Button.Flyout>
                         <Flyout>
-                            <StackPanel
-                                MinWidth="300"
-                                MaxWidth="300"
-                                MaxHeight="600"
-                                >
-                                <TextBlock>Favorites</TextBlock>
-                                <ListView x:Name="FavoritesListView" Margin="0,7,0,0" SelectionChanged="FavoritesListView_SelectionChanged">
+                            <Grid
+                            Width="300"
+                            Height="400"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="35" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="80" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                x:Name="FavoritesSmallTitle"
+                                Margin="10,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                FontWeight="Bold"
+                                Text="Favorites" />
+                                <StackPanel
+                                Grid.Column="1"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                                   
+                                    <Button                       
+                                    Width="32"
+                                    Height="32"
+                                    Padding="0"
+                                    Background="Transparent"
+                                    BorderThickness="0">
+                                        <Button.Flyout>
+                                            <MenuFlyout Placement="Bottom">
+                                                <MenuFlyoutItem x:Name="OpenFavoritesMenu" Text="Open Favorites Page" Click="OpenFavoritesMenu_Click">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8A7;" />
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+                                            </MenuFlyout>
+                                        </Button.Flyout>
+                                        <Viewbox
+                                        Width="20"
+                                        Height="20"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                            <SymbolIcon Symbol="More" />
+                                        </Viewbox>
+                                    </Button>
+                                </StackPanel>
+                                <ListView x:Name="FavoritesListView" Margin="0,7,0,0" SelectionChanged="FavoritesListView_SelectionChanged" Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                 HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel>
@@ -574,9 +658,16 @@
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
                                 </ListView>
-                            </StackPanel>
+                            </Grid>
                         </Flyout>
                     </Button.Flyout>
+                </Button>
+                <Button
+                    x:Name="DownBtn"
+                    Click="ToolbarButtonClick"
+                    Style="{ThemeResource QuietButtonStyle}"
+                    Tag="DownloadFlyout"
+                    Content="{firebrowser:FluentIcon Glyph=&#xE896;}">
                 </Button>
                 <Button
                     x:Name="History"
@@ -585,7 +676,7 @@
                     Style="{ThemeResource QuietButtonStyle}"
                     Click="History_Click"
                     Content="{firebrowser:FluentIcon Glyph=&#xE81C;}">
-                    
+
                 </Button>
                 <Button
                     x:Name="QrBtn"
@@ -594,9 +685,9 @@
                     Style="{ThemeResource QuietButtonStyle}"
                     Tag="QRCode"
                     Content="{firebrowser:FluentIcon Glyph=&#xED14;}">
-                    
+
                 </Button>
-              
+
                 <Button
                     x:Uid="ToolbarMoreButton"
                     VerticalAlignment="Center"
@@ -604,6 +695,7 @@
                     Flyout="{StaticResource MoreFlyout}"
                     Style="{ThemeResource QuietButtonStyle}" />
             </StackPanel>
+
         </Grid>
     </Grid>
 </Page>

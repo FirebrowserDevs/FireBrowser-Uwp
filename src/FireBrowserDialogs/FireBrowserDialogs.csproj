@@ -5,11 +5,11 @@
     <LangVersion>11</LangVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{276BE652-8B48-40F3-AD2E-E555BC63BA54}</ProjectGuid>
+    <ProjectGuid>{3DBE33C1-AA8F-4CB2-984D-4CA2E13A4AF3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FireBrowserHelpers</RootNamespace>
-    <AssemblyName>FireBrowserHelpers</AssemblyName>
+    <RootNamespace>FireBrowserDialogs</RootNamespace>
+    <AssemblyName>FireBrowserDialogs</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22621.0</TargetPlatformVersion>
@@ -121,11 +121,14 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AdBlocker\AdBlockHelper.cs" />
-    <Compile Include="DarkMode\ForceDarkHelper.cs" />
+    <Compile Include="DialogTypes\AreYouSureDialog\SureDialog.xaml.cs">
+      <DependentUpon>SureDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogTypes\UpdateChangelog\UpdateChangelog.xaml.cs">
+      <DependentUpon>UpdateChangelog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReadingMode\ReadabilityHelper.cs" />
-    <EmbeddedResource Include="Properties\FireBrowserHelpers.rd.xml" />
+    <EmbeddedResource Include="Properties\FireBrowserDialogs.rd.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
@@ -133,18 +136,14 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AdBlocker\Jscript\firebrowser-removead.js" />
-    <Content Include="DarkMode\Jscript\forcedark.js" />
-    <Content Include="ReadingMode\Jscript\index.js" />
-    <Content Include="ReadingMode\Jscript\JSDOMParser.js" />
-    <Content Include="ReadingMode\Jscript\Readability-readerable.js" />
-    <Content Include="ReadingMode\Jscript\readability.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="ReadingMode\Jscript\index.d.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ReadingMode\Jscript\package.json" />
+    <Page Include="DialogTypes\AreYouSureDialog\SureDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogTypes\UpdateChangelog\UpdateChangelog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

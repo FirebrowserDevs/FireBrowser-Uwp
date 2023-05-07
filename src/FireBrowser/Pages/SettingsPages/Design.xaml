@@ -7,7 +7,7 @@
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     mc:Ignorable="d">
     <StackPanel>
-        <labs:SettingsCard Header="Auto Fill TextBox" Description="This Will Auto Fill The Address Bar From The MiniBar" Margin="0,5,0,0">
+        <labs:SettingsCard Header="Auto Fill TextBox" Description="This Will Auto Fill The Address Bar From The MiniBar" Margin="0,10,0,0">
             <labs:SettingsCard.HeaderIcon>
                 <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEDA8;" />
             </labs:SettingsCard.HeaderIcon>
@@ -15,14 +15,28 @@
         </labs:SettingsCard>
         <labs:SettingsCard Header="Color ToolBar" Description="Change The Color Of The ToolBar" Margin="0,1,0,0">
             <labs:SettingsCard.HeaderIcon>
-                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEB3C;" />
+                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE790;" />
             </labs:SettingsCard.HeaderIcon>
             <TextBox x:Name="ColorTB" Text="#282828" TextChanged="ColorTB_TextChanged"/>
         </labs:SettingsCard>
-        <labs:SettingsCard Header="Tabs Layout Model" Description="Change Here Default Or Featured" Margin="0,1,0,0">
+        <labs:SettingsCard Header="Color TabView Background" Description="Change The Color Of The TabViewBackground" Margin="0,1,0,0">
             <labs:SettingsCard.HeaderIcon>
                 <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE790;" />
             </labs:SettingsCard.HeaderIcon>
+            <TextBox x:Name="ColorTV" Text="#000000" TextChanged="ColorTV_TextChanged"/>
+        </labs:SettingsCard>
+        <labs:SettingsExpander Header="Tabs Layout Model" Description="Change Here Default Or Featured Or Costum" Margin="0,1,0,0">
+            <labs:SettingsExpander.HeaderIcon>
+                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC6C;" />
+            </labs:SettingsExpander.HeaderIcon>
+            <labs:SettingsExpander.Items>
+                <labs:SettingsCard>
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE790;"/>
+                    </labs:SettingsCard.HeaderIcon>
+                    <TextBox x:Name="Color" Text="#000000" TextChanged="Color_TextChanged"/>
+                </labs:SettingsCard>
+            </labs:SettingsExpander.Items>
             <ComboBox x:Name="Type" SelectionChanged="Type_SelectionChanged">
                 <x:String>
                     Default
@@ -30,7 +44,10 @@
                 <x:String>
                     Featured
                 </x:String>
+                <x:String>
+                    Costum
+                </x:String>
             </ComboBox>
-        </labs:SettingsCard>
+        </labs:SettingsExpander>
     </StackPanel>
 </Page>

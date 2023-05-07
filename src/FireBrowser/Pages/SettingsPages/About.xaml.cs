@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Labs.WinUI;
+using FireBrowser.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -24,11 +25,6 @@ namespace FireBrowser.Pages.SettingsPages
             this.InitializeComponent();
         }
 
-        public static MainPage MainPageContent
-        {
-            get { return (Window.Current.Content as Frame)?.Content as MainPage; }
-        }
-
         private void AboutCardClicked(object sender, RoutedEventArgs e)
         {
             string url = "https://example.com";
@@ -45,7 +41,7 @@ namespace FireBrowser.Pages.SettingsPages
                     break;
             }
             MainPage mp = new();
-            MainPageContent.NavigateToUrl(url);
+            UseContent.MainPageContent.NavigateToUrl(url);
         }
     }
 }

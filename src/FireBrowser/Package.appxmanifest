@@ -13,11 +13,11 @@
 
   <Identity
     Name="57443TechFireX.30017BED6DE0B"
-    Publisher="CN=Bluebird Devs"
-    Version="0.1.5.0" />
+    Publisher="CN=787233D4-4D29-47D2-B29A-AD3E99C44FE7"
+    Version="0.1.7.0" />
 
 	
-  <mp:PhoneIdentity PhoneProductId="a573fde3-153b-468c-93b4-2e742f27c3f4" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="8c234b88-a1c9-420c-8c0f-9136a2a6e13a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>FireBrowser-Alpha</DisplayName>

@@ -24,24 +24,40 @@ namespace FireBrowser.Pages.TimeLine
             this.InitializeComponent();
         }
 
+        MainPage mainFrame = (MainPage)((Frame)Window.Current.Content).Content;
+
         private Passer passer;
 
-        private readonly List<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)>
+        private readonly List<(string Tag, Type Page)> _pages = new()
         {
-            ("History", typeof(TimeLine.HistoryTime)),
-            ("Apps", typeof(TimeLine.Apps)),
+             ("History", typeof(TimeLine.HistoryTime)),
+             ("Apps", typeof(TimeLine.Apps)),
+             ("Favorites", typeof(TimeLine.Favorites))
         };
+
 
         private void NavigationView_Loaded(object sender, RoutedEventArgs e)
         {
             ContentFrame.Navigated += On_Navigated;
 
-            // NavView doesn't load any page by default, so load home page.
-            NavigationView.SelectedItem = NavigationView.MenuItems[1];
-            // If navigation occurs on SelectionChanged, this isn't needed.
-            // Because we use ItemInvoked to navigate, we need to call Navigate
-            // here to load the home page.
-            NavigationView_Navigate("History", new Windows.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
+            var urlBoxText = mainFrame.UrlBox.Text;
+            var navigateTo = urlBoxText switch
+            {
+                string s when s.Contains("firebrowser://apps") => ("Apps", NavigationView.MenuItems[0]),
+                string s when s.Contains("firebrowser://history") => ("History", NavigationView.MenuItems[1]),
+                string s when s.Contains("firebrowser://favorites") => ("Favorites", NavigationView.MenuItems[2]),
+                _ => (null, null),// default case
+            };
+            if (navigateTo.Item1 != null && navigateTo.Item2 != null)
+            {
+                NavigationView.SelectedItem = navigateTo.Item2;
+                NavigationView_Navigate(navigateTo.Item1, new Windows.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
+            }
+            else
+            {
+                NavigationView.SelectedItem = NavigationView.MenuItems[0];
+                NavigationView_Navigate("Apps", new Windows.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
+            } // Default behavior
 
             // Listen to the window directly so the app responds
             // to accelerator keys regardless of which element has focus.
