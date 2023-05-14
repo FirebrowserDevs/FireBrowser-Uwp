@@ -18,7 +18,7 @@
                     FireBrowser Light Mode ( This Is Optional )
                 </labs:SettingsCard.Header>
                 <labs:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC4A;"/>
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEC4A;"/>
                 </labs:SettingsCard.HeaderIcon>
                 <ToggleSwitch x:Name="LgMode" Toggled="LgMode_Toggled"/>
             </labs:SettingsCard>
@@ -27,7 +27,7 @@
                     Hex Colors
                 </labs:SettingsExpander.Header>
                 <labs:SettingsExpander.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE70F;"/>
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE70F;"/>
                 </labs:SettingsExpander.HeaderIcon>
                 <labs:SettingsExpander.Items>
                     <labs:SettingsCard>
@@ -49,7 +49,7 @@
                     Microsoft Account Connect ( This Is Optional )
                 </labs:SettingsCard.Header>
                 <labs:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE910;"/>
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE910;"/>
                 </labs:SettingsCard.HeaderIcon>
                 <Button x:Name="ConnectBtn" Click="ConnectBtn_Click">
                     Connect
@@ -60,7 +60,7 @@
                     Username Disabled Coming Soon
                 </labs:SettingsCard.Header>
                 <labs:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEE57;"/>
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEE57;"/>
                 </labs:SettingsCard.HeaderIcon>
                 <TextBox x:Name="User"/>
             </labs:SettingsCard>

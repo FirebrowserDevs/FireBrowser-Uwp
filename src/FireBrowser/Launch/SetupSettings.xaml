@@ -18,7 +18,7 @@
                     Search Engine
                 </labs:SettingsCard.Header>
                 <labs:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE721;"/>
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE721;"/>
                 </labs:SettingsCard.HeaderIcon>
                 <ComboBox  x:Name="SearchengineSelection" SelectionChanged="SearchengineSelection_SelectionChanged" SelectedItem="Google">
                     <x:String>Google</x:String>
@@ -39,12 +39,12 @@
                     Set BackGround Type
                 </labs:SettingsExpander.Header>
                 <labs:SettingsExpander.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE790;"/>
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE790;"/>
                 </labs:SettingsExpander.HeaderIcon>
                 <labs:SettingsExpander.Items>
                     <labs:SettingsCard>
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE790;"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE790;"/>
                         </labs:SettingsCard.HeaderIcon>
                         <TextBox x:Name="Color" Text="#000000" TextChanged="Color_TextChanged"/>
                     </labs:SettingsCard>
@@ -60,43 +60,43 @@
                     Toolbar Icons ( Optional )
                 </labs:SettingsExpander.Header>
                 <labs:SettingsExpander.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE737;"/>
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE737;"/>
                 </labs:SettingsExpander.HeaderIcon>
                 <labs:SettingsExpander.Items>
                     <labs:SettingsCard>
                         <ToggleSwitch x:Name="Dwbl"  Toggled="Dwbl_Toggled" IsOn="True"/>
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE896;"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE896;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard>
                         <ToggleSwitch x:Name="FrL" Toggled="FrL_Toggled" IsOn="True"/>
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE734;"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE734;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard>
                         <ToggleSwitch x:Name="Frbl" Toggled="Frbl_Toggled" IsOn="True"/>
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE728;"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE728;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard>
                         <ToggleSwitch x:Name="Tooltl" Toggled="Tooltl_Toggled" IsOn="True"/>
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE70F;"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE70F;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard>
                         <ToggleSwitch x:Name="Hsbl" Toggled="Hsbl_Toggled" IsOn="True"/>
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE81C;"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE81C;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard>
                         <ToggleSwitch x:Name="Qrbl" Toggled="Qrbl_Toggled" IsOn="True"/>
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xED14;"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xED14;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                 </labs:SettingsExpander.Items>
@@ -106,31 +106,31 @@
                     Tool Menu Icons ( Optional )
                 </labs:SettingsExpander.Header>
                 <labs:SettingsExpander.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE70F;"/>
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE70F;"/>
                 </labs:SettingsExpander.HeaderIcon>
                 <labs:SettingsExpander.Items>
                     <labs:SettingsCard>
                         <ToggleSwitch x:Name="Darklg" Toggled="Darklg_Toggled" IsOn="True"/>
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE790;"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE790;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard>
                         <ToggleSwitch x:Name="Trbl" Toggled="Trbl_Toggled" IsOn="True"/>
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE87E;"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE87E;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard>
                         <ToggleSwitch x:Name="Read" Toggled="Read_Toggled" IsOn="True"/>
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE736;"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE736;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard>
                         <ToggleSwitch x:Name="Adbl" Toggled="Adbl_Toggled" IsOn="True"/>
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xEA18;"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEA18;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                 </labs:SettingsExpander.Items>
@@ -140,13 +140,13 @@
                     Privacy Settings ( Optional )
                 </labs:SettingsExpander.Header>
                 <labs:SettingsExpander.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEA18;"/>
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEA18;"/>
                 </labs:SettingsExpander.HeaderIcon>
                 <labs:SettingsExpander.Items>
                     <labs:SettingsCard>
                         <ToggleSwitch x:Name="Javascript" Toggled="Javascript_Toggled" IsOn="False"/>
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE943;"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE943;"/>
                         </labs:SettingsCard.HeaderIcon>
                         <labs:SettingsCard.Header>
                             Disable JavaScript ( Might Break Some Websites )
@@ -155,7 +155,7 @@
                     <labs:SettingsCard>
                         <ToggleSwitch x:Name="AutoFillGen" Toggled="AutoFillGen_Toggled" IsOn="False"/>
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE8DA;"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE8DA;"/>
                         </labs:SettingsCard.HeaderIcon>
                         <labs:SettingsCard.Header>
                             Disable Genaral AutoFill
@@ -164,7 +164,7 @@
                     <labs:SettingsCard>
                         <ToggleSwitch x:Name="Messages"  Toggled="Messages_Toggled" IsOn="False"/>
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE8BD;"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE8BD;"/>
                         </labs:SettingsCard.HeaderIcon>
                         <labs:SettingsCard.Header>
                             Disable WebMessages
@@ -173,7 +173,7 @@
                     <labs:SettingsCard>
                         <ToggleSwitch x:Name="Passwords" Toggled="Passwords_Toggled" IsOn="False"/>
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xF427;"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xF427;"/>
                         </labs:SettingsCard.HeaderIcon>
                         <labs:SettingsCard.Header>
                             Disable AutoFill Passwords
@@ -186,12 +186,12 @@
                     Allow App Location Permission
                 </labs:SettingsExpander.Header>
                 <labs:SettingsExpander.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE707;"/>
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE707;"/>
                 </labs:SettingsExpander.HeaderIcon>
                 <labs:SettingsExpander.Items>
                     <labs:SettingsCard>
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE707;"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE707;"/>
                         </labs:SettingsCard.HeaderIcon>
                         <labs:SettingsCard.Header>
                             Allow Location ( For WebView2 )
