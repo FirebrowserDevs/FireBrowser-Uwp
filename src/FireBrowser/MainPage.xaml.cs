@@ -13,7 +13,6 @@ using FireBrowserUrlHelper;
 using Microsoft.Data.Sqlite;
 using Microsoft.UI.Xaml.Controls;
 using SQLitePCL;
-using Syncfusion.Pdf.IO;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

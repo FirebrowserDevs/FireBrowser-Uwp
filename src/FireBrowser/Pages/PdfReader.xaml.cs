@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using FireBrowser.Core;
-using Syncfusion.Pdf.Parsing;
 using System;
 using System.Threading;
 using Windows.Storage;
@@ -16,9 +15,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage.AccessCache;
 using System.Data.SqlTypes;
-using Syncfusion.Windows.PdfViewer;
 using Windows.Graphics.Printing;
-using Syncfusion.Pdf;
 using Windows.System;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -100,7 +97,7 @@ namespace FireBrowser.Pages
             byte[] buffer = new byte[fileStream.Length];
             fileStream.Read(buffer, 0, buffer.Length);
             //Loads the PDF document.
-            PdfLoadedDocument loadedDocument = new PdfLoadedDocument(buffer);
+         
           
         }
 
@@ -124,10 +121,7 @@ namespace FireBrowser.Pages
 
         #endregion
 
-        private void pdfViewer_PageChanged(object sender, Syncfusion.Windows.PdfViewer.PageChangedEventArgs e)
-        {
-         
-        }
+     
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -171,9 +165,6 @@ namespace FireBrowser.Pages
             await Launcher.LaunchUriAsync(new Uri("https://discord.gg/kYStRKBHwy"));
         }
 
-        private void pdfViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-
-        }
+     
     }
 }
