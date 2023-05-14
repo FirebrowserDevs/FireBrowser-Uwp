@@ -13,6 +13,7 @@ using FireBrowserUrlHelper;
 using Microsoft.Data.Sqlite;
 using Microsoft.UI.Xaml.Controls;
 using SQLitePCL;
+using Syncfusion.Pdf.IO;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -98,7 +99,11 @@ namespace FireBrowser
 
             ViewModel = new ToolbarViewModel
             {
-                UserName = "", //Settings.currentProfile.AccountData.Name,             
+                UserName = "",
+                SecurityIcon = "\uE946",
+                SecurityIcontext = "FireBrowser Home Page",
+                Securitytext = "This The Default Home Page Of Firebrowser Internal Pages Secure",
+                Securitytype = "Link - FireBrowser://NewTab",//Settings.currentProfile.AccountData.Name,             
             };
             Window.Current.SetTitleBar(CustomDragRegion);
         }
@@ -230,6 +235,7 @@ namespace FireBrowser
                     case AppLaunchType.LaunchIncognito:
                         RequestedTheme = ElementTheme.Dark;
                         VBtn.Visibility = Visibility.Collapsed;
+                        ViewModel.Securitytype = "Link - Firebrowser://incognito";
                         History.IsEnabled = false;
                         DownBtn.IsEnabled = false;
                         AddFav.IsEnabled = false;
@@ -245,6 +251,10 @@ namespace FireBrowser
                         break;
                     case AppLaunchType.FirstLaunch:
                         Tabs.TabItems.Add(CreateNewTab());
+                        break;
+                    case AppLaunchType.FilePDF:                   
+                        var files = passer.LaunchData as IReadOnlyList<IStorageItem>;
+                        Tabs.TabItems.Add(CreateNewTab(typeof(Pages.PdfReader), files[0]));
                         break;
                     case AppLaunchType.URIHttp:
                         Tabs.TabItems.Add(CreateNewTab(typeof(WebContent), new Uri(passer.LaunchData.ToString())));
@@ -285,6 +295,12 @@ namespace FireBrowser
             private string currentAddress;
             [ObservableProperty]
             private string securityIcon;
+            [ObservableProperty]
+            private string securityIcontext;
+            [ObservableProperty]
+            private string securitytext;
+            [ObservableProperty]
+            private string securitytype;
             [ObservableProperty]
             private Visibility homeButtonVisibility;
 
@@ -525,6 +541,9 @@ namespace FireBrowser
                     case "firebrowser://favorites":
                         TabContent.Navigate(typeof(Pages.TimeLine.Timeline));
                         break;
+                    case "firebrowser://pdf":
+                        TabContent.Navigate(typeof(Pages.PdfReader), CreatePasser(), new DrillInNavigationTransitionInfo());
+                        break;
                     default:
                         // default behavior
                         break;
@@ -599,14 +618,6 @@ namespace FireBrowser
 
         private async void Tabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (TabContent != null)
-            {
-                TabContent.Navigated += async (s, e) =>
-                {
-
-                };
-            }
-
             if (TabContent?.Content is WebContent webContent)
             {
                 TabWebView.NavigationStarting += async (s, e) =>
@@ -1000,6 +1011,11 @@ namespace FireBrowser
                 case "InPrivate":
                     OpenNewWindow(new Uri("firebrowser://incognito"));
                     break;
+                case "Favorites":
+                    UrlBox.Text = "firebrowser://favorites";
+                    Thread.Sleep(5);
+                    TabContent.Navigate(typeof(Pages.TimeLine.Timeline));
+                    break;
             }
         }
 
@@ -1040,12 +1056,6 @@ namespace FireBrowser
         private void Tabs_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
             isDragging = false;
-        }
-
-
-        private void HistorySearchMenuItem_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
-        {
-
         }
 
         private void OpenFavoritesMenu_Click(object sender, RoutedEventArgs e)

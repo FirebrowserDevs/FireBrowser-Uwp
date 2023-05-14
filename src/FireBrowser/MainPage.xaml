@@ -46,45 +46,45 @@
                     <Border BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.3" Margin="10,5,10,10" BorderThickness="1"/>
                     <Button Tag="NewTab" Click="TabMenuClick" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch"	HorizontalContentAlignment="Left" Margin="0,0,0,0" IsEnabled="True">
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC6C;" FontSize="18"/>
+                            <FontIcon  FontFamily="{StaticResource FluentIcons}" Glyph="&#xEC6C;" FontSize="18"/>
                             <TextBlock Margin="10,0,0,0" Text="New-Tab"/>
                         </StackPanel>
                     </Button>
                     <Button Tag="NewWindow" Click="TabMenuClick" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="0,0,0,0" IsEnabled="True">
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE737;" FontSize="18"/>
+                            <FontIcon  FontFamily="{StaticResource FluentIcons}" Glyph="&#xE737;" FontSize="18"/>
                             <TextBlock Margin="10,0,0,0" Text="New-Window"/>
                         </StackPanel>
                     </Button>
                     <Button Tag="InPrivate" Click="TabMenuClick" IsEnabled="True" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon FontFamily="Segoe Fluent Icons"  Glyph="&#xE727;" FontSize="18"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}"  Glyph="&#xE727;" FontSize="18"/>
                             <TextBlock Margin="10,0,0,0" Text="New-Private"/>
                         </StackPanel>
                     </Button>
                     <Border BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.3" Margin="10,10" BorderThickness="1"/>
                     <Button Tag="History" Click="TabMenuClick"  Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE81C;" FontSize="18"/>
+                            <FontIcon  FontFamily="{StaticResource FluentIcons}" Glyph="&#xE81C;" FontSize="18"/>
                             <TextBlock Margin="10,0,0,0" Text="History"/>
                         </StackPanel>
                     </Button>
-                    <Button IsEnabled="False"  Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                    <Button Tag="Favorites" Click="TabMenuClick" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE728;" FontSize="18"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE728;" FontSize="18"/>
                             <TextBlock Margin="10,0,0,0" Text="Favorites"/>
                         </StackPanel>
                     </Button>
                     <Button IsEnabled="False"  Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE749;" FontSize="18"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE749;" FontSize="18"/>
                             <TextBlock Margin="10,0,0,0" Text="Print"/>
                         </StackPanel>
                     </Button>
                     <Border BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.3" Margin="10,10" BorderThickness="1"/>
                     <Button Tag="FullScreen" Click="TabMenuClick" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon x:Name="Icon" FontFamily="Segoe Fluent Icons" Glyph="&#xE740;" FontSize="18"/>
+                            <FontIcon x:Name="Icon" FontFamily="{StaticResource FluentIcons}" Glyph="&#xE740;" FontSize="18"/>
                             <TextBlock x:Name="TextFull" Margin="10,0,0,0" Text="Full Screen"/>
                         </StackPanel>
                     </Button>
@@ -97,13 +97,13 @@
                     <Border BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.3" Margin="10,10" BorderThickness="1"/>
                     <Button Tag="DevTools" Click="TabMenuClick" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC7A;" FontSize="18"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEC7A;" FontSize="18"/>
                             <TextBlock Margin="10,0,0,0" Text="Dev Tools"/>
                         </StackPanel>
                     </Button>
                     <Button Tag="Settings" Click="TabMenuClick" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE713;" FontSize="18"/>
+                            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE713;" FontSize="18"/>
                             <TextBlock Margin="10,0,0,0" Text="Settings"/>
                         </StackPanel>
                     </Button>
@@ -212,7 +212,7 @@
         <Flyout x:Name="HistoryFlyout" Placement="Bottom">
             <MenuFlyoutItem x:Name="HistoryMenuItem" Text="History">
                 <MenuFlyoutItem.Icon>
-                    <FontIcon Glyph="&#xE81C;" />
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE81C;" />
                 </MenuFlyoutItem.Icon>
                 <MenuFlyoutItem.ContextFlyout>
                     <Flyout x:Name="HistoryFlyoutMenu" Placement="TopEdgeAlignedRight">
@@ -243,7 +243,7 @@
                                 x:Name="HistorySearchMenuItem"
                                 Height="35"
                                 Visibility="Collapsed" 
-                                KeyDown="HistorySearchMenuItem_KeyDown"/>
+                                />
                             <StackPanel
                                 Grid.Column="1"
                                 HorizontalAlignment="Right"
@@ -283,7 +283,7 @@
                                             </MenuFlyoutItem>
                                             <MenuFlyoutItem x:Name="OpenHistoryMenuItem" Text="Open History Page" Click="OpenHistoryMenuItem_Click">
                                                 <MenuFlyoutItem.Icon>
-                                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8A7;" />
+                                                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE8A7;" />
                                                 </MenuFlyoutItem.Icon>
                                             </MenuFlyoutItem>
                                         </MenuFlyout>
@@ -329,21 +329,41 @@
                 </MenuFlyoutItem.ContextFlyout>
             </MenuFlyoutItem>
         </Flyout>
-        <Flyout
-            x:Name="SecurityFlyout"
-            FlyoutPresenterStyle="{ThemeResource NoPaddingFlyoutStyle}"
-            Placement="Bottom">
-            <StackPanel Width="340">
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon  x:Name="SSLFlyoutIcon"
-                               FontFamily="Segoe Fluent Icons"
-                                    Glyph="&#xE712;"
-                                    FontSize="18" />
-                    <TextBlock x:Name="SSLFlyoutHeader" Style="{ThemeResource BaseTextBlockStyle}" Margin="10,0" Text="Connection informations"/>
-                </StackPanel>
-                <TextBlock x:Name="SSLFlyoutStatus" TextWrapping="WrapWholeWords" Margin="0,20,0,0" Text="Website's SSL status goes here."/>
+        <Flyout x:Name="SecurityFlyout"
+        FlyoutPresenterStyle="{ThemeResource NoPaddingFlyoutStyle}"
+        Placement="Bottom">
+            <StackPanel Width="340" Height="135">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="100"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" MaxHeight="35">
+                        <FontIcon  x:Name="SSLFlyoutIcon"
+                               VerticalAlignment="Center"
+                                   Margin="10,10,0,0"
+                               HorizontalAlignment="Left"
+                               FontFamily="{StaticResource FluentIcons}"
+                               Glyph="{x:Bind ViewModel.SecurityIcon, Mode=OneWay}"  />
+                        <TextBlock x:Name="SSLFlyoutHeader" HorizontalAlignment="Center" Margin="0,-20,0,0" Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind ViewModel.SecurityIcontext, Mode=OneWay}"/>
+                        <FontIcon  x:Name="CerftIcon"
+                               VerticalAlignment="Center"
+                               Margin="0,-18,12,0"
+                               HorizontalAlignment="Right"
+                               FontFamily="{StaticResource FluentIcons}"
+                               Glyph="&#xEB95;"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Orientation="Vertical">
+                        <TextBlock x:Name="SiteUrl" Margin="0,2,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind ViewModel.Securitytype, Mode=OneWay}"/>
+                        <Border BorderBrush="Red" Height="0" Margin="0,4,0,0" BorderThickness="0"/>
+                        <StackPanel Orientation="Vertical" >
+                            <TextBlock x:Name="Status" VerticalAlignment="Bottom" Margin="0,15,0,0" HorizontalAlignment="Left"  TextWrapping="WrapWholeWords" Text="{x:Bind ViewModel.Securitytext,Mode=OneWay}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
             </StackPanel>
         </Flyout>
+
         <Flyout x:Name="tabpreview">
             <TextBlock Tag="TabPreview">
                 Tab Preview
@@ -406,8 +426,7 @@
                 <Button
                     Style="{StaticResource QuietButtonStyle}"
                     Tag="Back"
-                    x:Name="Back"
-                  
+                    x:Name="Back"              
                     Click="ToolbarButtonClick"
                     x:FieldModifier="Public"
                     >
@@ -481,8 +500,11 @@
                     Foreground="{ThemeResource TextFillColorDisabledBrush}"
                     Style="{StaticResource QuietButtonStyle}"
                     x:FieldModifier="Public"
-                    Content="{firebrowser:FluentIcon Glyph=&#xE72E;}"
-                    FontFamily="Segoe Fluent Icons">
+                    >
+                    <FontIcon
+                        d:Glyph="&#xE72E;"
+                        FontFamily="{StaticResource FluentIcons}"
+                        Glyph="{x:Bind ViewModel.SecurityIcon, Mode=OneWay}" />
                 </Button>
 
 
@@ -629,7 +651,7 @@
                                             <MenuFlyout Placement="Bottom">
                                                 <MenuFlyoutItem x:Name="OpenFavoritesMenu" Text="Open Favorites Page" Click="OpenFavoritesMenu_Click">
                                                     <MenuFlyoutItem.Icon>
-                                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8A7;" />
+                                                        <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE8A7;" />
                                                     </MenuFlyoutItem.Icon>
                                                 </MenuFlyoutItem>
                                             </MenuFlyout>

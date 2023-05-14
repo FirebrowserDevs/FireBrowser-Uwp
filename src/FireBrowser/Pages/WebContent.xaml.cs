@@ -145,12 +145,50 @@ namespace FireBrowser.Pages
             }
         }
 
+        public void aftercomplete()
+        {
+            string url = WebViewElement.CoreWebView2.Source.ToString();
+            string protocol = url.StartsWith("https://", StringComparison.OrdinalIgnoreCase) ? "https://" : "http://";
+            string baseUrl = protocol + url.Substring(protocol.Length);
+
+            if (IsIncognitoModeEnabled == true)
+            {
+
+            }
+            else
+            {
+                string address = WebViewElement.CoreWebView2.Source.ToString();
+                string title = WebViewElement.CoreWebView2.DocumentTitle.ToString();
+                var dbAddHis = new DbAddHis();
+                dbAddHis.AddHistData(address, title);
+            }
+
+            if (WebViewElement.CoreWebView2.Source.Contains("https"))
+            {
+                param.ViewModel.SecurityIcon = "\uE72E";
+                param.ViewModel.SecurityIcontext = "Https Secured Website";
+                param.ViewModel.Securitytype = "Link - " + baseUrl;
+                param.ViewModel.Securitytext = "This Page Is Secured By A Valid Ssl Certificate, Trusted By Root Authorities";
+            }
+            else if (WebViewElement.CoreWebView2.Source.Contains("http"))
+            {
+                param.ViewModel.SecurityIcon = "\uE785";
+                param.ViewModel.SecurityIcontext = "Http UnSecured Website";
+                param.ViewModel.Securitytype = "Link - " + baseUrl;
+                param.ViewModel.Securitytext = "This Page Is Un-Secured By A Un-Valid Ssl Certificate, Please Be Careful";
+            }
+        }
+
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             param = e.Parameter as Passer;
-
+            CoreWebView2EnvironmentOptions options = new CoreWebView2EnvironmentOptions
+            {
+                AdditionalBrowserArguments = "--edge-webview-optional-enable-uwp-regular-downloads"
+            };
             await WebViewElement.EnsureCoreWebView2Async();
+           
 
             loadSetting();
             WebView2 s = WebViewElement;
@@ -277,18 +315,14 @@ namespace FireBrowser.Pages
                 {
                     this.FullScreen = s.CoreWebView2.ContainsFullScreenElement;
                 };
-
-                if (IsIncognitoModeEnabled == true)
+                if (UseContent.MainPageContent.UrlBox.Text.Contains("youtube"))
                 {
-
+                 
                 }
                 else
                 {
-                    string address = WebViewElement.CoreWebView2.Source.ToString();
-                    string title = WebViewElement.CoreWebView2.DocumentTitle.ToString();
-                    var dbAddHis = new DbAddHis();
-                    dbAddHis.AddHistData(address, title);
-                }
+                    aftercomplete();
+                }             
             };
             s.CoreWebView2.SourceChanged += (sender, args) =>
             {
@@ -296,6 +330,7 @@ namespace FireBrowser.Pages
                 {
                     param.ViewModel.CurrentAddress = sender.Source;
                 }
+       
             };
             s.CoreWebView2.NewWindowRequested += (sender, args) =>
             {

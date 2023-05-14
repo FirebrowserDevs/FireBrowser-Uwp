@@ -17,7 +17,7 @@
             <TextBox x:Name="Ts" Margin="0,7,0,0" Width="300" PlaceholderText="Search History Here" TextChanged="Ts_TextChanged"/>
         </StackPanel>
         <Button x:Name="Delete" Click="Delete_Click" Style="{StaticResource QuietButtonStyle}" Width="75" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" ToolTipService.ToolTip="Delete All History">
-            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE74D;" />
+            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE74D;" />
         </Button>
         <StackPanel HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Grid.Row="2">
             <ListView x:Name="BigTemp">

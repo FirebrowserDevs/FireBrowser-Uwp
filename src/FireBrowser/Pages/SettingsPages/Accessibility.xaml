@@ -10,7 +10,7 @@
         <StackPanel>
             <labs:SettingsExpander x:Uid="FireBrowser - StartUp" Margin="0,10,0,0">
                 <labs:SettingsExpander.HeaderIcon>
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF8A6;"/>
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xF8A6;"/>
                 </labs:SettingsExpander.HeaderIcon>
                 <labs:SettingsExpander.Header>
                     FireBrowser Auto-Start Feature
@@ -23,7 +23,7 @@
             </labs:SettingsExpander>
             <labs:SettingsCard Header="FireBrowser - Light Mode" Description="This Will Enable Light Mode Or Not ( This Will Disable Stuff To Optimize Performance )" Margin="0,5,0,0">
                 <labs:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC4A;" />
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEC4A;" />
                 </labs:SettingsCard.HeaderIcon>
                 <ToggleSwitch x:Name="LiteMode" Toggled="LiteMode_Toggled"/>
             </labs:SettingsCard>

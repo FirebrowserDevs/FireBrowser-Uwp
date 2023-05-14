@@ -19,7 +19,7 @@
                 Tag="OpenLnkInNewWindow"
                 ToolTipService.ToolTip="Open link in new window">
                 <AppBarButton.Icon>
-                    <FontIcon FontFamily="ms-appx:///Fonts/Segoe Fluent Icons.tff#Segoe Fluent Icons" Glyph="&#xE17C;" />
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE17C;" />
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarButton
@@ -27,7 +27,7 @@
                 Tag="Copy"
                 ToolTipService.ToolTip="Copy link">
                 <AppBarButton.Icon>
-                    <FontIcon FontFamily="ms-appx:///Fonts/Segoe Fluent Icons.tff#Segoe Fluent Icons" Glyph="&#xE16F;" />
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE16F;" />
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarButton
@@ -41,7 +41,7 @@
                     Label="Copy Text"
                     Tag="CopyText">
                     <AppBarButton.Icon>
-                        <FontIcon FontFamily="ms-appx:///Fonts/Segoe Fluent Icons.tff#Segoe Fluent Icons" Glyph="&#xE16F;" />
+                        <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE16F;" />
                     </AppBarButton.Icon>
                 </AppBarButton>
             </muxc:CommandBarFlyout.SecondaryCommands>
@@ -78,7 +78,7 @@
                >
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE107;" />
+                        <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE107;" />
                         <TextBlock Margin="10,0,0,0">Delete all favorites</TextBlock>
                     </StackPanel>
                 </Button.Content>

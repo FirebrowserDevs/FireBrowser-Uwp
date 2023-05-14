@@ -34,7 +34,7 @@
                 <AppBarButton Label="Open In" x:Name="OpenLinks" Visibility="Collapsed" Icon="{firebrowser:FluentIcon Glyph=&#xE8AD;}">
                     <AppBarButton.Flyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem Tag="OpenInTab" Click="ContextClicked_Click" Text="Open In New Tab" Icon="{firebrowser:FluentIcon Glyph=&#xEC6C;}"/>
+                            <MenuFlyoutItem IsEnabled="False" Tag="OpenInTab" Click="ContextClicked_Click" Text="Open In New Tab" Icon="{firebrowser:FluentIcon Glyph=&#xEC6C;}"/>
                             <MenuFlyoutItem Text="Open In New Window" Click="ContextClicked_Click" Tag="OpenInWindow" Icon="{firebrowser:FluentIcon Glyph=&#xE737;}"/>
                         </MenuFlyout>
                     </AppBarButton.Flyout>

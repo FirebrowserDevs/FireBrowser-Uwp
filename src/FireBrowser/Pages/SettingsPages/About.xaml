@@ -50,22 +50,22 @@
                 <labs:SettingsExpander.Items>
                     <labs:SettingsCard Header="Jakub">
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon Glyph="&#xEC7A;"/>
+                            <FontIcon  FontFamily="{StaticResource FluentIcons}" Glyph="&#xEC7A;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard Header="jarno9981">
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon Glyph="&#xEC7A;"/>
+                            <FontIcon  FontFamily="{StaticResource FluentIcons}" Glyph="&#xEC7A;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard Header="JULIΛN (Pinguin2001)">
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon Glyph="&#xEC7A;"/>
+                            <FontIcon  FontFamily="{StaticResource FluentIcons}" Glyph="&#xEC7A;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard Header="Blindside - Labs">
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon Glyph="&#xEC7A;"/>
+                            <FontIcon  FontFamily="{StaticResource FluentIcons}" Glyph="&#xEC7A;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                 </labs:SettingsExpander.Items>
@@ -80,37 +80,37 @@
                 <labs:SettingsExpander.Items>
                     <labs:SettingsCard Header="AlienFromMars">
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE775;"/>
+                            <FontIcon  FontFamily="{StaticResource FluentIcons}" Glyph="&#xE775;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard Header="Bygrilinho">
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE775;"/>
+                            <FontIcon  FontFamily="{StaticResource FluentIcons}" Glyph="&#xE775;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard Header="JULIΛN (Pinguin2001)">
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE775;"/>
+                            <FontIcon  FontFamily="{StaticResource FluentIcons}" Glyph="&#xE775;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard Header="LexTheCat">
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE775;"/>
+                            <FontIcon  FontFamily="{StaticResource FluentIcons}" Glyph="&#xE775;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard Header="NoobNotFound">
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE775;"/>
+                            <FontIcon  FontFamily="{StaticResource FluentIcons}" Glyph="&#xE775;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard Header="jarno9981">
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE775;"/>
+                            <FontIcon  FontFamily="{StaticResource FluentIcons}" Glyph="&#xE775;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                     <labs:SettingsCard Header="VspalihuikA">
                         <labs:SettingsCard.HeaderIcon>
-                            <FontIcon  FontFamily="Segoe Fluent Icons" Glyph="&#xE775;"/>
+                            <FontIcon  FontFamily="{StaticResource FluentIcons}" Glyph="&#xE775;"/>
                         </labs:SettingsCard.HeaderIcon>
                     </labs:SettingsCard>
                 </labs:SettingsExpander.Items>
@@ -143,7 +143,7 @@
             </labs:SettingsCard>
         </StackPanel>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
-            <FontIcon Glyph="&#xEB51;"/>
+            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEB51;"/>
             <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" x:Uid="SpecialThanksNote"/>
         </StackPanel>
     </StackPanel>

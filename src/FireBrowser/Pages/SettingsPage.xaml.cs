@@ -109,27 +109,6 @@ namespace FireBrowser.Pages
             };
         }
 
-
-
-        private async void NavView_SelectionChanged(muxc.NavigationView sender,
-                                             muxc.NavigationViewSelectionChangedEventArgs args)
-        {
-            if (args.IsSettingsSelected) // Ignore the Settings item
-            {
-                NavView_Navigate("settings", args.RecommendedNavigationTransitionInfo);
-                return;
-            }
-
-            if (args.SelectedItemContainer != null)
-            {
-                // Save the selected item tag in the LocalSettings object
-                string selectedItemTag = args.SelectedItemContainer.Tag.ToString();
-                ApplicationData.Current.LocalSettings.Values["SelectedNavViewItemId"] = selectedItemTag;
-
-                NavView_Navigate(selectedItemTag, args.RecommendedNavigationTransitionInfo);
-            }
-        }
-
         private void NavView_Navigate(
             string navItemTag,
             Windows.UI.Xaml.Media.Animation.NavigationTransitionInfo transitionInfo)

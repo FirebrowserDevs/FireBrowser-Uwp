@@ -161,6 +161,9 @@
     <Compile Include="Pages\NewTab.xaml.cs">
       <DependentUpon>NewTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\PdfReader.xaml.cs">
+      <DependentUpon>PdfReader.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
@@ -217,6 +220,7 @@
     <Content Include="Assets\Icons\About.svg" />
     <Content Include="Assets\Icons\Accessibility.svg" />
     <Content Include="Assets\Icons\Home.svg" />
+    <Content Include="Assets\FileIcons\LogoPdfFile.png" />
     <Content Include="Assets\Icons\More.svg" />
     <Content Include="Assets\Icons\Privacy.svg" />
     <Content Include="Assets\Icons\Style.svg" />
@@ -324,6 +328,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\PdfReader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\SettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -414,13 +422,16 @@
       <Version>7.1.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.8.3</Version>
+      <Version>2.8.4</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Web.WebView2">
-      <Version>1.0.1777-prerelease</Version>
+      <Version>1.0.1829-prerelease</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="Syncfusion.SfPdfViewer.UWP">
+      <Version>21.2.4</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

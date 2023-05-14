@@ -140,7 +140,6 @@ namespace FireBrowser.Pages
                                 ImageSource = btpImg,
                                 Stretch = Stretch.UniformToFill
                             };
-                            client.Dispose();
                         }
                         catch (Exception ex)
                         {
