@@ -544,6 +544,9 @@ namespace FireBrowser
                     case "firebrowser://pdf":
                         TabContent.Navigate(typeof(Pages.PdfReader), CreatePasser(), new DrillInNavigationTransitionInfo());
                         break;
+                    case "firebrowser://code":
+                        TabContent.Navigate(typeof(Pages.LiveCodeEditor), CreatePasser(), new DrillInNavigationTransitionInfo());
+                        break;
                     default:
                         // default behavior
                         break;

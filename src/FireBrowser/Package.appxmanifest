@@ -92,6 +92,15 @@
 					<uap:Logo>Assets\FileIcons\LogoPdfFile.png</uap:Logo>
 				</uap:FileTypeAssociation>
 			</uap:Extension>
+			<uap:Extension Category="windows.fileTypeAssociation">
+				<uap:FileTypeAssociation Name="firebrowser-extensible-markup-language">
+					<uap:SupportedFileTypes>
+						<uap:FileType ContentType="application/xml">.xml</uap:FileType>
+					</uap:SupportedFileTypes>
+					<uap:DisplayName>FireBrowser Xml Disabled</uap:DisplayName>
+					<uap:Logo>Assets\FileIcons\LogoXmlFile.png</uap:Logo>
+				</uap:FileTypeAssociation>
+			</uap:Extension>
 		</Extensions>		
     </Application>
   </Applications>

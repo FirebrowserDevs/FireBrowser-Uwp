@@ -158,6 +158,9 @@
     <Compile Include="Pages\Incognito.xaml.cs">
       <DependentUpon>Incognito.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\LiveCodeEditor.xaml.cs">
+      <DependentUpon>LiveCodeEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\NewTab.xaml.cs">
       <DependentUpon>NewTab.xaml</DependentUpon>
     </Compile>
@@ -217,6 +220,7 @@
     <Content Include="Assets\BadgeLogo.scale-150.png" />
     <Content Include="Assets\BadgeLogo.scale-200.png" />
     <Content Include="Assets\BadgeLogo.scale-400.png" />
+    <Content Include="Assets\FileIcons\LogoXmlFile.png" />
     <Content Include="Assets\Icons\About.svg" />
     <Content Include="Assets\Icons\Accessibility.svg" />
     <Content Include="Assets\Icons\Home.svg" />
@@ -321,6 +325,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Incognito.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\LiveCodeEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
