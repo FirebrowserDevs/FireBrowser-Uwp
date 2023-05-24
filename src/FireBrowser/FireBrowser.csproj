@@ -132,16 +132,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CustomTabView.xaml.cs">
-      <DependentUpon>CustomTabView.xaml</DependentUpon>
+    <Compile Include="Controls\FireBrowserTabView.xaml.cs">
+      <DependentUpon>FireBrowserTabView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CustomTabViewItem.xaml.cs">
-      <DependentUpon>CustomTabViewItem.xaml</DependentUpon>
+    <Compile Include="Controls\FireBrowserTabViewItem.xaml.cs">
+      <DependentUpon>FireBrowserTabViewItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\FluentIcon.cs" />
-    <Compile Include="Controls\Toolbar.xaml.cs">
-      <DependentUpon>Toolbar.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Core\UseContent.cs" />
     <Compile Include="Launch\Setup.xaml.cs">
       <DependentUpon>Setup.xaml</DependentUpon>
@@ -190,6 +187,9 @@
     </Compile>
     <Compile Include="Pages\SettingsPages\Privacy.xaml.cs">
       <DependentUpon>Privacy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsPages\TestDialog.xaml.cs">
+      <DependentUpon>TestDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\TimeLine\Apps.xaml.cs">
       <DependentUpon>Apps.xaml</DependentUpon>
@@ -296,17 +296,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Controls\CustomTabView.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Controls\FireBrowserTabView.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\CustomTabViewItem.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Controls\FireBrowserTabViewItem.xaml">
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Toolbar.xaml">
       <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Launch\Setup.xaml">
       <SubType>Designer</SubType>
@@ -369,6 +365,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\SettingsPages\Privacy.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsPages\TestDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

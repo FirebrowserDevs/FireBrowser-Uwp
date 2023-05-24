@@ -127,7 +127,6 @@
     <Compile Include="Models\UI.cs" />
     <Compile Include="Models\UserData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel\CollectionModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <EmbeddedResource Include="Properties\FireBrowserCore.rd.xml" />
   </ItemGroup>

@@ -61,5 +61,11 @@ namespace FireBrowser.Pages.SettingsPages
             MsLogin login = new MsLogin();
             login.ShowAsync();
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            TestDialog ts = new TestDialog();
+            ts.ShowAsync();
+        }
     }
 }

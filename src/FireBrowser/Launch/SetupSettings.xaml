@@ -52,7 +52,7 @@
                 <ComboBox  x:Name="Background" SelectionChanged="Background_SelectionChanged" SelectedItem="Default">
                     <x:String>Default</x:String>
                     <x:String>Featured</x:String>
-                    <x:String>Costum</x:String>
+                    <x:String>Custom</x:String>
                 </ComboBox>
             </labs:SettingsExpander>
             <labs:SettingsExpander VerticalAlignment="Top" Margin="0,2,0,0" Width="600">

@@ -34,7 +34,7 @@ namespace FireBrowser.Pages.SettingsPages
             {
                 "0" => "Default",
                 "1" => "Featured",
-                "2" => "Costum",
+                "2" => "Custom",
             };
             ColorTB.Text = value;
             ColorTV.Text = value2;
@@ -54,7 +54,7 @@ namespace FireBrowser.Pages.SettingsPages
                 Color.IsEnabled = false;
                 FireBrowserInterop.SettingsHelper.SetSetting("Background", "1");
             }
-            if (selection == "Costum")
+            if (selection == "Custom")
             {
                 Color.IsEnabled = true;
                 FireBrowserInterop.SettingsHelper.SetSetting("Background", "2");

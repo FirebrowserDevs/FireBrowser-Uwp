@@ -16,7 +16,6 @@ namespace FireBrowserInterop
                 throw new Exception("Failed to restart app. Please manually restart.");
             }
         }
-
         public static void WriteStringToClipboard(string text)
         {
             if (string.IsNullOrEmpty(text))
@@ -31,13 +30,11 @@ namespace FireBrowserInterop
             dataPackage.SetText(text);
             Clipboard.SetContent(dataPackage);
         }
-
         public static string GetSystemArchitecture()
         {
             string architecture = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
             return architecture ?? "Unknown";
         }
-
         public static void ShowShareUIURL(string title, string url)
         {
             var dataTransferManager = DataTransferManager.GetForCurrentView();

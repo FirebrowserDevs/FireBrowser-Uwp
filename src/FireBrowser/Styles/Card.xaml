@@ -10,5 +10,4 @@
         <Setter Property="Background" Value="{ThemeResource AcrylicInAppFillColorDefaultBrush}"/>
         <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}"/>
     </Style>
-    
 </ResourceDictionary>

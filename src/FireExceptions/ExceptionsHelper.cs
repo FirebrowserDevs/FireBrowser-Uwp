@@ -20,6 +20,8 @@ namespace FireExceptions
                     writer.WriteLine("Exception Occurred at " + DateTime.Now.ToString());
                     writer.WriteLine("Message: " + ex.Message);
                     writer.WriteLine("Stack Trace: " + ex.StackTrace);
+                    writer.WriteLine("Inner Trace: " + ex.InnerException);
+                    writer.WriteLine("Source Trace: " + ex.Source);
                     writer.WriteLine("-------------------------------------------------------------");
                 }
 

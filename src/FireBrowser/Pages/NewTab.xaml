@@ -66,13 +66,13 @@
                                     </TextBlock>
                                 </StackPanel>
                             </GridViewItem>
-                            <GridViewItem x:Name="CsGrid" Padding="12" Tag="Costum" x:FieldModifier="Public">
+                            <GridViewItem x:Name="CsGrid" Padding="12" Tag="Custom" x:FieldModifier="Public">
                                 <StackPanel>
                                     <Image Width="100" Source="ms-appx:///Assets/Illustrations/NewTab/BackgroundCostum.png"/>
                                     <TextBlock x:Uid="NewTabBackgroundCostum"
                                    HorizontalAlignment="Center"
                                    Margin="0,8,0,0">
-                                        Costum
+                                        Custom
                                     </TextBlock>
                                 </StackPanel>
                             </GridViewItem>

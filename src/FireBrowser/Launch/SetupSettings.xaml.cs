@@ -110,7 +110,7 @@ namespace FireBrowser.Launch
                 Color.IsEnabled = false;
                 FireBrowserInterop.SettingsHelper.SetSetting("Background", "1");
             }
-            if (selection == "Costum")
+            if (selection == "Custom")
             {
                 Color.IsEnabled = true;
                 FireBrowserInterop.SettingsHelper.SetSetting("Background", "2");

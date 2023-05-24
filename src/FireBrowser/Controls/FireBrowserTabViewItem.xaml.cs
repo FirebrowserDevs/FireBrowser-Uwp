@@ -3,15 +3,13 @@ using Windows.UI.Xaml;
 
 namespace FireBrowser.Controls
 {
-    public sealed partial class CustomTabViewItem : TabViewItem
+    public sealed partial class FireBrowserTabViewItem : TabViewItem
     {
-        public CustomTabViewItem()
+        public FireBrowserTabViewItem()
         {
+            this.InitializeComponent();
         }
 
-        /// <summary>
-        /// Only used in compact mode which has a special template with a textbox
-        /// </summary>
         public string Value
         {
             get => (string)GetValue(ValueProperty);
@@ -19,6 +17,6 @@ namespace FireBrowser.Controls
         }
 
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register(nameof(Value), typeof(string), typeof(CustomTabViewItem), null);
+            DependencyProperty.Register(nameof(Value), typeof(string), typeof(FireBrowserTabViewItem), null);
     }
 }

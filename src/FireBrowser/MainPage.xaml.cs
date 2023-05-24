@@ -104,6 +104,7 @@ namespace FireBrowser
                 Securitytext = "This The Default Home Page Of Firebrowser Internal Pages Secure",
                 Securitytype = "Link - FireBrowser://NewTab",//Settings.currentProfile.AccountData.Name,             
             };
+
             Window.Current.SetTitleBar(CustomDragRegion);
         }
         private void ResetOutput()
@@ -325,8 +326,8 @@ namespace FireBrowser
 
         public class Passer
         {
-            public TabViewItem Tab { get; set; }
-            public TabView TabView { get; set; }
+            public FireBrowserTabViewItem Tab { get; set; }
+            public FireBrowserTabView TabView { get; set; }
             public object Param { get; set; }
             public ToolbarViewModel ViewModel { get; set; }
         }
@@ -346,7 +347,7 @@ namespace FireBrowser
         {
             Passer passer = new()
             {
-                Tab = Tabs.SelectedItem as TabViewItem,
+                Tab = Tabs.SelectedItem as FireBrowserTabViewItem,
                 TabView = Tabs,
                 ViewModel = ViewModel,
                 Param = parameter,
@@ -360,7 +361,7 @@ namespace FireBrowser
         {
             get
             {
-                TabViewItem selectedItem = (TabViewItem)Tabs.SelectedItem;
+                FireBrowserTabViewItem selectedItem = (FireBrowserTabViewItem)Tabs.SelectedItem;
                 if (selectedItem != null)
                 {
                     return (Frame)selectedItem.Content;
@@ -383,13 +384,13 @@ namespace FireBrowser
 
         #endregion
 
-        public CustomTabViewItem CreateNewIncog(Type page = null, object param = null, int index = -1)
+        public FireBrowserTabViewItem CreateNewIncog(Type page = null, object param = null, int index = -1)
         {
             if (index == -1) index = Tabs.TabItems.Count;
 
             UrlBox.Text = "";
 
-            CustomTabViewItem newItem = new()
+            FireBrowserTabViewItem newItem = new()
             {
                 Header = $"Incognito",
                 IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = Symbol.BlockContact }
@@ -429,13 +430,13 @@ namespace FireBrowser
         }
 
 
-        public CustomTabViewItem CreateNewTab(Type page = null, object param = null, int index = -1)
+        public FireBrowserTabViewItem CreateNewTab(Type page = null, object param = null, int index = -1)
         {
             if (index == -1) index = Tabs.TabItems.Count;
 
             UrlBox.Text = "";
 
-            CustomTabViewItem newItem = new()
+            FireBrowserTabViewItem newItem = new()
             {
                 Header = $"FireBrowser HomePage",
                 IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = Symbol.Home }
@@ -578,22 +579,20 @@ namespace FireBrowser
         #region cangochecks
         private bool CanGoBack()
         {
-            /*ViewModel.CanGoBack = (bool)(TabContent?.Content is WebContent
+            ViewModel.CanGoBack = (bool)(TabContent?.Content is WebContent
                 ? TabWebView?.CoreWebView2.CanGoBack
-                : TabContent?.CanGoBack);*/
+                : TabContent?.CanGoBack);
 
-            //return ViewModel.CanGoBack;
-            return true;
+            return ViewModel.CanGoBack;
         }
 
 
         private bool CanGoForward()
         {
-            /*ViewModel.CanGoForward = (bool)(TabContent?.Content is WebContent
+            ViewModel.CanGoForward = (bool)(TabContent?.Content is WebContent
                 ? TabWebView?.CoreWebView2.CanGoForward
                 : TabContent?.CanGoForward);
-            return ViewModel.CanGoForward;*/
-            return true;
+            return ViewModel.CanGoForward;
         }
 
 
@@ -628,14 +627,13 @@ namespace FireBrowser
                 };
                 TabWebView.NavigationCompleted += async (s, e) =>
                 {
-                    ViewModel.CanRefresh = true;
+                    ViewModel.CanRefresh = true;                 
                 };
-                await TabWebView.EnsureCoreWebView2Async();
-                ViewModel.CurrentAddress = TabWebView.CoreWebView2.Source.ToString();
+                await TabWebView.EnsureCoreWebView2Async();      
             }
             else
             {
-                ViewModel.CanRefresh = false;
+                ViewModel.CanRefresh = false;           
                 ViewModel.CurrentAddress = null;
             }
             ViewModel.FavoriteIcon = "\uF714";
@@ -645,7 +643,7 @@ namespace FireBrowser
         {
             Passer passer = new()
             {
-                Tab = Tabs.SelectedItem as TabViewItem,
+                Tab = Tabs.SelectedItem as FireBrowserTabViewItem,
                 TabView = Tabs,
                 ViewModel = ViewModel
             };
@@ -821,7 +819,7 @@ namespace FireBrowser
         }
         #endregion
 
-        private void FetchBrowserHistory()
+        private async void FetchBrowserHistory()
         {
             Batteries.Init();
 
@@ -833,8 +831,8 @@ namespace FireBrowser
 
                 using (var connection = new SqliteConnection(connectionStringBuilder.ConnectionString))
                 {
-                    // Open the database connection
-                    connection.Open();
+                    // Open the database connection asynchronously
+                    await connection.OpenAsync();
 
                     // Define the SQL query to fetch the browser history
                     string sql = "SELECT url, title, visit_count, last_visit_time FROM urlsDb ORDER BY last_visit_time DESC";
@@ -842,30 +840,35 @@ namespace FireBrowser
                     // Create a command object with the SQL query and connection
                     using (SqliteCommand command = new SqliteCommand(sql, connection))
                     {
-                        // Execute the SQL query and get the results
-                        using (SqliteDataReader reader = command.ExecuteReader())
+                        // Execute the SQL query asynchronously and get the results
+                        using (SqliteDataReader reader = await command.ExecuteReaderAsync())
                         {
                             // Create a list to store the browser history items
                             List<HistoryItem> historyItems = new List<HistoryItem>();
 
-                            // Iterate through the query results and create a BrowserHistoryItem for each row
-                            while (reader.Read())
+                            // Batch insert variables
+                            int batchSize = 1000;
+                            int currentBatchSize = 0;
+                            List<HistoryItem> batchItems = new List<HistoryItem>();
+
+                            // Iterate through the query results and create a HistoryItem for each row
+                            while (await reader.ReadAsync())
                             {
                                 // Get the URL and last visit time of the history item
                                 string url = reader.GetString(0);
                                 DateTime lastVisitTime = DateTimeOffset.FromFileTime(reader.GetInt64(3)).DateTime;
 
-                                // Check if a history item with the same URL and time already exists in the list
-                                HistoryItem existingItem = historyItems.FirstOrDefault(item => item.Url == url && item.LastVisitTime == lastVisitTime);
+                                // Check if a history item with the same URL and time already exists in the batch
+                                HistoryItem existingItem = batchItems.FirstOrDefault(item => item.Url == url && item.LastVisitTime == lastVisitTime);
 
                                 if (existingItem != null)
                                 {
-                                    // If an existing history item is found, increment its visit count
+                                    // If an existing history item is found in the batch, increment its visit count
                                     existingItem.VisitCount++;
                                 }
                                 else
                                 {
-                                    // Otherwise, create a new history item and add it to the list
+                                    // Otherwise, create a new history item and add it to the batch
                                     HistoryItem historyItem = new HistoryItem
                                     {
                                         Url = url,
@@ -874,9 +877,26 @@ namespace FireBrowser
                                         LastVisitTime = lastVisitTime
                                     };
                                     historyItem.ImageSource = new BitmapImage(new Uri("https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=" + historyItem.Url + "&size=32"));
-                                    historyItems.Add(historyItem);
+                                    batchItems.Add(historyItem);
+
+                                    // Increment the current batch size
+                                    currentBatchSize++;
+
+                                    // Check if the batch size limit is reached
+                                    if (currentBatchSize >= batchSize)
+                                    {
+                                        // Add the batch items to the main historyItems list
+                                        historyItems.AddRange(batchItems);
+
+                                        // Clear the batch items list and reset the current batch size
+                                        batchItems.Clear();
+                                        currentBatchSize = 0;
+                                    }
                                 }
                             }
+
+                            // Add any remaining batch items to the main historyItems list
+                            historyItems.AddRange(batchItems);
 
                             // Bind the browser history items to the ListView
                             HistoryTemp.ItemsSource = historyItems;
@@ -1052,7 +1072,6 @@ namespace FireBrowser
                     Canvas.SetTop(stackPanel, Canvas.GetTop(stackPanel) + delta.Y);
                 }
             }
-
         }
 
         private void Tabs_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)

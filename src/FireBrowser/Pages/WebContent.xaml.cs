@@ -30,12 +30,13 @@ namespace FireBrowser.Pages
     /// </summary>
     public sealed partial class WebContent : Page
     {
+        Passer param;
         public WebContent()
         {
             this.InitializeComponent();
         }
 
-
+        #region fullscreensys
         private bool fullScreen = false;
 
         [DefaultValue(false)]
@@ -49,8 +50,11 @@ namespace FireBrowser.Pages
                 {
                     try
                     {
-                        view.TryEnterFullScreenMode();
-                        FireBrowser.Core.UseContent.MainPageContent.HideToolbar(true);
+                        if (!view.IsFullScreenMode)
+                        {
+                            view.TryEnterFullScreenMode();
+                            FireBrowser.Core.UseContent.MainPageContent.HideToolbar(true);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -61,8 +65,11 @@ namespace FireBrowser.Pages
                 {
                     try
                     {
-                        view.ExitFullScreenMode();
-                        FireBrowser.Core.UseContent.MainPageContent.HideToolbar(false);
+                        if (view.IsFullScreenMode)
+                        {
+                            view.ExitFullScreenMode();
+                            FireBrowser.Core.UseContent.MainPageContent.HideToolbar(false);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -73,51 +80,23 @@ namespace FireBrowser.Pages
             }
         }
 
-        string javasc = FireBrowserInterop.SettingsHelper.GetSetting("DisableJavaScript");
-        string pass = FireBrowserInterop.SettingsHelper.GetSetting("DisablePassSave");
-        string webmes = FireBrowserInterop.SettingsHelper.GetSetting("DisableWebMess");
-        string autogen = FireBrowserInterop.SettingsHelper.GetSetting("DisableGenAutoFill");
+        #endregion
 
-        Passer param;
         public static bool IsIncognitoModeEnabled { get; set; } = false;
         private void ToggleIncognitoMode(object sender, RoutedEventArgs e)
         {
             IsIncognitoModeEnabled = !IsIncognitoModeEnabled;
         }
-        public async void loadSetting()
+        public void LoadSettings()
         {
-            if (javasc.Equals("true"))
-            {
-                WebViewElement.CoreWebView2.Settings.IsScriptEnabled = false;
-            }
-            else
-            {
-                WebViewElement.CoreWebView2.Settings.IsScriptEnabled = true;
-            }
-            if (pass.Equals("true"))
-            {
-                WebViewElement.CoreWebView2.Settings.IsPasswordAutosaveEnabled = false;
-            }
-            else
-            {
-                WebViewElement.CoreWebView2.Settings.IsPasswordAutosaveEnabled = true;
-            }
-            if (webmes.Equals("true"))
-            {
-                WebViewElement.CoreWebView2.Settings.IsWebMessageEnabled = false;
-            }
-            else
-            {
-                WebViewElement.CoreWebView2.Settings.IsWebMessageEnabled = true;
-            }
-            if (autogen.Equals("true"))
-            {
-                WebViewElement.CoreWebView2.Settings.IsGeneralAutofillEnabled = false;
-            }
-            else
-            {
-                WebViewElement.CoreWebView2.Settings.IsGeneralAutofillEnabled = true;
-            }
+            var javasc = FireBrowserInterop.SettingsHelper.GetSetting("DisableJavaScript");
+            var pass = FireBrowserInterop.SettingsHelper.GetSetting("DisablePassSave");
+            var webmes = FireBrowserInterop.SettingsHelper.GetSetting("DisableWebMess");
+            var autogen = FireBrowserInterop.SettingsHelper.GetSetting("DisableGenAutoFill");
+            WebViewElement.CoreWebView2.Settings.IsScriptEnabled = javasc.Equals("false", StringComparison.OrdinalIgnoreCase);
+            WebViewElement.CoreWebView2.Settings.IsPasswordAutosaveEnabled = pass.Equals("false", StringComparison.OrdinalIgnoreCase);
+            WebViewElement.CoreWebView2.Settings.IsWebMessageEnabled = webmes.Equals("false", StringComparison.OrdinalIgnoreCase);
+            WebViewElement.CoreWebView2.Settings.IsGeneralAutofillEnabled = autogen.Equals("false", StringComparison.OrdinalIgnoreCase);
         }
 
         public class BaseViewModel : INotifyPropertyChanged
@@ -145,15 +124,15 @@ namespace FireBrowser.Pages
             }
         }
 
-        public void aftercomplete()
+        public void AfterComplete()
         {
             string url = WebViewElement.CoreWebView2.Source.ToString();
             string protocol = url.StartsWith("https://", StringComparison.OrdinalIgnoreCase) ? "https://" : "http://";
             string baseUrl = protocol + url.Substring(protocol.Length);
 
-            if (IsIncognitoModeEnabled == true)
+            if (IsIncognitoModeEnabled)
             {
-
+                // Code for incognito mode
             }
             else
             {
@@ -167,30 +146,26 @@ namespace FireBrowser.Pages
             {
                 param.ViewModel.SecurityIcon = "\uE72E";
                 param.ViewModel.SecurityIcontext = "Https Secured Website";
-                param.ViewModel.Securitytype = "Link - " + baseUrl;
-                param.ViewModel.Securitytext = "This Page Is Secured By A Valid Ssl Certificate, Trusted By Root Authorities";
+                param.ViewModel.Securitytype = $"Link - {baseUrl}";
+                param.ViewModel.Securitytext = "This Page Is Secured By A Valid SSL Certificate, Trusted By Root Authorities";
             }
             else if (WebViewElement.CoreWebView2.Source.Contains("http"))
             {
                 param.ViewModel.SecurityIcon = "\uE785";
                 param.ViewModel.SecurityIcontext = "Http UnSecured Website";
-                param.ViewModel.Securitytype = "Link - " + baseUrl;
-                param.ViewModel.Securitytext = "This Page Is Un-Secured By A Un-Valid Ssl Certificate, Please Be Careful";
+                param.ViewModel.Securitytype = $"Link - {baseUrl}";
+                param.ViewModel.Securitytext = "This Page Is Unsecured By A Valid SSL Certificate, Please Be Careful";
             }
         }
+
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             param = e.Parameter as Passer;
-            CoreWebView2EnvironmentOptions options = new CoreWebView2EnvironmentOptions
-            {
-                AdditionalBrowserArguments = "--edge-webview-optional-enable-uwp-regular-downloads"
-            };
-            await WebViewElement.EnsureCoreWebView2Async();
-           
+            await WebViewElement.EnsureCoreWebView2Async();          
 
-            loadSetting();
+            LoadSettings();
             WebView2 s = WebViewElement;
 
             if (param?.Param != null)
@@ -227,8 +202,6 @@ namespace FireBrowser.Pages
                 }
             }
             s.CoreWebView2.Settings.UserAgent = userAgent;
-
-
             s.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = false;
             s.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = true;
             s.CoreWebView2.Settings.IsStatusBarEnabled = true;
@@ -265,26 +238,26 @@ namespace FireBrowser.Pages
             };
             s.CoreWebView2.FaviconChanged += async (sender, args) =>
             {
-                if (IsIncognitoModeEnabled == true)
+                if (IsIncognitoModeEnabled)
                 {
-
+                    // Code for incognito mode
                 }
                 else
                 {
                     try
                     {
-                        BitmapImage bitmapImage = new BitmapImage();
+                        var bitmapImage = new BitmapImage();
                         var stream = await sender.GetFaviconAsync(0);
                         if (stream != null)
                         {
                             await bitmapImage.SetSourceAsync(stream);
-                            param.Tab.IconSource = new ImageIconSource() { ImageSource = bitmapImage };
+                            param.Tab.IconSource = new ImageIconSource { ImageSource = bitmapImage };
                         }
                         else
                         {
-                            BitmapImage bitmapImage2 = new BitmapImage();
+                            var bitmapImage2 = new BitmapImage();
                             await bitmapImage2.SetSourceAsync(await sender.GetFaviconAsync(CoreWebView2FaviconImageFormat.Jpeg));
-                            param.Tab.IconSource = new ImageIconSource() { ImageSource = bitmapImage2 };
+                            param.Tab.IconSource = new ImageIconSource { ImageSource = bitmapImage2 };
                         }
                     }
                     catch
@@ -293,18 +266,19 @@ namespace FireBrowser.Pages
                     }
                 }
             };
-            s.CoreWebView2.NavigationStarting += async (sender, args) =>
+            s.CoreWebView2.NavigationStarting += (sender, args) =>
             {
                 UseContent.MainPageContent.Hmbtn.IsEnabled = false;
                 Progress.IsIndeterminate = true;
                 Progress.Visibility = Visibility.Visible;
+                param.ViewModel.CanRefresh = false;
             };
-
             s.CoreWebView2.NavigationCompleted += (sender, args) =>
             {
                 Progress.IsIndeterminate = false;
                 Progress.Visibility = Visibility.Collapsed;
                 UseContent.MainPageContent.Hmbtn.IsEnabled = true;
+                param.ViewModel.CanRefresh = true;
 
                 if (FireBrowser.Core.UseContent.MainPageContent.UrlBox.Text.Contains("drive"))
                 {
@@ -315,14 +289,11 @@ namespace FireBrowser.Pages
                 {
                     this.FullScreen = s.CoreWebView2.ContainsFullScreenElement;
                 };
-                if (UseContent.MainPageContent.UrlBox.Text.Contains("youtube"))
+
+                if (!UseContent.MainPageContent.UrlBox.Text.Contains("youtube"))
                 {
-                 
+                   AfterComplete();
                 }
-                else
-                {
-                    aftercomplete();
-                }             
             };
             s.CoreWebView2.SourceChanged += (sender, args) =>
             {
@@ -330,7 +301,6 @@ namespace FireBrowser.Pages
                 {
                     param.ViewModel.CurrentAddress = sender.Source;
                 }
-       
             };
             s.CoreWebView2.NewWindowRequested += (sender, args) =>
             {

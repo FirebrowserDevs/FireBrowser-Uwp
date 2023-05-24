@@ -13,8 +13,7 @@ namespace FireBrowserCore.Models
 
         public enum UILayout
         {
-            Classic,
-            Compact,
+            Modern,
             Vertical
         }
 
@@ -114,6 +113,5 @@ namespace FireBrowserCore.Models
             public string Default { get; set; } = string.Empty;
             public string en { get; set; } = string.Empty;
         }
-
     }
 }
