@@ -95,7 +95,7 @@ namespace FireBrowser.Pages.TimeLine
             ContentDialogResult result = await customDialog.ShowAsync(); // Show the dialog and wait for the user to respond
             if (result == ContentDialogResult.Primary)
             {
-                DbClear.ClearDb();
+                await DbClear.ClearDb();
                 BigTemp.ItemsSource = null;
             }
             else

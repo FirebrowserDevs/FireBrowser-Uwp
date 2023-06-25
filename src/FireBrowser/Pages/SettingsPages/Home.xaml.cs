@@ -53,19 +53,18 @@ namespace FireBrowser.Pages.SettingsPages
         {
             StorageFile fileToDelete = await ApplicationData.Current.LocalFolder.GetFileAsync("Params.json");
             await fileToDelete.DeleteAsync();
-            FireBrowserInterop.SystemHelper.RestartApp();
+            await FireBrowserInterop.SystemHelper.RestartApp();
         }
 
         private async void MsAccount_Click(object sender, RoutedEventArgs e)
         {
             MsLogin login = new MsLogin();
-            login.ShowAsync();
+            await login.ShowAsync();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            TestDialog ts = new TestDialog();
-            ts.ShowAsync();
+           
         }
     }
 }

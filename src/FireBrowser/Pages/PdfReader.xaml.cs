@@ -57,7 +57,7 @@ namespace FireBrowser.Pages
         }
         public PageListVisibility ViewModel { get; set; }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             param = e.Parameter as Passer;
@@ -65,19 +65,6 @@ namespace FireBrowser.Pages
             param.Tab.Header = "FireBrowser - PdfReader";
 
             var parameter = param?.Param;
-
-            if (parameter is IStorageItem args)
-            {
-                
-            }
-            else if (parameter is Uri)
-            {
-                
-            }
-            else
-            {
-              
-            }
         }
 
         #region classes
@@ -101,7 +88,7 @@ namespace FireBrowser.Pages
           
         }
 
-        public async void PagesToggle()
+        public void PagesToggle()
         {
             if(ViewModel.PageVisibility == Visibility.Visible)
             {
@@ -113,7 +100,7 @@ namespace FireBrowser.Pages
             }
         }
 
-        public async void getFile()
+        public void getFile()
         {
            
         }
@@ -121,14 +108,12 @@ namespace FireBrowser.Pages
 
         #endregion
 
-     
-
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
           
         }
 
-        private async void ToolbarButtonClick(object sender, RoutedEventArgs e)
+        private void ToolbarButtonClick(object sender, RoutedEventArgs e)
         {
             switch ((sender as Button).Tag)
             {

@@ -64,13 +64,13 @@ namespace FireBrowser.Pages.SettingsPages
                     cs.Title = "Unable to change state of startup task via the application";
                     cs.Content = "Enable via Startup tab on Task Manager (Ctrl+Shift+Esc)";
                     cs.PrimaryButtonText = "OK";
-                    cs.ShowAsync();
+                    await cs.ShowAsync();
                     break;
                 default:
                     ContentDialog cs2 = new ContentDialog();
                     cs2.Title = "Unable to change state of startup task";
                     cs2.PrimaryButtonText = "OK";
-                    cs2.ShowAsync();
+                    await cs2.ShowAsync();
                     break;
             }
         }

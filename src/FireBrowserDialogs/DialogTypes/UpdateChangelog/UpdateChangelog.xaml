@@ -18,6 +18,7 @@
                  Bug Fixes
             </TextBlock>
             <TextBlock Text=" * Open In New Link ( Freezing )"/>
+            <TextBlock Text=" * Overlay ( Freezing )"/>
             <TextBlock HorizontalAlignment="Left" Height="Auto" Margin="0,15,0,0">
               New Features
             </TextBlock>

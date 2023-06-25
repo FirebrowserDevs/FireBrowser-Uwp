@@ -25,7 +25,6 @@ namespace FireBrowser.Launch
             FireBrowserInterop.SettingsHelper.SetSetting("ColorBackground", "#000000");
         }
 
-
         private void SearchengineSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string selection = e.AddedItems[0].ToString();
@@ -48,7 +47,6 @@ namespace FireBrowser.Launch
             FireBrowserInterop.SettingsHelper.SetSetting("SearchUrl", SearchUrl);
         }
 
-
         public void setdefault()
         {
             FireBrowserInterop.SettingsHelper.SetSetting("Auto", "0");
@@ -57,8 +55,8 @@ namespace FireBrowser.Launch
         private async void Install_Click(object sender, RoutedEventArgs e)
         {
             setdefault();
-            DbCreation.CreateDatabase();
-            Content.Navigate(typeof(SetupStep2));
+            await DbCreation.CreateDatabase();
+            ContentFrame.Navigate(typeof(SetupStep2));
         }
 
 
@@ -95,26 +93,6 @@ namespace FireBrowser.Launch
         private void Qrbl_Toggled(object sender, RoutedEventArgs e)
         {
             FireBrowserInterop.SettingsHelper.SetSetting("QrBtn", Qrbl.IsOn ? "True" : "0");
-        }
-
-        private void Background_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            string selection = e.AddedItems[0].ToString();
-            if (selection == "Default")
-            {
-                Color.IsEnabled = false;
-                FireBrowserInterop.SettingsHelper.SetSetting("Background", "0");
-            }
-            if (selection == "Featured")
-            {
-                Color.IsEnabled = false;
-                FireBrowserInterop.SettingsHelper.SetSetting("Background", "1");
-            }
-            if (selection == "Custom")
-            {
-                Color.IsEnabled = true;
-                FireBrowserInterop.SettingsHelper.SetSetting("Background", "2");
-            }
         }
 
         private async void Permissions_Click(object sender, RoutedEventArgs e)
@@ -174,6 +152,26 @@ namespace FireBrowser.Launch
         private void Color_TextChanged(object sender, TextChangedEventArgs e)
         {
             FireBrowserInterop.SettingsHelper.SetSetting("ColorBackground", $"{Color.Text.ToString()}");
+        }
+
+        private void BackgroundTabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string selection = e.AddedItems[0].ToString();
+            if (selection == "Default")
+            {
+                Color.IsEnabled = false;
+                FireBrowserInterop.SettingsHelper.SetSetting("Background", "0");
+            }
+            if (selection == "Featured")
+            {
+                Color.IsEnabled = false;
+                FireBrowserInterop.SettingsHelper.SetSetting("Background", "1");
+            }
+            if (selection == "Custom")
+            {
+                Color.IsEnabled = true;
+                FireBrowserInterop.SettingsHelper.SetSetting("Background", "2");
+            }
         }
     }
 }

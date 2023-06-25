@@ -64,6 +64,15 @@
                 </labs:SettingsCard.HeaderIcon>
                 <TextBox x:Name="User"/>
             </labs:SettingsCard>
+            <labs:SettingsCard  Width="600" Margin="0,5,0,0">
+                <labs:SettingsCard.Header>
+                    FireBrowser Open In New Tab Auto ( Yes,No )
+                </labs:SettingsCard.Header>
+                <labs:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEC6C;"/>
+                </labs:SettingsCard.HeaderIcon>
+                <ToggleSwitch x:Name="TgTabUp" Toggled="TgTabUp_Toggled"/>
+            </labs:SettingsCard>
             <Button Click="Install_Click" x:Name="Install" Margin="0,8,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
                 Confirm Setup
             </Button>

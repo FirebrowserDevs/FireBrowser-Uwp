@@ -58,7 +58,6 @@ namespace FireBrowserCore.Models
             public bool ShowWindowActionButton { get; set; }
             public bool ShowTabPreviewOnHover { get; set; }
             public bool ShowZoomSlider { get; set; }
-            public List<UIPin>? FlyoutPins { get; set; }
         }
 
         public class Sleepingtabs
@@ -104,7 +103,7 @@ namespace FireBrowserCore.Models
             public string ID { get; set; } = string.Empty;
             public string TextResource { get; set; } = string.Empty;
             //Only used for 3rd party extensions that don't have a built-in resource
-            public LocalizedText? TextLocalized { get; set; }
+            public LocalizedText TextLocalized { get; set; }
         }
 
         //Ignore for now

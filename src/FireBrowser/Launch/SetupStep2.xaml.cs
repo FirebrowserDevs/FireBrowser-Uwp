@@ -19,6 +19,7 @@ namespace FireBrowser.Launch
         {
             this.InitializeComponent();
             FireBrowserInterop.SettingsHelper.SetSetting("LightMode", "0");
+            FireBrowserInterop.SettingsHelper.SetSetting("OpSw", "True");
         }
 
         private void LgMode_Toggled(object sender, RoutedEventArgs e)
@@ -26,10 +27,10 @@ namespace FireBrowser.Launch
             FireBrowserInterop.SettingsHelper.SetSetting("LightMode", LgMode.IsOn ? "1" : "0");
         }
 
-        private void ConnectBtn_Click(object sender, RoutedEventArgs e)
+        private async void ConnectBtn_Click(object sender, RoutedEventArgs e)
         {
             MsLogin ms = new MsLogin();
-            ms.ShowAsync();
+            await ms.ShowAsync();
         }
 
         private async void Install_Click(object sender, RoutedEventArgs e)
@@ -58,7 +59,7 @@ namespace FireBrowser.Launch
                 FireBrowserInterop.SettingsHelper.SetSetting("ColorTV", "#000000");
             }
 
-            FireBrowserInterop.SystemHelper.RestartApp();
+            await FireBrowserInterop.SystemHelper.RestartApp();
         }
 
         private void tbv_TextChanged(object sender, TextChangedEventArgs e)
@@ -71,6 +72,11 @@ namespace FireBrowser.Launch
         {
             var value = tbc.Text;
             FireBrowserInterop.SettingsHelper.SetSetting("ColorTV", value);
+        }
+
+        private void TgTabUp_Toggled(object sender, RoutedEventArgs e)
+        {
+            FireBrowserInterop.SettingsHelper.SetSetting("OpSw", TgTabUp.IsOn ? "True" : "0");
         }
     }
 }

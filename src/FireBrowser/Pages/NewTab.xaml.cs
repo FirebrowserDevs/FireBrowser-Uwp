@@ -83,7 +83,7 @@ namespace FireBrowser.Pages
         {
             get { return (Window.Current.Content as Frame)?.Content as MainPage; }
         }
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             param = e.Parameter as Passer;
@@ -142,8 +142,7 @@ namespace FireBrowser.Pages
                             };
                         }
                         catch (Exception ex)
-                        {
-
+                        {                     
                             throw;
                         }
                     }

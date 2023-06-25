@@ -29,8 +29,6 @@ namespace FireBrowserCore.Models
         {
             public Favorite[] Favorites { get; set; }
             public Collection[] Collections { get; set; }
-            public Installedapp[] InstalledApps { get; set; }
-            public List<Site> NewTabPins { get; set; }
             public List<FocusList> Focus { get; set; }
         }
 
@@ -38,7 +36,6 @@ namespace FireBrowserCore.Models
         {
             public string Name { get; set; }
             public string URL { get; set; }
-            public List<Site> Content { get; set; }
         }
 
         public class FocusList
@@ -70,20 +67,6 @@ namespace FireBrowserCore.Models
         public class Tabsaside
         {
             public string Name { get; set; }
-            public List<Site> Content { get; set; }
-        }
-
-        public class Site
-        {
-            public string Name { get; set; }
-        }
-
-        public class Installedapp
-        {
-            public string Name { get; set; }
-            public string Icon { get; set; }
-            public string URL { get; set; }
-            public bool Pinned { get; set; }
         }
     }
 }

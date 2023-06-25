@@ -1,34 +1,38 @@
 ﻿using Microsoft.Data.Sqlite;
 using System;
-using System.IO;
+using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace FireBrowserDataBase
 {
     public class DbCreation
     {
-        public static async void CreateDatabase()
+        public static async Task CreateDatabase()
         {
-            await ApplicationData.Current.LocalFolder.CreateFileAsync("History.db", CreationCollisionOption.OpenIfExists);
-
-            var connectionStringBuilder = new SqliteConnectionStringBuilder();
-            connectionStringBuilder.DataSource = Path.Combine(ApplicationData.Current.LocalFolder.Path, "History.db");
-
-            using (var db = new SqliteConnection(connectionStringBuilder.ConnectionString))
+            await Task.Run(async () =>
             {
-                db.Open();
+                StorageFile databaseFile = await ApplicationData.Current.LocalFolder.CreateFileAsync("History.db", CreationCollisionOption.OpenIfExists);
 
-                string tableCommand = "CREATE TABLE IF NOT " +
-                     "EXISTS urlsDb (Url NVARCHAR(2083) PRIMARY KEY NOT NULL, " +
-                     "Title NVARCHAR(2048), " +
-                     "Visit_Count INTEGER, " +
-                     "Last_Visit_Time DATETIME)";
+                var connectionStringBuilder = new SqliteConnectionStringBuilder();
+                connectionStringBuilder.DataSource = databaseFile.Path;
 
+                using (var db = new SqliteConnection(connectionStringBuilder.ConnectionString))
+                {
+                    await db.OpenAsync();
 
-                SqliteCommand createTable = new SqliteCommand(tableCommand, db);
+                    string tableCommand = "CREATE TABLE IF NOT " +
+                         "EXISTS urlsDb (Url NVARCHAR(2083) PRIMARY KEY NOT NULL, " +
+                         "Title NVARCHAR(2048), " +
+                         "Visit_Count INTEGER, " +
+                         "Last_Visit_Time DATETIME)";
 
-                createTable.ExecuteReader();
-            }
+                    using (SqliteCommand createTable = new SqliteCommand(tableCommand, db))
+                    {
+                        await createTable.ExecuteReaderAsync();
+                    }
+                }
+            });
         }
+
     }
 }

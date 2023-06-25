@@ -23,6 +23,7 @@
     <DisplayName>FireBrowser-Alpha</DisplayName>
     <PublisherDisplayName>Bluebird Devs</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
+	<uap:SupportedUsers>multiple</uap:SupportedUsers>
   </Properties>
 
   <Dependencies>

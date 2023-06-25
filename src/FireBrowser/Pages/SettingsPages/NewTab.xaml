@@ -7,9 +7,6 @@
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     mc:Ignorable="d">
     <StackPanel>
-        <Frame x:Name="FrameRestart" Visibility="Collapsed">
-            
-        </Frame>
         <labs:SettingsCard VerticalAlignment="Top" Margin="0,10,0,0">
             <labs:SettingsCard.Header>
                 Search Engine
@@ -111,5 +108,14 @@
                 </labs:SettingsCard>
             </labs:SettingsExpander.Items>
         </labs:SettingsExpander>
+        <labs:SettingsCard VerticalAlignment="Top" Margin="0,2,0,0">
+            <labs:SettingsCard.Header>
+                Handler Open In New Tab
+            </labs:SettingsCard.Header>
+            <labs:SettingsCard.HeaderIcon>
+                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC6C;"/>
+            </labs:SettingsCard.HeaderIcon>
+            <ToggleSwitch x:Name="OpenNew" Toggled="OpenNew_Toggled"/>
+        </labs:SettingsCard>
     </StackPanel>
 </Page>

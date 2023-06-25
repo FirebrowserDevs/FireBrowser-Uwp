@@ -15,7 +15,7 @@
                     <TextBlock Text="Browser account" FontSize="12"/>
                     <TextBlock>Pre - Alpha Temp Disabled - Coming Soon</TextBlock>
                 </StackPanel>
-                <Button Content="Test Add - Testers Only" IsEnabled="False" VerticalAlignment="Center" HorizontalAlignment="Right" Click="Button_Click_1"/>
+                <Button Margin="850,0,0,0" Content="Test Add - Testers Only" IsEnabled="True" VerticalAlignment="Center" HorizontalAlignment="Right" Click="Button_Click_1"/>
             </StackPanel>
             <labs:SettingsCard Margin="0,10,0,0" VerticalAlignment="Bottom">
                 <labs:SettingsCard.Header>
@@ -49,7 +49,7 @@
         </StackPanel>
         <TextBlock VerticalAlignment="Bottom">
             ALPHA V2 RELEASE EXPECT BUGS 
-            V0.0.8.00325ap Build: 101.2332
+            V0.0.8.00329ap Build: 101.2335
             Contact: firebrowserdevs@gmail.com
         </TextBlock>
         <TextBlock VerticalAlignment="Bottom" x:Name="SysInfoBox" Margin="0,0,0,20">

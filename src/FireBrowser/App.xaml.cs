@@ -2,6 +2,7 @@
 using FireExceptions;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
@@ -73,6 +74,8 @@ namespace FireBrowser
         {
             public AppLaunchType LaunchType { get; set; }
             public object LaunchData { get; set; }
+
+            public string UserName { get; set; }
         }
 
         public static string IsFirstLaunch { get; set; }
@@ -112,20 +115,47 @@ namespace FireBrowser
 
         protected async override void OnActivated(IActivatedEventArgs args)
         {
-            if (args.Kind == ActivationKind.Protocol)
+            if (args.Kind == ActivationKind.Protocol && args is ProtocolActivatedEventArgs protocolArgs)
             {
-                ProtocolActivatedEventArgs eventArgs = args as ProtocolActivatedEventArgs;
                 Frame rootFrame = Window.Current.Content as Frame;
+
+                Uri uri = protocolArgs.Uri;
+                string query = uri.Query;
+
+                // Parse the query string to extract the username
+                string username = string.Empty;
+                if (!string.IsNullOrEmpty(query))
+                {
+                    Dictionary<string, string> parameters = new Dictionary<string, string>();
+                    string[] queryParts = query.TrimStart('?').Split('&');
+                    foreach (string part in queryParts)
+                    {
+                        string[] keyValue = part.Split('=');
+                        if (keyValue.Length == 2)
+                        {
+                            string key = Uri.UnescapeDataString(keyValue[0]);
+                            string value = Uri.UnescapeDataString(keyValue[1]);
+                            parameters[key] = value;
+                        }
+                    }
+
+                    if (parameters.ContainsKey("username"))
+                    {
+                        username = parameters["username"];
+                    }
+                }
+
+                
 
                 if (rootFrame == null)
                 {
                     AppLaunchType kind = AppLaunchType.LaunchBasic;
 
-                    if (eventArgs.Uri.Scheme == "firebrowser")
+                    if (protocolArgs.Uri.Scheme == "firebrowser")
                     {
                         kind = AppLaunchType.URIFireBrowser;
                         //Part of the URL after firebrowser://
-                        switch (eventArgs.Uri.Authority)
+                        switch (protocolArgs.Uri.Authority)
                         {
                             case "incognito":
                                 kind = AppLaunchType.LaunchIncognito;
@@ -134,7 +164,7 @@ namespace FireBrowser
                                 kind = AppLaunchType.Reset;
                                 StorageFile fileToDelete = await ApplicationData.Current.LocalFolder.GetFileAsync("Params.json");
                                 await fileToDelete.DeleteAsync();
-                                FireBrowserInterop.SystemHelper.RestartApp();
+                                await FireBrowserInterop.SystemHelper.RestartApp();
                                 break;
                         }
 
@@ -148,7 +178,8 @@ namespace FireBrowser
                     AppLaunchPasser passer = new AppLaunchPasser()
                     {
                         LaunchType = kind,
-                        LaunchData = eventArgs.Uri,
+                        LaunchData = protocolArgs.Uri,
+                        UserName = username,
                     };
 
                     rootFrame = new Frame();

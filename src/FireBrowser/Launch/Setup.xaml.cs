@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Media.Core;
 using Windows.Media.Playback;
@@ -33,7 +34,11 @@ namespace FireBrowser.Launch
             formattableTitleBar.ButtonPressedBackgroundColor = Colors.Transparent;
 
             Window.Current.SetTitleBar(TitleBar);
+            playmedia();
+        }
 
+        public void playmedia()
+        {
             mediaPlayer = new MediaPlayer();
             mediaPlayer.Source = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Launch/firebrowser.mp4"));
             _mediaPlayerElement.SetMediaPlayer(mediaPlayer);

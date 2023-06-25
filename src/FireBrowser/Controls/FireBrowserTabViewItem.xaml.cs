@@ -3,7 +3,7 @@ using Windows.UI.Xaml;
 
 namespace FireBrowser.Controls
 {
-    public sealed partial class FireBrowserTabViewItem : TabViewItem
+    public partial class FireBrowserTabViewItem : TabViewItem
     {
         public FireBrowserTabViewItem()
         {

@@ -45,6 +45,7 @@ namespace FireBrowser.Pages.SettingsPages
         }
 
         #region buttons
+
         public string ReadButton = FireBrowserInterop.SettingsHelper.GetSetting("Readbutton");
         public string AdblockBtn = FireBrowserInterop.SettingsHelper.GetSetting("AdBtn");
         public string Downloads = FireBrowserInterop.SettingsHelper.GetSetting("DwBtn");
@@ -55,6 +56,7 @@ namespace FireBrowser.Pages.SettingsPages
         public string FavBtn = FireBrowserInterop.SettingsHelper.GetSetting("FlBtn");
         public string ToolB = FireBrowserInterop.SettingsHelper.GetSetting("ToolBtn");
         public string DarkTog = FireBrowserInterop.SettingsHelper.GetSetting("DarkBtn");
+        public string OpTog = FireBrowserInterop.SettingsHelper.GetSetting("OpSw");
 
         public void ButtonVisible()
         {
@@ -124,6 +126,13 @@ namespace FireBrowser.Pages.SettingsPages
                 "0" => false,
                 _ => Drbl.IsOn
             };
+
+            OpenNew.IsOn = OpTog switch
+            {
+                "True" => true,
+                "0" => false,
+                _ => OpenNew.IsOn
+            };
         }
 
         #endregion
@@ -175,6 +184,11 @@ namespace FireBrowser.Pages.SettingsPages
         private void Drbl_Toggled(object sender, RoutedEventArgs e)
         {
             FireBrowserInterop.SettingsHelper.SetSetting("DarkBtn", Drbl.IsOn ? "True" : "0");
+        }
+
+        private void OpenNew_Toggled(object sender, RoutedEventArgs e)
+        {
+            FireBrowserInterop.SettingsHelper.SetSetting("OpSw", OpenNew.IsOn ? "True" : "0");
         }
     }
 }

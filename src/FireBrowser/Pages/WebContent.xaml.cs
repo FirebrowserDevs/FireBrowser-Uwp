@@ -5,14 +5,10 @@ using FireExceptions;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Media.SpeechSynthesis;
 using Windows.Storage;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -132,7 +128,7 @@ namespace FireBrowser.Pages
 
             if (IsIncognitoModeEnabled)
             {
-                // Code for incognito mode
+               
             }
             else
             {
@@ -186,8 +182,6 @@ namespace FireBrowser.Pages
                     }
                     else
                     {
-                        // Modify the user agent string as needed
-
                         if (!string.IsNullOrEmpty(userAgent))
                         {
 
@@ -218,7 +212,7 @@ namespace FireBrowser.Pages
             {
                 if (IsIncognitoModeEnabled == true)
                 {
-
+                    return;
                 }
                 else
                 {
@@ -229,7 +223,7 @@ namespace FireBrowser.Pages
             {
                 try
                 {
-
+                    return;
                 }
                 catch (Exception ex)
                 {
@@ -240,7 +234,7 @@ namespace FireBrowser.Pages
             {
                 if (IsIncognitoModeEnabled)
                 {
-                    // Code for incognito mode
+                    return;
                 }
                 else
                 {
@@ -310,11 +304,13 @@ namespace FireBrowser.Pages
             };
         }
 
+      
         string SelectionText;
         public void select()
         {
             FireBrowser.Core.UseContent.MainPageContent.SelectNewTab();
         }
+
 
         private void CoreWebView2_ContextMenuRequested(CoreWebView2 sender, CoreWebView2ContextMenuRequestedEventArgs args)
         {
@@ -324,8 +320,6 @@ namespace FireBrowser.Pages
             var flyout = FlyoutBase.GetAttachedFlyout(WebViewElement);
             var options = new FlyoutShowOptions()
             {
-                // Position shows the flyout next to the pointer.
-                // "Transient" ShowMode makes the flyout open in its collapsed state.
                 Position = args.Location,
                 ShowMode = FlyoutShowMode.Standard
             };
@@ -350,44 +344,7 @@ namespace FireBrowser.Pages
             args.Handled = true;
         }
 
-        private async Task ReadAloudAsync()
-        {
-            try
-            {
-                // Get the currently focused element in the web view
-                var focusedElementId = await WebViewElement.CoreWebView2.ExecuteScriptAsync("document.activeElement.id");
-
-                // Get the text content of the focused element
-                var textContent = await WebViewElement.CoreWebView2.ExecuteScriptAsync($"document.getElementById('{focusedElementId}').textContent");
-
-                // Create a list of voices for the system language
-                var systemLanguage = Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride;
-                var voices = SpeechSynthesizer.AllVoices.Where(v => v.Language.Contains(systemLanguage)).ToList();
-
-                // If there are no voices for the system language, use the default language
-                if (voices.Count == 0)
-                {
-                    voices = (List<VoiceInformation>)SpeechSynthesizer.AllVoices;
-                }
-
-                // Create a new speech synthesizer
-                var synthesizer = new SpeechSynthesizer();
-
-                // Set the language for the speech synthesis
-                synthesizer.Voice = voices.First();
-
-                // Speak the text content
-                SpeechSynthesisStream stream = await synthesizer.SynthesizeTextToStreamAsync(textContent);
-                MediaElement mediaElement = new MediaElement();
-                mediaElement.SetSource(stream, stream.ContentType);
-                mediaElement.Play();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error reading aloud: {ex.Message}");
-            }
-        }
-
+      
         public static async void OpenNewWindow(Uri uri)
         {
             await Windows.System.Launcher.LaunchUriAsync(uri);
@@ -429,27 +386,37 @@ namespace FireBrowser.Pages
                         FireBrowserInterop.SystemHelper.ShowShareUIURL(WebViewElement.CoreWebView2.DocumentTitle, WebViewElement.CoreWebView2.Source);
                         break;
                     case "Print":
-                        WebViewElement.CoreWebView2.ShowPrintUI(CoreWebView2PrintDialogKind.Browser);
+                    
                         break;
                 }
             }
             Ctx.Hide();
         }
 
-        private async void ContextClicked_Click(object sender, RoutedEventArgs e)
+        public string OpTog = FireBrowserInterop.SettingsHelper.GetSetting("OpSw");
+        private void ContextClicked_Click(object sender, RoutedEventArgs e)
         {
             if (sender is MenuFlyoutItem button && button.Tag != null)
             {
                 switch ((sender as MenuFlyoutItem).Tag)
                 {
                     case "Read":
-                        await ReadAloudAsync();
+
                         break;
                     case "WebApp":
 
                         break;
-                    case "OpenInTab":
-                        UI.ShowDialog("Disabled", "Coming Soon");
+                    case "OpenInTab":                      
+                        if(OpTog == "True")
+                        {
+                            UseContent.MainPageContent.Tabs.TabItems.Add(UseContent.MainPageContent.CreateNewTab(typeof(WebContent), new Uri(SelectionText)));
+                            select();
+                        }
+                        else if (OpTog == "0") 
+                        {
+                            UseContent.MainPageContent.Tabs.TabItems.Add(UseContent.MainPageContent.CreateNewTab(typeof(WebContent), new Uri(SelectionText)));
+                        }
+                       
                         break;
                     case "OpenInWindow":
                         OpenNewWindow(new Uri(SelectionText));
@@ -459,9 +426,9 @@ namespace FireBrowser.Pages
             Ctx.Hide();
         }
 
-        private async void Grid_Loaded_1(object sender, RoutedEventArgs e)
+        private void Grid_Loaded_1(object sender, RoutedEventArgs e)
         {
-            if (Grid.Children.Count == 0) Grid.Children.Add(WebViewElement);
+            if (Grid.Children.Count == 0) Grid.Children.Add(WebViewElement);       
         }
 
         private async void WebViewElement_Drop(object sender, DragEventArgs e)
@@ -481,7 +448,7 @@ namespace FireBrowser.Pages
             }
         }
 
-        private async void WebViewElement_DragOver(object sender, DragEventArgs e)
+        private void WebViewElement_DragOver(object sender, DragEventArgs e)
         {
             if (e.DataView.Contains(StandardDataFormats.StorageItems))
             {

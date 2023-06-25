@@ -22,7 +22,7 @@
                         <StackPanel Orientation="Horizontal">
                             <PersonPicture ProfilePicture="ms-appx:///Assets/AccountPic/clippy.png" Width="45"/>
                             <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
-                                <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" FontSize="15" Text="FireBrowser User"/>
+                                <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" FontSize="15" Text="{x:Bind ViewModel.UserName}"/>
                                 <TextBlock Text="Local Account" FontSize="12"/>
                             </StackPanel>
                         </StackPanel>
@@ -36,7 +36,7 @@
                                     <StackPanel Orientation="Horizontal">
                                         <PersonPicture ProfilePicture="ms-appx:///Assets/AccountPic/clippy.png" Width="22"/>
                                         <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
-                                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" FontSize="15" Text="FireBrowser User New"/>
+                                            <TextBlock x:Name="UserNew" Style="{ThemeResource SubtitleTextBlockStyle}" FontSize="15" Text="FireBrowser User New"/>
                                         </StackPanel>
                                     </StackPanel>
                                 </Button>
@@ -63,13 +63,13 @@
                         </StackPanel>
                     </Button>
                     <Border BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.3" Margin="10,10" BorderThickness="1"/>
-                    <Button Tag="History" Click="TabMenuClick"  Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                    <Button x:Name="His" x:FieldModifier="Public" Tag="History" Click="TabMenuClick"  Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon  FontFamily="{StaticResource FluentIcons}" Glyph="&#xE81C;" FontSize="18"/>
                             <TextBlock Margin="10,0,0,0" Text="History"/>
                         </StackPanel>
                     </Button>
-                    <Button Tag="Favorites" Click="TabMenuClick" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                    <Button x:Name="Fav" x:FieldModifier="Public" Tag="Favorites" Click="TabMenuClick" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE728;" FontSize="18"/>
                             <TextBlock Margin="10,0,0,0" Text="Favorites"/>
@@ -368,6 +368,7 @@
     <Grid>
         <firebrowser:FireBrowserTabView
             x:Name="Tabs"
+            x:FieldModifier="public"
             Padding="0"   
             VerticalAlignment="Stretch"
             AllowDropTabs="True"

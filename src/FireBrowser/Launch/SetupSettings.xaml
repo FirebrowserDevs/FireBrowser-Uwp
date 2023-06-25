@@ -8,7 +8,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
-    <Frame x:Name="Content">
+    <Frame x:Name="ContentFrame">
         <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="22" FontWeight="Bold" Margin="0,10,0,0">
                 Setup Settings
@@ -49,7 +49,7 @@
                         <TextBox x:Name="Color" Text="#000000" TextChanged="Color_TextChanged"/>
                     </labs:SettingsCard>
                 </labs:SettingsExpander.Items>
-                <ComboBox  x:Name="Background" SelectionChanged="Background_SelectionChanged" SelectedItem="Default">
+                <ComboBox  x:Name="BackgroundTabs" SelectionChanged="BackgroundTabs_SelectionChanged" SelectedItem="Default">
                     <x:String>Default</x:String>
                     <x:String>Featured</x:String>
                     <x:String>Custom</x:String>

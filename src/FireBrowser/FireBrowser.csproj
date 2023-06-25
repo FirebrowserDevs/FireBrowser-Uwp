@@ -155,9 +155,6 @@
     <Compile Include="Pages\Incognito.xaml.cs">
       <DependentUpon>Incognito.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\LiveCodeEditor.xaml.cs">
-      <DependentUpon>LiveCodeEditor.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\NewTab.xaml.cs">
       <DependentUpon>NewTab.xaml</DependentUpon>
     </Compile>
@@ -187,9 +184,6 @@
     </Compile>
     <Compile Include="Pages\SettingsPages\Privacy.xaml.cs">
       <DependentUpon>Privacy.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\SettingsPages\TestDialog.xaml.cs">
-      <DependentUpon>TestDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\TimeLine\Apps.xaml.cs">
       <DependentUpon>Apps.xaml</DependentUpon>
@@ -324,10 +318,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\LiveCodeEditor.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\NewTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -365,10 +355,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\SettingsPages\Privacy.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\SettingsPages\TestDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -433,7 +419,7 @@
       <Version>2.8.4</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Web.WebView2">
-      <Version>1.0.1829-prerelease</Version>
+      <Version>1.0.1905-prerelease</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>

@@ -15,7 +15,7 @@
             <AppBarButton  Click="ContextMenuItem_Click" ToolTipService.ToolTip="Back" x:Uid="Back" Tag="MenuBack" Icon="{firebrowser:FluentIcon Glyph=&#xE72B;}"/>
             <AppBarButton  Click="ContextMenuItem_Click" ToolTipService.ToolTip="Forward" Tag="Forward" Icon="{firebrowser:FluentIcon Glyph=&#xE72A;}"/>
             <AppBarButton  Click="ContextMenuItem_Click" ToolTipService.ToolTip="Share" Tag="Share" Icon="{firebrowser:FluentIcon Glyph=&#xE72D;}"/>
-            <AppBarButton  Click="ContextMenuItem_Click" IsEnabled="False" ToolTipService.ToolTip="Print" Tag="Print" Icon="{firebrowser:FluentIcon Glyph=&#xE749;}"/>
+            <AppBarButton  Click="ContextMenuItem_Click" IsEnabled="True" ToolTipService.ToolTip="Print" Tag="Print" Icon="{firebrowser:FluentIcon Glyph=&#xE749;}"/>
             <muxc:CommandBarFlyout.SecondaryCommands>
                 <AppBarButton  Click="ContextMenuItem_Click" Label="Copy" Tag="Copy" Icon="{firebrowser:FluentIcon Glyph=&#xE8C8;}">
                     <AppBarButton.KeyboardAccelerators>
@@ -34,7 +34,7 @@
                 <AppBarButton Label="Open In" x:Name="OpenLinks" Visibility="Collapsed" Icon="{firebrowser:FluentIcon Glyph=&#xE8AD;}">
                     <AppBarButton.Flyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem IsEnabled="False" Tag="OpenInTab" Click="ContextClicked_Click" Text="Open In New Tab" Icon="{firebrowser:FluentIcon Glyph=&#xEC6C;}"/>
+                            <MenuFlyoutItem Tag="OpenInTab" Click="ContextClicked_Click" Text="Open In New Tab" Icon="{firebrowser:FluentIcon Glyph=&#xEC6C;}"/>
                             <MenuFlyoutItem Text="Open In New Window" Click="ContextClicked_Click" Tag="OpenInWindow" Icon="{firebrowser:FluentIcon Glyph=&#xE737;}"/>
                         </MenuFlyout>
                     </AppBarButton.Flyout>

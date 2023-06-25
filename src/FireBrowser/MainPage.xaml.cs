@@ -24,6 +24,7 @@ using Windows.ApplicationModel.Core;
 using Windows.Graphics.Display;
 using Windows.Storage;
 using Windows.Storage.Streams;
+using Windows.System;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -83,7 +84,7 @@ namespace FireBrowser
 
         #region MainWindowAndButtons
 
-        public async void TitlebarUi()
+        public void TitlebarUi()
         {
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
@@ -98,7 +99,7 @@ namespace FireBrowser
 
             ViewModel = new ToolbarViewModel
             {
-                UserName = "",
+                UserName = "FireBrowser 0x0",
                 SecurityIcon = "\uE946",
                 SecurityIcontext = "FireBrowser Home Page",
                 Securitytext = "This The Default Home Page Of Firebrowser Internal Pages Secure",
@@ -330,6 +331,8 @@ namespace FireBrowser
             public FireBrowserTabView TabView { get; set; }
             public object Param { get; set; }
             public ToolbarViewModel ViewModel { get; set; }
+
+            public string UserName { get; set; }
         }
 
 
@@ -369,6 +372,8 @@ namespace FireBrowser
                 return null;
             }
         }
+
+     
 
         public WebView2 TabWebView
         {
@@ -474,14 +479,6 @@ namespace FireBrowser
                 frame.Navigate(typeof(Pages.NewTab), passer);
             }
 
-            string GetTitle()
-            {
-                if (frame.Content is WebContent)
-                    return (frame.Content as WebContent)?.WebViewElement?.CoreWebView2?.DocumentTitle;
-                else
-                    return "No title";
-            }
-
             ToolTip toolTip = new();
             Grid grid = new();
             Image previewImage = new();
@@ -516,7 +513,7 @@ namespace FireBrowser
         }
 
 
-        private async void UrlBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        private void UrlBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             string input = UrlBox.Text.ToString();
             string inputtype = UrlHelper.GetInputType(input);
@@ -543,9 +540,6 @@ namespace FireBrowser
                         break;
                     case "firebrowser://pdf":
                         TabContent.Navigate(typeof(Pages.PdfReader), CreatePasser(), new DrillInNavigationTransitionInfo());
-                        break;
-                    case "firebrowser://code":
-                        TabContent.Navigate(typeof(Pages.LiveCodeEditor), CreatePasser(), new DrillInNavigationTransitionInfo());
                         break;
                     default:
                         // default behavior
@@ -1040,6 +1034,7 @@ namespace FireBrowser
                     break;
             }
         }
+
 
         public void userMenuExpend(object sender, RoutedEventArgs e)
         {
