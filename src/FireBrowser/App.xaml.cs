@@ -7,7 +7,11 @@ using System.IO;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Media;
+using Windows.Media.Playback;
 using Windows.Storage;
+using Windows.UI.StartScreen;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -20,7 +24,7 @@ namespace FireBrowser
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
     sealed partial class App : Application
-    { 
+    {
         public App()
         {
             this.InitializeComponent();
@@ -28,6 +32,33 @@ namespace FireBrowser
             nullcheck();
             this.Suspending += OnSuspending;
             this.UnhandledException += App_UnhandledException;
+            this.EnteredBackground += App_EnteredBackground;
+            this.LeavingBackground += App_LeavingBackground;
+        }
+
+        string registerjm = FireBrowserInterop.SettingsHelper.GetSetting("regJump");
+
+        bool _isInBackgroundMode = false;
+        private void App_LeavingBackground(object sender, LeavingBackgroundEventArgs e)
+        {
+            _isInBackgroundMode = false;
+            if(registerjm == null)
+            {
+                register();
+            }
+            else if(registerjm == "0")
+            {
+                register();
+            }
+            else if (registerjm == "1") 
+            {
+                return;
+            }
+        }
+
+        private void App_EnteredBackground(object sender, EnteredBackgroundEventArgs e)
+        {
+            _isInBackgroundMode = true;       
         }
 
         private async void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
@@ -113,12 +144,33 @@ namespace FireBrowser
             }
         }
 
+        public async void register()
+        {
+            JumpList jumpList = await JumpList.LoadCurrentAsync();
+
+            // Clear existing items (optional)
+            jumpList.Items.Clear();
+
+
+            JumpListItem jumpListItemNewWindow = JumpListItem.CreateWithArguments("newwindow", "New Window");
+            jumpListItemNewWindow.Description = "Open in a new window";
+            jumpListItemNewWindow.Logo = new Uri("ms-appx:///Assets/logo.png");
+
+            jumpList.Items.Add(jumpListItemNewWindow);
+
+            FireBrowserInterop.SettingsHelper.SetSetting("regJump", "1");
+
+            // Save the JumpList
+            await jumpList.SaveAsync();
+        }
+
         protected async override void OnActivated(IActivatedEventArgs args)
         {
             if (args.Kind == ActivationKind.Protocol && args is ProtocolActivatedEventArgs protocolArgs)
             {
                 Frame rootFrame = Window.Current.Content as Frame;
 
+              
                 Uri uri = protocolArgs.Uri;
                 string query = uri.Query;
 

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.System;
 using Windows.UI.Core;
+using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -11,15 +13,8 @@ using Windows.UI.Xaml.Navigation;
 using static FireBrowser.MainPage;
 using muxc = Microsoft.UI.Xaml.Controls;
 
-//Szablon elementu Pusta strona jest udokumentowany na stronie https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace FireBrowser.Pages
 {
-    /// <summary>
-    /// Pusta strona, która może być używana samodzielnie lub do której można nawigować wewnątrz ramki.
-    /// </summary>
-    /// 
-    //To-Do: whenever the user navigates to a different page, save the settings data
     public sealed partial class SettingsPage : Page
     {
         public SettingsPage()
@@ -45,37 +40,55 @@ namespace FireBrowser.Pages
         {
             // Add handler for ContentFrame navigation.
             ContentFrame.Navigated += On_Navigated;
-
             var urlBoxText = mainFrame.UrlBox.Text;
-            var navigateTo = urlBoxText switch
-            {
-                string s when s.Contains("firebrowser://settings") => ("SettingsHome", NavView.MenuItems[0]),
-                string s when s.Contains("firebrowser://design") => ("Design", NavView.MenuItems[1]),
-                string s when s.Contains("firebrowser://privacy") => ("Privacy", NavView.MenuItems[2]),
-                string s when s.Contains("firebrowser://newtabset") => ("NewTab", NavView.MenuItems[3]),
-                string s when s.Contains("firebrowser://access") => ("Accessibility", NavView.MenuItems[4]),
-                string s when s.Contains("firebrowser://about") => ("About", NavView.MenuItems[5]),
-                _ => (null, null),// default case
-            };
+            (string navigateToPage, object navigateToItem) = (null, null);
 
-            if (navigateTo.Item1 != null && navigateTo.Item2 != null)
+            switch (urlBoxText)
             {
-                NavView.SelectedItem = navigateTo.Item2;
-                NavView_Navigate(navigateTo.Item1, new Windows.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
+                case string s when s.Contains("firebrowser://settings"):
+                    navigateToPage = "SettingsHome";
+                    navigateToItem = NavView.MenuItems[0];
+                    break;
+                case string s when s.Contains("firebrowser://design"):
+                    navigateToPage = "Design";
+                    navigateToItem = NavView.MenuItems[1];
+                    break;
+                case string s when s.Contains("firebrowser://privacy"):
+                    navigateToPage = "Privacy";
+                    navigateToItem = NavView.MenuItems[2];
+                    break;
+                case string s when s.Contains("firebrowser://newtabset"):
+                    navigateToPage = "NewTab";
+                    navigateToItem = NavView.MenuItems[3];
+                    break;
+                case string s when s.Contains("firebrowser://access"):
+                    navigateToPage = "Accessibility";
+                    navigateToItem = NavView.MenuItems[4];
+                    break;
+                case string s when s.Contains("firebrowser://about"):
+                    navigateToPage = "About";
+                    navigateToItem = NavView.MenuItems[5];
+                    break;
+                default:
+                    // Default case
+                    break;
+            }
+
+         
+            if (navigateToPage != null && navigateToItem != null)
+            {
+                NavView.SelectedItem = navigateToItem;
+                NavView_Navigate(navigateToPage, new Windows.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
             }
             else
             {
+
+                // Set the default selected item to the "Settings" item
                 NavView.SelectedItem = NavView.MenuItems[0];
                 NavView_Navigate("SettingsHome", new Windows.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
-            } // Default behavior
-
-            // If navigation occurs on SelectionChanged, this isn't needed.
-            // Because we use ItemInvoked to navigate, we need to call Navigate
-            // here to load the home page.
+            }
 
 
-            // Listen to the window directly so the app responds
-            // to accelerator keys regardless of which element has focus.
             Window.Current.CoreWindow.Dispatcher.AcceleratorKeyActivated +=
                 CoreDispatcher_AcceleratorKeyActivated;
 
@@ -204,5 +217,12 @@ namespace FireBrowser.Pages
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
+
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+           
+        }
+
+      
     }
 }

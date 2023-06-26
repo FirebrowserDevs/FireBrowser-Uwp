@@ -5,8 +5,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:settings="using:CommunityToolkit.Labs.WinUI"
     >
     <Grid>
-
+        <settings:SettingsCard>
+            <Button>
+                Start Web App
+            </Button>
+        </settings:SettingsCard>
     </Grid>
 </Page>

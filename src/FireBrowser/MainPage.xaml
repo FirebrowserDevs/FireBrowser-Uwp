@@ -9,7 +9,7 @@
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     muxc:AnimatedIcon.State="True"
-    NavigationCacheMode="Enabled"
+    NavigationCacheMode="Disabled"
     mc:Ignorable="d">
     <Page.Resources>
         <Flyout
@@ -373,14 +373,14 @@
             VerticalAlignment="Stretch"
             AllowDropTabs="True"
             CacheMode="BitmapCache"
-            CanDragTabs="True"
-            CanReorderTabs="True"
             AddTabButtonClick="Tabs_AddTabButtonClick"
             SelectionChanged="Tabs_SelectionChanged"
             TabCloseRequested="Tabs_TabCloseRequested"
-            PointerPressed="Tabs_PointerPressed"
-            PointerMoved="Tabs_PointerMoved"
-            PointerReleased="Tabs_PointerReleased"
+            TabDragStarting="Tabs_TabDragStarting"
+            TabStripDragOver="Tabs_TabStripDragOver"
+            TabStripDrop="Tabs_TabStripDrop"
+            TabItemsChanged="Tabs_TabItemsChanged"
+            TabDroppedOutside="Tabs_TabDroppedOutside"
             Mode="Modern"
             >
             <firebrowser:FireBrowserTabView.TabStripHeader>
@@ -394,7 +394,7 @@
             </firebrowser:FireBrowserTabView.TabStripHeader>
             <firebrowser:FireBrowserTabView.TabStripFooter>
                 <!--  Needs the Background="Transparent" or else it won't work  -->
-                <StackPanel x:Name="CustomDragRegion" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                <StackPanel x:FieldModifier="public" x:Name="CustomDragRegion" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </firebrowser:FireBrowserTabView.TabStripFooter>
         </firebrowser:FireBrowserTabView>
         <Grid
@@ -475,7 +475,7 @@
                     CornerRadius="5"
                     Padding="32,5,5,0"
                     Style="{ThemeResource PortalBarStyle}"
-                    Text="{x:Bind ViewModel.CurrentAddress, Mode=OneWay}"                 
+                    Text="{x:Bind ViewModel.CurrentAddress, Mode=TwoWay}"                 
                   />
                 <Button
                     x:Name="Secure"

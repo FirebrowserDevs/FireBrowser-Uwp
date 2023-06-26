@@ -7,6 +7,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d" 
     NavigationCacheMode="Enabled"
+    Loaded="Page_Loaded"
     >
     <Grid>
         <muxc:NavigationView x:Name="NavView"

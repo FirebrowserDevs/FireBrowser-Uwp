@@ -12,6 +12,7 @@ using FireBrowserQr;
 using FireBrowserUrlHelper;
 using Microsoft.Data.Sqlite;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
 using SQLitePCL;
 using System;
 using System.Collections.Generic;
@@ -19,16 +20,23 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Foundation.Metadata;
 using Windows.Graphics.Display;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.System;
 using Windows.UI;
+using Windows.UI.Core;
+using Windows.UI.StartScreen;
 using Windows.UI.ViewManagement;
+using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
@@ -73,10 +81,11 @@ namespace FireBrowser
 
     public sealed partial class MainPage : Page
     {
+        AppWindow RootAppWindow = null;
+
         public MainPage()
         {
             this.InitializeComponent();
-            TitlebarUi();
             ButtonVisible();
             UpdateYesNo();
             ColorsTools();
@@ -84,30 +93,64 @@ namespace FireBrowser
 
         #region MainWindowAndButtons
 
-        public void TitlebarUi()
+        void SetupWindow(AppWindow window)
         {
-            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
-            coreTitleBar.ExtendViewIntoTitleBar = true;
-            coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
-
-            var formattableTitleBar = ApplicationView.GetForCurrentView().TitleBar;
-            formattableTitleBar.ButtonBackgroundColor = Colors.Transparent;
-            formattableTitleBar.ButtonHoverBackgroundColor = Colors.Transparent;
-            formattableTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-            formattableTitleBar.InactiveBackgroundColor = Colors.Transparent;
-            formattableTitleBar.ButtonPressedBackgroundColor = Colors.Transparent;
-
-            ViewModel = new ToolbarViewModel
+            if (window == null)
             {
-                UserName = "FireBrowser 0x0",
-                SecurityIcon = "\uE946",
-                SecurityIcontext = "FireBrowser Home Page",
-                Securitytext = "This The Default Home Page Of Firebrowser Internal Pages Secure",
-                Securitytype = "Link - FireBrowser://NewTab",//Settings.currentProfile.AccountData.Name,             
-            };
+                // Extend into the titlebar
+                var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+                coreTitleBar.ExtendViewIntoTitleBar = true;
 
-            Window.Current.SetTitleBar(CustomDragRegion);
+                coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
+
+                var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+                titleBar.ButtonBackgroundColor = Windows.UI.Colors.Transparent;
+                titleBar.ButtonInactiveBackgroundColor = Windows.UI.Colors.Transparent;
+                titleBar.ButtonHoverBackgroundColor = Windows.UI.Colors.Transparent;
+                titleBar.InactiveBackgroundColor = Windows.UI.Colors.Transparent;
+                titleBar.ButtonPressedBackgroundColor = Windows.UI.Colors.Transparent;
+
+                ViewModel = new ToolbarViewModel
+                {
+                    UserName = "FireBrowser 0x0",
+                    SecurityIcon = "\uE946",
+                    SecurityIcontext = "FireBrowser Home Page",
+                    Securitytext = "This The Default Home Page Of Firebrowser Internal Pages Secure",
+                    Securitytype = "Link - FireBrowser://NewTab",//Settings.currentProfile.AccountData.Name,             
+                };
+
+                Window.Current.SetTitleBar(CustomDragRegion);
+            }
+            else
+            {
+                // Secondary AppWindows --- keep track of the window
+                RootAppWindow = window;
+
+                // Extend into the titlebar
+                window.TitleBar.ExtendsContentIntoTitleBar = true;
+                window.TitleBar.ButtonBackgroundColor = Windows.UI.Colors.Transparent;
+                window.TitleBar.ButtonInactiveBackgroundColor = Windows.UI.Colors.Transparent;
+                window.TitleBar.ButtonInactiveForegroundColor = Windows.UI.Colors.Transparent;
+                window.TitleBar.ButtonPressedBackgroundColor = Windows.UI.Colors.Transparent;
+                window.TitleBar.ButtonHoverBackgroundColor = Windows.UI.Colors.Transparent;
+
+                ViewModel = new ToolbarViewModel
+                {
+                    UserName = "FireBrowser 0x0",
+                    SecurityIcon = "\uE946",
+                    SecurityIcontext = "FireBrowser Home Page",
+                    Securitytext = "This The Default Home Page Of Firebrowser Internal Pages Secure",
+                    Securitytype = "Link - FireBrowser://NewTab",//Settings.currentProfile.AccountData.Name,             
+                };
+
+                // Due to a bug in AppWindow, we cannot follow the same pattern as CoreWindow when setting the min width.
+                // Instead, set a hardcoded number. 
+                CustomDragRegion.MinWidth = 188;
+
+                window.Frame.DragRegionVisuals.Add(CustomDragRegion);
+            }
         }
+
         private void ResetOutput()
         {
             DisplayInformation displayInformation = DisplayInformation.GetForCurrentView();
@@ -156,6 +199,144 @@ namespace FireBrowser
             }
         }
 
+
+        #endregion
+
+        #region TabsCode
+
+        public void AddTabToTabs(TabViewItem tab)
+        {
+            Tabs.TabItems.Add(tab);
+        }
+        private async void Tabs_TabDroppedOutside(TabView sender, TabViewTabDroppedOutsideEventArgs args)
+        {
+            MoveTabToNewWindow(args.Tab);
+        }
+
+        private async void MoveTabToNewWindow(TabViewItem tab)
+        {
+            // AppWindow was introduced in Windows 10 version 18362 (ApiContract version 8). 
+            // If the app is running on a version earlier than 18362, simply no-op.
+            // If your app needs to support multiple windows on earlier versions of Win10, you can use CoreWindow/ApplicationView.
+            // More information about showing multiple views can be found here: https://docs.microsoft.com/windows/uwp/design/layout/show-multiple-views
+            if (!ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 10))
+            {
+                return;
+            }
+
+            AppWindow newWindow = await AppWindow.TryCreateAsync();
+            
+            MainPage newPage = new MainPage();
+                      
+            newPage.SetupWindow(newWindow);
+    
+            ElementCompositionPreview.SetAppWindowContent(newWindow, newPage);
+
+            Tabs.TabItems.Remove(tab);
+            newPage.AddTabToTabs(tab);
+
+            await newWindow.TryShowAsync();
+        }
+
+        private async void Tabs_TabItemsChanged(TabView sender, Windows.Foundation.Collections.IVectorChangedEventArgs args)
+        {
+            // If there are no more tabs, close the window.
+            if (sender.TabItems.Count == 0)
+            {
+                if (RootAppWindow != null)
+                {
+                    await RootAppWindow.CloseAsync();
+                }
+                else
+                {
+                    CoreApplication.Exit();
+                }
+            }
+            // If there is only one tab left, disable dragging and reordering of Tabs.
+            else if (sender.TabItems.Count == 1)
+            {
+                sender.CanReorderTabs = false;
+                sender.CanDragTabs = false;
+            }
+            else
+            {
+                sender.CanReorderTabs = true;
+                sender.CanDragTabs = true;
+            }
+        }
+
+        private const string DataIdentifier = "Tab";
+        private void Tabs_TabDragStarting(TabView sender, TabViewTabDragStartingEventArgs args)
+        {
+            // We can only drag one tab at a time, so grab the first one...
+            var firstItem = args.Tab;
+
+            // ... set the drag data to the tab...
+            args.Data.Properties.Add(DataIdentifier, firstItem);
+
+            // ... and indicate that we can move it 
+            args.Data.RequestedOperation = DataPackageOperation.Move;
+        }
+
+        private void Tabs_TabStripDragOver(object sender, DragEventArgs e)
+        {
+            if (e.DataView.Properties.ContainsKey(DataIdentifier))
+            {
+                e.AcceptedOperation = DataPackageOperation.Move;
+            }
+        }
+
+        private void Tabs_TabStripDrop(object sender, DragEventArgs e)
+        {
+
+            if (e.DataView.Properties.TryGetValue(DataIdentifier, out object obj))
+            {
+                // Ensure that the obj property is set before continuing. 
+                if (obj == null)
+                {
+                    return;
+                }
+
+                var destinationTabView = sender as TabView;
+                var destinationItems = destinationTabView.TabItems;
+
+                if (destinationItems != null)
+                {
+                    // First we need to get the position in the List to drop to
+                    var index = -1;
+
+                    // Determine which items in the list our pointer is between.
+                    for (int i = 0; i < destinationTabView.TabItems.Count; i++)
+                    {
+                        var item = destinationTabView.ContainerFromIndex(i) as TabViewItem;
+
+                        if (e.GetPosition(item).X - item.ActualWidth < 0)
+                        {
+                            index = i;
+                            break;
+                        }
+                    }
+
+                    // The TabView can only be in one tree at a time. Before moving it to the new TabView, remove it from the old.
+                    var destinationTabViewListView = ((obj as TabViewItem).Parent as TabViewListView);
+                    destinationTabViewListView.Items.Remove(obj);
+
+                    if (index < 0)
+                    {
+                        // We didn't find a transition point, so we're at the end of the list
+                        destinationItems.Add(obj);
+                    }
+                    else if (index < destinationTabView.TabItems.Count)
+                    {
+                        // Otherwise, insert at the provided index.
+                        destinationItems.Insert(index, obj);
+                    }
+
+                    // Select the newly dragged tab
+                    destinationTabView.SelectedItem = obj;
+                }
+            }
+        }
 
         #endregion
 
@@ -225,6 +406,7 @@ namespace FireBrowser
         {
             base.OnNavigatedTo(e);
             ResetOutput();
+            SetupWindow(null);
 
             if (e.Parameter is AppLaunchPasser passer)
             {
@@ -253,7 +435,7 @@ namespace FireBrowser
                     case AppLaunchType.FirstLaunch:
                         Tabs.TabItems.Add(CreateNewTab());
                         break;
-                    case AppLaunchType.FilePDF:                   
+                    case AppLaunchType.FilePDF:
                         var files = passer.LaunchData as IReadOnlyList<IStorageItem>;
                         Tabs.TabItems.Add(CreateNewTab(typeof(Pages.PdfReader), files[0]));
                         break;
@@ -281,29 +463,29 @@ namespace FireBrowser
         public partial class ToolbarViewModel : ObservableObject
         {
             [ObservableProperty]
-            private bool canRefresh;
+            public bool canRefresh;
             [ObservableProperty]
-            private bool canGoBack;
+            public bool canGoBack;
             [ObservableProperty]
-            private bool canGoForward;
+            public bool canGoForward;
             [ObservableProperty]
-            private string favoriteIcon;
+            public string favoriteIcon;
             [ObservableProperty]
-            private bool permissionDialogIsOpen;
+            public bool permissionDialogIsOpen;
             [ObservableProperty]
-            private string permissionDialogTitle;
+            public string permissionDialogTitle;
             [ObservableProperty]
-            private string currentAddress;
+            public string currentAddress;
             [ObservableProperty]
-            private string securityIcon;
+            public string securityIcon;
             [ObservableProperty]
-            private string securityIcontext;
+            public string securityIcontext;
             [ObservableProperty]
-            private string securitytext;
+            public string securitytext;
             [ObservableProperty]
-            private string securitytype;
+            public string securitytype;
             [ObservableProperty]
-            private Visibility homeButtonVisibility;
+            public Visibility homeButtonVisibility;
 
             private string _userName;
 
@@ -321,8 +503,19 @@ namespace FireBrowser
         #endregion
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
         {
-            CustomDragRegion.MinWidth = (FlowDirection == FlowDirection.LeftToRight) ? sender.SystemOverlayRightInset : sender.SystemOverlayLeftInset;
-            CustomDragRegion.Height = sender.Height;
+            if (FlowDirection == FlowDirection.LeftToRight)
+            {
+                CustomDragRegion.MinWidth = sender.SystemOverlayRightInset;
+                VBtn.MinWidth = sender.SystemOverlayLeftInset;
+            }
+            else
+            {
+                CustomDragRegion.MinWidth = sender.SystemOverlayLeftInset;
+                VBtn.MinWidth = sender.SystemOverlayRightInset;
+            }
+
+            // Ensure that the height of the custom regions are the same as the titlebar.
+            CustomDragRegion.Height = VBtn.Height = sender.Height;
         }
 
         public class Passer
@@ -373,7 +566,7 @@ namespace FireBrowser
             }
         }
 
-     
+
 
         public WebView2 TabWebView
         {
@@ -405,7 +598,7 @@ namespace FireBrowser
             {
                 Tab = newItem,
                 TabView = Tabs,
-                ViewModel = ViewModel,
+                ViewModel = new ToolbarViewModel(),
                 Param = param
             };
 
@@ -452,9 +645,10 @@ namespace FireBrowser
             {
                 Tab = newItem,
                 TabView = Tabs,
-                ViewModel = ViewModel,
-                Param = param
+                ViewModel = new ToolbarViewModel(),
+                Param = param,
             };
+
 
 
             newItem.Style = (Style)Application.Current.Resources["FloatingTabViewItemStyle"];
@@ -621,13 +815,13 @@ namespace FireBrowser
                 };
                 TabWebView.NavigationCompleted += async (s, e) =>
                 {
-                    ViewModel.CanRefresh = true;                 
+                    ViewModel.CanRefresh = true;
                 };
-                await TabWebView.EnsureCoreWebView2Async();      
+                await TabWebView.EnsureCoreWebView2Async();
             }
             else
             {
-                ViewModel.CanRefresh = false;           
+                ViewModel.CanRefresh = false;
                 ViewModel.CurrentAddress = null;
             }
             ViewModel.FavoriteIcon = "\uF714";
@@ -806,10 +1000,6 @@ namespace FireBrowser
                 (tabcontent.Content as WebContent).WebViewElement.Close();
             }
             sender.TabItems.Remove(args.Tab);
-            if (Tabs.TabItems.Count == 0)
-            {
-                CoreApplication.Exit();
-            }
         }
         #endregion
 
@@ -965,9 +1155,9 @@ namespace FireBrowser
                 HistorySmallTitle.Visibility = Visibility.Visible;
             }
         }
-        private void ClearHistoryDataMenuItem_Click(object sender, RoutedEventArgs e)
+        private async void ClearHistoryDataMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            DbClear.ClearDb();
+            await DbClear.ClearDb();
             HistoryTemp.ItemsSource = null;
         }
 
@@ -1047,32 +1237,7 @@ namespace FireBrowser
                 : Visibility.Visible;
         }
 
-        private void Tabs_PointerPressed(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
-        {
-            isDragging = true;
-            lastPosition = e.GetCurrentPoint(null).Position;
-        }
 
-        private void Tabs_PointerMoved(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
-        {
-            if (isDragging)
-            {
-                var currentPosition = e.GetCurrentPoint(null).Position;
-                var delta = new Point(currentPosition.X - lastPosition.X, currentPosition.Y - lastPosition.Y);
-                lastPosition = currentPosition;
-
-                if (sender is TabView stackPanel)
-                {
-                    Canvas.SetLeft(stackPanel, Canvas.GetLeft(stackPanel) + delta.X);
-                    Canvas.SetTop(stackPanel, Canvas.GetTop(stackPanel) + delta.Y);
-                }
-            }
-        }
-
-        private void Tabs_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
-        {
-            isDragging = false;
-        }
 
         private void OpenFavoritesMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -1080,5 +1245,6 @@ namespace FireBrowser
             Thread.Sleep(5);
             TabContent.Navigate(typeof(Pages.TimeLine.Timeline));
         }
+
     }
 }
