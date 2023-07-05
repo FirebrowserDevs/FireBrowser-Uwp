@@ -21,5 +21,10 @@ namespace FireBrowser.Pages
             UseContent.MainPageContent.Fav.IsEnabled = false;
             UseContent.MainPageContent.His.IsEnabled = false;
         }
+
+        private void TextBlock_SelectionChanged(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+
+        }
     }
 }

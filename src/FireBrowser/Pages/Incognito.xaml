@@ -9,10 +9,10 @@
     Loaded="Page_Loaded"
     RequestedTheme="Dark">
     <Grid>
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Padding="20" CornerRadius="44" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}">
-            <FontIcon FontSize="48" FontFamily="Segoe Fluent Icons" Glyph="&#xE727;"/>
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Padding="20" CornerRadius="44" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" Margin="0,307,0,0" Width="120" Height="106">
+            <Image Source="/EXTicons/IncognetoDark.png" Width="70" Height="70"/>
         </Grid>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,135,0,0" x:Uid="NewTabIncognitoTitle" Style="{ThemeResource TitleTextBlockStyle}" d:Text="You're browsing in Incognito mode"/>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,500,0,0" x:Uid="NewTabIncognitoTitle" Style="{ThemeResource TitleTextBlockStyle}" d:Text="You are in Private Browsing Mode" Text=""/>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
