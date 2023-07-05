@@ -34,6 +34,9 @@
                         <ToggleSwitch x:Name="Type" Toggled="Type_Toggled">
                             Enable Auto Fill TextBox
                         </ToggleSwitch>
+                        <ToggleSwitch x:Name="Mode" Toggled="Mode_Toggled">
+                           Enable Light Mode
+                        </ToggleSwitch>
                     </StackPanel>
                 </Flyout>
             </Button.Flyout>
@@ -78,7 +81,7 @@
                             </GridViewItem>
                         </GridView>
                         <TextBlock FontWeight="Bold" Text="New-Tab Background Color ( ReOpen Or Apply To Change )"/>
-                        <TextBox Margin="0,5,0,0" x:Name="NewColor" TextChanged="NewColor_TextChanged" />
+                        <TextBox IsEnabled="True" x:FieldModifier="Public" Margin="0,5,0,0" x:Name="NewColor" TextChanged="NewColor_TextChanged" />
                     </StackPanel>
                 </Flyout>
             </Button.Flyout>

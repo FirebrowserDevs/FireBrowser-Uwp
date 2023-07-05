@@ -20,5 +20,10 @@ namespace FireBrowser.Core
         {
             get { return (Window.Current.Content as Frame)?.Content as SettingsPage; }
         }
+
+        public static NewTab NewTabPage
+        {
+            get { return (Window.Current.Content as Frame)?.Content as NewTab; }
+        }
     }
 }

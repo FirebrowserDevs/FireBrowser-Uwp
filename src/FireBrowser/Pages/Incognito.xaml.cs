@@ -12,8 +12,7 @@ namespace FireBrowser.Pages
     {
         public Incognito()
         {
-            this.InitializeComponent();
-           
+            this.InitializeComponent();       
         }
 
         private void Page_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)

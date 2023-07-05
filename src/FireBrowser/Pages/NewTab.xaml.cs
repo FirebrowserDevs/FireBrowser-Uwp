@@ -1,4 +1,5 @@
-﻿using FireBrowserCore.Models;
+﻿using FireBrowser.Core;
+using FireBrowserCore.Models;
 using FireBrowserCore.ViewModel;
 using System;
 using System.Net.Http;
@@ -24,6 +25,7 @@ namespace FireBrowser.Pages
     {
 
         bool isAuto;
+        bool isMode;
         public HomeViewModel ViewModel { get; set; }
         public NewTab()
         {
@@ -36,6 +38,10 @@ namespace FireBrowser.Pages
             var ison = FireBrowserInterop.SettingsHelper.GetSetting("Auto");
             isAuto = ison.Equals("1");
             Type.IsOn = isAuto;
+
+            var ison2 = FireBrowserInterop.SettingsHelper.GetSetting("LightMode");
+            isMode = ison2.Equals("1");
+            Mode.IsOn = isMode;
 
             var set = FireBrowserInterop.SettingsHelper.GetSetting("Background");
             var cls = FireBrowserInterop.SettingsHelper.GetSetting("ColorBackground");
@@ -78,11 +84,6 @@ namespace FireBrowser.Pages
         }
 
         Passer param;
-
-        private MainPage MainPage
-        {
-            get { return (Window.Current.Content as Frame)?.Content as MainPage; }
-        }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -105,6 +106,7 @@ namespace FireBrowser.Pages
                     return new SolidColorBrush(Colors.Transparent);
 
                 case Settings.NewTabBackground.Costum:
+                  
                     if (colorString == "")
                     {
                         return new SolidColorBrush(Colors.Transparent);
@@ -117,7 +119,6 @@ namespace FireBrowser.Pages
                     }
 
                 case Settings.NewTabBackground.Featured:
-                    //get the cached bg, if there is a new one then set it, show the bing attribution label.
 
                     var client = new HttpClient();
                     try
@@ -125,11 +126,8 @@ namespace FireBrowser.Pages
                         var request = client.GetStringAsync(new Uri("http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1")).Result;
                         try
                         {
-                            //Todo: this page needs a viewmodel with visibility to show bing image credit info.
                             var images = JsonSerializer.Deserialize<ImageRoot>(request);
-                            //ViewModel.ImageTitle = images.images[0].title;
-                            //ViewModel.ImageCopyright = images.images[0].copyright;
-                            //ViewModel.ImageCopyrightLink = images.images[0].copyrightlink;
+                           
 
                             BitmapImage btpImg = new()
                             {
@@ -186,7 +184,7 @@ namespace FireBrowser.Pages
                     ViewModel.BackgroundType = Settings.NewTabBackground.Featured;
                     NewColor.IsEnabled = false;
                     break;
-                case "Costum":
+                case "Custom":
                     FireBrowserInterop.SettingsHelper.SetSetting("Background", "2");
                     ViewModel.BackgroundType = Settings.NewTabBackground.Costum;
                     NewColor.IsEnabled = true;
@@ -199,31 +197,19 @@ namespace FireBrowser.Pages
 
         private void NewTabSearchBox_PreviewKeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
-            if (isAuto)
+            if (!isAuto && e.Key is Windows.System.VirtualKey.Enter)
             {
-
-            }
-            else if (e.Key is Windows.System.VirtualKey.Enter)
-            {
-                MainPage.FocusUrlBox(NewTabSearchBox.Text);
+                UseContent.MainPageContent.FocusUrlBox(NewTabSearchBox.Text);
             }
         }
 
         private void Type_Toggled(object sender, RoutedEventArgs e)
         {
-            ToggleSwitch toggleSwitch = sender as ToggleSwitch;
-            if (toggleSwitch != null)
+            if (sender is ToggleSwitch toggleSwitch)
             {
-                if (toggleSwitch.IsOn)
-                {
-                    isAuto = true;
-                    FireBrowserInterop.SettingsHelper.SetSetting("Auto", "1");
-                }
-                else
-                {
-                    isAuto = false;
-                    FireBrowserInterop.SettingsHelper.SetSetting("Auto", "0");
-                }
+                isAuto = toggleSwitch.IsOn;
+                string autoValue = isAuto ? "1" : "0";
+                FireBrowserInterop.SettingsHelper.SetSetting("Auto", autoValue);
             }
         }
 
@@ -231,17 +217,22 @@ namespace FireBrowser.Pages
         {
             if (isAuto)
             {
-                MainPage.FocusUrlBox(NewTabSearchBox.Text);
-            }
-            else
-            {
-
+                UseContent.MainPageContent.FocusUrlBox(NewTabSearchBox.Text);
             }
         }
 
         private void NewColor_TextChanged(object sender, TextChangedEventArgs e)
         {
             FireBrowserInterop.SettingsHelper.SetSetting("ColorBackground", $"{NewColor.Text.ToString()}");
+        }
+
+        private void Mode_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (sender is ToggleSwitch toggleSwitch)
+            {
+                string lightModeValue = toggleSwitch.IsOn ? "1" : "0";
+                FireBrowserInterop.SettingsHelper.SetSetting("LightMode", lightModeValue);
+            }
         }
     }
 }
