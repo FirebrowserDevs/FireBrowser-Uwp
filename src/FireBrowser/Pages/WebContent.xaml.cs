@@ -8,6 +8,8 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.UI.ViewManagement;
@@ -120,6 +122,7 @@ namespace FireBrowser.Pages
             }
         }
 
+        public bool run = false;
         public void AfterComplete()
         {
             string url = WebViewElement.CoreWebView2.Source.ToString();
@@ -150,7 +153,7 @@ namespace FireBrowser.Pages
                 param.ViewModel.SecurityIcon = "\uE785";
                 param.ViewModel.SecurityIcontext = "Http UnSecured Website";
                 param.ViewModel.Securitytype = $"Link - {baseUrl}";
-                param.ViewModel.Securitytext = "This Page Is Unsecured By A Valid SSL Certificate, Please Be Careful";
+                param.ViewModel.Securitytext = "This Page Is Unsecured By A Un-Valid SSL Certificate, Please Be Careful";
             }
         }
 
@@ -202,7 +205,7 @@ namespace FireBrowser.Pages
             s.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = true;
             s.CoreWebView2.Settings.AreDefaultContextMenusEnabled = true;
             s.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);
-
+            s.CoreWebView2.HistoryChanged += CoreWebView2_HistoryChanged;
             s.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
             s.CoreWebView2.ScriptDialogOpening += async (sender, args) =>
             {
@@ -266,6 +269,7 @@ namespace FireBrowser.Pages
                 Progress.IsIndeterminate = true;
                 Progress.Visibility = Visibility.Visible;
                 param.ViewModel.CanRefresh = false;
+             
             };
             s.CoreWebView2.NavigationCompleted += (sender, args) =>
             {
@@ -278,23 +282,27 @@ namespace FireBrowser.Pages
                 {
                     WebViewElement.AllowDrop = false;
                 }
+                else
+                {
+                    WebViewElement.AllowDrop = true;
+                }
 
                 s.CoreWebView2.ContainsFullScreenElementChanged += (sender, args) =>
                 {
                     this.FullScreen = s.CoreWebView2.ContainsFullScreenElement;
                 };
 
-                if (!UseContent.MainPageContent.UrlBox.Text.Contains("youtube"))
-                {
-                   AfterComplete();
-                }
+               
+                AfterComplete();
             };
             s.CoreWebView2.SourceChanged += (sender, args) =>
             {
                 if (param.TabView.SelectedItem == param.Tab)
                 {
                     param.ViewModel.CurrentAddress = sender.Source;
+                    param.ViewModel.Securitytype = sender.Source;                  
                 }
+              
             };
             s.CoreWebView2.NewWindowRequested += (sender, args) =>
             {
@@ -304,7 +312,11 @@ namespace FireBrowser.Pages
             };
         }
 
-      
+        private void CoreWebView2_HistoryChanged(CoreWebView2 sender, object args)
+        {
+            AfterComplete();
+        }
+
         string SelectionText;
         public void select()
         {

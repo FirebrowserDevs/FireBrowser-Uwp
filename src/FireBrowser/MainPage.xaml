@@ -475,7 +475,7 @@
                     CornerRadius="5"
                     Padding="32,5,5,0"
                     Style="{ThemeResource PortalBarStyle}"
-                    Text="{x:Bind ViewModel.CurrentAddress, Mode=TwoWay}"                 
+                    Text="{x:Bind ViewModel.CurrentAddress, Mode=OneWay}"                 
                   />
                 <Button
                     x:Name="Secure"

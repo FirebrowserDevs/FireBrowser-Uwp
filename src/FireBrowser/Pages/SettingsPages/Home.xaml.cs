@@ -61,10 +61,5 @@ namespace FireBrowser.Pages.SettingsPages
             MsLogin login = new MsLogin();
             await login.ShowAsync();
         }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-           
-        }
     }
 }

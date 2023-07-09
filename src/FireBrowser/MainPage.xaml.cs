@@ -590,9 +590,11 @@ namespace FireBrowser
 
         #endregion
 
+
         public FireBrowserTabViewItem CreateNewIncog(Type page = null, object param = null, int index = -1)
         {
             if (index == -1) index = Tabs.TabItems.Count;
+
 
             UrlBox.Text = "";
 
@@ -639,6 +641,7 @@ namespace FireBrowser
         public FireBrowserTabViewItem CreateNewTab(Type page = null, object param = null, int index = -1)
         {
             if (index == -1) index = Tabs.TabItems.Count;
+
 
             UrlBox.Text = "";
 
@@ -829,13 +832,30 @@ namespace FireBrowser
                     ViewModel.CanRefresh = true;
                 };
                 await TabWebView.EnsureCoreWebView2Async();
+                SmallUpdates();
             }
             else
             {
                 ViewModel.CanRefresh = false;
                 ViewModel.CurrentAddress = null;
             }
+
             ViewModel.FavoriteIcon = "\uF714";
+        }
+
+        public void SmallUpdates()
+        {
+            UrlBox.Text = TabWebView.CoreWebView2.Source.ToString();
+            ViewModel.Securitytype = TabWebView.CoreWebView2.Source.ToString();
+
+            if (TabWebView.CoreWebView2.Source.Contains("https"))
+            {
+                ViewModel.SecurityIcon = "\uE72E";
+            }
+            else if (TabWebView.CoreWebView2.Source.Contains("http"))
+            {
+                ViewModel.SecurityIcon = "\uE785";
+            }
         }
 
         private async void ToolbarButtonClick(object sender, RoutedEventArgs e)
@@ -1004,13 +1024,20 @@ namespace FireBrowser
         private void Tabs_TabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
         {
             TabViewItem selectedItem = args.Tab;
-            var tabcontent = (Frame)selectedItem.Content;
+            var tabContent = (Frame)selectedItem.Content;
 
-            if (tabcontent.Content is WebContent)
+            if (tabContent.Content is WebContent webContent)
             {
-                (tabcontent.Content as WebContent).WebViewElement.Close();
+                var webView = webContent.WebViewElement;
+
+                if (webView != null)
+                {
+                    webView.Close();
+                }
             }
-            sender.TabItems.Remove(args.Tab);
+
+            var tabItems = (sender as TabView)?.TabItems;
+            tabItems?.Remove(args.Tab);
         }
         #endregion
 
