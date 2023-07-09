@@ -152,6 +152,9 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\HiddenFeatures\HiddenFt.xaml.cs">
+      <DependentUpon>HiddenFt.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Incognito.xaml.cs">
       <DependentUpon>Incognito.xaml</DependentUpon>
     </Compile>
@@ -316,6 +319,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\HiddenFeatures\HiddenFt.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Incognito.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -406,7 +413,7 @@
       <Version>0.0.13</Version>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm">
-      <Version>8.2.0</Version>
+      <Version>8.2.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>

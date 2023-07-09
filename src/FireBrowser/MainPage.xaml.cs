@@ -204,9 +204,18 @@ namespace FireBrowser
         {
             Tabs.TabItems.Add(tab);
         }
+
+        string testSetting = FireBrowserInterop.SettingsHelper.GetSetting("DragOutSideExperiment");
         private async void Tabs_TabDroppedOutside(TabView sender, TabViewTabDroppedOutsideEventArgs args)
         {
-            MoveTabToNewWindow(args.Tab);
+            if(testSetting == "0x1")
+            {
+                MoveTabToNewWindow(args.Tab);
+            }
+            else
+            {
+
+            }
         }
 
         private async void MoveTabToNewWindow(TabViewItem tab)
@@ -227,6 +236,9 @@ namespace FireBrowser
             newPage.SetupWindow(newWindow);
     
             ElementCompositionPreview.SetAppWindowContent(newWindow, newPage);
+            newWindow.TitleBar.BackgroundColor = Colors.Transparent;
+            BackdropMaterial.SetApplyToRootOrPageBackground(newPage, true);
+
 
             Tabs.TabItems.Remove(tab);
             newPage.AddTabToTabs(tab);
@@ -730,6 +742,9 @@ namespace FireBrowser
                         break;
                     case "firebrowser://pdf":
                         TabContent.Navigate(typeof(Pages.PdfReader), CreatePasser(), new DrillInNavigationTransitionInfo());
+                        break;
+                    case "firebrowser://hidden":
+                        TabContent.Navigate(typeof(Pages.HiddenFeatures.HiddenFt), CreatePasser(), new DrillInNavigationTransitionInfo());
                         break;
                     default:
                         // default behavior

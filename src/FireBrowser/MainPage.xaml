@@ -536,32 +536,35 @@
                         >
                     <Button.Flyout>
                         <Flyout>
-                            <StackPanel MaxWidth="325">
-                                <StackPanel>
-                                    <TextBlock MinWidth="300" FontSize="20">
-                                        Add favorite
-                                    </TextBlock>
-                                    <TextBlock>Name</TextBlock>
-                                    <TextBox x:Name="FavoriteTitle" />
-                                    <TextBlock>Url - Website</TextBlock>
-                                    <TextBox x:Name="FavoriteUrl" />
-                                </StackPanel>
-                                <Button
-                                        Width="Auto"
-                                        Tag="AddFavorite" 
-                                        Click="ToolbarButtonClick"
-                                        Margin="0,8,0,0"
-                                    >
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock>
-                                        Add Favorite
-                                        </TextBlock>
-                                    </StackPanel>
-                                </Button>
-                            </StackPanel>
+                            <Grid MaxWidth="325">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" MinWidth="300" FontSize="20" Text="Add favorite" />
+
+                                <TextBlock Grid.Row="1" Text="Name" />
+                                <TextBox Grid.Row="2" x:Name="FavoriteTitle" />
+
+                                <TextBlock Grid.Row="3" Text="URL - Website" />
+                                <TextBox Grid.Row="4" x:Name="FavoriteUrl" />
+
+                                <Button Grid.Row="5"
+                                       Width="Auto"
+                                       Tag="AddFavorite"
+                                       Click="ToolbarButtonClick"
+                                       Margin="0,8,0,0"
+                                       Content="Add Favorite" />
+                            </Grid>
                         </Flyout>
                     </Button.Flyout>
                 </Button>
+
                 <Button
                     x:Name="FavoritesButton"                 
                     Style="{ThemeResource QuietButtonStyle}"
