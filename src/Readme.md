@@ -7,11 +7,11 @@
 - Windows SDK 10.0.22621.0
 
 ### Setup environment
-- Clone this repo: git clone https://github.com/Dots-Studio/Airplane.git
+- Clone this repo: git clone https://github.com/FirebrowserDevs/FireBrowser-Uwp.git
 - Navigate into the newly cloned folder, then Desktop and finally src
-- Double click on Airplane.sln
+- Double click on FireBrowser-Uwp.sln
 - Select Visual Studio 2022 if it isn't already the default for .sln files
 - Wait for Visual Studio to initialize
 
 ### Run
-- On the top menu, click on the play button and wait for Airplane to compile
+- On the top menu, click on the play button and wait for FireBrowser to compile
