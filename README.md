@@ -28,7 +28,6 @@ when compiling this on windows 10 make sure you have the latest install of windo
    <img src="src/FireBrowser/Assets/HomePage.png" />
    <img src="src/FireBrowser/Assets/Webpage.png" />
    <img src="src/FireBrowser/Assets/settings.png" />
-   <img src="src/Readme/compact.png" />
 </div>
 
 TBD
