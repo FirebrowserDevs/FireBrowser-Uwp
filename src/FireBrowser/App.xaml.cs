@@ -29,7 +29,7 @@ namespace FireBrowser
         {
             this.InitializeComponent();
             LoadSettings();
-            nullcheck();
+            NullCheck();
             this.Suspending += OnSuspending;
             this.UnhandledException += App_UnhandledException;
             this.EnteredBackground += App_EnteredBackground;
@@ -39,21 +39,23 @@ namespace FireBrowser
         string registerjm = FireBrowserInterop.SettingsHelper.GetSetting("regJump");
 
         bool _isInBackgroundMode = false;
+        
         private void App_LeavingBackground(object sender, LeavingBackgroundEventArgs e)
         {
             _isInBackgroundMode = false;
-            if(registerjm == null)
+            switch (registerjm)
             {
-                register();
+               case null:
+               case "0":
+                  register();
+                 break;
+               case "1":
+                 return;
+              default:
+              // Handle any other cases if needed
+              break;
             }
-            else if(registerjm == "0")
-            {
-                register();
-            }
-            else if (registerjm == "1") 
-            {
-                return;
-            }
+
         }
 
         private void App_EnteredBackground(object sender, EnteredBackgroundEventArgs e)
@@ -67,28 +69,30 @@ namespace FireBrowser
 
             try
             {
-                // Log the exception
-                ExceptionsHelper.LogException(e.Exception);
+               // Log the exception
+               ExceptionsHelper.LogException(e.Exception);
             }
-            catch
+            catch (Exception)
             {
-
+              // Ignore the exception silently
             }
         }
 
-        public void nullcheck()
+        public void NullCheck()
         {
-            var toolcl = FireBrowserInterop.SettingsHelper.GetSetting("ColorTool");
-            if (toolcl == "")
+           SetDefaultColorSetting("ColorTool", "#000000");
+           SetDefaultColorSetting("ColorTV", "#000000");
+        }
+
+        private void SetDefaultColorSetting(string settingName, string defaultValue)
+        {
+            var toolColor = FireBrowserInterop.SettingsHelper.GetSetting(settingName);
+            if (string.IsNullOrEmpty(toolColor))
             {
-                FireBrowserInterop.SettingsHelper.SetSetting("ColorTool", "#000000");
-            }
-            var toolvw = FireBrowserInterop.SettingsHelper.GetSetting("ColorTV");
-            if (toolvw == "")
-            {
-                FireBrowserInterop.SettingsHelper.SetSetting("ColorTV", "#000000");
+              FireBrowserInterop.SettingsHelper.SetSetting(settingName, defaultValue);
             }
         }
+
 
         public enum AppLaunchType
         {
@@ -101,6 +105,7 @@ namespace FireBrowser
             URIFireBrowser,
             Reset,
         }
+        
         public class AppLaunchPasser
         {
             public AppLaunchType LaunchType { get; set; }
