@@ -217,12 +217,5 @@ namespace FireBrowser.Pages
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
-
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-           
-        }
-
-      
     }
 }
