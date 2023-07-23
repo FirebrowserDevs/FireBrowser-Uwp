@@ -35,48 +35,46 @@ namespace FireBrowser.Pages
 
         public void HomeSync()
         {
-            var ison = FireBrowserInterop.SettingsHelper.GetSetting("Auto");
-            isAuto = ison.Equals("1");
-            Type.IsOn = isAuto;
+           // Auto setting
+           var ison = FireBrowserInterop.SettingsHelper.GetSetting("Auto");
+           isAuto = ison.Equals("1");
+           Type.IsOn = isAuto;
 
-            var ison2 = FireBrowserInterop.SettingsHelper.GetSetting("LightMode");
-            isMode = ison2.Equals("1");
-            Mode.IsOn = isMode;
+           // LightMode setting
+           var ison2 = FireBrowserInterop.SettingsHelper.GetSetting("LightMode");
+           isMode = ison2.Equals("1");
+           Mode.IsOn = isMode;
 
-            var set = FireBrowserInterop.SettingsHelper.GetSetting("Background");
-            var cls = FireBrowserInterop.SettingsHelper.GetSetting("ColorBackground");
+           // Background and ColorBackground settings
+           var set = FireBrowserInterop.SettingsHelper.GetSetting("Background");
+           var cls = FireBrowserInterop.SettingsHelper.GetSetting("ColorBackground");
 
-
-            ViewModel = new HomeViewModel
+          // ViewModel setup
+          ViewModel = new HomeViewModel
+          {
+            BackgroundType = set switch
             {
-                BackgroundType = set switch
-                {
-                    "2" => Settings.NewTabBackground.Costum,
-                    "1" => Settings.NewTabBackground.Featured,
-                    "0" => Settings.NewTabBackground.None,
-                },
-            };
-
-            if (set.Equals("1"))
-            {
-                NewColor.IsEnabled = false;
+              "2" => Settings.NewTabBackground.Costum,
+              "1" => Settings.NewTabBackground.Featured,
+              _ => Settings.NewTabBackground.None,
             }
-            else if (set.Equals("0"))
-            {
-                NewColor.IsEnabled = false;
-            }
-            else if (set.Equals("2"))
-            {
-                NewColor.IsEnabled = true;
-            }
-            GridSelect.SelectedValue = ViewModel.BackgroundType.ToString();
+          };
 
-            NewColor.Text = cls.ToString();
-            var isLightMode = FireBrowserInterop.SettingsHelper.GetSetting("LightMode").Equals("1");
-            Edit.Visibility = isLightMode ? Visibility.Collapsed : Visibility.Visible;
-            SetTab.Visibility = isLightMode ? Visibility.Collapsed : Visibility.Visible;
-            BigGrid.Visibility = isLightMode ? Visibility.Collapsed : Visibility.Visible;
-        }
+         // NewColor.IsEnabled setup
+         NewColor.IsEnabled = set.Equals("2");
+
+        // GridSelect setup
+        GridSelect.SelectedValue = ViewModel.BackgroundType.ToString();
+
+        // NewColor.Text setup
+        NewColor.Text = cls;
+
+        // Visibility setup based on LightMode setting
+       Edit.Visibility = isMode ? Visibility.Collapsed : Visibility.Visible;
+       SetTab.Visibility = isMode ? Visibility.Collapsed : Visibility.Visible;
+       BigGrid.Visibility = isMode ? Visibility.Collapsed : Visibility.Visible;
+     }
+
 
         public void sidesync()
         {
