@@ -237,7 +237,7 @@ namespace FireBrowser
     
             ElementCompositionPreview.SetAppWindowContent(newWindow, newPage);
             newWindow.TitleBar.BackgroundColor = Colors.Transparent;
-            BackdropMaterial.SetApplyToRootOrPageBackground(newPage, true);
+            BackdropMaterial.SetApplyToRootOrPageBackground(newWindow, true);
 
 
             Tabs.TabItems.Remove(tab);
