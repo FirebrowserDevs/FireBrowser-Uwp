@@ -29,7 +29,7 @@
     "eslint": "^7.26.0",
     "htmltidy2": "^0.3.0",
     "js-beautify": "^1.13.13",
-    "jsdom": "^13.1",
+    "jsdom": "^16.5.0",
     "mocha": "^8.4.0",
     "release-it": "^14.6.2",
     "sinon": "^7.3.2"
