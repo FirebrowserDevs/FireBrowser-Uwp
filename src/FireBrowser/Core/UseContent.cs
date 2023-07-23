@@ -6,24 +6,10 @@ namespace FireBrowser.Core
 {
     public class UseContent
     {
-        public static WebContent WebContent
-        {
-            get { return (Window.Current.Content as Frame)?.Content as WebContent; }
-        }
-
-        public static MainPage MainPageContent
-        {
-            get { return (Window.Current.Content as Frame)?.Content as MainPage; }
-        }
-
-        public static SettingsPage SettingsContent
-        {
-            get { return (Window.Current.Content as Frame)?.Content as SettingsPage; }
-        }
-
-        public static NewTab NewTabPage
-        {
-            get { return (Window.Current.Content as Frame)?.Content as NewTab; }
-        }
+        /// improving frames
+        public static WebContent WebContent => (Window.Current.Content as Frame)?.Content as WebContent;
+        public static MainPage MainPageContent => (Window.Current.Content as Frame)?.Content as MainPage;
+        public static SettingsPage SettingsContent => (Window.Current.Content as Frame)?.Content as SettingsPage;
+        public static NewTab NewTabPage => (Window.Current.Content as Frame)?.Content as NewTab;
     }
 }
