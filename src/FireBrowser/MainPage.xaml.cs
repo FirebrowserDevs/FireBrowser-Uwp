@@ -373,40 +373,26 @@ namespace FireBrowser
 
         private void SetBackground(string colorKey, Panel panel)
         {
-            var colorString = FireBrowserInterop.SettingsHelper.GetSetting(colorKey);
-            if (colorString == "#000000")
-            {
-                panel.Background = new SolidColorBrush(Colors.Transparent);
-            }
-            else
-            {
-                var color = (Windows.UI.Color)XamlBindingHelper.ConvertValue(typeof(Windows.UI.Color), colorString);
-                var brush = new SolidColorBrush(color);
-                panel.Background = brush;
-            }
+           var colorString = FireBrowserInterop.SettingsHelper.GetSetting(colorKey);
+           var color = colorString == "#000000" ? Colors.Transparent : ColorHelper.FromString(colorString);
+           var brush = new SolidColorBrush(color);
+           panel.Background = brush;
         }
 
         private void SetBackgroundTabs(string colorKey, TabView panel)
         {
-            var colorString = FireBrowserInterop.SettingsHelper.GetSetting(colorKey);
-            if (colorString == "#000000")
-            {
-                panel.Background = new SolidColorBrush(Colors.Transparent);
-            }
-            else
-            {
-                var color = (Windows.UI.Color)XamlBindingHelper.ConvertValue(typeof(Windows.UI.Color), colorString);
-                var brush = new SolidColorBrush(color);
-                panel.Background = brush;
-            }
+          var colorString = FireBrowserInterop.SettingsHelper.GetSetting(colorKey);
+          var color = colorString == "#000000" ? Colors.Transparent : ColorHelper.FromString(colorString);
+          var brush = new SolidColorBrush(color);
+          panel.Background = brush;
         }
-
 
         public void ColorsTools()
-        {
-            SetBackground("ColorTool", ClassicToolbar);
-            SetBackgroundTabs("ColorTv", Tabs);
-        }
+       {
+           SetBackground("ColorTool", ClassicToolbar);
+           SetBackgroundTabs("ColorTv", Tabs);
+       }
+
 
         bool incog = false;
 
