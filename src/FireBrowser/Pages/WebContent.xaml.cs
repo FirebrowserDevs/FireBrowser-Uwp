@@ -2,6 +2,7 @@
 using FireBrowserCore.Models;
 using FireBrowserDataBase;
 using FireExceptions;
+using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
@@ -11,8 +12,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Graphics.Imaging;
+using Windows.Graphics.Printing;
+using Windows.Networking.Connectivity;
 using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.UI.ViewManagement;
+using Windows.UI.WebUI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -33,52 +39,6 @@ namespace FireBrowser.Pages
         {
             this.InitializeComponent();
         }
-
-        #region fullscreensys
-        private bool fullScreen = false;
-
-        [DefaultValue(false)]
-        public bool FullScreen
-        {
-            get { return fullScreen; }
-            set
-            {
-                ApplicationView view = ApplicationView.GetForCurrentView();
-                if (value)
-                {
-                    try
-                    {
-                        if (!view.IsFullScreenMode)
-                        {
-                            view.TryEnterFullScreenMode();
-                            FireBrowser.Core.UseContent.MainPageContent.HideToolbar(true);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        FireExceptions.ExceptionsHelper.LogException(ex);
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        if (view.IsFullScreenMode)
-                        {
-                            view.ExitFullScreenMode();
-                            FireBrowser.Core.UseContent.MainPageContent.HideToolbar(false);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        FireExceptions.ExceptionsHelper.LogException(ex);
-                    }
-                }
-                fullScreen = value;
-            }
-        }
-
-        #endregion
 
         public static bool IsIncognitoModeEnabled { get; set; } = false;
         private void ToggleIncognitoMode(object sender, RoutedEventArgs e)
@@ -122,6 +82,7 @@ namespace FireBrowser.Pages
             }
         }
 
+       
         public bool run = false;
         public void AfterComplete()
         {
@@ -138,7 +99,8 @@ namespace FireBrowser.Pages
                 string address = WebViewElement.CoreWebView2.Source.ToString();
                 string title = WebViewElement.CoreWebView2.DocumentTitle.ToString();
                 var dbAddHis = new DbAddHis();
-                dbAddHis.AddHistData(address, title);
+                _ = dbAddHis.AddHistData($@"INSERT INTO urlsDb (Url,Title,Visit_Count,Last_Visit_Time)
+                                                VALUES ('{address}','{title}','{1}','{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}');");
             }
 
             if (WebViewElement.CoreWebView2.Source.Contains("https"))
@@ -156,6 +118,7 @@ namespace FireBrowser.Pages
                 param.ViewModel.Securitytext = "This Page Is Unsecured By A Un-Valid SSL Certificate, Please Be Careful";
             }
         }
+
 
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -181,7 +144,7 @@ namespace FireBrowser.Pages
                     if (IsIncognitoModeEnabled == true)
                     {
                         userAgent = userAgent.Substring(25, edgIndex - 25);
-                        userAgent = userAgent.Replace("Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.64", "NewIncog/1");
+                        userAgent = userAgent.Replace("Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.188", "NewIncog/1");
                     }
                     else
                     {
@@ -191,7 +154,7 @@ namespace FireBrowser.Pages
                             if (edgIndex >= 0)
                             {
                                 userAgent = userAgent.Substring(0, edgIndex - 0);
-                                userAgent = userAgent.Replace("Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.64", "Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.64");
+                                userAgent = userAgent.Replace("Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.188", "Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.188");
                                 s.CoreWebView2.Settings.UserAgent = userAgent;
                             }
                         }
@@ -205,7 +168,6 @@ namespace FireBrowser.Pages
             s.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = true;
             s.CoreWebView2.Settings.AreDefaultContextMenusEnabled = true;
             s.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);
-            s.CoreWebView2.HistoryChanged += CoreWebView2_HistoryChanged;
             s.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
             s.CoreWebView2.ScriptDialogOpening += async (sender, args) =>
             {
@@ -269,7 +231,8 @@ namespace FireBrowser.Pages
                 Progress.IsIndeterminate = true;
                 Progress.Visibility = Visibility.Visible;
                 param.ViewModel.CanRefresh = false;
-             
+              
+               
             };
             s.CoreWebView2.NavigationCompleted += (sender, args) =>
             {
@@ -289,11 +252,43 @@ namespace FireBrowser.Pages
 
                 s.CoreWebView2.ContainsFullScreenElementChanged += (sender, args) =>
                 {
-                    this.FullScreen = s.CoreWebView2.ContainsFullScreenElement;
+                    FullSys sys = new();           
+                    sys.FullScreen = s.CoreWebView2.ContainsFullScreenElement;                 
                 };
-
-               
                 AfterComplete();
+
+
+                if (args.IsSuccess)
+                {
+                
+                }
+                else
+                {
+                    if (args.WebErrorStatus == Microsoft.Web.WebView2.Core.CoreWebView2WebErrorStatus.CertificateIsInvalid)
+                    {
+                        Core.FireAiSmart fs = new Core.FireAiSmart();
+                        fs.PrimaryButtonClick += (sender, e) =>
+                        {                           
+                           WebViewElement.CoreWebView2.Resume();          
+
+                        };
+                        fs.SecondaryButtonClick += (sender, e) =>
+                        {
+                            if(WebViewElement.CoreWebView2.CanGoBack == true)
+                            {
+                                WebViewElement.CoreWebView2.GoBack();
+                            }
+                            else
+                            {
+                                SearchUrl = FireBrowserInterop.SettingsHelper.GetSetting("SearchUrl");
+                                WebViewElement.CoreWebView2.Navigate($"{SearchUrl}");
+                            }
+                        
+                        };
+
+                        fs.ShowAsync();
+                    }
+                }
             };
             s.CoreWebView2.SourceChanged += (sender, args) =>
             {
@@ -310,11 +305,6 @@ namespace FireBrowser.Pages
                 param?.TabView.TabItems.Add(mp.CreateNewTab(typeof(WebContent), args.Uri));
                 args.Handled = true;
             };
-        }
-
-        private void CoreWebView2_HistoryChanged(CoreWebView2 sender, object args)
-        {
-            AfterComplete();
         }
 
         string SelectionText;
@@ -361,6 +351,8 @@ namespace FireBrowser.Pages
         {
             await Windows.System.Launcher.LaunchUriAsync(uri);
         }
+
+
         private async void ContextMenuItem_Click(object sender, RoutedEventArgs e)
         {
             if (sender is AppBarButton button && button.Tag != null)
@@ -398,12 +390,16 @@ namespace FireBrowser.Pages
                         FireBrowserInterop.SystemHelper.ShowShareUIURL(WebViewElement.CoreWebView2.DocumentTitle, WebViewElement.CoreWebView2.Source);
                         break;
                     case "Print":
-                    
+                        // null for default print settings.
+                        await WebViewElement.CoreWebView2.PrintAsync(null);
+
                         break;
                 }
             }
             Ctx.Hide();
         }
+
+      
 
         public string OpTog = FireBrowserInterop.SettingsHelper.GetSetting("OpSw");
         private void ContextClicked_Click(object sender, RoutedEventArgs e)
@@ -437,6 +433,7 @@ namespace FireBrowser.Pages
             }
             Ctx.Hide();
         }
+
 
         private void Grid_Loaded_1(object sender, RoutedEventArgs e)
         {

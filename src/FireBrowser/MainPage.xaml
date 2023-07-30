@@ -9,6 +9,7 @@
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     muxc:AnimatedIcon.State="True"
+    xmlns:media="using:FireBrowserMicaEngine.Media"
     NavigationCacheMode="Disabled"
     mc:Ignorable="d">
     <Page.Resources>
@@ -244,6 +245,7 @@
                                 x:Name="HistorySearchMenuItem"
                                 Height="35"
                                 Visibility="Collapsed" 
+                                TextChanged="HistorySearchMenuItem_TextChanged"
                                 />
                             <StackPanel
                                 Grid.Column="1"
@@ -258,6 +260,7 @@
                                     Padding="0"
                                     Background="Transparent"
                                     BorderThickness="0"
+                                  
                                     Click="SearchHistoryMenuFlyout_Click">
 
                                     <Viewbox
@@ -311,7 +314,7 @@
                               >
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <Grid Margin="5">
+                                        <Grid Margin="5,5,5,5">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>

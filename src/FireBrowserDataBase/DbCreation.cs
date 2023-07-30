@@ -21,8 +21,8 @@ namespace FireBrowserDataBase
                     await db.OpenAsync();
 
                     string tableCommand = "CREATE TABLE IF NOT " +
-                         "EXISTS urlsDb (Url NVARCHAR(2083) PRIMARY KEY NOT NULL, " +
-                         "Title NVARCHAR(2048), " +
+                         "EXISTS urlsDb (Url NVARCHAR(2583) PRIMARY KEY NOT NULL, " +
+                         "Title NVARCHAR(2548), " +
                          "Visit_Count INTEGER, " +
                          "Last_Visit_Time DATETIME)";
 
