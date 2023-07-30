@@ -16,7 +16,6 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using SQLitePCL;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -86,7 +85,6 @@ namespace FireBrowser
             ButtonVisible();
             UpdateYesNo();
             ColorsTools();
-            Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--enable-features=msSingleSignOnOSForPrimaryAccountIsShared");
         }
 
         #region MainWindowAndButtons
@@ -222,29 +220,29 @@ namespace FireBrowser
 
         private async void MoveTabToNewWindow(TabViewItem tab)
         {
+            // AppWindow was introduced in Windows 10 version 18362 (ApiContract version 8). 
+            // If the app is running on a version earlier than 18362, simply no-op.
+            // If your app needs to support multiple windows on earlier versions of Win10, you can use CoreWindow/ApplicationView.
+            // More information about showing multiple views can be found here: https://docs.microsoft.com/windows/uwp/design/layout/show-multiple-views
             if (!ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 10))
             {
                 return;
             }
 
-
-            // Create a new window
             AppWindow newWindow = await AppWindow.TryCreateAsync();
-
-            // Create a new instance of MainPage to transfer to the new window
+            
             MainPage newPage = new MainPage();
-            BackdropMaterial.SetApplyToRootOrPageBackground(newPage, true);
-
-            // Set up the window and its content
+                      
             newPage.SetupWindow(newWindow);
+    
             ElementCompositionPreview.SetAppWindowContent(newWindow, newPage);
+            newWindow.TitleBar.BackgroundColor = Colors.Transparent;
+            BackdropMaterial.SetApplyToRootOrPageBackground(newWindow, true);
 
 
-            // Remove the tab from the main window and add it to the new window
             Tabs.TabItems.Remove(tab);
             newPage.AddTabToTabs(tab);
 
-            // Show the new window
             await newWindow.TryShowAsync();
         }
 
@@ -375,32 +373,18 @@ namespace FireBrowser
 
         private void SetBackground(string colorKey, Panel panel)
         {
-            var colorString = FireBrowserInterop.SettingsHelper.GetSetting(colorKey);
-            if (colorString == "#000000")
-            {
-                panel.Background = new SolidColorBrush(Colors.Transparent);
-            }
-            else
-            {
-                var color = (Windows.UI.Color)XamlBindingHelper.ConvertValue(typeof(Windows.UI.Color), colorString);
-                var brush = new SolidColorBrush(color);
-                panel.Background = brush;
-            }
+           var colorString = FireBrowserInterop.SettingsHelper.GetSetting(colorKey);
+           var color = colorString == "#000000" ? Colors.Transparent : ColorHelper.FromString(colorString);
+           var brush = new SolidColorBrush(color);
+           panel.Background = brush;
         }
 
         private void SetBackgroundTabs(string colorKey, TabView panel)
         {
-            var colorString = FireBrowserInterop.SettingsHelper.GetSetting(colorKey);
-            if (colorString == "#000000")
-            {
-                panel.Background = new SolidColorBrush(Colors.Transparent);
-            }
-            else
-            {
-                var color = (Windows.UI.Color)XamlBindingHelper.ConvertValue(typeof(Windows.UI.Color), colorString);
-                var brush = new SolidColorBrush(color);
-                panel.Background = brush;
-            }
+          var colorString = FireBrowserInterop.SettingsHelper.GetSetting(colorKey);
+          var color = colorString == "#000000" ? Colors.Transparent : ColorHelper.FromString(colorString);
+          var brush = new SolidColorBrush(color);
+          panel.Background = brush;
         }
 
         public void ColorsTools()
@@ -872,11 +856,13 @@ namespace FireBrowser
             {
                 case "Back":
                     GoBack();
-
                     break;
                 case "Forward":
                     GoForward();
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 300fc97 (Update +Fixes)
                     break;
                 case "Refresh":
                     if (TabContent.Content is WebContent) TabWebView.CoreWebView2.Reload();
@@ -902,7 +888,6 @@ namespace FireBrowser
                         }
 
                     }
-                    Secure.IsEnabled = true;
                     Hmbtn.IsEnabled = false;
                     break;
                 case "DownloadFlyout":
@@ -1045,7 +1030,6 @@ namespace FireBrowser
         }
         #endregion
 
-        private ObservableCollection<HistoryItem> browserHistory;
         private async void FetchBrowserHistory()
         {
             Batteries.Init();
@@ -1058,8 +1042,8 @@ namespace FireBrowser
 
                 using (var connection = new SqliteConnection(connectionStringBuilder.ConnectionString))
                 {
-                    // Open the database connection
-                    connection.Open();
+                    // Open the database connection asynchronously
+                    await connection.OpenAsync();
 
                     // Define the SQL query to fetch the browser history
                     string sql = "SELECT url, title, visit_count, last_visit_time FROM urlsDb ORDER BY last_visit_time DESC";
@@ -1067,38 +1051,69 @@ namespace FireBrowser
                     // Create a command object with the SQL query and connection
                     using (SqliteCommand command = new SqliteCommand(sql, connection))
                     {
-                        // Execute the SQL query and get the results
-                        using (SqliteDataReader reader = command.ExecuteReader())
+                        // Execute the SQL query asynchronously and get the results
+                        using (SqliteDataReader reader = await command.ExecuteReaderAsync())
                         {
-                            // Create an observable collection to store the browser history items
-                            browserHistory = new ObservableCollection<HistoryItem>();
+                            // Create a list to store the browser history items
+                            List<HistoryItem> historyItems = new List<HistoryItem>();
+
+                            // Batch insert variables
+                            int batchSize = 1000;
+                            int currentBatchSize = 0;
+                            List<HistoryItem> batchItems = new List<HistoryItem>();
 
                             // Iterate through the query results and create a HistoryItem for each row
-                            while (reader.Read())
+                            while (await reader.ReadAsync())
                             {
-                                HistoryItem historyItem = new HistoryItem
-                                {
-                                    Url = reader.GetString(0),
-                                    Title = reader.IsDBNull(1) ? null : reader.GetString(1),
-                                    VisitCount = reader.GetInt32(2),
-                                    LastVisitTime = reader.GetString(3),
-                                };
+                                // Get the URL and last visit time of the history item
+                                string url = reader.GetString(0);
+                                DateTime lastVisitTime = DateTimeOffset.FromFileTime(reader.GetInt64(3)).DateTime;
 
-                                // Check if the item already exists in the collection before adding it
-                                if (!browserHistory.Any(item => item.Url == historyItem.Url))
+                                // Check if a history item with the same URL and time already exists in the batch
+                                HistoryItem existingItem = batchItems.FirstOrDefault(item => item.Url == url && item.LastVisitTime == lastVisitTime);
+
+                                if (existingItem != null)
                                 {
-                                    // Add the item to the collection
+                                    // If an existing history item is found in the batch, increment its visit count
+                                    existingItem.VisitCount++;
+                                }
+                                else
+                                {
+                                    // Otherwise, create a new history item and add it to the batch
+                                    HistoryItem historyItem = new HistoryItem
+                                    {
+                                        Url = url,
+                                        Title = reader.IsDBNull(1) ? null : reader.GetString(1),
+                                        VisitCount = reader.GetInt32(2),
+                                        LastVisitTime = lastVisitTime
+                                    };
                                     historyItem.ImageSource = new BitmapImage(new Uri("https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=" + historyItem.Url + "&size=32"));
-                                    browserHistory.Add(historyItem);
+                                    batchItems.Add(historyItem);
+
+                                    // Increment the current batch size
+                                    currentBatchSize++;
+
+                                    // Check if the batch size limit is reached
+                                    if (currentBatchSize >= batchSize)
+                                    {
+                                        // Add the batch items to the main historyItems list
+                                        historyItems.AddRange(batchItems);
+
+                                        // Clear the batch items list and reset the current batch size
+                                        batchItems.Clear();
+                                        currentBatchSize = 0;
+                                    }
                                 }
                             }
+
+                            // Add any remaining batch items to the main historyItems list
+                            historyItems.AddRange(batchItems);
+
+                            // Bind the browser history items to the ListView
+                            HistoryTemp.ItemsSource = historyItems;
                         }
                     }
-
-                    // Close the database connection explicitly
-                    connection.Close();
                 }
-                HistoryTemp.ItemsSource = browserHistory;
             }
             catch (Exception ex)
             {
@@ -1258,25 +1273,5 @@ namespace FireBrowser
             TabContent.Navigate(typeof(Pages.TimeLine.Timeline));
         }
 
-        private void FilterBrowserHistory(string searchText)
-        {
-            if (browserHistory == null) return;
-
-            // Clear the collection to start fresh with filtered items
-            HistoryTemp.ItemsSource = null;
-
-            // Filter the browser history based on the search text
-            var filteredHistory = new ObservableCollection<HistoryItem>(browserHistory
-                .Where(item => item.Url.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
-                               item.Title?.Contains(searchText, StringComparison.OrdinalIgnoreCase) == true));
-
-            // Bind the filtered browser history items to the ListView
-            HistoryTemp.ItemsSource = filteredHistory;
-        }
-        private void HistorySearchMenuItem_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            string searchText = HistorySearchMenuItem.Text;
-            FilterBrowserHistory(searchText);
-        }
     }
 }

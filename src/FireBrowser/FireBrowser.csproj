@@ -139,7 +139,10 @@
       <DependentUpon>FireBrowserTabViewItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\FluentIcon.cs" />
+<<<<<<< HEAD
     <Compile Include="Core\FullSys.cs" />
+=======
+>>>>>>> parent of 300fc97 (Update +Fixes)
     <Compile Include="Core\UseContent.cs" />
     <Compile Include="Launch\Setup.xaml.cs">
       <DependentUpon>Setup.xaml</DependentUpon>
@@ -204,6 +207,7 @@
     <Compile Include="Pages\WebContent.xaml.cs">
       <DependentUpon>WebContent.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -282,6 +286,7 @@
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="EXTicons\IncognetoDark.png" />
     <Content Include="EXTicons\IncognetoLight.png" />
+    <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
@@ -424,10 +429,10 @@
       <Version>7.1.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.8.5</Version>
+      <Version>2.8.4</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Web.WebView2">
-      <Version>1.0.1988-prerelease</Version>
+      <Version>1.0.1905-prerelease</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>
@@ -474,9 +479,7 @@
       <Name>FireExceptions</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

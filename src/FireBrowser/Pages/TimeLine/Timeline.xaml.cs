@@ -92,7 +92,6 @@ namespace FireBrowser.Pages.TimeLine
             {
                 var navItemTag = args.SelectedItemContainer.Tag.ToString();
                 NavigationView_Navigate(navItemTag, args.RecommendedNavigationTransitionInfo);
-                mainFrame.UrlBox.Text = "firebrowser://" + navItemTag.ToString();
             }
         }
 

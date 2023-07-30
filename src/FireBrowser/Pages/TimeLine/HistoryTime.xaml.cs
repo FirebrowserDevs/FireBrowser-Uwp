@@ -3,10 +3,16 @@ using FireBrowserDialogs.DialogTypes.AreYouSureDialog;
 using Microsoft.Data.Sqlite;
 using SQLitePCL;
 using System;
+<<<<<<< HEAD
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+=======
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+>>>>>>> parent of 300fc97 (Update +Fixes)
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -26,8 +32,6 @@ namespace FireBrowser.Pages.TimeLine
             this.InitializeComponent();
             FetchBrowserHistory();
         }
-
-        private ObservableCollection<HistoryItem> browserHistory;
 
         private void FetchBrowserHistory()
         {
@@ -53,10 +57,10 @@ namespace FireBrowser.Pages.TimeLine
                         // Execute the SQL query and get the results
                         using (SqliteDataReader reader = command.ExecuteReader())
                         {
-                            // Create an observable collection to store the browser history items
-                            browserHistory = new ObservableCollection<HistoryItem>();
+                            // Create a list to store the browser history items
+                            List<HistoryItem> historyItems = new List<HistoryItem>();
 
-                            // Iterate through the query results and create a HistoryItem for each row
+                            // Iterate through the query results and create a BrowserHistoryItem for each row
                             while (reader.Read())
                             {
                                 HistoryItem historyItem = new HistoryItem
@@ -64,24 +68,21 @@ namespace FireBrowser.Pages.TimeLine
                                     Url = reader.GetString(0),
                                     Title = reader.IsDBNull(1) ? null : reader.GetString(1),
                                     VisitCount = reader.GetInt32(2),
-                                    LastVisitTime = reader.GetString(3),
+                                    LastVisitTime = DateTimeOffset.FromFileTime(reader.GetInt64(3)).DateTime
                                 };
 
-                                // Check if the item already exists in the collection before adding it
-                                if (!browserHistory.Any(item => item.Url == historyItem.Url))
-                                {
-                                    // Add the item to the collection
-                                    historyItem.ImageSource = new BitmapImage(new Uri("https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=" + historyItem.Url + "&size=32"));
-                                    browserHistory.Add(historyItem);
-                                }
+                                var item = historyItem;
+                                item.ImageSource = new BitmapImage(new Uri("https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=" + item.Url + "&size=32"));
+                                historyItems.Add(historyItem);
                             }
+
+
+                            // Bind the browser history items to the ListView
+                            BigTemp.ItemsSource = historyItems;
                         }
                     }
-
-                    // Close the database connection explicitly
-                    connection.Close();
                 }
-                BigTemp.ItemsSource = browserHistory;
+
             }
             catch (Exception ex)
             {
@@ -89,8 +90,11 @@ namespace FireBrowser.Pages.TimeLine
                 Debug.WriteLine($"Error: {ex.Message}");
             }
         }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> parent of 300fc97 (Update +Fixes)
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             FetchBrowserHistory();
@@ -112,26 +116,9 @@ namespace FireBrowser.Pages.TimeLine
             }
         }
 
-        private void FilterBrowserHistory(string searchText)
-        {
-            if (browserHistory == null) return;
-
-            // Clear the collection to start fresh with filtered items
-            BigTemp.ItemsSource = null;
-
-            // Filter the browser history based on the search text
-            var filteredHistory = new ObservableCollection<HistoryItem>(browserHistory
-                .Where(item => item.Url.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
-                               item.Title?.Contains(searchText, StringComparison.OrdinalIgnoreCase) == true));
-
-            // Bind the filtered browser history items to the ListView
-            BigTemp.ItemsSource = filteredHistory;
-        }
-
         private void Ts_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string searchText = Ts.Text;
-            FilterBrowserHistory(searchText);
+
         }
     }
 }
