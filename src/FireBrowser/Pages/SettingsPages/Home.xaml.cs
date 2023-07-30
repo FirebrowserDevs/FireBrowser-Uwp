@@ -26,7 +26,7 @@ namespace FireBrowser.Pages.SettingsPages
             // Get the local folder object
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
 
-            // Get the file object
+            // Get the file 
             StorageFile file = await localFolder.GetFileAsync("Params.json");
 
             // Read the contents of the file
