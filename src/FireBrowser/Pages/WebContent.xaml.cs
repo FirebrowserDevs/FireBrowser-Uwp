@@ -10,10 +10,7 @@ using System.IO;
 using System.Linq;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
-<<<<<<< HEAD
-=======
 using Windows.UI.ViewManagement;
->>>>>>> parent of 300fc97 (Update +Fixes)
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -35,51 +32,7 @@ namespace FireBrowser.Pages
             this.InitializeComponent();
         }
 
-        #region fullscreensys
-        private bool fullScreen = false;
-
-        [DefaultValue(false)]
-        public bool FullScreen
-        {
-            get { return fullScreen; }
-            set
-            {
-                ApplicationView view = ApplicationView.GetForCurrentView();
-                if (value)
-                {
-                    try
-                    {
-                        if (!view.IsFullScreenMode)
-                        {
-                            view.TryEnterFullScreenMode();
-                            FireBrowser.Core.UseContent.MainPageContent.HideToolbar(true);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        FireExceptions.ExceptionsHelper.LogException(ex);
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        if (view.IsFullScreenMode)
-                        {
-                            view.ExitFullScreenMode();
-                            FireBrowser.Core.UseContent.MainPageContent.HideToolbar(false);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        FireExceptions.ExceptionsHelper.LogException(ex);
-                    }
-                }
-                fullScreen = value;
-            }
-        }
-
-        #endregion
+    
 
         public static bool IsIncognitoModeEnabled { get; set; } = false;
         private void ToggleIncognitoMode(object sender, RoutedEventArgs e)
@@ -123,10 +76,6 @@ namespace FireBrowser.Pages
             }
         }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of 300fc97 (Update +Fixes)
         public bool run = false;
         public void AfterComplete()
         {
@@ -143,7 +92,8 @@ namespace FireBrowser.Pages
                 string address = WebViewElement.CoreWebView2.Source.ToString();
                 string title = WebViewElement.CoreWebView2.DocumentTitle.ToString();
                 var dbAddHis = new DbAddHis();
-                dbAddHis.AddHistData(address, title);
+                _ = dbAddHis.AddHistData($@"INSERT INTO urlsDb (Url,Title,Visit_Count,Last_Visit_Time)
+                                                VALUES ('{address}','{title}','{1}','{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}');");
             }
 
             if (WebViewElement.CoreWebView2.Source.Contains("https"))
@@ -210,7 +160,6 @@ namespace FireBrowser.Pages
             s.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = true;
             s.CoreWebView2.Settings.AreDefaultContextMenusEnabled = true;
             s.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);
-            s.CoreWebView2.HistoryChanged += CoreWebView2_HistoryChanged;
             s.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
             s.CoreWebView2.ScriptDialogOpening += async (sender, args) =>
             {
@@ -274,12 +223,7 @@ namespace FireBrowser.Pages
                 Progress.IsIndeterminate = true;
                 Progress.Visibility = Visibility.Visible;
                 param.ViewModel.CanRefresh = false;
-<<<<<<< HEAD
 
-
-=======
-             
->>>>>>> parent of 300fc97 (Update +Fixes)
             };
             s.CoreWebView2.NavigationCompleted += (sender, args) =>
             {
@@ -299,12 +243,10 @@ namespace FireBrowser.Pages
 
                 s.CoreWebView2.ContainsFullScreenElementChanged += (sender, args) =>
                 {
-<<<<<<< HEAD
+
                     FullSys sys = new();
                     sys.FullScreen = s.CoreWebView2.ContainsFullScreenElement;
-=======
-                    this.FullScreen = s.CoreWebView2.ContainsFullScreenElement;
->>>>>>> parent of 300fc97 (Update +Fixes)
+
                 };
 
                
@@ -327,10 +269,6 @@ namespace FireBrowser.Pages
             };
         }
 
-        private void CoreWebView2_HistoryChanged(CoreWebView2 sender, object args)
-        {
-            AfterComplete();
-        }
 
         string SelectionText;
         public void select()
@@ -420,11 +358,6 @@ namespace FireBrowser.Pages
             Ctx.Hide();
         }
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> parent of 300fc97 (Update +Fixes)
         public string OpTog = FireBrowserInterop.SettingsHelper.GetSetting("OpSw");
         private void ContextClicked_Click(object sender, RoutedEventArgs e)
         {

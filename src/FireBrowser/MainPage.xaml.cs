@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using FireBrowser.Controls;
+using FireBrowser.Core;
 using FireBrowser.Pages;
+using FireBrowser.Pages.TimeLine;
 using FireBrowserCore.Models;
 using FireBrowserDataBase;
 using FireBrowserDialogs.DialogTypes.UpdateChangelog;
@@ -16,9 +18,12 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using SQLitePCL;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data.Common;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Threading;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
@@ -84,7 +89,7 @@ namespace FireBrowser
             this.InitializeComponent();
             ButtonVisible();
             UpdateYesNo();
-            ColorsTools();
+           // ColorsTools();
         }
 
         #region MainWindowAndButtons
@@ -210,7 +215,7 @@ namespace FireBrowser
         {
             if (testSetting == "0x1")
             {
-                MoveTabToNewWindow(args.Tab);
+               // MoveTabToNewWindow(args.Tab);
             }
             else
             {
@@ -237,7 +242,7 @@ namespace FireBrowser
     
             ElementCompositionPreview.SetAppWindowContent(newWindow, newPage);
             newWindow.TitleBar.BackgroundColor = Colors.Transparent;
-            BackdropMaterial.SetApplyToRootOrPageBackground(newWindow, true);
+            BackdropMaterial.SetApplyToRootOrPageBackground(newPage, true);
 
 
             Tabs.TabItems.Remove(tab);
@@ -368,13 +373,14 @@ namespace FireBrowser
                 // Update current version in local settings
                 localSettings.Values["AppVersion"] = versionString;
             }
-
         }
+
+
 
         private void SetBackground(string colorKey, Panel panel)
         {
            var colorString = FireBrowserInterop.SettingsHelper.GetSetting(colorKey);
-           var color = colorString == "#000000" ? Colors.Transparent : ColorHelper.FromString(colorString);
+           var color = colorString == "#000000" ? Colors.Transparent : Microsoft.Toolkit.Uwp.Helpers.ColorHelper.ToColor(colorString);
            var brush = new SolidColorBrush(color);
            panel.Background = brush;
         }
@@ -382,15 +388,15 @@ namespace FireBrowser
         private void SetBackgroundTabs(string colorKey, TabView panel)
         {
           var colorString = FireBrowserInterop.SettingsHelper.GetSetting(colorKey);
-          var color = colorString == "#000000" ? Colors.Transparent : ColorHelper.FromString(colorString);
+          var color = colorString == "#000000" ? Colors.Transparent : Microsoft.Toolkit.Uwp.Helpers.ColorHelper.ToColor(colorString);
           var brush = new SolidColorBrush(color);
           panel.Background = brush;
         }
-
+     
         public void ColorsTools()
         {
-            SetBackground("ColorTool", ClassicToolbar);
-            SetBackgroundTabs("ColorTv", Tabs);
+           SetBackground("ColorTool", ClassicToolbar);
+           SetBackgroundTabs("ColorTv", Tabs);
         }
 
 
@@ -859,10 +865,6 @@ namespace FireBrowser
                     break;
                 case "Forward":
                     GoForward();
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of 300fc97 (Update +Fixes)
                     break;
                 case "Refresh":
                     if (TabContent.Content is WebContent) TabWebView.CoreWebView2.Reload();
@@ -1030,18 +1032,16 @@ namespace FireBrowser
         }
         #endregion
 
+        private ObservableCollection<HistoryItem> browserHistory;
         private async void FetchBrowserHistory()
         {
             Batteries.Init();
-
             try
             {
-                // Create a connection to the SQLite database
-                var connectionStringBuilder = new SqliteConnectionStringBuilder();
-                connectionStringBuilder.DataSource = Path.Combine(ApplicationData.Current.LocalFolder.Path, "History.db");
-
-                using (var connection = new SqliteConnection(connectionStringBuilder.ConnectionString))
+                using (var connection = new SqliteConnection($"Data Source={ApplicationData.Current.LocalFolder.Path}/History.db;"))
                 {
+                    // Open the database connection
+                    connection.Open();
                     // Open the database connection asynchronously
                     await connection.OpenAsync();
 
@@ -1051,75 +1051,41 @@ namespace FireBrowser
                     // Create a command object with the SQL query and connection
                     using (SqliteCommand command = new SqliteCommand(sql, connection))
                     {
-                        // Execute the SQL query asynchronously and get the results
-                        using (SqliteDataReader reader = await command.ExecuteReaderAsync())
+                        using (SqliteDataReader reader = command.ExecuteReader())
                         {
-                            // Create a list to store the browser history items
-                            List<HistoryItem> historyItems = new List<HistoryItem>();
+                            // Create an observable collection to store the browser history items
+                            browserHistory = new ObservableCollection<HistoryItem>();
 
-                            // Batch insert variables
-                            int batchSize = 1000;
-                            int currentBatchSize = 0;
-                            List<HistoryItem> batchItems = new List<HistoryItem>();
-
-                            // Iterate through the query results and create a HistoryItem for each row
-                            while (await reader.ReadAsync())
+                            while (reader.Read())
                             {
-                                // Get the URL and last visit time of the history item
-                                string url = reader.GetString(0);
-                                DateTime lastVisitTime = DateTimeOffset.FromFileTime(reader.GetInt64(3)).DateTime;
-
-                                // Check if a history item with the same URL and time already exists in the batch
-                                HistoryItem existingItem = batchItems.FirstOrDefault(item => item.Url == url && item.LastVisitTime == lastVisitTime);
-
-                                if (existingItem != null)
+                                HistoryItem historyItem = new HistoryItem
                                 {
-                                    // If an existing history item is found in the batch, increment its visit count
-                                    existingItem.VisitCount++;
-                                }
-                                else
-                                {
-                                    // Otherwise, create a new history item and add it to the batch
-                                    HistoryItem historyItem = new HistoryItem
-                                    {
-                                        Url = url,
-                                        Title = reader.IsDBNull(1) ? null : reader.GetString(1),
-                                        VisitCount = reader.GetInt32(2),
-                                        LastVisitTime = lastVisitTime
-                                    };
-                                    historyItem.ImageSource = new BitmapImage(new Uri("https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=" + historyItem.Url + "&size=32"));
-                                    batchItems.Add(historyItem);
+                                    Url = reader.GetString(0),
+                                    Title = reader.IsDBNull(1) ? null : reader.GetString(1),
+                                    VisitCount = reader.GetInt32(2),
+                                    LastVisitTime = reader.GetString(3),
+                                };
 
-                                    // Increment the current batch size
-                                    currentBatchSize++;
-
-                                    // Check if the batch size limit is reached
-                                    if (currentBatchSize >= batchSize)
-                                    {
-                                        // Add the batch items to the main historyItems list
-                                        historyItems.AddRange(batchItems);
-
-                                        // Clear the batch items list and reset the current batch size
-                                        batchItems.Clear();
-                                        currentBatchSize = 0;
-                                    }
-                                }
+                               
+                                historyItem.ImageSource = new BitmapImage(new Uri("https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=" + historyItem.Url + "&size=32"));
+                                browserHistory.Add(historyItem);
+                               
                             }
 
-                            // Add any remaining batch items to the main historyItems list
-                            historyItems.AddRange(batchItems);
 
                             // Bind the browser history items to the ListView
-                            HistoryTemp.ItemsSource = historyItems;
+                            HistoryTemp.ItemsSource = browserHistory;
                         }
+                        connection.Close();
                     }
                 }
-            }
+            }       
             catch (Exception ex)
             {
                 // Handle any exceptions that might be thrown during the execution of the code
                 Debug.WriteLine($"Error: {ex.Message}");
             }
+
         }
 
         private void FavoritesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
