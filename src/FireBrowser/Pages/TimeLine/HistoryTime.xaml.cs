@@ -3,12 +3,10 @@ using FireBrowserDialogs.DialogTypes.AreYouSureDialog;
 using Microsoft.Data.Sqlite;
 using SQLitePCL;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection.PortableExecutable;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -92,7 +90,7 @@ namespace FireBrowser.Pages.TimeLine
             }
         }
 
-     
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             FetchBrowserHistory();

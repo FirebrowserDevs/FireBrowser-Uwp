@@ -35,45 +35,45 @@ namespace FireBrowser.Pages
 
         public void HomeSync()
         {
-           // Auto setting
-           var ison = FireBrowserInterop.SettingsHelper.GetSetting("Auto");
-           isAuto = ison.Equals("1");
-           Type.IsOn = isAuto;
+            // Auto setting
+            var ison = FireBrowserInterop.SettingsHelper.GetSetting("Auto");
+            isAuto = ison.Equals("1");
+            Type.IsOn = isAuto;
 
-           // LightMode setting
-           var ison2 = FireBrowserInterop.SettingsHelper.GetSetting("LightMode");
-           isMode = ison2.Equals("1");
-           Mode.IsOn = isMode;
+            // LightMode setting
+            var ison2 = FireBrowserInterop.SettingsHelper.GetSetting("LightMode");
+            isMode = ison2.Equals("1");
+            Mode.IsOn = isMode;
 
-           // Background and ColorBackground settings
-           var set = FireBrowserInterop.SettingsHelper.GetSetting("Background");
-           var cls = FireBrowserInterop.SettingsHelper.GetSetting("ColorBackground");
+            // Background and ColorBackground settings
+            var set = FireBrowserInterop.SettingsHelper.GetSetting("Background");
+            var cls = FireBrowserInterop.SettingsHelper.GetSetting("ColorBackground");
 
-          // ViewModel setup
-          ViewModel = new HomeViewModel
-          {
-            BackgroundType = set switch
+            // ViewModel setup
+            ViewModel = new HomeViewModel
             {
-              "2" => Settings.NewTabBackground.Costum,
-              "1" => Settings.NewTabBackground.Featured,
-              _ => Settings.NewTabBackground.None,
-            }
-          };
+                BackgroundType = set switch
+                {
+                    "2" => Settings.NewTabBackground.Costum,
+                    "1" => Settings.NewTabBackground.Featured,
+                    _ => Settings.NewTabBackground.None,
+                }
+            };
 
-         // NewColor.IsEnabled setup
-         NewColor.IsEnabled = set.Equals("2");
+            // NewColor.IsEnabled setup
+            NewColor.IsEnabled = set.Equals("2");
 
-        // GridSelect setup
-        GridSelect.SelectedValue = ViewModel.BackgroundType.ToString();
+            // GridSelect setup
+            GridSelect.SelectedValue = ViewModel.BackgroundType.ToString();
 
-        // NewColor.Text setup
-        NewColor.Text = cls;
+            // NewColor.Text setup
+            NewColor.Text = cls;
 
-        // Visibility setup based on LightMode setting
-       Edit.Visibility = isMode ? Visibility.Collapsed : Visibility.Visible;
-       SetTab.Visibility = isMode ? Visibility.Collapsed : Visibility.Visible;
-       BigGrid.Visibility = isMode ? Visibility.Collapsed : Visibility.Visible;
-     }
+            // Visibility setup based on LightMode setting
+            Edit.Visibility = isMode ? Visibility.Collapsed : Visibility.Visible;
+            SetTab.Visibility = isMode ? Visibility.Collapsed : Visibility.Visible;
+            BigGrid.Visibility = isMode ? Visibility.Collapsed : Visibility.Visible;
+        }
 
 
         public void sidesync()
@@ -104,7 +104,7 @@ namespace FireBrowser.Pages
                     return new SolidColorBrush(Colors.Transparent);
 
                 case Settings.NewTabBackground.Costum:
-                  
+
                     if (colorString == "")
                     {
                         return new SolidColorBrush(Colors.Transparent);
@@ -125,7 +125,7 @@ namespace FireBrowser.Pages
                         try
                         {
                             var images = JsonSerializer.Deserialize<ImageRoot>(request);
-                           
+
 
                             BitmapImage btpImg = new()
                             {
@@ -138,7 +138,7 @@ namespace FireBrowser.Pages
                             };
                         }
                         catch (Exception ex)
-                        {                     
+                        {
                             throw;
                         }
                     }

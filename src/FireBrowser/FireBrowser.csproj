@@ -139,9 +139,6 @@
       <DependentUpon>FireBrowserTabViewItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\FluentIcon.cs" />
-    <Compile Include="Core\FireAiSmart.xaml.cs">
-      <DependentUpon>FireAiSmart.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Core\FullSys.cs" />
     <Compile Include="Core\UseContent.cs" />
     <Compile Include="Launch\Setup.xaml.cs">
@@ -302,10 +299,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\FireBrowserTabViewItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Core\FireAiSmart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

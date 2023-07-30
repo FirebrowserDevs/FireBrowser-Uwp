@@ -38,36 +38,54 @@
             <labs:SettingsExpander.Items>
                 <labs:SettingsCard>
                     <ToggleSwitch x:Name="Dwbl" Toggled="Dwbl_Toggled"/>
+                    <labs:SettingsCard.Header>
+                        Downloads
+                    </labs:SettingsCard.Header>
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE896;"/>
                     </labs:SettingsCard.HeaderIcon>
                 </labs:SettingsCard>
                 <labs:SettingsCard>
                     <ToggleSwitch x:Name="Frbl" Toggled="Frbl_Toggled"/>
+                    <labs:SettingsCard.Header>
+                       Favorites List
+                    </labs:SettingsCard.Header>
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE728;"/>
                     </labs:SettingsCard.HeaderIcon>
                 </labs:SettingsCard>
                 <labs:SettingsCard>
                     <ToggleSwitch x:Name="FlAd" Toggled="FlAd_Toggled" />
+                    <labs:SettingsCard.Header>
+                        Favorites
+                    </labs:SettingsCard.Header>
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE734;"/>
                     </labs:SettingsCard.HeaderIcon>
                 </labs:SettingsCard>
                 <labs:SettingsCard>
                     <ToggleSwitch x:Name="Hsbl" Toggled="Hsbl_Toggled"/>
+                    <labs:SettingsCard.Header>
+                        History
+                    </labs:SettingsCard.Header>
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon  FontFamily="{StaticResource FluentIcons}" Glyph="&#xE81C;"/>
                     </labs:SettingsCard.HeaderIcon>
                 </labs:SettingsCard>
                 <labs:SettingsCard>
                     <ToggleSwitch x:Name="Qrbl" Toggled="Qrbl_Toggled"/>
+                    <labs:SettingsCard.Header>
+                        Qr
+                    </labs:SettingsCard.Header>
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon  FontFamily="{StaticResource FluentIcons}" Glyph="&#xED14;"/>
                     </labs:SettingsCard.HeaderIcon>
                 </labs:SettingsCard>
                 <labs:SettingsCard>
                     <ToggleSwitch x:Name="Tlbl" Toggled="Tlbl_Toggled"/>
+                    <labs:SettingsCard.Header>
+                        Web Tools
+                    </labs:SettingsCard.Header>
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE70F;"/>
                     </labs:SettingsCard.HeaderIcon>
@@ -84,24 +102,36 @@
             <labs:SettingsExpander.Items>
                 <labs:SettingsCard>
                     <ToggleSwitch x:Name="Drbl" Toggled="Drbl_Toggled"/>
+                    <labs:SettingsCard.Header>
+                        Force Dark Mode
+                    </labs:SettingsCard.Header>
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE790;"/>
                     </labs:SettingsCard.HeaderIcon>
                 </labs:SettingsCard>
                 <labs:SettingsCard>
                     <ToggleSwitch x:Name="Trbl" Toggled="Trbl_Toggled"/>
+                    <labs:SettingsCard.Header>
+                        Translation
+                    </labs:SettingsCard.Header>
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE87E;"/>
                     </labs:SettingsCard.HeaderIcon>
                 </labs:SettingsCard>
                 <labs:SettingsCard>
                     <ToggleSwitch x:Name="Read" Toggled="Read_Toggled"/>
+                    <labs:SettingsCard.Header>
+                       Reading Mode
+                    </labs:SettingsCard.Header>
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE736;"/>
                     </labs:SettingsCard.HeaderIcon>
                 </labs:SettingsCard>
                 <labs:SettingsCard>
                     <ToggleSwitch x:Name="Adbl" Toggled="Adbl_Toggled"/>
+                    <labs:SettingsCard.Header>
+                        Basic Adblock
+                    </labs:SettingsCard.Header>
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEA18;"/>
                     </labs:SettingsCard.HeaderIcon>

@@ -2,23 +2,14 @@
 using FireBrowserCore.Models;
 using FireBrowserDataBase;
 using FireExceptions;
-using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Graphics.Imaging;
-using Windows.Graphics.Printing;
-using Windows.Networking.Connectivity;
 using Windows.Storage;
-using Windows.Storage.Streams;
-using Windows.UI.ViewManagement;
-using Windows.UI.WebUI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -82,7 +73,7 @@ namespace FireBrowser.Pages
             }
         }
 
-       
+
         public bool run = false;
         public void AfterComplete()
         {
@@ -92,7 +83,7 @@ namespace FireBrowser.Pages
 
             if (IsIncognitoModeEnabled)
             {
-               
+
             }
             else
             {
@@ -125,7 +116,7 @@ namespace FireBrowser.Pages
         {
             base.OnNavigatedTo(e);
             param = e.Parameter as Passer;
-            await WebViewElement.EnsureCoreWebView2Async();          
+            await WebViewElement.EnsureCoreWebView2Async();
 
             LoadSettings();
             WebView2 s = WebViewElement;
@@ -231,8 +222,8 @@ namespace FireBrowser.Pages
                 Progress.IsIndeterminate = true;
                 Progress.Visibility = Visibility.Visible;
                 param.ViewModel.CanRefresh = false;
-              
-               
+
+
             };
             s.CoreWebView2.NavigationCompleted += (sender, args) =>
             {
@@ -252,52 +243,19 @@ namespace FireBrowser.Pages
 
                 s.CoreWebView2.ContainsFullScreenElementChanged += (sender, args) =>
                 {
-                    FullSys sys = new();           
-                    sys.FullScreen = s.CoreWebView2.ContainsFullScreenElement;                 
+                    FullSys sys = new();
+                    sys.FullScreen = s.CoreWebView2.ContainsFullScreenElement;
                 };
                 AfterComplete();
-
-
-                if (args.IsSuccess)
-                {
-                
-                }
-                else
-                {
-                    if (args.WebErrorStatus == Microsoft.Web.WebView2.Core.CoreWebView2WebErrorStatus.CertificateIsInvalid)
-                    {
-                        Core.FireAiSmart fs = new Core.FireAiSmart();
-                        fs.PrimaryButtonClick += (sender, e) =>
-                        {                           
-                           WebViewElement.CoreWebView2.Resume();          
-
-                        };
-                        fs.SecondaryButtonClick += (sender, e) =>
-                        {
-                            if(WebViewElement.CoreWebView2.CanGoBack == true)
-                            {
-                                WebViewElement.CoreWebView2.GoBack();
-                            }
-                            else
-                            {
-                                SearchUrl = FireBrowserInterop.SettingsHelper.GetSetting("SearchUrl");
-                                WebViewElement.CoreWebView2.Navigate($"{SearchUrl}");
-                            }
-                        
-                        };
-
-                        fs.ShowAsync();
-                    }
-                }
             };
             s.CoreWebView2.SourceChanged += (sender, args) =>
             {
                 if (param.TabView.SelectedItem == param.Tab)
                 {
                     param.ViewModel.CurrentAddress = sender.Source;
-                    param.ViewModel.Securitytype = sender.Source;                  
+                    param.ViewModel.Securitytype = sender.Source;
                 }
-              
+
             };
             s.CoreWebView2.NewWindowRequested += (sender, args) =>
             {
@@ -346,7 +304,7 @@ namespace FireBrowser.Pages
             args.Handled = true;
         }
 
-      
+
         public static async void OpenNewWindow(Uri uri)
         {
             await Windows.System.Launcher.LaunchUriAsync(uri);
@@ -399,7 +357,7 @@ namespace FireBrowser.Pages
             Ctx.Hide();
         }
 
-      
+
 
         public string OpTog = FireBrowserInterop.SettingsHelper.GetSetting("OpSw");
         private void ContextClicked_Click(object sender, RoutedEventArgs e)
@@ -414,17 +372,17 @@ namespace FireBrowser.Pages
                     case "WebApp":
 
                         break;
-                    case "OpenInTab":                      
-                        if(OpTog == "True")
+                    case "OpenInTab":
+                        if (OpTog == "True")
                         {
                             UseContent.MainPageContent.Tabs.TabItems.Add(UseContent.MainPageContent.CreateNewTab(typeof(WebContent), new Uri(SelectionText)));
                             select();
                         }
-                        else if (OpTog == "0") 
+                        else if (OpTog == "0")
                         {
                             UseContent.MainPageContent.Tabs.TabItems.Add(UseContent.MainPageContent.CreateNewTab(typeof(WebContent), new Uri(SelectionText)));
                         }
-                       
+
                         break;
                     case "OpenInWindow":
                         OpenNewWindow(new Uri(SelectionText));
@@ -437,7 +395,7 @@ namespace FireBrowser.Pages
 
         private void Grid_Loaded_1(object sender, RoutedEventArgs e)
         {
-            if (Grid.Children.Count == 0) Grid.Children.Add(WebViewElement);       
+            if (Grid.Children.Count == 0) Grid.Children.Add(WebViewElement);
         }
 
         private async void WebViewElement_Drop(object sender, DragEventArgs e)

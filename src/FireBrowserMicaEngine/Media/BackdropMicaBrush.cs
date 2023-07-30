@@ -11,9 +11,6 @@ using Windows.UI.Xaml.Media;
 
 namespace FireBrowserMicaEngine.Media
 {
-    /// <summary>
-    /// The <see cref="BackdropMicaBrush"/> is a <see cref="Brush"/> that blurs whatever is behind it in the application.
-    /// </summary>
     [ContractVersion(typeof(UniversalApiContract), 262144)]
 #if WINRT
     sealed
@@ -229,7 +226,7 @@ namespace FireBrowserMicaEngine.Media
                 nameof(TintOpacity),
                 typeof(double),
                 typeof(BackdropMicaBrush),
-                new PropertyMetadata(0.8d, OnTintOpacityPropertyChanged));
+                new PropertyMetadata(0.5d, OnTintOpacityPropertyChanged));
 
         /// <summary>
         /// Gets or sets the tint opacity factor for the effect (default is 0.8, must be in the [0, 1] range)

@@ -7,9 +7,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.ApplicationModel.DataTransfer;
-using Windows.Media;
-using Windows.Media.Playback;
 using Windows.Storage;
 using Windows.UI.StartScreen;
 using Windows.UI.ViewManagement;
@@ -39,28 +36,30 @@ namespace FireBrowser
         string registerjm = FireBrowserInterop.SettingsHelper.GetSetting("regJump");
 
         bool _isInBackgroundMode = false;
-        
+
         private void App_LeavingBackground(object sender, LeavingBackgroundEventArgs e)
         {
             _isInBackgroundMode = false;
             switch (registerjm)
             {
-               case null:
-               case "0":
-                  register();
-                 break;
-               case "1":
-                 return;
-              default:
-              // Handle any other cases if needed
-              break;
+                case null:
+                case "0":
+                    register();
+                    break;
+                case "1":
+                    return;
+                default:
+                    // Handle any other cases if needed
+                    break;
             }
 
         }
 
+
+
         private void App_EnteredBackground(object sender, EnteredBackgroundEventArgs e)
         {
-            _isInBackgroundMode = true;       
+            _isInBackgroundMode = true;
         }
 
         private async void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
@@ -69,19 +68,19 @@ namespace FireBrowser
 
             try
             {
-               // Log the exception
-               ExceptionsHelper.LogException(e.Exception);
+                // Log the exception
+                ExceptionsHelper.LogException(e.Exception);
             }
             catch (Exception)
             {
-              // Ignore the exception silently
+                // Ignore the exception silently
             }
         }
 
         public void NullCheck()
         {
-           SetDefaultColorSetting("ColorTool", "#000000");
-           SetDefaultColorSetting("ColorTV", "#000000");
+            SetDefaultColorSetting("ColorTool", "#000000");
+            SetDefaultColorSetting("ColorTV", "#000000");
         }
 
         private void SetDefaultColorSetting(string settingName, string defaultValue)
@@ -89,7 +88,7 @@ namespace FireBrowser
             var toolColor = FireBrowserInterop.SettingsHelper.GetSetting(settingName);
             if (string.IsNullOrEmpty(toolColor))
             {
-              FireBrowserInterop.SettingsHelper.SetSetting(settingName, defaultValue);
+                FireBrowserInterop.SettingsHelper.SetSetting(settingName, defaultValue);
             }
         }
 
@@ -105,7 +104,7 @@ namespace FireBrowser
             URIFireBrowser,
             Reset,
         }
-        
+
         public class AppLaunchPasser
         {
             public AppLaunchType LaunchType { get; set; }
@@ -175,7 +174,7 @@ namespace FireBrowser
             {
                 Frame rootFrame = Window.Current.Content as Frame;
 
-              
+
                 Uri uri = protocolArgs.Uri;
                 string query = uri.Query;
 
@@ -202,7 +201,7 @@ namespace FireBrowser
                     }
                 }
 
-                
+
 
                 if (rootFrame == null)
                 {

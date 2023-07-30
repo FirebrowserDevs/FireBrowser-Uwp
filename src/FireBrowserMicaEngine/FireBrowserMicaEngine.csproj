@@ -121,6 +121,10 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Helpers\ThemeHelper.cs" />
+    <Compile Include="Helpers\ThreadSwitcher.cs" />
+    <Compile Include="Helpers\UIHelper.cs" />
+    <Compile Include="Helpers\WindowHelper.cs" />
     <Compile Include="Media\BackdropMicaBrush.cs" />
     <Compile Include="Media\BackgroundSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

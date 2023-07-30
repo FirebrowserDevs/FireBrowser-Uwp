@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.System;
 using Windows.UI.Core;
-using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -74,7 +72,7 @@ namespace FireBrowser.Pages
                     break;
             }
 
-         
+
             if (navigateToPage != null && navigateToItem != null)
             {
                 NavView.SelectedItem = navigateToItem;

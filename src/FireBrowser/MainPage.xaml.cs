@@ -8,7 +8,7 @@ using FireBrowserFavorites;
 using FireBrowserHelpers.AdBlocker;
 using FireBrowserHelpers.DarkMode;
 using FireBrowserHelpers.ReadingMode;
-using FireBrowserMicaEngine.Media;
+using FireBrowserMicaEngine.Helpers;
 using FireBrowserQr;
 using FireBrowserUrlHelper;
 using Microsoft.Data.Sqlite;
@@ -87,6 +87,7 @@ namespace FireBrowser
             ButtonVisible();
             UpdateYesNo();
             ColorsTools();
+            ThemeHelper.Initialize();
             Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--enable-features=msSingleSignOnOSForPrimaryAccountIsShared");
         }
 
@@ -211,7 +212,7 @@ namespace FireBrowser
         string testSetting = FireBrowserInterop.SettingsHelper.GetSetting("DragOutSideExperiment");
         private async void Tabs_TabDroppedOutside(TabView sender, TabViewTabDroppedOutsideEventArgs args)
         {
-            if(testSetting == "0x1")
+            if (testSetting == "0x1")
             {
                 MoveTabToNewWindow(args.Tab);
             }
@@ -405,10 +406,10 @@ namespace FireBrowser
         }
 
         public void ColorsTools()
-       {
-           SetBackground("ColorTool", ClassicToolbar);
-           SetBackgroundTabs("ColorTv", Tabs);
-       }
+        {
+            SetBackground("ColorTool", ClassicToolbar);
+            SetBackgroundTabs("ColorTv", Tabs);
+        }
 
 
         bool incog = false;
@@ -418,6 +419,7 @@ namespace FireBrowser
             base.OnNavigatedTo(e);
             ResetOutput();
             SetupWindow(null);
+            ActualThemeChanged += MainPage_ActualThemeChanged;
 
             if (e.Parameter is AppLaunchPasser passer)
             {
@@ -461,6 +463,19 @@ namespace FireBrowser
             else
             {
                 Tabs.TabItems.Add(CreateNewTab());
+            }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            ActualThemeChanged += MainPage_ActualThemeChanged;
+        }
+        private async void MainPage_ActualThemeChanged(FrameworkElement sender, object args)
+        {
+            if (!Dispatcher.HasThreadAccess)
+            {
+                await Dispatcher.ResumeForegroundAsync();
             }
         }
 
@@ -878,7 +893,7 @@ namespace FireBrowser
                     break;
                 case "Forward":
                     GoForward();
-               
+
                     break;
                 case "Refresh":
                     if (TabContent.Content is WebContent) TabWebView.CoreWebView2.Reload();
@@ -1133,7 +1148,7 @@ namespace FireBrowser
 
         private void History_Click(object sender, RoutedEventArgs e)
         {
-           FetchBrowserHistory();
+            FetchBrowserHistory();
         }
         private void HistoryTemp_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

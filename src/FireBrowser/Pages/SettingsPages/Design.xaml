@@ -31,6 +31,9 @@
             </labs:SettingsExpander.HeaderIcon>
             <labs:SettingsExpander.Items>
                 <labs:SettingsCard>
+                    <labs:SettingsCard.Header>
+                       Change Color
+                    </labs:SettingsCard.Header>
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE790;"/>
                     </labs:SettingsCard.HeaderIcon>

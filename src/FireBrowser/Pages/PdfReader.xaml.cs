@@ -1,22 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using FireBrowser.Core;
 using System;
-using System.Threading;
-using Windows.Storage;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
-using System.Net.Http;
-using static FireBrowser.MainPage;
-using Microsoft.Toolkit.Uwp.UI.Controls;
 using System.IO;
 using Windows.Storage.Pickers;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.ApplicationModel.DataTransfer;
-using Windows.Storage.AccessCache;
-using System.Data.SqlTypes;
-using Windows.Graphics.Printing;
 using Windows.System;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Navigation;
+using static FireBrowser.MainPage;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -52,7 +43,7 @@ namespace FireBrowser.Pages
         public PdfReader()
         {
             this.InitializeComponent();
-         
+
             ViewModel = new PageListVisibility();
         }
         public PageListVisibility ViewModel { get; set; }
@@ -84,13 +75,13 @@ namespace FireBrowser.Pages
             byte[] buffer = new byte[fileStream.Length];
             fileStream.Read(buffer, 0, buffer.Length);
             //Loads the PDF document.
-         
-          
+
+
         }
 
         public void PagesToggle()
         {
-            if(ViewModel.PageVisibility == Visibility.Visible)
+            if (ViewModel.PageVisibility == Visibility.Visible)
             {
                 ViewModel.PageVisibility = Visibility.Collapsed;
             }
@@ -102,15 +93,15 @@ namespace FireBrowser.Pages
 
         public void getFile()
         {
-           
+
         }
-       
+
 
         #endregion
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-          
+
         }
 
         private void ToolbarButtonClick(object sender, RoutedEventArgs e)
@@ -124,7 +115,7 @@ namespace FireBrowser.Pages
                     getFile();
                     break;
                 case "Print":
-                   
+
                     break;
             }
         }
@@ -139,7 +130,7 @@ namespace FireBrowser.Pages
 
         private void PageNums_Unchecked(object sender, RoutedEventArgs e)
         {
-          if(PageNums.IsChecked == false)
+            if (PageNums.IsChecked == false)
             {
                 ViewModel.PageVisibility = Visibility.Collapsed;
             }
@@ -150,6 +141,6 @@ namespace FireBrowser.Pages
             await Launcher.LaunchUriAsync(new Uri("https://discord.gg/kYStRKBHwy"));
         }
 
-     
+
     }
 }

@@ -21,7 +21,7 @@
                     </labs:SettingsCard>
                 </labs:SettingsExpander.Items>
             </labs:SettingsExpander>
-            <labs:SettingsCard Header="FireBrowser - Light Mode" Description="This Will Enable Light Mode Or Not ( This Will Disable Stuff To Optimize Performance )" Margin="0,5,0,0">
+            <labs:SettingsCard Header="FireBrowser - Light Mode" Description="This Will Enable Light Mode Or Not ( This Will Disable Stuff To Optimize Performance )" Margin="0,1,0,0">
                 <labs:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEC4A;" />
                 </labs:SettingsCard.HeaderIcon>
