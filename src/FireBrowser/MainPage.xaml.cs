@@ -463,6 +463,7 @@ namespace FireBrowser
             }
         }
 
+
         #region toolbar
         public ToolbarViewModel ViewModel { get; set; }
 

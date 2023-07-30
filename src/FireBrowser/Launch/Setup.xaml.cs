@@ -1,5 +1,4 @@
-﻿using FireBrowserMicaEngine.Helpers;
-using System;
+﻿using System;
 using Windows.ApplicationModel.Core;
 using Windows.Media.Core;
 using Windows.Media.Playback;
@@ -32,8 +31,6 @@ namespace FireBrowser.Launch
             formattableTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
             formattableTitleBar.InactiveBackgroundColor = Colors.Transparent;
             formattableTitleBar.ButtonPressedBackgroundColor = Colors.Transparent;
-
-            ThemeHelper.Initialize();
 
             Window.Current.SetTitleBar(TitleBar);
             playmedia();

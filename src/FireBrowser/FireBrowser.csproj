@@ -461,10 +461,6 @@
       <Project>{c0b577c9-a42d-49db-b53b-4b9063e16328}</Project>
       <Name>FireBrowserInterop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FireBrowserMicaEngine\FireBrowserMicaEngine.csproj">
-      <Project>{cfa99899-7e74-4b28-ad38-42d7d553cf8e}</Project>
-      <Name>FireBrowserMicaEngine</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FireBrowserQr\FireBrowserQr.csproj">
       <Project>{eca85c13-60c2-472c-a319-0f1e6573ab95}</Project>
       <Name>FireBrowserQr</Name>
