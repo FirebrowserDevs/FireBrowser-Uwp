@@ -13,27 +13,7 @@ namespace FireBrowserMicaEngine.Helpers
     {
         public static bool IsSupportedAppWindow => ApiInformation.IsTypePresent("Windows.UI.WindowManagement.AppWindow");
 
-        public static bool IsAppWindow(this UIElement element) => IsSupportedAppWindow && element?.XamlRoot?.Content != null && ActiveWindows.ContainsKey(element.XamlRoot.Content);
-
-        public static async Task<Tuple<AppWindow, Frame>> CreateWindow()
-        {
-            Frame newFrame = new Frame();
-            AppWindow newWindow = await AppWindow.TryCreateAsync();
-            ElementCompositionPreview.SetAppWindowContent(newWindow, newFrame);
-            newWindow.TrackWindow(newFrame);
-            return new Tuple<AppWindow, Frame>(newWindow, newFrame);
-        }
-
-        public static void TrackWindow(this AppWindow window, Frame frame)
-        {
-            window.Closed += (sender, args) =>
-            {
-                ActiveWindows?.Remove(frame);
-                frame.Content = null;
-                window = null;
-            };
-            ActiveWindows?.Add(frame, window);
-        }
+        public static bool IsAppWindow(this UIElement element) => IsSupportedAppWindow && element?.XamlRoot?.Content != null && ActiveWindows.ContainsKey(element.XamlRoot.Content);     
 
         public static AppWindow GetWindowForElement(this UIElement element)
         {

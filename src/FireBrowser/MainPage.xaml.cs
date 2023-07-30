@@ -8,7 +8,6 @@ using FireBrowserFavorites;
 using FireBrowserHelpers.AdBlocker;
 using FireBrowserHelpers.DarkMode;
 using FireBrowserHelpers.ReadingMode;
-using FireBrowserMicaEngine.Helpers;
 using FireBrowserQr;
 using FireBrowserUrlHelper;
 using Microsoft.Data.Sqlite;
@@ -87,7 +86,6 @@ namespace FireBrowser
             ButtonVisible();
             UpdateYesNo();
             ColorsTools();
-            ThemeHelper.Initialize();
             Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--enable-features=msSingleSignOnOSForPrimaryAccountIsShared");
         }
 
@@ -210,7 +208,7 @@ namespace FireBrowser
         }
 
         string testSetting = FireBrowserInterop.SettingsHelper.GetSetting("DragOutSideExperiment");
-        private async void Tabs_TabDroppedOutside(TabView sender, TabViewTabDroppedOutsideEventArgs args)
+        private void Tabs_TabDroppedOutside(TabView sender, TabViewTabDroppedOutsideEventArgs args)
         {
             if (testSetting == "0x1")
             {
@@ -419,7 +417,6 @@ namespace FireBrowser
             base.OnNavigatedTo(e);
             ResetOutput();
             SetupWindow(null);
-            ActualThemeChanged += MainPage_ActualThemeChanged;
 
             if (e.Parameter is AppLaunchPasser passer)
             {
@@ -465,21 +462,6 @@ namespace FireBrowser
                 Tabs.TabItems.Add(CreateNewTab());
             }
         }
-
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            base.OnNavigatedFrom(e);
-            ActualThemeChanged += MainPage_ActualThemeChanged;
-        }
-        private async void MainPage_ActualThemeChanged(FrameworkElement sender, object args)
-        {
-            if (!Dispatcher.HasThreadAccess)
-            {
-                await Dispatcher.ResumeForegroundAsync();
-            }
-        }
-
-
 
         #region toolbar
         public ToolbarViewModel ViewModel { get; set; }

@@ -103,18 +103,6 @@ namespace FireBrowserMicaEngine.Helpers
                 await CurrentApplicationWindow.Dispatcher.ResumeForegroundAsync();
             }
 
-            if (UIHelper.HasStatusBar)
-            {
-
-            }
-            else
-            {
-                bool ExtendViewIntoTitleBar = CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar;
-                ApplicationViewTitleBar TitleBar = ApplicationView.GetForCurrentView().TitleBar;
-                TitleBar.ForegroundColor = TitleBar.ButtonForegroundColor = ForegroundColor;
-                TitleBar.BackgroundColor = TitleBar.InactiveBackgroundColor = BackgroundColor;
-                TitleBar.ButtonBackgroundColor = TitleBar.ButtonInactiveBackgroundColor = ExtendViewIntoTitleBar ? Colors.Transparent : BackgroundColor;
-            }
 
             if (WindowHelper.IsSupportedAppWindow)
             {

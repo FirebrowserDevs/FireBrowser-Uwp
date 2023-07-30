@@ -9,8 +9,6 @@
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     muxc:AnimatedIcon.State="True"
-    ActualThemeChanged="MainPage_ActualThemeChanged"
-    xmlns:media="using:FireBrowserMicaEngine.Media"
     NavigationCacheMode="Disabled"
     mc:Ignorable="d">
     <Page.Resources>
