@@ -27,6 +27,15 @@
                 </labs:SettingsCard.HeaderIcon>
                 <ToggleSwitch x:Name="LiteMode" Toggled="LiteMode_Toggled"/>
             </labs:SettingsCard>
+            <labs:SettingsCard Header="FireBrowser - SpeakEngine" Description="Change language Of Speech Engine" Margin="0,1,0,0">
+                <labs:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEFA9;" />
+                </labs:SettingsCard.HeaderIcon>
+                <ComboBox x:Name="Langue" SelectionChanged="Langue_SelectionChanged" Loaded="Langue_Loaded">
+                    <x:String>nl-NL</x:String>
+                    <x:String>en-US</x:String>
+                </ComboBox>
+            </labs:SettingsCard>
         </StackPanel>
     </Grid>
 </Page>

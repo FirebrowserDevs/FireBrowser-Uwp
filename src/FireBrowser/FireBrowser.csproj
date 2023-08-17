@@ -13,7 +13,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.19041.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -139,6 +139,9 @@
       <DependentUpon>FireBrowserTabViewItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\FluentIcon.cs" />
+    <Compile Include="Core\FireAiSmart.xaml.cs">
+      <DependentUpon>FireAiSmart.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Core\FullSys.cs" />
     <Compile Include="Core\UseContent.cs" />
     <Compile Include="Launch\Setup.xaml.cs">
@@ -152,6 +155,12 @@
     </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\HiddenFeatures\AddCredit.xaml.cs">
+      <DependentUpon>AddCredit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\HiddenFeatures\CreditVault.xaml.cs">
+      <DependentUpon>CreditVault.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\HiddenFeatures\HiddenFt.xaml.cs">
       <DependentUpon>HiddenFt.xaml</DependentUpon>
@@ -212,7 +221,6 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\AccountPic\clippy.png" />
     <Content Include="Assets\BadgeLogo.scale-100.png" />
     <Content Include="Assets\BadgeLogo.scale-125.png" />
     <Content Include="Assets\BadgeLogo.scale-150.png" />
@@ -227,9 +235,6 @@
     <Content Include="Assets\Icons\Privacy.svg" />
     <Content Include="Assets\Icons\Style.svg" />
     <Content Include="Assets\Icons\Tabs.svg" />
-    <Content Include="Assets\Illustrations\NewTab\BackgroundBing.png" />
-    <Content Include="Assets\Illustrations\NewTab\BackgroundCostum.png" />
-    <Content Include="Assets\Illustrations\NewTab\BackgroundNone.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
@@ -273,6 +278,7 @@
     <Content Include="Assets\StoreLogo.scale-150.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />
+    <Content Include="Assets\toast128.png" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
@@ -281,8 +287,6 @@
     <None Include="firebrowser.manifest" />
     <None Include="FireBrowser_TemporaryKey.pfx" />
     <None Include="Package.StoreAssociation.xml" />
-    <Content Include="EXTicons\IncognetoDark.png" />
-    <Content Include="EXTicons\IncognetoLight.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -304,6 +308,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Core\FireAiSmart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Launch\Setup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -317,6 +325,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\HiddenFeatures\AddCredit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\HiddenFeatures\CreditVault.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -419,6 +435,12 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.Connectivity">
+      <Version>7.1.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications">
+      <Version>7.1.3</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Animations">
       <Version>7.1.3</Version>
     </PackageReference>
@@ -439,6 +461,10 @@
     <PRIResource Include="Assets\Strings\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FireBrowserAssets\FireBrowserAssets.csproj">
+      <Project>{19353a4a-1880-4ffd-b2cd-de973daf002a}</Project>
+      <Name>FireBrowserAssets</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FireBrowserCore\FireBrowserCore.csproj">
       <Project>{643cc35c-f713-408e-a0bc-f210e4739c81}</Project>
       <Name>FireBrowserCore</Name>

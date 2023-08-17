@@ -9,12 +9,13 @@
   xmlns:iot2="http://schemas.microsoft.com/appx/manifest/iot/windows10/2" 
   xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
   xmlns:a="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
-  IgnorableNamespaces="uap mp uap3 desktop4 iot2 a">
+  xmlns:iot="http://schemas.microsoft.com/appx/manifest/iot/windows10"
+  IgnorableNamespaces="uap mp uap3 desktop4 iot2 a iot">
 
   <Identity
     Name="57443TechFireX.30017BED6DE0B"
-    Publisher="CN=787233D4-4D29-47D2-B29A-AD3E99C44FE7"
-    Version="0.2.0.0" />
+    Publisher="CN=Jarno Beerten"
+    Version="0.2.1.0" />
 
 	
   <mp:PhoneIdentity PhoneProductId="8c234b88-a1c9-420c-8c0f-9136a2a6e13a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
@@ -111,6 +112,7 @@
 	  <uap3:Capability Name="backgroundMediaPlayback"/>
 	  <uap:Capability Name="userAccountInformation"/>
       <Capability Name="internetClientServer"/>
+	  <iot:Capability Name="systemManagement"/>
 	  <DeviceCapability Name="microphone"/>
 	  <DeviceCapability Name="location"/>
 	  <DeviceCapability Name="webcam"/>

@@ -3,15 +3,9 @@ using System;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace FireBrowser.Pages.SettingsPages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class Home : Page
     {
         public Home()
@@ -40,12 +34,10 @@ namespace FireBrowser.Pages.SettingsPages
 
             if (isConnected == true)
             {
-                Status.Background = new SolidColorBrush(Windows.UI.Colors.Green);
                 TextStat.Text = "Connected";
             }
             else
             {
-                Status.Background = new SolidColorBrush(Windows.UI.Colors.Red);
                 TextStat.Text = "Connect";
             }
         }

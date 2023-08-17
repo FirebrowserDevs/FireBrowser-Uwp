@@ -4,9 +4,6 @@ namespace FireBrowserQr.FrameworkMethods
 {
     internal static class String40Methods
     {
-        /// <summary>
-        /// The IsNullOrWhiteSpace method from Framework4.0
-        /// </summary>
         /// <returns>
         ///   <c>true</c> if the <paramref name="value"/> is null or white space; otherwise, <c>false</c>.
         /// </returns>

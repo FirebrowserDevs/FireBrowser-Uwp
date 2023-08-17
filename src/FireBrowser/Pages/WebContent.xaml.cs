@@ -10,13 +10,19 @@ using System.IO;
 using System.Linq;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using static FireBrowser.MainPage;
+using Windows.Media.SpeechSynthesis;
+using FireBrowser.Pages.HiddenFeatures;
+using Microsoft.Toolkit.Uwp.Connectivity;
+using System.Threading.Tasks;
+using System.Timers;
+using Microsoft.Toolkit.Uwp.Notifications;
+
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace FireBrowser.Pages
@@ -30,9 +36,10 @@ namespace FireBrowser.Pages
         public WebContent()
         {
             this.InitializeComponent();
+            synthesizer = new SpeechSynthesizer();
         }
 
-    
+
 
         public static bool IsIncognitoModeEnabled { get; set; } = false;
         private void ToggleIncognitoMode(object sender, RoutedEventArgs e)
@@ -51,30 +58,7 @@ namespace FireBrowser.Pages
             WebViewElement.CoreWebView2.Settings.IsGeneralAutofillEnabled = autogen.Equals("false", StringComparison.OrdinalIgnoreCase);
         }
 
-        public class BaseViewModel : INotifyPropertyChanged
-        {
-            private bool _isLoading;
-
-            public bool IsLoading
-            {
-                get { return _isLoading; }
-                set
-                {
-                    if (_isLoading != value)
-                    {
-                        _isLoading = value;
-                        OnPropertyChanged(nameof(IsLoading));
-                    }
-                }
-            }
-
-            public event PropertyChangedEventHandler PropertyChanged;
-
-            protected virtual void OnPropertyChanged(string propertyName)
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
+       
 
         public bool run = false;
         public void AfterComplete()
@@ -92,8 +76,7 @@ namespace FireBrowser.Pages
                 string address = WebViewElement.CoreWebView2.Source.ToString();
                 string title = WebViewElement.CoreWebView2.DocumentTitle.ToString();
                 var dbAddHis = new DbAddHis();
-                _ = dbAddHis.AddHistData($@"INSERT INTO urlsDb (Url,Title,Visit_Count,Last_Visit_Time)
-                                                VALUES ('{address}','{title}','{1}','{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}');");
+                _ = dbAddHis.AddHistData($"{address}", $"{title}");
             }
 
             if (WebViewElement.CoreWebView2.Source.Contains("https"))
@@ -112,6 +95,48 @@ namespace FireBrowser.Pages
             }
         }
 
+        private bool isOffline = false;
+        private async void CheckNetworkStatus()
+        {
+            while (true)
+            {
+                if (NetworkHelper.Instance.ConnectionInformation.IsInternetAvailable)
+                {
+                    if (isOffline)
+                    {
+                        // Internet is back online
+                        WebViewElement.Reload();
+                        Grid.Visibility = Visibility.Visible;
+                        offlinePage.Visibility = Visibility.Collapsed;
+                        isOffline = false;
+
+                        new ToastContentBuilder()
+                              .AddArgument("action", "viewConversation")
+                              .AddArgument("conversationId", 9813)
+                                  .AddButton(new ToastButton()
+                                  .SetContent("Dismiss"))
+                              .AddText("You're now online!")
+                              .AddText("The Internet connection has been restored. You can now continue browsing.")
+                              .AddAttributionText("via FireBrowser")
+                              .AddAppLogoOverride(new Uri("ms-appx:///Assets/toast128.png"), ToastGenericAppLogoCrop.Circle)
+                              .Show();
+                    }
+                }
+                else
+                {
+                    // Internet is offline
+                    offlinePage.Visibility = Visibility.Visible;
+                    Grid.Visibility = Visibility.Collapsed;
+                    isOffline = true;
+
+                    // Wait for a second before checking again
+                    await Task.Delay(1000);
+                }
+
+                // Wait for half a second before the next check
+                await Task.Delay(500);
+            }
+        }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -136,7 +161,7 @@ namespace FireBrowser.Pages
                     if (IsIncognitoModeEnabled == true)
                     {
                         userAgent = userAgent.Substring(25, edgIndex - 25);
-                        userAgent = userAgent.Replace("Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.64", "NewIncog/1");
+                        userAgent = userAgent.Replace("Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203", "NewIncog/1");
                     }
                     else
                     {
@@ -146,7 +171,7 @@ namespace FireBrowser.Pages
                             if (edgIndex >= 0)
                             {
                                 userAgent = userAgent.Substring(0, edgIndex - 0);
-                                userAgent = userAgent.Replace("Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.64", "Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.64");
+                                userAgent = userAgent.Replace("Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203", "Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203");
                                 s.CoreWebView2.Settings.UserAgent = userAgent;
                             }
                         }
@@ -176,7 +201,7 @@ namespace FireBrowser.Pages
                     param.Tab.Header = WebViewElement.CoreWebView2.DocumentTitle;
                 }
             };
-            s.CoreWebView2.PermissionRequested += async (sender, args) =>
+            s.CoreWebView2.PermissionRequested += (sender, args) =>
             {
                 try
                 {
@@ -224,6 +249,7 @@ namespace FireBrowser.Pages
                 Progress.Visibility = Visibility.Visible;
                 param.ViewModel.CanRefresh = false;
 
+                CheckNetworkStatus();
             };
             s.CoreWebView2.NavigationCompleted += (sender, args) =>
             {
@@ -243,13 +269,11 @@ namespace FireBrowser.Pages
 
                 s.CoreWebView2.ContainsFullScreenElementChanged += (sender, args) =>
                 {
-
                     FullSys sys = new();
                     sys.FullScreen = s.CoreWebView2.ContainsFullScreenElement;
-
                 };
 
-               
+                CheckNetworkStatus();
                 AfterComplete();
             };
             s.CoreWebView2.SourceChanged += (sender, args) =>
@@ -270,13 +294,15 @@ namespace FireBrowser.Pages
         }
 
 
+     
+
         string SelectionText;
         public void select()
         {
             FireBrowser.Core.UseContent.MainPageContent.SelectNewTab();
         }
 
-
+     
         private void CoreWebView2_ContextMenuRequested(CoreWebView2 sender, CoreWebView2ContextMenuRequestedEventArgs args)
         {
             var flyout1 = (Microsoft.UI.Xaml.Controls.CommandBarFlyout)Resources["Ctx"];
@@ -358,7 +384,23 @@ namespace FireBrowser.Pages
             Ctx.Hide();
         }
 
+        private SpeechSynthesizer synthesizer;
+
         public string OpTog = FireBrowserInterop.SettingsHelper.GetSetting("OpSw");
+        public string lang = FireBrowserInterop.SettingsHelper.GetSetting("Lang");
+
+        private async void ConvertTextToSpeech(string text)
+        {    
+             if (!string.IsNullOrWhiteSpace(text))
+             {
+                    var synthesisStream = await synthesizer.SynthesizeSsmlToStreamAsync(
+                        $"<speak version='1.0' xml:lang='{lang}'><voice name='Microsoft Server Speech Text to Speech Voice ({lang}, HannaRUS)'>{text}</voice></speak>");
+
+                    MediaElement mediaElement = new MediaElement();
+                    mediaElement.SetSource(synthesisStream, synthesisStream.ContentType);
+                    mediaElement.Play();
+             }           
+        }
         private void ContextClicked_Click(object sender, RoutedEventArgs e)
         {
             if (sender is MenuFlyoutItem button && button.Tag != null)
@@ -366,7 +408,7 @@ namespace FireBrowser.Pages
                 switch ((sender as MenuFlyoutItem).Tag)
                 {
                     case "Read":
-
+                        ConvertTextToSpeech(SelectionText);
                         break;
                     case "WebApp":
 

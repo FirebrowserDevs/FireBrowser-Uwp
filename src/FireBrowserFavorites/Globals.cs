@@ -11,7 +11,6 @@ namespace FireBrowserFavorites
             public string Url { get; set; }
         }
 
-        // Global variables
         public static StorageFolder localFolder = ApplicationData.Current.LocalFolder;
 
         public static List<JsonItems> JsonItemsList;

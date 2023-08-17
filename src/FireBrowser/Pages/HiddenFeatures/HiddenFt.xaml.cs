@@ -20,15 +20,17 @@ namespace FireBrowser.Pages.HiddenFeatures
             Stack();
         }
 
-        public async void Stack()
+        public void Stack()
         {
             HiddenTb1.IsOn = test1 == "0x1";
+            HiddenTb2.IsOn = test2 == "0x1";
         }
 
         string test1 = FireBrowserInterop.SettingsHelper.GetSetting("DragOutSideExperiment");
+        string test2 = FireBrowserInterop.SettingsHelper.GetSetting("VaultExperiment");
 
         private Passer passer;
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             passer = e.Parameter as Passer;
             passer.Tab.Header = "FireBrowser Experimental";
@@ -37,8 +39,6 @@ namespace FireBrowser.Pages.HiddenFeatures
                 Glyph = "\uEC7A"
             };
         }
-
-        private bool restartConfirmationShown = true;
 
         private void HiddenTb1_Toggled(object sender, RoutedEventArgs e)
         {
@@ -49,6 +49,18 @@ namespace FireBrowser.Pages.HiddenFeatures
             else
             {
                 FireBrowserInterop.SettingsHelper.SetSetting("DragOutSideExperiment", "0x0");
+            }
+        }
+
+        private void HiddenTb2_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (HiddenTb2.IsOn == true)
+            {
+                FireBrowserInterop.SettingsHelper.SetSetting("VaultExperiment", "0x1");
+            }
+            else
+            {
+                FireBrowserInterop.SettingsHelper.SetSetting("VaultExperiment", "0x0");
             }
         }
     }

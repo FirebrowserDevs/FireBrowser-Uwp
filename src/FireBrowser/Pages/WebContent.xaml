@@ -42,7 +42,7 @@
                 <AppBarButton Label="Tools" Icon="{firebrowser:FluentIcon Glyph=&#xEC7A;}">
                     <AppBarButton.Flyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem Text="Read Aloud" Icon="{firebrowser:FluentIcon Glyph=&#xEFA9;}" IsEnabled="False" Tag="Read" Click="ContextClicked_Click"/>
+                            <MenuFlyoutItem Text="Read Aloud" Icon="{firebrowser:FluentIcon Glyph=&#xEFA9;}" IsEnabled="True" Tag="Read" Click="ContextClicked_Click"/>
                             <MenuFlyoutItem Text="Create WebApp" Icon="{firebrowser:FluentIcon Glyph=&#xECAA;}" IsEnabled="False" Tag="WebApp" Click="ContextClicked_Click" />
                         </MenuFlyout>
                     </AppBarButton.Flyout>
@@ -61,15 +61,59 @@
             </muxc:CommandBarFlyout.SecondaryCommands>
         </muxc:CommandBarFlyout>
     </Page.Resources>
-    <Grid x:Name="Grid" Loaded="Grid_Loaded_1">
-        <muxc:ProgressBar muxc:BackdropMaterial.ApplyToRootOrPageBackground="True" x:Name="Progress" Canvas.ZIndex="1" IsIndeterminate="True" Height="3" VerticalAlignment="Top"/>
-        <muxc:WebView2 
-            Margin="0,0,0,0"
-            x:Name="WebViewElement"
-            x:FieldModifier="public"
-            DragOver="WebViewElement_DragOver"
-            AllowDrop="True"
-           Drop="WebViewElement_Drop"
-            />
+
+    <Grid>
+        <Grid x:Name="offlinePage" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}">
+            <ScrollViewer>
+                <StackPanel Margin="0,30">
+                    <TextBlock Style="{ThemeResource SubheaderTextBlockStyle}" TextAlignment="Center" FontWeight="SemiLight">Unable to reach the web</TextBlock>
+                    <TextBlock Style="{ThemeResource SubheaderTextBlockStyle}" FontSize="16" TextAlignment="Center" FontWeight="SemiLight">Radon is unable to load the page you're requesting for.</TextBlock>
+                    <StackPanel Orientation="Horizontal" Margin="0,12" HorizontalAlignment="Center">
+                        <FontIcon Glyph="&#xE7F8;" FontSize="50"/>
+                        <muxc:ProgressBar x:Name="pcToNet" Width="100" Margin="10" Value="100" Foreground="{ThemeResource TextBoxForegroundHeaderThemeBrush}"/>
+                        <FontIcon x:Name="netIcon" Glyph="&#xEC3F;" FontSize="50" Opacity="1" />
+                        <!--Foreground="BlueViolet"-->
+                        <muxc:ProgressBar x:Name="netToWeb" Width="100" Margin="10" Value="100" Background="Red"  Foreground="{ThemeResource TextBoxForegroundHeaderThemeBrush}"/>
+                        <FontIcon Glyph="&#xF384;" FontSize="50" Opacity="0.3" />
+                    </StackPanel>
+                    <muxc:InfoBar x:Name="offlineInfoBar" Margin="20,24" MaxWidth="600" HorizontalAlignment="Stretch" IsOpen="True" Severity="Warning" HorizontalContentAlignment="Center"
+                    Title="It seems like your PC isn't connected to any network." IsClosable="False">
+
+                    </muxc:InfoBar>
+                    <TextBlock Margin="20,8,20,8" MaxWidth="600" Style="{ThemeResource SubtitleTextBlockStyle}" FontSize="16">Let's get you back online!</TextBlock>
+                    <TextBlock Margin="20,0" MaxWidth="600">To get connected, try these recommendations:</TextBlock>
+
+                    <muxc:Expander HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" Margin="20,28,20,4" MaxWidth="600">
+                        <muxc:Expander.Header>
+                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" FontSize="15">Check your network cables, modem or routers</TextBlock>
+                        </muxc:Expander.Header>
+                        <TextBlock TextAlignment="Left" TextWrapping="WrapWholeWords">
+             <Run>It's always a good idea to check your network connection sources to ensure they work as expected.</Run>
+                        </TextBlock>
+                    </muxc:Expander>
+
+                    <muxc:Expander HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" Margin="20,4" MaxWidth="600">
+                        <muxc:Expander.Header>
+                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" FontSize="15">Reconnect to your wireless network</TextBlock>
+                        </muxc:Expander.Header>
+                        <TextBlock TextAlignment="Left" TextWrapping="WrapWholeWords">
+             <Run>Sometimes your wireless connection could behave unexpected. Reconnecting could be a major fix for this kind of issue.</Run>
+                        </TextBlock>
+                    </muxc:Expander>
+                </StackPanel>
+            </ScrollViewer>
+
+        </Grid>
+        <Grid x:Name="Grid" Loaded="Grid_Loaded_1">
+            <muxc:ProgressBar muxc:BackdropMaterial.ApplyToRootOrPageBackground="True" x:Name="Progress" Canvas.ZIndex="1" IsIndeterminate="True" Height="3" VerticalAlignment="Top"/>
+            <muxc:WebView2 
+         Margin="0,0,0,0"
+         x:Name="WebViewElement"
+         x:FieldModifier="public"
+         DragOver="WebViewElement_DragOver"
+         AllowDrop="True"
+        Drop="WebViewElement_Drop"
+         />
+        </Grid>
     </Grid>
 </Page>

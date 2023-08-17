@@ -6,7 +6,6 @@ namespace FireBrowser.Core
 {
     public class FullSys
     {
-
         #region fullscreensys
         private bool fullScreen = false;
 
@@ -24,7 +23,7 @@ namespace FireBrowser.Core
                         if (!view.IsFullScreenMode)
                         {
                             view.TryEnterFullScreenMode();
-                            FireBrowser.Core.UseContent.MainPageContent.HideToolbar(true);
+                            Core.UseContent.MainPageContent.HideToolbar(true);
                         }
                     }
                     catch (Exception ex)
@@ -39,7 +38,7 @@ namespace FireBrowser.Core
                         if (view.IsFullScreenMode)
                         {
                             view.ExitFullScreenMode();
-                            FireBrowser.Core.UseContent.MainPageContent.HideToolbar(false);
+                            Core.UseContent.MainPageContent.HideToolbar(false);
                         }
                     }
                     catch (Exception ex)

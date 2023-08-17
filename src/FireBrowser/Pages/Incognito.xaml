@@ -7,10 +7,11 @@
     mc:Ignorable="d"
     NavigationCacheMode="Enabled"
     Loaded="Page_Loaded"
+    xmlns:dllimg="using:FireBrowserAssets"
     RequestedTheme="Dark">
     <Grid>
         <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Padding="20" CornerRadius="44" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" Margin="0,307,0,0" Width="120" Height="106">
-            <Image Source="/EXTicons/IncognetoDark.png" Width="70" Height="70"/>
+            <Image Source="{dllimg:ImageLoader ImageName=IncognetoDark.png}" Width="70" Height="70"/>
         </Grid>
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,500,0,0" x:Uid="NewTabIncognitoTitle" Style="{ThemeResource TitleTextBlockStyle}" d:Text="You are in Private Browsing Mode" Text=""/>
         <Grid>

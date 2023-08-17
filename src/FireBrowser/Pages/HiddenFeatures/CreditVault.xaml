@@ -1,0 +1,44 @@
+﻿<Page
+    x:Class="FireBrowser.Pages.HiddenFeatures.CreditVault"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FireBrowser.Pages.HiddenFeatures"
+    xmlns:core="using:FireBrowser.Core"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:firebrowser="using:FireBrowser.Controls"
+     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" >
+            <Button Margin="10,6,0,0" BorderBrush="Transparent" Background="Transparent" x:Name="Add" Click="Add_Click">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE710;"/>
+                    <TextBlock Margin="10,0,0,0" Text="Add Card"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+        <Grid Grid.Row="1" Margin="0,0,0,0">
+            <ListView x:Name="Cards" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock Text="{Binding BankName}" />
+                            <TextBlock Text="{Binding Type}" />
+                            <TextBlock Text="{Binding EncryptedCVV}" />
+                            <TextBlock Text="{Binding EncryptedCreditNumber}" />
+                            <TextBlock Text="{Binding EncryptedFullName}" />
+                            <TextBlock Text="{Binding EncryptedExpiryDate}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</Page>

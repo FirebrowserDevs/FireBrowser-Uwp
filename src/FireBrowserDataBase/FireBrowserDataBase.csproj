@@ -121,8 +121,12 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BankC\BankCard.cs" />
+    <Compile Include="BankC\DataHelper.cs" />
+    <Compile Include="BankC\EnqHelper.cs" />
     <Compile Include="DbAddHis.cs" />
     <Compile Include="DbClear.cs" />
+    <Compile Include="DbClearTableData.cs" />
     <Compile Include="DbCreation.cs" />
     <Compile Include="HistoryItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -14,13 +14,8 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using static FireBrowser.MainPage;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace FireBrowser.Pages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class NewTab : Page
     {
 
@@ -35,17 +30,12 @@ namespace FireBrowser.Pages
 
         public void HomeSync()
         {
-            // Auto setting
-            var ison = FireBrowserInterop.SettingsHelper.GetSetting("Auto");
-            isAuto = ison.Equals("1");
+            isAuto = FireBrowserInterop.SettingsHelper.GetSetting("Auto") == "1";
             Type.IsOn = isAuto;
 
-            // LightMode setting
-            var ison2 = FireBrowserInterop.SettingsHelper.GetSetting("LightMode");
-            isMode = ison2.Equals("1");
+            isMode = FireBrowserInterop.SettingsHelper.GetSetting("LightMode") == "1";
             Mode.IsOn = isMode;
 
-            // Background and ColorBackground settings
             var set = FireBrowserInterop.SettingsHelper.GetSetting("Background");
             var cls = FireBrowserInterop.SettingsHelper.GetSetting("ColorBackground");
 
@@ -60,13 +50,10 @@ namespace FireBrowser.Pages
                 }
             };
 
-            // NewColor.IsEnabled setup
-            NewColor.IsEnabled = set.Equals("2");
+            NewColor.IsEnabled = set == "2";
 
-            // GridSelect setup
             GridSelect.SelectedValue = ViewModel.BackgroundType.ToString();
 
-            // NewColor.Text setup
             NewColor.Text = cls;
 
             // Visibility setup based on LightMode setting
@@ -139,7 +126,7 @@ namespace FireBrowser.Pages
                         }
                         catch (Exception ex)
                         {
-                            throw;
+                            return null;
                         }
                     }
                     catch
@@ -151,24 +138,9 @@ namespace FireBrowser.Pages
             return new SolidColorBrush();
         }
 
-
-        private void ActionClicked(object sender, RoutedEventArgs e)
-        {
-            switch ((sender as Button)?.Tag)
-            {
-                case "Google":
-
-                    break;
-                case "Youtube":
-
-                    break;
-            }
-        }
-
         private void BackgroundGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selection = (sender as GridView).SelectedItem as GridViewItem;
-
 
             switch (selection.Tag)
             {
@@ -232,5 +204,7 @@ namespace FireBrowser.Pages
                 FireBrowserInterop.SettingsHelper.SetSetting("LightMode", lightModeValue);
             }
         }
+
+      
     }
 }

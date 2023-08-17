@@ -1,9 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using FireBrowser.Controls;
-using FireBrowser.Core;
 using FireBrowser.Pages;
-using FireBrowser.Pages.TimeLine;
 using FireBrowserCore.Models;
+using FireBrowserCore.Overlay;
 using FireBrowserDataBase;
 using FireBrowserDialogs.DialogTypes.UpdateChangelog;
 using FireBrowserFavorites;
@@ -19,11 +18,8 @@ using SQLitePCL;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.Common;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Reflection.PortableExecutable;
 using System.Threading;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
@@ -43,20 +39,12 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
-using static FireBrowser.App;
 using Image = Windows.UI.Xaml.Controls.Image;
 using NewTab = FireBrowser.Pages.NewTab;
 using Point = Windows.Foundation.Point;
 
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace FireBrowser
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    /// 
     public class StringOrIntTemplateSelector : DataTemplateSelector
     {
         public DataTemplate StringTemplate { get; set; }
@@ -89,11 +77,10 @@ namespace FireBrowser
             this.InitializeComponent();
             ButtonVisible();
             UpdateYesNo();
-           // ColorsTools();
+            ColorsTools();        
         }
 
         #region MainWindowAndButtons
-
         void SetupWindow(AppWindow window)
         {
             if (window == null)
@@ -150,12 +137,6 @@ namespace FireBrowser
 
                 window.Frame.DragRegionVisuals.Add(CustomDragRegion);
             }
-        }
-
-        private void ResetOutput()
-        {
-            DisplayInformation displayInformation = DisplayInformation.GetForCurrentView();
-            String scaleValue = (displayInformation.RawPixelsPerViewPixel * 100.0).ToString();
         }
 
         public static string ReadButton { get; set; }
@@ -215,7 +196,7 @@ namespace FireBrowser
         {
             if (testSetting == "0x1")
             {
-               // MoveTabToNewWindow(args.Tab);
+               //MoveTabToNewWindow(args.Tab);
             }
             else
             {
@@ -225,10 +206,6 @@ namespace FireBrowser
 
         private async void MoveTabToNewWindow(TabViewItem tab)
         {
-            // AppWindow was introduced in Windows 10 version 18362 (ApiContract version 8). 
-            // If the app is running on a version earlier than 18362, simply no-op.
-            // If your app needs to support multiple windows on earlier versions of Win10, you can use CoreWindow/ApplicationView.
-            // More information about showing multiple views can be found here: https://docs.microsoft.com/windows/uwp/design/layout/show-multiple-views
             if (!ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 10))
             {
                 return;
@@ -352,7 +329,6 @@ namespace FireBrowser
         }
 
         #endregion
-
         public async void UpdateYesNo()
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
@@ -375,22 +351,34 @@ namespace FireBrowser
             }
         }
 
-
-
         private void SetBackground(string colorKey, Panel panel)
         {
-           var colorString = FireBrowserInterop.SettingsHelper.GetSetting(colorKey);
-           var color = colorString == "#000000" ? Colors.Transparent : Microsoft.Toolkit.Uwp.Helpers.ColorHelper.ToColor(colorString);
-           var brush = new SolidColorBrush(color);
-           panel.Background = brush;
+            var colorString = FireBrowserInterop.SettingsHelper.GetSetting(colorKey);
+            if (colorString == "#000000")
+            {
+                panel.Background = new SolidColorBrush(Colors.Transparent);
+            }
+            else
+            {
+                var color = (Windows.UI.Color)XamlBindingHelper.ConvertValue(typeof(Windows.UI.Color), colorString);
+                var brush = new SolidColorBrush(color);
+                panel.Background = brush;
+            }
         }
 
         private void SetBackgroundTabs(string colorKey, TabView panel)
         {
-          var colorString = FireBrowserInterop.SettingsHelper.GetSetting(colorKey);
-          var color = colorString == "#000000" ? Colors.Transparent : Microsoft.Toolkit.Uwp.Helpers.ColorHelper.ToColor(colorString);
-          var brush = new SolidColorBrush(color);
-          panel.Background = brush;
+            var colorString = FireBrowserInterop.SettingsHelper.GetSetting(colorKey);
+            if (colorString == "#000000")
+            {
+                panel.Background = new SolidColorBrush(Colors.Transparent);
+            }
+            else
+            {
+                var color = (Windows.UI.Color)XamlBindingHelper.ConvertValue(typeof(Windows.UI.Color), colorString);
+                var brush = new SolidColorBrush(color);
+                panel.Background = brush;
+            }
         }
      
         public void ColorsTools()
@@ -399,23 +387,21 @@ namespace FireBrowser
            SetBackgroundTabs("ColorTv", Tabs);
         }
 
-
         bool incog = false;
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            ResetOutput();
             SetupWindow(null);
 
-            if (e.Parameter is AppLaunchPasser passer)
+            if (e.Parameter is AppOverlay.AppLaunchPasser passer)
             {
                 switch (passer.LaunchType)
                 {
-                    case AppLaunchType.LaunchBasic:
+                    case AppOverlay.AppLaunchType.LaunchBasic:
                         Tabs.TabItems.Add(CreateNewTab(typeof(NewTab)));
                         break;
-                    case AppLaunchType.LaunchIncognito:
+                    case AppOverlay.AppLaunchType.LaunchIncognito:
                         RequestedTheme = ElementTheme.Dark;
                         VBtn.Visibility = Visibility.Collapsed;
                         ViewModel.Securitytype = "Link - Firebrowser://incognito";
@@ -428,21 +414,21 @@ namespace FireBrowser
                         ClassicToolbar.Height = 35;
                         Tabs.TabItems.Add(CreateNewIncog());
                         break;
-                    case AppLaunchType.LaunchStartup:
+                    case AppOverlay.AppLaunchType.LaunchStartup:
                         Tabs.TabItems.Add(CreateNewTab(typeof(NewTab)));
                         var startup = await StartupTask.GetAsync("FireBrowserStartUp");
                         break;
-                    case AppLaunchType.FirstLaunch:
+                    case AppOverlay.AppLaunchType.FirstLaunch:
                         Tabs.TabItems.Add(CreateNewTab());
                         break;
-                    case AppLaunchType.FilePDF:
+                    case AppOverlay.AppLaunchType.FilePDF:
                         var files = passer.LaunchData as IReadOnlyList<IStorageItem>;
                         Tabs.TabItems.Add(CreateNewTab(typeof(Pages.PdfReader), files[0]));
                         break;
-                    case AppLaunchType.URIHttp:
+                    case AppOverlay.AppLaunchType.URIHttp:
                         Tabs.TabItems.Add(CreateNewTab(typeof(WebContent), new Uri(passer.LaunchData.ToString())));
                         break;
-                    case AppLaunchType.URIFireBrowser:
+                    case AppOverlay.AppLaunchType.URIFireBrowser:
                         Tabs.TabItems.Add(CreateNewTab(typeof(NewTab)));
                         break;
                 }
@@ -457,8 +443,6 @@ namespace FireBrowser
         #region toolbar
         public ToolbarViewModel ViewModel { get; set; }
 
-        private bool isDragging = false;
-        private Point lastPosition;
         public partial class ToolbarViewModel : ObservableObject
         {
             [ObservableProperty]
@@ -651,6 +635,7 @@ namespace FireBrowser
                 Param = param,
             };
 
+            passer.ViewModel.CurrentAddress = null;
 
 
             newItem.Style = (Style)Application.Current.Resources["FloatingTabViewItemStyle"];
@@ -708,8 +693,9 @@ namespace FireBrowser
             }
         }
 
+        string test2 = FireBrowserInterop.SettingsHelper.GetSetting("VaultExperiment");
 
-        private void UrlBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        private async void UrlBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             string input = UrlBox.Text.ToString();
             string inputtype = UrlHelper.GetInputType(input);
@@ -739,6 +725,20 @@ namespace FireBrowser
                         break;
                     case "firebrowser://hidden":
                         TabContent.Navigate(typeof(Pages.HiddenFeatures.HiddenFt), CreatePasser(), new DrillInNavigationTransitionInfo());
+                        break;
+                    case "firebrowser://vault":
+                        if(test2 == "0x1")
+                        {
+                            TabContent.Navigate(typeof(Pages.HiddenFeatures.CreditVault), CreatePasser(), new DrillInNavigationTransitionInfo());
+                        }
+                        else
+                        {
+                            ContentDialog cn = new ContentDialog();
+                            cn.Title = "Turn This On In firebrowser://hidden";
+                            cn.Content = "firebrowser://hidden,  vault experiment on to use this";
+                            cn.PrimaryButtonText = "OK";
+                            await cn.ShowAsync();
+                        }                   
                         break;
                     default:
                         // default behavior
@@ -814,11 +814,11 @@ namespace FireBrowser
         {
             if (TabContent?.Content is WebContent webContent)
             {
-                TabWebView.NavigationStarting += async (s, e) =>
+                TabWebView.NavigationStarting += (s, e) =>
                 {
                     ViewModel.CanRefresh = false;
                 };
-                TabWebView.NavigationCompleted += async (s, e) =>
+                TabWebView.NavigationCompleted += (s, e) =>
                 {
                     ViewModel.CanRefresh = true;
                 };
@@ -842,10 +842,14 @@ namespace FireBrowser
             if (TabWebView.CoreWebView2.Source.Contains("https"))
             {
                 ViewModel.SecurityIcon = "\uE72E";
+                ViewModel.SecurityIcontext = "Https Secured Website";
+                ViewModel.Securitytext = "This Page Is Secured By A Valid SSL Certificate, Trusted By Root Authorities";
             }
             else if (TabWebView.CoreWebView2.Source.Contains("http"))
             {
                 ViewModel.SecurityIcon = "\uE785";
+                ViewModel.SecurityIcontext = "Http UnSecured Website";
+                ViewModel.Securitytext = "This Page Is Unsecured By A Un-Valid SSL Certificate, Please Be Careful";
             }
         }
 
@@ -873,24 +877,43 @@ namespace FireBrowser
                     if (TabContent.Content is WebContent)
                     {
                         Hmbtn.IsEnabled = true;
+                        TabContent.Navigate(WebContent.IsIncognitoModeEnabled
+                            ? typeof(Pages.Incognito)
+                            : typeof(Pages.NewTab), passer, new DrillInNavigationTransitionInfo());
 
-                        if (WebContent.IsIncognitoModeEnabled)
-                        {
-                            TabContent.Navigate(typeof(Pages.Incognito), passer, new DrillInNavigationTransitionInfo());
-                            passer.Tab.Header = "Incognito";
-                            passer.Tab.IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = Symbol.BlockContact };
-                            UrlBox.Text = "";
-                        }
-                        else
-                        {
-                            TabContent.Navigate(typeof(Pages.NewTab), passer, new DrillInNavigationTransitionInfo());
-                            passer.Tab.Header = "New Tab";
-                            passer.Tab.IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = Symbol.Home };
-                            UrlBox.Text = "";
-                        }
+                        passer.Tab.Header = WebContent.IsIncognitoModeEnabled
+                            ? "Incognito"
+                            : "FireBrowser HomePage";
 
+                        passer.Tab.IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource()
+                        {
+                            Symbol = WebContent.IsIncognitoModeEnabled
+                                ? Symbol.BlockContact
+                                : Symbol.Home
+                        };
+
+                        UrlBox.Text = "";
                     }
-                    Hmbtn.IsEnabled = false;
+                    else
+                    {
+                        Hmbtn.IsEnabled = true;
+                        TabContent.Navigate(incog
+                            ? typeof(Pages.Incognito)
+                            : typeof(Pages.NewTab), passer, new DrillInNavigationTransitionInfo());
+
+                        passer.Tab.Header = incog
+                            ? "Incognito"
+                            : "FireBrowser HomePage";
+
+                        passer.Tab.IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource()
+                        {
+                            Symbol = incog
+                                ? Symbol.BlockContact
+                                : Symbol.Home
+                        };
+
+                        UrlBox.Text = "";
+                    }
                     break;
                 case "DownloadFlyout":
                     if (TabContent.Content is WebContent)
@@ -973,7 +996,7 @@ namespace FireBrowser
                     }
                     break;
                 case "AddFavorite":
-                    FavoritesHelper.AddFavoritesItem(FavoriteTitle.Text, FavoriteUrl.Text);
+                    await FavoritesHelper.AddFavoritesItem(FavoriteTitle.Text, FavoriteUrl.Text);
                     break;
                 case "Favorites":
                     Globals.JsonItemsList = await Json.GetListFromJsonAsync("Favorites.json");
@@ -1040,8 +1063,6 @@ namespace FireBrowser
             {
                 using (var connection = new SqliteConnection($"Data Source={ApplicationData.Current.LocalFolder.Path}/History.db;"))
                 {
-                    // Open the database connection
-                    connection.Open();
                     // Open the database connection asynchronously
                     await connection.OpenAsync();
 
@@ -1239,5 +1260,73 @@ namespace FireBrowser
             TabContent.Navigate(typeof(Pages.TimeLine.Timeline));
         }
 
+        private void FilterBrowserHistory(string searchText)
+        {
+            if (browserHistory == null) return;
+
+            // Clear the collection to start fresh with filtered items
+            HistoryTemp.ItemsSource = null;
+
+            // Filter the browser history based on the search text
+            var filteredHistory = new ObservableCollection<HistoryItem>(browserHistory
+                .Where(item => item.Url.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+                               item.Title?.Contains(searchText, StringComparison.OrdinalIgnoreCase) == true));
+
+            // Bind the filtered browser history items to the ListView
+            HistoryTemp.ItemsSource = filteredHistory;
+        }
+
+        private void HistorySearchMenuItem_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchText = HistorySearchMenuItem.Text;
+            FilterBrowserHistory(searchText);
+        }
+
+        private string selectedHistoryItem;
+
+        private void Grid_RightTapped(object sender, Windows.UI.Xaml.Input.RightTappedRoutedEventArgs e)
+        {
+            // Get the selected HistoryItem object
+            HistoryItem historyItem = ((FrameworkElement)sender).DataContext as HistoryItem;
+            selectedHistoryItem = historyItem.Url;
+
+            // Create a context menu flyout
+            var flyout = new MenuFlyout();
+
+            // Add a menu item for "Delete This Record" button
+            var deleteMenuItem = new MenuFlyoutItem
+            {
+                Text = "Delete This Record",
+            };
+
+            // Set the icon for the menu item using the Unicode escape sequence
+            deleteMenuItem.Icon = new FontIcon
+            {
+                Glyph = "\uE74D" // Replace this with the Unicode escape sequence for your desired icon
+            };
+
+            // Handle the click event directly within the right-tapped event handler
+            deleteMenuItem.Click += (s, args) =>
+            {
+                // Perform the deletion logic here
+                // Example: Delete data from the 'History' table where the 'Url' matches the selectedHistoryItem
+                DbClearTableData db = new();
+                db.DeleteTableData("urlsDb", $"Url = '{selectedHistoryItem}'");
+                if (HistoryTemp.ItemsSource is ObservableCollection<HistoryItem> historyItems)
+                {
+                    var itemToRemove = historyItems.FirstOrDefault(item => item.Url == selectedHistoryItem);
+                    if (itemToRemove != null)
+                    {
+                        historyItems.Remove(itemToRemove);
+                    }
+                }
+                // After deletion, you may want to update the UI or any other actions
+            };
+
+            flyout.Items.Add(deleteMenuItem);
+
+            // Show the context menu flyout
+            flyout.ShowAt((FrameworkElement)sender, e.GetPosition((FrameworkElement)sender));
+        }    
     }
 }

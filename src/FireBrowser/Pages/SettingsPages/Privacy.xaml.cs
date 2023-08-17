@@ -21,7 +21,7 @@ namespace FireBrowser.Pages.SettingsPages
         string webmes = FireBrowserInterop.SettingsHelper.GetSetting("DisableWebMess");
         string autogen = FireBrowserInterop.SettingsHelper.GetSetting("DisableGenAutoFill");
         string pass = FireBrowserInterop.SettingsHelper.GetSetting("DisablePassSave");
-        public async void Stack()
+        public void Stack()
         {
             DisableJavaScriptToggle.IsOn = javasc == "true";
             DisablWebMessFillToggle.IsOn = webmes == "true";
@@ -30,7 +30,7 @@ namespace FireBrowser.Pages.SettingsPages
         }
 
         int trueCount = 0;
-        public async void UpdateText()
+        public void UpdateText()
         {
             TextLevel.Text = trueCount switch
             {
@@ -38,7 +38,8 @@ namespace FireBrowser.Pages.SettingsPages
                 1 => "Low",
                 2 => "Medium",
                 3 => "High",
-                4 => "Extreme"
+                4 => "Extreme",
+                _ => throw new System.NotImplementedException()
             };
         }
 
@@ -103,9 +104,9 @@ namespace FireBrowser.Pages.SettingsPages
             UpdateText();
         }
 
-        private void Confirm_Click(object sender, RoutedEventArgs e)
+        private async void Confirm_Click(object sender, RoutedEventArgs e)
         {
-            FireBrowserInterop.SystemHelper.RestartApp();
+            await FireBrowserInterop.SystemHelper.RestartApp();
         }
     }
 }

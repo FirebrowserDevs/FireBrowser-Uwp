@@ -37,9 +37,7 @@
             </StackPanel>
             <StackPanel x:Name="SideControls" Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right" Width="Auto">
                 <Button x:Name="Feedback" ToolTipService.ToolTip="Feedback On Discord" Click="Feedback_Click" Content="{firebrowser:FluentIcon Glyph=&#xED15;}" Style="{ThemeResource QuietButtonStyle}" Width="32" Height="33" Margin="0,1,0,0"/>
-                <Button x:Name="Settings" IsEnabled="False" Content="{firebrowser:FluentIcon Glyph=&#xE713;}" Width="32" Height="33" Margin="0,1,0,0" Style="{ThemeResource QuietButtonStyle}">
-                  
-                </Button>
+                <Button x:Name="Settings" IsEnabled="False" Content="{firebrowser:FluentIcon Glyph=&#xE713;}" Width="32" Height="33" Margin="0,1,0,0" Style="{ThemeResource QuietButtonStyle}"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
@@ -50,7 +48,6 @@
                     <Rectangle HorizontalAlignment="Stretch" Height="1" Fill="{StaticResource SystemBaseMediumLowColor}" Margin="4 8"/>
                 </StackPanel>
             </StackPanel>
-           
         </Grid>
     </Grid>
 </Page>

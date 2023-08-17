@@ -126,6 +126,7 @@
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\UI.cs" />
     <Compile Include="Models\UserData.cs" />
+    <Compile Include="Overlay\AppOverlay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <EmbeddedResource Include="Properties\FireBrowserCore.rd.xml" />
@@ -137,6 +138,12 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FireBrowserInterop\FireBrowserInterop.csproj">
+      <Project>{c0b577c9-a42d-49db-b53b-4b9063e16328}</Project>
+      <Name>FireBrowserInterop</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

@@ -12,13 +12,8 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using static FireBrowserFavorites.Globals;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace FireBrowser.Pages.TimeLine
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class Favorites : Page
     {
         public Favorites()
@@ -49,13 +44,13 @@ namespace FireBrowser.Pages.TimeLine
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            SureDialog customDialog = new SureDialog(); // Create an instance of your custom content dialog class
-            customDialog.State = DialogState.Favorites; // Set the state of the dialog
-            ContentDialogResult result = await customDialog.ShowAsync(); // Show the dialog and wait for the user to respond
+            SureDialog customDialog = new SureDialog(); 
+            customDialog.State = DialogState.Favorites; 
+            ContentDialogResult result = await customDialog.ShowAsync(); 
             if (result == ContentDialogResult.Primary)
             {
                 await FileHelper.DeleteFile("Favorites.json");
-                FavoritesListView.ItemsSource = null;// User clicked "OK" button
+                FavoritesListView.ItemsSource = null;
             }
             else
             {

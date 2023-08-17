@@ -3,15 +3,13 @@ using FireBrowserDialogs.DialogTypes.AreYouSureDialog;
 using Microsoft.Data.Sqlite;
 using SQLitePCL;
 using System;
-
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
-using System.Collections.Generic;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
+using System.Linq;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -36,20 +34,15 @@ namespace FireBrowser.Pages.TimeLine
             {
                 using (var connection = new SqliteConnection($"Data Source={ApplicationData.Current.LocalFolder.Path}/History.db;"))
                 {
-                    // Open the database connection
-                    connection.Open();
-                    // Open the database connection asynchronously
+ 
                     await connection.OpenAsync();
 
-                    // Define the SQL query to fetch the browser history
                     string sql = "SELECT url, title, visit_count, last_visit_time FROM urlsDb ORDER BY last_visit_time DESC";
 
-                    // Create a command object with the SQL query and connection
                     using (SqliteCommand command = new SqliteCommand(sql, connection))
                     {
                         using (SqliteDataReader reader = command.ExecuteReader())
                         {
-                            // Create an observable collection to store the browser history items
                             browserHistory = new ObservableCollection<HistoryItem>();
 
                             while (reader.Read())
@@ -65,11 +58,8 @@ namespace FireBrowser.Pages.TimeLine
 
                                 historyItem.ImageSource = new BitmapImage(new Uri("https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=" + historyItem.Url + "&size=32"));
                                 browserHistory.Add(historyItem);
-
                             }
 
-
-                            // Bind the browser history items to the ListView
                             BigTemp.ItemsSource = browserHistory;
                         }
                         connection.Close();
@@ -103,13 +93,74 @@ namespace FireBrowser.Pages.TimeLine
             }
             else
             {
-                // User clicked "Cancel" button or closed the dialog
+                return;
             }
+        }
+
+        private void FilterBrowserHistory(string searchText)
+        {
+            if (browserHistory == null) return;
+
+            // Clear the collection to start fresh with filtered items
+            BigTemp.ItemsSource = null;
+
+            // Filter the browser history based on the search text
+            var filteredHistory = new ObservableCollection<HistoryItem>(browserHistory
+                .Where(item => item.Url.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+                               item.Title?.Contains(searchText, StringComparison.OrdinalIgnoreCase) == true));
+
+            // Bind the filtered browser history items to the ListView
+            BigTemp.ItemsSource = filteredHistory;
         }
 
         private void Ts_TextChanged(object sender, TextChangedEventArgs e)
         {
+            string searchText = Ts.Text;
+            FilterBrowserHistory(searchText);
+        }
 
+        private string selectedHistoryItem;
+        private void Grid_RightTapped(object sender, Windows.UI.Xaml.Input.RightTappedRoutedEventArgs e)
+        {
+            // Get the selected HistoryItem object
+            HistoryItem historyItem = ((FrameworkElement)sender).DataContext as HistoryItem;
+            selectedHistoryItem = historyItem.Url;
+
+            // Create a context menu flyout
+            var flyout = new MenuFlyout();
+
+            // Add a menu item for "Delete This Record" button
+            var deleteMenuItem = new MenuFlyoutItem
+            {
+                Text = "Delete This Record",
+            };
+
+            // Set the icon for the menu item using the Unicode escape sequence
+            deleteMenuItem.Icon = new FontIcon
+            {
+                Glyph = "\uE74D" // Replace this with the Unicode escape sequence for your desired icon
+            };
+
+            // Handle the click event directly within the right-tapped event handler
+            deleteMenuItem.Click += (s, args) =>
+            {
+                DbClearTableData db = new();
+                db.DeleteTableData("urlsDb", $"Url = '{selectedHistoryItem}'");
+                if (BigTemp.ItemsSource is ObservableCollection<HistoryItem> historyItems)
+                {
+                    var itemToRemove = historyItems.FirstOrDefault(item => item.Url == selectedHistoryItem);
+                    if (itemToRemove != null)
+                    {
+                        historyItems.Remove(itemToRemove);
+                    }
+                }
+                // After deletion, you may want to update the UI or any other actions
+            };
+
+            flyout.Items.Add(deleteMenuItem);
+
+            // Show the context menu flyout
+            flyout.ShowAt((FrameworkElement)sender, e.GetPosition((FrameworkElement)sender));
         }
     }
 }

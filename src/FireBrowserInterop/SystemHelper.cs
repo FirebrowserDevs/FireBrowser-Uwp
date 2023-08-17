@@ -16,6 +16,7 @@ namespace FireBrowserInterop
                 throw new Exception("Failed to restart app. Please manually restart.");
             }
         }
+
         public static void WriteStringToClipboard(string text)
         {
             if (string.IsNullOrEmpty(text))

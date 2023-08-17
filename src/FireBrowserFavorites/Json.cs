@@ -9,7 +9,6 @@ namespace FireBrowserFavorites
     public class Json
     {
         private static StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-
         public static async Task CreateJsonFileAsync(string file, string title, string url)
         {
             // Generate json

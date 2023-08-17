@@ -5,11 +5,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:dllimg="using:FireBrowserAssets"
     mc:Ignorable="d">
     <Grid>
         <StackPanel Margin="0,5,0,0">
             <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <PersonPicture ProfilePicture="ms-appx:///Assets/AccountPic/clippy.png" Width="64"/>
+                <PersonPicture ProfilePicture="{dllimg:ImageLoader ImageName=clippy.png}" Width="64"/>
                 <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
                     <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" FontSize="15" Text="FireBrowser User"/>
                     <TextBlock Text="Browser account" FontSize="12"/>
@@ -31,7 +32,16 @@
                 <Button x:Name="MsAccount" Click="MsAccount_Click" Width="150">
                     <StackPanel>
                         <TextBlock x:Name="TextStat" Text="Connect"/>
-                        <StackPanel x:Name="Status" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-30,-20,0,0" Width="16" Height="16" Background="Red" CornerRadius="10"/>
+                    </StackPanel>
+                </Button>
+            </labs:SettingsCard>
+            <labs:SettingsCard>
+                <labs:SettingsCard.Header>
+                  FireVault - FireBrowser
+                </labs:SettingsCard.Header>
+                <Button x:Name="OpenVault" Width="150" IsEnabled="False">
+                    <StackPanel>
+                        <TextBlock x:Name="TextOpen" Text="Open Vault"/>
                     </StackPanel>
                 </Button>
             </labs:SettingsCard>

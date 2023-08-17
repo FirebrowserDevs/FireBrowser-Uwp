@@ -8,10 +8,6 @@
     xmlns:settings="using:CommunityToolkit.Labs.WinUI"
     >
     <Grid>
-        <settings:SettingsCard>
-            <Button>
-                Start Web App
-            </Button>
-        </settings:SettingsCard>
+       
     </Grid>
 </Page>

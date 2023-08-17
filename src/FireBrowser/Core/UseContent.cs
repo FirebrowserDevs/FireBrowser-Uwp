@@ -6,7 +6,6 @@ namespace FireBrowser.Core
 {
     public class UseContent
     {
-        /// improving frames
         public static WebContent WebContent => (Window.Current.Content as Frame)?.Content as WebContent;
         public static MainPage MainPageContent => (Window.Current.Content as Frame)?.Content as MainPage;
         public static SettingsPage SettingsContent => (Window.Current.Content as Frame)?.Content as SettingsPage;

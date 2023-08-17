@@ -27,7 +27,8 @@ namespace FireBrowser.Pages.SettingsPages
             AutoTog.IsOn = auto switch
             {
                 "0" => false,
-                "1" => true
+                "1" => true,
+                _ => throw new System.NotImplementedException()
             };
 
             Type.SelectedItem = layout switch
@@ -35,6 +36,7 @@ namespace FireBrowser.Pages.SettingsPages
                 "0" => "Default",
                 "1" => "Featured",
                 "2" => "Custom",
+                _ => throw new System.NotImplementedException()
             };
             ColorTB.Text = value;
             ColorTV.Text = value2;

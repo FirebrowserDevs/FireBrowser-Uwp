@@ -5,10 +5,7 @@ namespace FireBrowser.Controls
 {
     public partial class FireBrowserTabViewItem : TabViewItem
     {
-        public FireBrowserTabViewItem()
-        {
-            this.InitializeComponent();
-        }
+        public FireBrowserTabViewItem() => InitializeComponent();
 
         public string Value
         {
@@ -16,7 +13,10 @@ namespace FireBrowser.Controls
             set => SetValue(ValueProperty, value);
         }
 
-        public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register(nameof(Value), typeof(string), typeof(FireBrowserTabViewItem), null);
+        public static DependencyProperty ValueProperty = DependencyProperty.Register(
+        nameof(Value),
+        typeof(string),
+        typeof(FireBrowserTabViewItem),
+        null);
     }
 }

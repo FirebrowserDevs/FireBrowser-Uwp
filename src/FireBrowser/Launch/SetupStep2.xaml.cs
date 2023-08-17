@@ -4,15 +4,9 @@ using System;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using static FireBrowser.App;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace FireBrowser.Launch
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class SetupStep2 : Page
     {
         public SetupStep2()
@@ -39,7 +33,7 @@ namespace FireBrowser.Launch
 
             var settingsFile = await ApplicationData.Current.LocalFolder.GetFileAsync("Params.json");
             string settingsJson = await FileIO.ReadTextAsync(settingsFile);
-            AppSettings settings = JsonConvert.DeserializeObject<AppSettings>(settingsJson);
+            FireBrowserCore.Overlay.AppOverlay.AppSettings settings = JsonConvert.DeserializeObject<FireBrowserCore.Overlay.AppOverlay.AppSettings>(settingsJson);
 
             if (settings != null && settings.IsFirstLaunch)
             {

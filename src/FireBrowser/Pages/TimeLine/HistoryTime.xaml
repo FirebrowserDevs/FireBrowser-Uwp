@@ -5,8 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Loaded="Page_Loaded"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Loaded="Page_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="45" />
@@ -16,14 +15,19 @@
         <StackPanel Height="45" VerticalAlignment="Top" Grid.RowSpan="1">
             <TextBox x:Name="Ts" Margin="0,7,0,0" Width="300" PlaceholderText="Search History Here" TextChanged="Ts_TextChanged"/>
         </StackPanel>
-        <Button x:Name="Delete" Click="Delete_Click" Style="{StaticResource QuietButtonStyle}" Width="75" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" ToolTipService.ToolTip="Delete All History">
-            <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE74D;" />
+        <Button x:Name="Delete" Click="Delete_Click"   Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" ToolTipService.ToolTip="Delete All History">
+            <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE107;" />
+                    <TextBlock Margin="10,0,0,0">Delete all history</TextBlock>
+                </StackPanel>
+            </Button.Content>
         </Button>
         <StackPanel HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Grid.Row="2">
             <ListView x:Name="BigTemp">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Margin="5">
+                        <Grid Margin="5" RightTapped="Grid_RightTapped">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>

@@ -38,12 +38,6 @@ namespace FireBrowserCore.Models
             Normal
         }
 
-        public class SettingsBase
-        {
-            public double AppVersion { get; set; }
-            public int DefaultProfile { get; set; }
-        }
-
         public class UISettings
         {
             public UILayout Layout { get; set; }
@@ -60,12 +54,6 @@ namespace FireBrowserCore.Models
             public bool ShowZoomSlider { get; set; }
         }
 
-        public class Sleepingtabs
-        {
-            public bool IsEnabled { get; set; }
-            public int PutTabsToSleepAfter { get; set; }
-        }
-
         public class Privacy
         {
             public bool ClearCookiesOnEveryLaunch { get; set; }
@@ -74,12 +62,6 @@ namespace FireBrowserCore.Models
             public bool SavePasswords { get; set; }
             public string SearchEngine { get; set; } = string.Empty;
             public bool WebSearchSuggestions { get; set; }
-        }
-
-        public class Other
-        {
-            public bool AskBeforeDownloading { get; set; }
-            public int DefaultZoomLevel { get; set; }
         }
 
         public class Newtab

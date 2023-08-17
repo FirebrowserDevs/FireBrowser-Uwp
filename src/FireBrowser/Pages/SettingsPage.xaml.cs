@@ -111,7 +111,7 @@ namespace FireBrowser.Pages
         MainPage mainFrame = (MainPage)((Frame)Window.Current.Content).Content;
 
         private Passer passer;
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             passer = e.Parameter as Passer;
             passer.Tab.IconSource = new muxc.FontIconSource()

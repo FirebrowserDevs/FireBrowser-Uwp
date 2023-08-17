@@ -1,9 +1,8 @@
 ﻿using FireBrowser.Launch;
-using FireExceptions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -14,6 +13,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using static FireBrowser.MainPage;
+using static FireBrowserCore.Overlay.AppOverlay;
 
 namespace FireBrowser
 {
@@ -28,18 +28,13 @@ namespace FireBrowser
             LoadSettings();
             NullCheck();
             this.Suspending += OnSuspending;
-            this.UnhandledException += App_UnhandledException;
-            this.EnteredBackground += App_EnteredBackground;
             this.LeavingBackground += App_LeavingBackground;
         }
 
         string registerjm = FireBrowserInterop.SettingsHelper.GetSetting("regJump");
 
-        bool _isInBackgroundMode = false;
-
         private void App_LeavingBackground(object sender, LeavingBackgroundEventArgs e)
         {
-            _isInBackgroundMode = false;
             switch (registerjm)
             {
                 case null:
@@ -55,28 +50,6 @@ namespace FireBrowser
 
         }
 
-
-
-        private void App_EnteredBackground(object sender, EnteredBackgroundEventArgs e)
-        {
-            _isInBackgroundMode = true;
-        }
-
-        private async void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
-        {
-            e.Handled = true;
-
-            try
-            {
-                // Log the exception
-                ExceptionsHelper.LogException(e.Exception);
-            }
-            catch (Exception)
-            {
-                // Ignore the exception silently
-            }
-        }
-
         public void NullCheck()
         {
             SetDefaultColorSetting("ColorTool", "#000000");
@@ -90,27 +63,6 @@ namespace FireBrowser
             {
                 FireBrowserInterop.SettingsHelper.SetSetting(settingName, defaultValue);
             }
-        }
-
-
-        public enum AppLaunchType
-        {
-            LaunchBasic,
-            LaunchIncognito,
-            LaunchStartup,
-            FirstLaunch,
-            FilePDF,
-            URIHttp,
-            URIFireBrowser,
-            Reset,
-        }
-
-        public class AppLaunchPasser
-        {
-            public AppLaunchType LaunchType { get; set; }
-            public object LaunchData { get; set; }
-
-            public string UserName { get; set; }
         }
 
         public static string IsFirstLaunch { get; set; }
@@ -129,7 +81,6 @@ namespace FireBrowser
         {
             AppLaunchPasser passer = new()
             {
-                //To-Do: temporary
                 LaunchType = AppLaunchType.FilePDF,
                 LaunchData = args.Files
             };
@@ -152,9 +103,7 @@ namespace FireBrowser
         {
             JumpList jumpList = await JumpList.LoadCurrentAsync();
 
-            // Clear existing items (optional)
             jumpList.Items.Clear();
-
 
             JumpListItem jumpListItemNewWindow = JumpListItem.CreateWithArguments("newwindow", "New Window");
             jumpListItemNewWindow.Description = "Open in a new window";
@@ -200,8 +149,6 @@ namespace FireBrowser
                         username = parameters["username"];
                     }
                 }
-
-
 
                 if (rootFrame == null)
                 {
@@ -274,86 +221,63 @@ namespace FireBrowser
             }
         }
 
-        #region appdata
-
-        public class AppSettings
-        {
-            public bool IsFirstLaunch { get; set; }
-
-            public bool IsConnected { get; set; }
-        }
-
         // Check if it's the first launch of the app
         public async Task<bool> CheckFirstLaunchAsync()
         {
-            bool isFirstLaunch = false;
             StorageFile settingsFile = null;
 
             try
             {
-                // Try to get the settings file
-                settingsFile = await ApplicationData.Current.LocalFolder.GetFileAsync("Params.json");
+                settingsFile = await ApplicationData.Current.LocalFolder.TryGetItemAsync("Params.json") as StorageFile;
             }
-            catch (FileNotFoundException)
+            catch (Exception ex)
             {
-                // The settings file doesn't exist yet, so create it
-                isFirstLaunch = true;
+                Debug.WriteLine("An error occurred while checking for the settings file: " + ex.Message);
             }
 
-            if (isFirstLaunch)
+            if (settingsFile == null)
             {
-                // Save the app settings to the file
-                AppSettings settings = new AppSettings { IsFirstLaunch = true, IsConnected = false };
-                string settingsJson = JsonConvert.SerializeObject(settings);
-                settingsFile = await ApplicationData.Current.LocalFolder.CreateFileAsync("Params.json", CreationCollisionOption.ReplaceExisting);
-                await FileIO.WriteTextAsync(settingsFile, settingsJson);
+                try
+                {
+                    AppSettings settings = new AppSettings { IsFirstLaunch = true, IsConnected = false };
+                    string settingsJson = JsonConvert.SerializeObject(settings);
+
+                    settingsFile = await ApplicationData.Current.LocalFolder.CreateFileAsync("Params.json", CreationCollisionOption.ReplaceExisting);
+                    await FileIO.WriteTextAsync(settingsFile, settingsJson);
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("An error occurred while creating and saving the settings file: " + ex.Message);
+                }
             }
 
-            return isFirstLaunch;
+            return false;
         }
 
-        #endregion
 
-        /// <summary>
-        /// Invoked when the application is launched normally by the end user.  Other entry points
-        /// will be used such as when the application is launched to open a specific file.
-        /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
         protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
             // CoreApplication.EnablePrelaunch was introduced in Windows 10 version 1607
             bool canEnablePrelaunch = Windows.Foundation.Metadata.ApiInformation.IsMethodPresent("Windows.ApplicationModel.Core.CoreApplication", "EnablePrelaunch");
 
-
-            // NOTE: Only enable this code if you are targeting a version of Windows 10 prior to version 1607,
-            // and you want to opt out of prelaunch.
-            // In Windows 10 version 1511, all UWP apps were candidates for prelaunch.
-            // Starting in Windows 10 version 1607, the app must opt in to be prelaunched.
-            //if ( !canEnablePrelaunch && e.PrelaunchActivated == true)
-            //{
-            //    return;
-            //}
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Maximized;
 
             Frame rootFrame = Window.Current.Content as Frame;
 
-
-            // Do not repeat app initialization when the Window already has content,
-            // just ensure that the window is active
             if (rootFrame == null)
             {
-                // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
-                    //TODO: Load state from previously suspended application
+                    Debug.WriteLine("App Terminated", e.Arguments);
                 }
 
-
-                // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
 
@@ -366,8 +290,6 @@ namespace FireBrowser
                     LaunchData = e.Arguments
                 };
 
-
-                // On Windows 10 version 1607 or later, this code signals that this app wants to participate in prelaunch
                 if (canEnablePrelaunch)
                 {
                     TryEnablePrelaunch();
@@ -390,9 +312,6 @@ namespace FireBrowser
                 {
                     if (rootFrame.Content == null)
                     {
-                        // When the navigation stack isn't restored navigate to the first page,
-                        // configuring the new page by passing required information as a navigation
-
                         rootFrame.Navigate(typeof(MainPage), passer);
                     }
                     // Ensure the current window is active
@@ -402,9 +321,6 @@ namespace FireBrowser
             }
         }
 
-        /// <summary>
-        /// Invoked when Navigation to a certain page fails
-        /// </summary>
         /// <param name="sender">The Frame which failed navigation</param>
         /// <param name="e">Details about the navigation failure</param>
         void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
@@ -412,11 +328,6 @@ namespace FireBrowser
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
 
-        /// <summary>
-        /// Invoked when application execution is being suspended.  Application state is saved
-        /// without knowing whether the application will be terminated or resumed with the contents
-        /// of memory still intact.
-        /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
         private void OnSuspending(object sender, SuspendingEventArgs e)

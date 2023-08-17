@@ -6,7 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:icon="using:FireBrowser.Controls"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     mc:Ignorable="d">
     <Grid>
         <muxc:NavigationView x:Name="NavigationView"                        
@@ -22,19 +21,19 @@
             </muxc:NavigationView.Resources>
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem x:Uid="TimelineNavItemApps"
-                                         Tag="Apps"
+                                         Tag="apps"
                                          d:Content="Apps">
                     <muxc:NavigationViewItem.Icon>
                         <icon:FluentIcon Glyph="&#xE8F9;"/>
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
-                <muxc:NavigationViewItem x:Name="NavViewItemHistory" Tag="History">
+                <muxc:NavigationViewItem x:Name="NavViewItemHistory" Tag="history">
                     <muxc:NavigationViewItem.Icon>
                         <icon:FluentIcon Glyph="&#xE81C;"/>
                     </muxc:NavigationViewItem.Icon>
                     History
                 </muxc:NavigationViewItem>
-                <muxc:NavigationViewItem x:Name="NavViewItemFavorites" Tag="Favorites">
+                <muxc:NavigationViewItem x:Name="NavViewItemFavorites" Tag="favorites">
                     <muxc:NavigationViewItem.Icon>
                         <icon:FluentIcon Glyph="&#xE728;"/>
                     </muxc:NavigationViewItem.Icon>
