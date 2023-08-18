@@ -173,19 +173,5 @@ namespace FireBrowser.Launch
                 FireBrowserInterop.SettingsHelper.SetSetting("Background", "2");
             }
         }
-
-        private void Langue_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            string selection = e.AddedItems[0].ToString();
-            if (selection == "nl-NL") FireBrowserInterop.SettingsHelper.SetSetting("Lang", "nl-NL");
-            if (selection == "en-US") FireBrowserInterop.SettingsHelper.SetSetting("Lang", "en-US");
-        }
-
-        private void Langue_Loaded(object sender, RoutedEventArgs e)
-        {
-            string selection = FireBrowserInterop.SettingsHelper.GetSetting("Lang");
-            Langue.PlaceholderText = selection ?? "nl-NL";
-            FireBrowserInterop.SettingsHelper.SetSetting("Lang", selection);
-        }
     }
 }

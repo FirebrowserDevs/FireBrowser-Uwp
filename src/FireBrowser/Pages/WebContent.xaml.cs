@@ -5,7 +5,6 @@ using FireExceptions;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Windows.ApplicationModel.DataTransfer;
@@ -17,10 +16,8 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using static FireBrowser.MainPage;
 using Windows.Media.SpeechSynthesis;
-using FireBrowser.Pages.HiddenFeatures;
 using Microsoft.Toolkit.Uwp.Connectivity;
 using System.Threading.Tasks;
-using System.Timers;
 using Microsoft.Toolkit.Uwp.Notifications;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -36,10 +33,7 @@ namespace FireBrowser.Pages
         public WebContent()
         {
             this.InitializeComponent();
-            synthesizer = new SpeechSynthesizer();
         }
-
-
 
         public static bool IsIncognitoModeEnabled { get; set; } = false;
         private void ToggleIncognitoMode(object sender, RoutedEventArgs e)
@@ -57,9 +51,7 @@ namespace FireBrowser.Pages
             WebViewElement.CoreWebView2.Settings.IsWebMessageEnabled = webmes.Equals("false", StringComparison.OrdinalIgnoreCase);
             WebViewElement.CoreWebView2.Settings.IsGeneralAutofillEnabled = autogen.Equals("false", StringComparison.OrdinalIgnoreCase);
         }
-
        
-
         public bool run = false;
         public void AfterComplete()
         {
@@ -114,7 +106,7 @@ namespace FireBrowser.Pages
                               .AddArgument("action", "viewConversation")
                               .AddArgument("conversationId", 9813)
                                   .AddButton(new ToastButton()
-                                  .SetContent("Dismiss"))
+                                  .SetContent("OK"))
                               .AddText("You're now online!")
                               .AddText("The Internet connection has been restored. You can now continue browsing.")
                               .AddAttributionText("via FireBrowser")
@@ -258,7 +250,7 @@ namespace FireBrowser.Pages
                 UseContent.MainPageContent.Hmbtn.IsEnabled = true;
                 param.ViewModel.CanRefresh = true;
 
-                if (FireBrowser.Core.UseContent.MainPageContent.UrlBox.Text.Contains("drive"))
+                if (UseContent.MainPageContent.UrlBox.Text.Contains("drive"))
                 {
                     WebViewElement.AllowDrop = false;
                 }

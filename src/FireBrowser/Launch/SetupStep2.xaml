@@ -73,6 +73,15 @@
                 </labs:SettingsCard.HeaderIcon>
                 <ToggleSwitch x:Name="TgTabUp" Toggled="TgTabUp_Toggled"/>
             </labs:SettingsCard>
+            <labs:SettingsCard  Header="FireBrowser - SpeakEngine" Description="Change language Of Speech Engine"  Margin="0,2,0,0" Width="600">
+                <labs:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEFA9;" />
+                </labs:SettingsCard.HeaderIcon>
+                <ComboBox x:Name="Langue" SelectionChanged="Langue_SelectionChanged" Loaded="Langue_Loaded">
+                    <x:String>nl-NL</x:String>
+                    <x:String>en-US</x:String>
+                </ComboBox>
+            </labs:SettingsCard>
             <Button Click="Install_Click" x:Name="Install" Margin="0,8,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
                 Confirm Setup
             </Button>
