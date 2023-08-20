@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.ExtendedExecution.Foreground;
 using Windows.Storage;
 using Windows.UI.StartScreen;
 using Windows.UI.ViewManagement;
@@ -31,6 +32,7 @@ namespace FireBrowser
             this.LeavingBackground += App_LeavingBackground;
         }
 
+      
         string registerjm = FireBrowserInterop.SettingsHelper.GetSetting("regJump");
 
         private void App_LeavingBackground(object sender, LeavingBackgroundEventArgs e)

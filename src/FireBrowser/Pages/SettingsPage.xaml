@@ -32,6 +32,11 @@
                         <muxc:ImageIcon Source="ms-appx:///Assets/Icons/Privacy.svg"/>
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Tag="WebView"  Content="WebView">
+                    <muxc:NavigationViewItem.Icon>
+                        <muxc:ImageIcon Source="ms-appx:///Assets/Icons/Webset.svg"/>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
                 <muxc:NavigationViewItem Tag="NewTab"  Content="New Tab">
                     <muxc:NavigationViewItem.Icon>
                         <muxc:ImageIcon Source="ms-appx:///Assets/Icons/Tabs.svg"/>

@@ -29,6 +29,7 @@ namespace FireBrowser.Pages
         {
             ("SettingsHome", typeof(SettingsPages.Home)),
             ("Privacy", typeof(SettingsPages.Privacy)),
+            ("WebView", typeof(SettingsPages.WebView)),
             ("NewTab", typeof(SettingsPages.NewTab)),
             ("Design", typeof(SettingsPages.Design)),
             ("Accessibility", typeof(SettingsPages.Accessibility)),
@@ -55,17 +56,21 @@ namespace FireBrowser.Pages
                     navigateToPage = "Privacy";
                     navigateToItem = NavView.MenuItems[2];
                     break;
+                case string s when s.Contains("firebrowser://webview"):
+                    navigateToPage = "WebView";
+                    navigateToItem = NavView.MenuItems[3];
+                    break;
                 case string s when s.Contains("firebrowser://newtabset"):
                     navigateToPage = "NewTab";
-                    navigateToItem = NavView.MenuItems[3];
+                    navigateToItem = NavView.MenuItems[4];
                     break;
                 case string s when s.Contains("firebrowser://access"):
                     navigateToPage = "Accessibility";
-                    navigateToItem = NavView.MenuItems[4];
+                    navigateToItem = NavView.MenuItems[5];
                     break;
                 case string s when s.Contains("firebrowser://about"):
                     navigateToPage = "About";
-                    navigateToItem = NavView.MenuItems[5];
+                    navigateToItem = NavView.MenuItems[6];
                     break;
                 default:
                     // Default case

@@ -1,0 +1,46 @@
+﻿<Page
+    x:Class="FireBrowser.Launch.SetupFinal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FireBrowser.Launch"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    >
+
+    <Grid>
+        <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="22" FontWeight="Bold" Margin="0,10,0,0">
+                 Setup WebView Settings
+            </TextBlock>
+            <labs:SettingsCard Header="WebView2 StatusBar" Description="turn on or off the default statusbar"  Width="600" Margin="0,15,0,0">
+                <labs:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xF168;" />
+                </labs:SettingsCard.HeaderIcon>
+                <ToggleSwitch  x:Name="StatusTog" Toggled="StatusTog_Toggled"/>
+            </labs:SettingsCard>
+            <labs:SettingsCard Header="WebView2 Browser Accelerator Keys" Description="turn on or off the default BrowserAcceleratorKeys"  Width="600" Margin="0,2,0,0">
+                <labs:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE9A9;" />
+                </labs:SettingsCard.HeaderIcon>
+                <ToggleSwitch  x:Name="BrowserKeys" Toggled="BrowserKeys_Toggled"/>
+            </labs:SettingsCard>
+            <labs:SettingsCard Header="WebView2 Script Dialogs" Description="turn on or off the default Scripts Dialogs"  Width="600" Margin="0,2,0,0">
+                <labs:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xED0E;" />
+                </labs:SettingsCard.HeaderIcon>
+                <ToggleSwitch  x:Name="BrowserScripts" Toggled="BrowserScripts_Toggled"/>
+            </labs:SettingsCard>
+            <labs:SettingsCard Header="WebView2 Useragent" Description="WebView2 Useragent Settings"  Width="600" Margin="0,2,0,0">
+                <labs:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEE57;" />
+                </labs:SettingsCard.HeaderIcon>
+                <TextBox x:Name="Agent" Text="FireBrowser Webview" TextChanged="Agent_TextChanged"/>
+            </labs:SettingsCard>
+            <Button Click="Install_Click" x:Name="Install" Margin="0,8,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                Finish Setup
+            </Button>
+        </StackPanel>
+    </Grid>
+</Page>

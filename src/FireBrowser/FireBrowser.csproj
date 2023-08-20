@@ -147,6 +147,9 @@
     <Compile Include="Launch\Setup.xaml.cs">
       <DependentUpon>Setup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Launch\SetupFinal.xaml.cs">
+      <DependentUpon>SetupFinal.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Launch\SetupSettings.xaml.cs">
       <DependentUpon>SetupSettings.xaml</DependentUpon>
     </Compile>
@@ -198,6 +201,9 @@
     <Compile Include="Pages\SettingsPages\Privacy.xaml.cs">
       <DependentUpon>Privacy.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\SettingsPages\WebView.xaml.cs">
+      <DependentUpon>WebView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\TimeLine\Apps.xaml.cs">
       <DependentUpon>Apps.xaml</DependentUpon>
     </Compile>
@@ -235,6 +241,7 @@
     <Content Include="Assets\Icons\Privacy.svg" />
     <Content Include="Assets\Icons\Style.svg" />
     <Content Include="Assets\Icons\Tabs.svg" />
+    <Content Include="Assets\Icons\Webset.svg" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
@@ -316,6 +323,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Launch\SetupFinal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Launch\SetupSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -381,6 +392,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\SettingsPages\Privacy.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsPages\WebView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

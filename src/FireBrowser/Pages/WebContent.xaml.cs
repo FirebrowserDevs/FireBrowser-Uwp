@@ -42,16 +42,20 @@ namespace FireBrowser.Pages
         }
         public void LoadSettings()
         {
-            var javasc = FireBrowserInterop.SettingsHelper.GetSetting("DisableJavaScript");
-            var pass = FireBrowserInterop.SettingsHelper.GetSetting("DisablePassSave");
-            var webmes = FireBrowserInterop.SettingsHelper.GetSetting("DisableWebMess");
-            var autogen = FireBrowserInterop.SettingsHelper.GetSetting("DisableGenAutoFill");
-            WebViewElement.CoreWebView2.Settings.IsScriptEnabled = javasc.Equals("false", StringComparison.OrdinalIgnoreCase);
-            WebViewElement.CoreWebView2.Settings.IsPasswordAutosaveEnabled = pass.Equals("false", StringComparison.OrdinalIgnoreCase);
-            WebViewElement.CoreWebView2.Settings.IsWebMessageEnabled = webmes.Equals("false", StringComparison.OrdinalIgnoreCase);
-            WebViewElement.CoreWebView2.Settings.IsGeneralAutofillEnabled = autogen.Equals("false", StringComparison.OrdinalIgnoreCase);
+            string GetSetting(string settingName) => FireBrowserInterop.SettingsHelper.GetSetting(settingName);
+
+            WebViewElement.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = GetSetting("BrowserScripts").Equals("1", StringComparison.OrdinalIgnoreCase);
+            WebViewElement.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = GetSetting("BrowserKeys").Equals("1", StringComparison.OrdinalIgnoreCase);
+            WebViewElement.CoreWebView2.Settings.IsStatusBarEnabled = GetSetting("StatusBar").Equals("1", StringComparison.OrdinalIgnoreCase);
+            WebViewElement.CoreWebView2.Settings.IsScriptEnabled = !bool.Parse(GetSetting("DisableJavaScript"));
+            WebViewElement.CoreWebView2.Settings.IsPasswordAutosaveEnabled = !bool.Parse(GetSetting("DisablePassSave"));
+            WebViewElement.CoreWebView2.Settings.IsWebMessageEnabled = !bool.Parse(GetSetting("DisableWebMess"));
+            WebViewElement.CoreWebView2.Settings.IsGeneralAutofillEnabled = !bool.Parse(GetSetting("DisableGenAutoFill"));
         }
-       
+
+
+        string useragent = FireBrowserInterop.SettingsHelper.GetSetting("Useragent");
+
         public bool run = false;
         public void AfterComplete()
         {
@@ -144,6 +148,11 @@ namespace FireBrowser.Pages
                 WebViewElement.CoreWebView2.Navigate(param.Param.ToString());
             }
 
+            if (useragent == "")
+            {
+                useragent = "1";
+            }
+
             var userAgent = s?.CoreWebView2.Settings.UserAgent;
             if (!string.IsNullOrEmpty(userAgent))
             {
@@ -153,7 +162,7 @@ namespace FireBrowser.Pages
                     if (IsIncognitoModeEnabled == true)
                     {
                         userAgent = userAgent.Substring(25, edgIndex - 25);
-                        userAgent = userAgent.Replace("Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203", "NewIncog/1");
+                        userAgent = userAgent.Replace($"{useragent}", $"{useragent}");
                     }
                     else
                     {
@@ -163,17 +172,14 @@ namespace FireBrowser.Pages
                             if (edgIndex >= 0)
                             {
                                 userAgent = userAgent.Substring(0, edgIndex - 0);
-                                userAgent = userAgent.Replace("Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203", "Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203");
+                                userAgent = userAgent.Replace($"{useragent}", $"{useragent}");
                                 s.CoreWebView2.Settings.UserAgent = userAgent;
                             }
                         }
                     }
                 }
             }
-            s.CoreWebView2.Settings.UserAgent = userAgent;
-            s.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = false;
-            s.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = true;
-            s.CoreWebView2.Settings.IsStatusBarEnabled = true;
+            s.CoreWebView2.Settings.UserAgent = userAgent;        
             s.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = true;
             s.CoreWebView2.Settings.AreDefaultContextMenusEnabled = true;
             s.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);

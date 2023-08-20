@@ -26,6 +26,8 @@ using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation.Metadata;
 using Windows.Graphics.Display;
+using Windows.Media.Core;
+using Windows.Media.Playback;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI;
@@ -389,10 +391,12 @@ namespace FireBrowser
 
         bool incog = false;
 
+    
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             SetupWindow(null);
+           
 
             if (e.Parameter is AppOverlay.AppLaunchPasser passer)
             {
@@ -713,6 +717,7 @@ namespace FireBrowser
                     case "firebrowser://newtabset":
                     case "firebrowser://access":
                     case "firebrowser://about":
+                    case "firebrowser://webview":
                         TabContent.Navigate(typeof(SettingsPage), CreatePasser(), new DrillInNavigationTransitionInfo());
                         break;
                     case "firebrowser://apps":

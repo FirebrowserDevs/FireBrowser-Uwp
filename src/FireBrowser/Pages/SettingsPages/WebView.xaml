@@ -1,0 +1,43 @@
+﻿<Page
+    x:Class="FireBrowser.Pages.SettingsPages.WebView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FireBrowser.Pages.SettingsPages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI">
+    <StackPanel>
+        <labs:SettingsCard Header="WebView2 StatusBar" Description="turn on or off the default statusbar" Margin="0,2,0,0">
+            <labs:SettingsCard.HeaderIcon>
+                <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xF168;" />
+            </labs:SettingsCard.HeaderIcon>
+            <ToggleSwitch  x:Name="StatusTog" Toggled="StatusTog_Toggled"/>
+        </labs:SettingsCard>
+        <labs:SettingsCard Header="WebView2 Browser Accelerator Keys" Description="turn on or off the default BrowserAcceleratorKeys" Margin="0,2,0,0">
+            <labs:SettingsCard.HeaderIcon>
+                <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE9A9;" />
+            </labs:SettingsCard.HeaderIcon>
+            <ToggleSwitch  x:Name="BrowserKeys" Toggled="BrowserKeys_Toggled"/>
+        </labs:SettingsCard>
+        <labs:SettingsCard Header="WebView2 Script Dialogs" Description="turn on or off the default Scripts Dialogs" Margin="0,2,0,0">
+            <labs:SettingsCard.HeaderIcon>
+                <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xED0E;" />
+            </labs:SettingsCard.HeaderIcon>
+            <ToggleSwitch  x:Name="BrowserScripts" Toggled="BrowserScripts_Toggled"/>
+        </labs:SettingsCard>
+        <labs:SettingsCard Header="WebView2 Useragent" Description="WebView2 Useragent Settings" Margin="0,2,0,0">
+            <labs:SettingsCard.HeaderIcon>
+                <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEE57;" />
+            </labs:SettingsCard.HeaderIcon>
+            <TextBox x:Name="Agent" Text="FireBrowser Web" TextChanged="Agent_TextChanged"/>
+        </labs:SettingsCard>
+        <labs:SettingsCard Header="WebView2 Cookies" Description="WebView2 Clear Cookies" Margin="0,2,0,0">
+            <labs:SettingsCard.HeaderIcon>
+                <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE8B7;" />
+            </labs:SettingsCard.HeaderIcon>
+            <Button x:Name="ClearCookies" Content="Clear Cookies" Click="ClearCookies_Click"/>
+        </labs:SettingsCard>
+    </StackPanel>
+</Page>
