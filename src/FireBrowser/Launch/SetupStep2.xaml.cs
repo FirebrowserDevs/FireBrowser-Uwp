@@ -1,7 +1,5 @@
 ﻿using FireBrowser.Pages.SettingsPages;
-using Newtonsoft.Json;
 using System;
-using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -9,12 +7,7 @@ namespace FireBrowser.Launch
 {
     public sealed partial class SetupStep2 : Page
     {
-        public SetupStep2()
-        {
-            this.InitializeComponent();
-            FireBrowserInterop.SettingsHelper.SetSetting("LightMode", "0");
-            FireBrowserInterop.SettingsHelper.SetSetting("OpSw", "True");
-        }
+        public SetupStep2() => InitializeComponent();
 
         private void LgMode_Toggled(object sender, RoutedEventArgs e)
         {

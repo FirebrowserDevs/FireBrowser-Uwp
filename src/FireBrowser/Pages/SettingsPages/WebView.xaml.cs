@@ -3,20 +3,8 @@ using FireBrowser.Core;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using static System.Net.Mime.MediaTypeNames;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -34,9 +22,9 @@ namespace FireBrowser.Pages.SettingsPages
             Stack();
         }
 
-        string stat = FireBrowserInterop.SettingsHelper.GetSetting("StatusBar");
-        string keys = FireBrowserInterop.SettingsHelper.GetSetting("BrowserKeys");
-        string script = FireBrowserInterop.SettingsHelper.GetSetting("BrowserScripts");
+        string stat = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("StatusBar")) ? FireBrowserInterop.SettingsHelper.GetSetting("StatusBar") : "1";
+        string keys = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("BrowserKeys")) ? FireBrowserInterop.SettingsHelper.GetSetting("BrowserKeys") : "1";
+        string script = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("BrowserScripts")) ? FireBrowserInterop.SettingsHelper.GetSetting("BrowserScripts") : "1";
 
         public void Stack()
         {
@@ -68,7 +56,7 @@ namespace FireBrowser.Pages.SettingsPages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-           string us = FireBrowserInterop.SettingsHelper.GetSetting("Useragent");
+           string us = FireBrowserInterop.SettingsHelper.GetSetting("Useragent") ?? "FireBrowser Webview";
            Agent.Text = us;
         }
 

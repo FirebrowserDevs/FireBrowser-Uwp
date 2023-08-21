@@ -17,10 +17,11 @@ namespace FireBrowser.Pages.SettingsPages
             Stack();
         }
 
-        string javasc = FireBrowserInterop.SettingsHelper.GetSetting("DisableJavaScript");
-        string webmes = FireBrowserInterop.SettingsHelper.GetSetting("DisableWebMess");
-        string autogen = FireBrowserInterop.SettingsHelper.GetSetting("DisableGenAutoFill");
-        string pass = FireBrowserInterop.SettingsHelper.GetSetting("DisablePassSave");
+        string javasc = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("DisableJavaScript")) ? FireBrowserInterop.SettingsHelper.GetSetting("DisableJavaScript") : "true";
+        string webmes = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("DisableWebMess")) ? FireBrowserInterop.SettingsHelper.GetSetting("DisableWebMess") : "true";
+        string autogen = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("DisableGenAutoFill")) ? FireBrowserInterop.SettingsHelper.GetSetting("DisableGenAutoFill") : "true";
+        string pass = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("DisablePassSave")) ? FireBrowserInterop.SettingsHelper.GetSetting("DisablePassSave") : "true";
+
         public void Stack()
         {
             DisableJavaScriptToggle.IsOn = javasc == "true";

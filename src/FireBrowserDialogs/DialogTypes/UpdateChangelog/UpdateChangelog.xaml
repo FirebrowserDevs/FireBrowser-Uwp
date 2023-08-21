@@ -5,7 +5,7 @@
     Title="Update Changelog"
     PrimaryButtonText="OK"
     CornerRadius="10">
-    <Grid Height="400" Width="400">
+    <Grid Height="500" Width="400">
         <StackPanel>
             <TextBlock x:Name="Ver" HorizontalAlignment="Center" Height="Auto">
             FireBrowser Alpha
@@ -13,19 +13,27 @@
             <TextBlock HorizontalAlignment="Left">
               Bug Fixes
             </TextBlock>
-            <TextBlock Text=" * Open In New Link ( Freezing )"/>
-            <TextBlock Text=" * Overlay ( Freezing )"/>
+            <TextBlock Text=" * Db File ( Freezing )"/>
+            <TextBlock Text=" * Frames ( Freezing )"/>
+            <TextBlock Text=" * Settings ( Freezing )"/>
+            <TextBlock Text=" * Setup ( Freezing )"/>
+            <TextBlock Text=" * Frames Dropping"/>
+            <TextBlock Text=" * Memory Leak"/>
             <TextBlock HorizontalAlignment="Left" Height="Auto" Margin="0,15,0,0">
               New Features
             </TextBlock>
             <TextBlock Text=" * Open In New Window"/>
-            <TextBlock Text=" * Custom Selection HomePage Colors"/>
+            <TextBlock Text=" * Open In New Tab"/>
+            <TextBlock Text=" * Speak Engine Text To Speech"/>
+            <TextBlock Text=" * Beter Settings"/>
+            <TextBlock Text=" * WebView Settings Page For WebView2"/>
             <TextBlock HorizontalAlignment="Left" Height="Auto" Margin="0,15,0,0">
               Optimizations
             </TextBlock>
             <TextBlock Text=" * WebView2"/>
             <TextBlock Text=" * Database"/>
             <TextBlock Text=" * Settings"/>
+            <TextBlock Text=" * App Launch Profile"/>
             <TextBlock HorizontalAlignment="Left" Height="Auto" Margin="0,15,0,0">
               Our Discord
             </TextBlock>

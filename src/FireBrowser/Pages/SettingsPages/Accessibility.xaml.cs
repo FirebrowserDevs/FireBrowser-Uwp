@@ -22,7 +22,7 @@ namespace FireBrowser.Pages.SettingsPages
 
         public void check()
         {
-            var Mode = FireBrowserInterop.SettingsHelper.GetSetting("LightMode");
+            var Mode = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("LightMode")) ? FireBrowserInterop.SettingsHelper.GetSetting("LightMode") : "0";
             LiteMode.IsOn = Mode switch
             {
                 "0" => false,

@@ -24,19 +24,8 @@ namespace FireBrowser.Launch
     /// </summary>
     public sealed partial class SetupFinal : Page
     {
-        public SetupFinal()
-        {
-            this.InitializeComponent();
-            tempkeys();
-        }
+        public SetupFinal() => InitializeComponent();
 
-        public void tempkeys()
-        {
-            FireBrowserInterop.SettingsHelper.SetSetting("StatusBar", "1");
-            FireBrowserInterop.SettingsHelper.SetSetting("BrowserKeys","1");
-            FireBrowserInterop.SettingsHelper.SetSetting("BrowserScripts", "1");
-            FireBrowserInterop.SettingsHelper.SetSetting("Useragent", "FireBrowser Webview");
-        }
         private void StatusTog_Toggled(object sender, RoutedEventArgs e)
         {
             if (sender is ToggleSwitch toggleSwitch)
@@ -66,6 +55,8 @@ namespace FireBrowser.Launch
             FireBrowserInterop.SettingsHelper.SetSetting("Useragent", Agent.Text.ToString());
         }
 
+
+
         private async void Install_Click(object sender, RoutedEventArgs e)
         {
             bool isFirstLaunch = true;
@@ -85,5 +76,6 @@ namespace FireBrowser.Launch
 
             await FireBrowserInterop.SystemHelper.RestartApp();
         }
+
     }
 }

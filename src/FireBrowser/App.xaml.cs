@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.ApplicationModel.ExtendedExecution.Foreground;
 using Windows.Storage;
 using Windows.UI.StartScreen;
 using Windows.UI.ViewManagement;

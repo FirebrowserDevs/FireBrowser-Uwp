@@ -15,14 +15,21 @@ namespace FireBrowser.Launch
     /// </summary>
     public sealed partial class SetupSettings : Page
     {
-        public SetupSettings()
+        public SetupSettings() => InitializeComponent();
+
+        public void tempkeys()
         {
-            this.InitializeComponent();
             FireBrowserInterop.SettingsHelper.SetSetting("DisableJavaScript", "false");
             FireBrowserInterop.SettingsHelper.SetSetting("DisablePassSave", "false");
             FireBrowserInterop.SettingsHelper.SetSetting("DisableWebMess", "false");
             FireBrowserInterop.SettingsHelper.SetSetting("DisableGenAutoFill", "false");
             FireBrowserInterop.SettingsHelper.SetSetting("ColorBackground", "#000000");
+            FireBrowserInterop.SettingsHelper.SetSetting("StatusBar", "1");
+            FireBrowserInterop.SettingsHelper.SetSetting("BrowserKeys", "1");
+            FireBrowserInterop.SettingsHelper.SetSetting("BrowserScripts", "1");
+            FireBrowserInterop.SettingsHelper.SetSetting("Useragent", "FireBrowser Webview");
+            FireBrowserInterop.SettingsHelper.SetSetting("LightMode", "0");
+            FireBrowserInterop.SettingsHelper.SetSetting("OpSw", "True");
         }
 
         private void SearchengineSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -157,21 +164,27 @@ namespace FireBrowser.Launch
         private void BackgroundTabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string selection = e.AddedItems[0].ToString();
-            if (selection == "Default")
+
+            Color.IsEnabled = selection switch
             {
-                Color.IsEnabled = false;
-                FireBrowserInterop.SettingsHelper.SetSetting("Background", "0");
-            }
-            if (selection == "Featured")
+                "Default" => false,
+                "Featured" => false,
+                "Custom" => true,
+                _ => Color.IsEnabled
+            };
+
+            FireBrowserInterop.SettingsHelper.SetSetting("Background", selection switch
             {
-                Color.IsEnabled = false;
-                FireBrowserInterop.SettingsHelper.SetSetting("Background", "1");
-            }
-            if (selection == "Custom")
-            {
-                Color.IsEnabled = true;
-                FireBrowserInterop.SettingsHelper.SetSetting("Background", "2");
-            }
+                "Default" => "0",
+                "Featured" => "1",
+                "Custom" => "2",
+                _ => FireBrowserInterop.SettingsHelper.GetSetting("Background")
+            });
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            tempkeys();
         }
     }
 }

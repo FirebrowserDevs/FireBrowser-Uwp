@@ -25,9 +25,6 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation.Metadata;
-using Windows.Graphics.Display;
-using Windows.Media.Core;
-using Windows.Media.Playback;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI;
@@ -43,7 +40,6 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using Image = Windows.UI.Xaml.Controls.Image;
 using NewTab = FireBrowser.Pages.NewTab;
-using Point = Windows.Foundation.Point;
 
 namespace FireBrowser
 {
@@ -390,7 +386,6 @@ namespace FireBrowser
         }
 
         bool incog = false;
-
     
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -640,7 +635,6 @@ namespace FireBrowser
             };
 
             passer.ViewModel.CurrentAddress = null;
-
 
             newItem.Style = (Style)Application.Current.Resources["FloatingTabViewItemStyle"];
 

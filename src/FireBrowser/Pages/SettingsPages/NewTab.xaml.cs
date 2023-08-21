@@ -46,17 +46,17 @@ namespace FireBrowser.Pages.SettingsPages
 
         #region buttons
 
-        public string ReadButton = FireBrowserInterop.SettingsHelper.GetSetting("Readbutton");
-        public string AdblockBtn = FireBrowserInterop.SettingsHelper.GetSetting("AdBtn");
-        public string Downloads = FireBrowserInterop.SettingsHelper.GetSetting("DwBtn");
-        public string Translate = FireBrowserInterop.SettingsHelper.GetSetting("TransBtn");
-        public string Favorites = FireBrowserInterop.SettingsHelper.GetSetting("FavBtn");
-        public string Historybtn = FireBrowserInterop.SettingsHelper.GetSetting("HisBtn");
-        public string QrCode = FireBrowserInterop.SettingsHelper.GetSetting("QrBtn");
-        public string FavBtn = FireBrowserInterop.SettingsHelper.GetSetting("FlBtn");
-        public string ToolB = FireBrowserInterop.SettingsHelper.GetSetting("ToolBtn");
-        public string DarkTog = FireBrowserInterop.SettingsHelper.GetSetting("DarkBtn");
-        public string OpTog = FireBrowserInterop.SettingsHelper.GetSetting("OpSw");
+        public string ReadButton = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("Readbutton")) ? FireBrowserInterop.SettingsHelper.GetSetting("Readbutton") : "True";
+        public string AdblockBtn = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("AdBtn")) ? FireBrowserInterop.SettingsHelper.GetSetting("AdBtn") : "True";
+        public string Downloads = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("DwBtn")) ? FireBrowserInterop.SettingsHelper.GetSetting("DwBtn") : "True";
+        public string Translate = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("TransBtn")) ? FireBrowserInterop.SettingsHelper.GetSetting("TransBtn") : "True";
+        public string Favorites = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("FavBtn")) ? FireBrowserInterop.SettingsHelper.GetSetting("FavBtn") : "True";
+        public string Historybtn = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("HisBtn")) ? FireBrowserInterop.SettingsHelper.GetSetting("HisBtn") : "True";
+        public string QrCode = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("QrBtn")) ? FireBrowserInterop.SettingsHelper.GetSetting("QrBtn") : "True";
+        public string FavBtn = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("FlBtn")) ? FireBrowserInterop.SettingsHelper.GetSetting("FlBtn") : "True";
+        public string ToolB = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("ToolBtn")) ? FireBrowserInterop.SettingsHelper.GetSetting("ToolBtn") : "True";
+        public string DarkTog = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("DarkBtn")) ? FireBrowserInterop.SettingsHelper.GetSetting("DarkBtn") : "True";
+        public string OpTog = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("OpSw")) ? FireBrowserInterop.SettingsHelper.GetSetting("OpSw") : "True";
 
         public void ButtonVisible()
         {

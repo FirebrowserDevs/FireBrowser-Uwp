@@ -17,12 +17,13 @@ namespace FireBrowser.Pages.SettingsPages
 
         public void loadValues()
         {
-            var value = FireBrowserInterop.SettingsHelper.GetSetting("ColorTool");
-            var value2 = FireBrowserInterop.SettingsHelper.GetSetting("ColorTV");
+            var value = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("ColorTool")) ? FireBrowserInterop.SettingsHelper.GetSetting("ColorTool") : "#000000";
+            var value2 = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("ColorTV")) ? FireBrowserInterop.SettingsHelper.GetSetting("ColorTV") : "#000000";
 
-            var color = FireBrowserInterop.SettingsHelper.GetSetting("ColorBackground");
-            var layout = FireBrowserInterop.SettingsHelper.GetSetting("Background");
-            var auto = FireBrowserInterop.SettingsHelper.GetSetting("Auto");
+            var color = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("ColorBackground")) ? FireBrowserInterop.SettingsHelper.GetSetting("ColorBackground") : "#000000";
+            var layout = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("Background")) ? FireBrowserInterop.SettingsHelper.GetSetting("Background") : "0";
+            var auto = !string.IsNullOrEmpty(FireBrowserInterop.SettingsHelper.GetSetting("Auto")) ? FireBrowserInterop.SettingsHelper.GetSetting("Auto") : "0";
+
 
             AutoTog.IsOn = auto switch
             {
