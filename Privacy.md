@@ -1,9 +1,35 @@
-At fBrowser, we are committed to protecting your privacy. We understand that privacy is an important matter for our users and we strive to be transparent about how we handle your personal information.
+Privacy Policy for FireBrowser Alpha
 
-When you use FireBrowser, we only collect important data about your use of the browser, like telemetry data, in order to improve your experience and help us with fixing issues. However, we only collect this data after you have given us your consent to do so.
+This Privacy Policy outlines how personal information is collected, used, and disclosed by the FireBrowser Alpha app ("we" or "us"). By using the app, you consent to the practices described in this policy.
 
-We believe that it is important for you to have control over your personal information, and that is why we give you the option to delete your data at any time. Simply contact us and we will be happy to assist you in removing your information.
+Information Collection and Use
 
-Please be aware that we are not responsible for the data that is collected by third-party sites. These may have their own privacy policies and we encourage you to review them before providing any personal information.
+We do not collect any personal information such as names, email addresses, or phone numbers from users of the FireBrowser Alpha app.
 
-Thank you for using FireBrowser, enjoy your flight through the redefined web.
+Usage Data
+
+We may collect certain information automatically, including usage patterns and technical information about your device and interaction with the app. This information is used solely to improve the functionality and performance of the app.
+
+Cookies and Tracking Technologies
+
+The FireBrowser Alpha app does not use cookies or any tracking technologies to collect information about your browsing habits or online activities.
+
+Third-Party Services
+
+The app does not integrate with any third-party services or APIs that would involve the sharing of user data.
+
+Data Security
+
+We take data security seriously and implement reasonable security measures to protect against unauthorized access, alteration, disclosure, or destruction of data.
+
+Children's Privacy
+
+The FireBrowser Alpha app includes a built-in security system designed to protect children while using the app. It is not intended for children under the age of 13. We do not knowingly collect personal information from children under 13. If you are a parent or guardian and believe that your child has provided us with personal information, please contact us, and we will delete the information from our systems.
+
+Changes to this Privacy Policy
+
+We reserve the right to update this Privacy Policy at any time. Any changes will be posted within the app, and your continued use of the app after such changes will constitute your acceptance of the revised policy.
+
+Contact Us
+
+If you have any questions or concerns about this Privacy Policy or our data practices, please contact us at firebrowserdevs@gmail.com.
