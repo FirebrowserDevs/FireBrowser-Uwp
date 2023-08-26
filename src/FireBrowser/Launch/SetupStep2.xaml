@@ -14,7 +14,7 @@
                 <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="22" FontWeight="Bold">
             Account Stuff
                 </TextBlock>
-                <labs:SettingsCard  Width="600" Margin="0,50,0,0">
+                <labs:SettingsCard  Width="600" Margin="0,25,0,0">
                     <labs:SettingsCard.Header>
                         FireBrowser Light Mode ( This Is Optional )
                     </labs:SettingsCard.Header>

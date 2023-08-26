@@ -17,7 +17,7 @@
 
     <Grid Height="475" Width="400">
         <Border CornerRadius="1" BorderBrush="Red" BorderThickness="1">
-            <muxc:WebView2 CacheMode="BitmapCache" x:Name="WebApp" Source="https://login.live.com/login.srf"/>
+            <muxc:WebView2 CacheMode="BitmapCache" x:Name="WebApp" Source="https://login.live.com/"/>
         </Border>
     </Grid>
 </ContentDialog>

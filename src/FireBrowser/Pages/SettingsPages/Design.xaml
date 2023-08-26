@@ -17,7 +17,7 @@
             <labs:SettingsCard.HeaderIcon>
                 <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE790;" />
             </labs:SettingsCard.HeaderIcon>
-            <TextBox x:Name="ColorTB" Text="#282828" TextChanged="ColorTB_TextChanged"/>
+            <TextBox x:Name="ColorTB" Text="#000000" TextChanged="ColorTB_TextChanged"/>
         </labs:SettingsCard>
         <labs:SettingsCard Header="Color TabView Background" Description="Change The Color Of The TabViewBackground" Margin="0,1,0,0">
             <labs:SettingsCard.HeaderIcon>

@@ -20,7 +20,7 @@ namespace FireBrowser.Launch
             await ms.ShowAsync();
         }
 
-        private async void Install_Click(object sender, RoutedEventArgs e)
+        private void Install_Click(object sender, RoutedEventArgs e)
         {
             if (tbv.Text.Equals("#000000"))
             {
