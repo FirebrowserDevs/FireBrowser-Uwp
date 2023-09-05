@@ -19,8 +19,8 @@
 - Split browsing
 - Freeform
 
-# Upcoming Stuff Eta 12 - Aug - 2023
-- EAS 512 random key genarated encryption for storing credit data en autofill
+# Upcoming Stuff Eta 31 - Dec - 2023
+- EAS 256 random key genarated encryption for storing credit data en autofill
 
 # NOTE:
 if your building the project on windows 10 make sure to use the 2004 sdk as that works best for 22h2 and any older build that supports visual studio 2022.
