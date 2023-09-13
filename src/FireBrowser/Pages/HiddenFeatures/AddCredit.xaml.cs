@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -20,26 +21,45 @@ namespace FireBrowser.Pages.HiddenFeatures
 {
     public sealed partial class AddCredit : ContentDialog
     {
+       
 
         public AddCredit()
         {
             this.InitializeComponent();
         }
 
+       
+
         private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            BankCard bankCard = new BankCard
-            {
-                BankName = Banks.Text,
-                CreditNumber = CardNum.Text,
-                FullName = HolderNm.Text,
-                ExpiryDate = ExpData.Text,
-                CVV = CCvDat.Text,
-                Type = Type.Text
-            };
+            string storedKey = FireBrowserInterop.SettingsHelper.GetSetting("keyofyours$fire$key");
 
-            DataHelper dbHelper = new DataHelper();
-            await dbHelper.SaveBankCardAsync(bankCard);
+            if (string.IsNullOrEmpty(storedKey))
+            {
+                // If no key exists, generate a new one
+                storedKey = EnqHelper.GenerateAESKey();
+                // Store the new key
+                FireBrowserInterop.SettingsHelper.SetSetting("keyofyours$fire$key", storedKey);
+            }
+
+            DataCryptManager dataCryptManager = new DataCryptManager(storedKey);
+
+
+            string selectedCardType = Type.SelectedItem.ToString();
+            string selectedCardBank = Banks.SelectedItem.ToString();
+
+            string creditNumber = CardNum.Text.ToString();
+            string fullName = HolderNm.Text.ToString();
+            string expiryDate = ExpData.Text.ToString();
+            string cvv = CCvDat.Text.ToString();
+                
+
+            dataCryptManager.SaveEncryptedValue("BankName", selectedCardBank);
+            dataCryptManager.SaveEncryptedValue("CreditNumber", creditNumber);
+            dataCryptManager.SaveEncryptedValue("FullName", fullName);
+            dataCryptManager.SaveEncryptedValue("ExpiryDate", expiryDate);
+            dataCryptManager.SaveEncryptedValue("CVV", cvv);
+            dataCryptManager.SaveEncryptedValue("CardType", selectedCardType);
         }
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

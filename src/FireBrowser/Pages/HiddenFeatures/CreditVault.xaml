@@ -29,12 +29,21 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
-                            <TextBlock Text="{Binding BankName}" />
-                            <TextBlock Text="{Binding Type}" />
-                            <TextBlock Text="{Binding EncryptedCVV}" />
-                            <TextBlock Text="{Binding EncryptedCreditNumber}" />
-                            <TextBlock Text="{Binding EncryptedFullName}" />
-                            <TextBlock Text="{Binding EncryptedExpiryDate}" />
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Text="{Binding BankName}" />
+                            <TextBlock Grid.Row="1" Text="{Binding Type}" />
+                            <TextBlock Grid.Row="2" Text="{Binding CVV}"  />
+                            <TextBlock Grid.Row="3" Text="{Binding CreditNumber}"  />
+                            <TextBlock Grid.Row="4" Text="{Binding FullName}"  />
+                            <TextBlock Grid.Row="5" Text="{Binding ExpiryDate}" />
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

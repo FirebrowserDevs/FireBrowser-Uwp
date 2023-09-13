@@ -3,6 +3,7 @@ using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection.PortableExecutable;
 using System.Text;
@@ -22,7 +23,7 @@ namespace FireBrowser.Pages.HiddenFeatures
         public CreditVault()
         {
             this.InitializeComponent();
-            //loaddata();
+            loaddata();
         }
 
         private Passer passer;
@@ -51,59 +52,39 @@ namespace FireBrowser.Pages.HiddenFeatures
             await cn.ShowAsync();
         }
 
-        byte[] encryptionKey = EnqHelper.GenerateEncryptionKey();
-        public void loaddata()
+
+       public void loaddata()
         {
-            string dbPath = $"{ApplicationData.Current.LocalFolder.Path}/datacrd.crypt";
+            string storedKey = FireBrowserInterop.SettingsHelper.GetSetting("keyofyours$fire$key");
 
-            if (File.Exists(dbPath))
+            if (string.IsNullOrEmpty(storedKey))
             {
-                using (SqliteConnection connection = new SqliteConnection($"Data Source={dbPath}"))
-                {
-                    connection.Open();
+                // If no key exists, generate a new one
+                storedKey = EnqHelper.GenerateAESKey();
+                // Store the new key
+                FireBrowserInterop.SettingsHelper.SetSetting("keyofyours$fire$key", storedKey);
+            }
 
-                    string selectQuery = "SELECT * FROM BankCards";
-                    using (SqliteCommand selectCommand = new SqliteCommand(selectQuery, connection))
-                    {
-                        using (SqliteDataReader reader = selectCommand.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                // Decrypt and assign encrypted properties
-                                byte[] encryptedBankName = (byte[])reader["BankName"];
-                                byte[] encryptedCreditNumber = (byte[])reader["EncryptedCreditNumber"];
-                                byte[] encryptedFullName = (byte[])reader["EncryptedFullName"];
-                                byte[] encryptedExpiryDate = (byte[])reader["EncryptedExpiryDate"];
-                                byte[] encryptedCVV = (byte[])reader["EncryptedCVV"];
-                                byte[] encryptedType = (byte[])reader["EncryptedType"];
+            DataCryptManager dataCryptManager = new DataCryptManager(storedKey);
 
-                                // Decrypt the data
-                                string bankName = Encoding.UTF8.GetString(EnqHelper.Decrypt(encryptedBankName, encryptionKey));
-                                string creditNumber = Encoding.UTF8.GetString(EnqHelper.Decrypt(encryptedCreditNumber, encryptionKey));
-                                string fullName = Encoding.UTF8.GetString(EnqHelper.Decrypt(encryptedFullName, encryptionKey));
-                                string expiryDate = Encoding.UTF8.GetString(EnqHelper.Decrypt(encryptedExpiryDate, encryptionKey));
-                                string cvv = Encoding.UTF8.GetString(EnqHelper.Decrypt(encryptedCVV, encryptionKey));
-                                string type = Encoding.UTF8.GetString(EnqHelper.Decrypt(encryptedType, encryptionKey));
+            // Define a collection to store decrypted card data
+            List<BankCard> DecryptedCardList = new List<BankCard>();
 
-                                // Create a new BankCard instance and add it to the collection
-                                BankCard newCard = new BankCard
-                                {
-                                    BankName = bankName,
-                                    CreditNumber = creditNumber,
-                                    FullName = fullName,
-                                    ExpiryDate = expiryDate,
-                                    CVV = cvv,
-                                    Type = type
-                                };
 
-                                DecryptedCardList.Add(newCard);
-                            }
-                        }
-                    }
+            // Fetch decrypted card data and add it to the collection
+            string decryptedBankName = dataCryptManager.GetDecryptedValue("BankName");
+            string decryptedCreditNumber = dataCryptManager.GetDecryptedValue("CreditNumber");
+            string decryptedFullName = dataCryptManager.GetDecryptedValue("FullName");
+            string decryptedExpiryDate = dataCryptManager.GetDecryptedValue("ExpiryDate");
+            string decryptedCVV = dataCryptManager.GetDecryptedValue("CVV");
+            string decryptedCardType = dataCryptManager.GetDecryptedValue("CardType");
 
-                    connection.Close();
-                }
-            }             
+            Debug.WriteLine(decryptedBankName);
+            Debug.WriteLine(decryptedCreditNumber);
+            Debug.WriteLine(decryptedFullName);
+            Debug.WriteLine(decryptedExpiryDate);
+            Debug.WriteLine(decryptedCVV);
+            Debug.WriteLine(decryptedCardType);
         }
     }
 }

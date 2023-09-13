@@ -441,11 +441,11 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Labs.WinUI.SettingsControls">
-      <Version>0.0.13</Version>
-    </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm">
       <Version>8.2.1</Version>
+    </PackageReference>
+    <PackageReference Include="CommunityToolkit.Uwp.Controls.SettingsControls">
+      <Version>8.0.230828-rc</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
@@ -466,7 +466,7 @@
       <Version>2.8.5</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Web.WebView2">
-      <Version>1.0.1988-prerelease</Version>
+      <Version>1.0.2065-prerelease</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>

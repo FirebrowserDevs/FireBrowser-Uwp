@@ -4,6 +4,7 @@ using FireBrowser.Pages;
 using FireBrowserCore.Models;
 using FireBrowserCore.Overlay;
 using FireBrowserDataBase;
+using FireBrowserDataBase.BankC;
 using FireBrowserDialogs.DialogTypes.UpdateChangelog;
 using FireBrowserFavorites;
 using FireBrowserHelpers.AdBlocker;
@@ -75,8 +76,9 @@ namespace FireBrowser
             this.InitializeComponent();
             ButtonVisible();
             UpdateYesNo();
-            ColorsTools();        
+            ColorsTools();
         }
+
 
         #region MainWindowAndButtons
         void SetupWindow(AppWindow window)

@@ -19,6 +19,7 @@ using Windows.Media.SpeechSynthesis;
 using Microsoft.Toolkit.Uwp.Connectivity;
 using System.Threading.Tasks;
 using Microsoft.Toolkit.Uwp.Notifications;
+using FireBrowser.Pages.SettingsPages;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -140,6 +141,7 @@ namespace FireBrowser.Pages
             LoadSettings();
             WebView2 s = WebViewElement;
 
+
             if (param?.Param != null)
             {
                 WebViewElement.CoreWebView2.Navigate(param.Param.ToString());
@@ -176,6 +178,7 @@ namespace FireBrowser.Pages
                     }
                 }
             }
+           
             s.CoreWebView2.Settings.UserAgent = userAgent;        
             s.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = true;
             s.CoreWebView2.Settings.AreDefaultContextMenusEnabled = true;

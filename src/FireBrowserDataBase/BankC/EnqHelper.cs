@@ -6,60 +6,71 @@ namespace FireBrowserDataBase.BankC
 {
     public class EnqHelper
     {
-
-        private static Aes CreateAes(byte[] key)
+        public static string GenerateAESKey()
         {
-            Aes aes = Aes.Create();
-            aes.Key = key;
-            aes.Mode = CipherMode.CBC;
-            aes.Padding = PaddingMode.PKCS7;
-            aes.BlockSize = 128;
-            aes.IV = new byte[16]; // Initialize with appropriate IV if using CBC mode
-            return aes;
-        }
-
-        public static byte[] GenerateEncryptionKey()
-        {
-            using Aes aesAlg = Aes.Create();
-            aesAlg.KeySize = 256; // Use a valid key size (128, 192, or 256)
-            aesAlg.GenerateKey();
-            return aesAlg.Key;
-        }
-
-        public static byte[] Encrypt(byte[] plaintext, byte[] key)
-        {
-            using Aes aes = CreateAes(key);
-            using MemoryStream ms = new MemoryStream();
-            using CryptoStream cs = new CryptoStream(ms, aes.CreateEncryptor(), CryptoStreamMode.Write);
-            cs.Write(plaintext, 0, plaintext.Length);
-            return ms.ToArray();
-        }
-
-        public static byte[] Decrypt(byte[] ciphertext, byte[] key)
-        {
-            using Aes aes = CreateAes(key);
-            using MemoryStream ms = new MemoryStream(ciphertext);
-            using CryptoStream cs = new CryptoStream(ms, aes.CreateDecryptor(), CryptoStreamMode.Read);
-            using MemoryStream outputMs = new MemoryStream();
-
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-
-            while ((bytesRead = cs.Read(buffer, 0, buffer.Length)) > 0)
+            using (Aes aesAlg = Aes.Create())
             {
-                outputMs.Write(buffer, 0, bytesRead);
+                aesAlg.KeySize = 256; // Use AES-256
+                aesAlg.GenerateKey();
+                return Convert.ToBase64String(aesAlg.Key);
             }
+        }
 
-            byte[] decryptedData = outputMs.ToArray();
+        public static (string, string) EncryptAES(string plainText, string key)
+        {
+            using (Aes aesAlg = Aes.Create())
+            {
+                aesAlg.Key = Convert.FromBase64String(key);
+                aesAlg.Mode = CipherMode.CBC;
+                aesAlg.Padding = PaddingMode.PKCS7;
 
-            // Remove PKCS7 padding manually
-            int paddingLength = decryptedData[decryptedData.Length - 1];
-            int originalPlaintextLength = decryptedData.Length - paddingLength;
+                aesAlg.GenerateIV();
+                byte[] iv = aesAlg.IV;
 
-            byte[] plaintext = new byte[originalPlaintextLength];
-            Buffer.BlockCopy(decryptedData, 0, plaintext, 0, originalPlaintextLength);
+                ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, iv);
 
-            return plaintext;
+                byte[] encryptedBytes;
+                using (var msEncrypt = new MemoryStream())
+                {
+                    using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                    {
+                        using (var swEncrypt = new StreamWriter(csEncrypt))
+                        {
+                            swEncrypt.Write(plainText);
+                        }
+                    }
+                    encryptedBytes = msEncrypt.ToArray();
+                }
+
+                return (Convert.ToBase64String(encryptedBytes), Convert.ToBase64String(iv));
+            }
+        }
+
+        public static string DecryptAES(string cipherText, string key, string ivBase64)
+        {
+            using (Aes aesAlg = Aes.Create())
+            {
+                aesAlg.Key = Convert.FromBase64String(key);
+                aesAlg.Mode = CipherMode.CBC;
+                aesAlg.Padding = PaddingMode.PKCS7;
+
+                byte[] iv = Convert.FromBase64String(ivBase64);
+
+                ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, iv);
+
+                byte[] cipherBytes = Convert.FromBase64String(cipherText);
+
+                using (var msDecrypt = new MemoryStream(cipherBytes))
+                {
+                    using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                    {
+                        using (var srDecrypt = new StreamReader(csDecrypt))
+                        {
+                            return srDecrypt.ReadToEnd();
+                        }
+                    }
+                }
+            }
         }
     }
 }

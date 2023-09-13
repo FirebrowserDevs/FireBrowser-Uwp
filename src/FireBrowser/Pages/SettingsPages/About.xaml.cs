@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Labs.WinUI;
+﻿using CommunityToolkit.WinUI.Controls;
 using FireBrowser.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -37,7 +37,7 @@ namespace FireBrowser.Pages.SettingsPages
                     url = "https://github.com/FirebrowserDevs/FireBrowser-Uwp";
                     break;
                 case "License":
-                    url = "https://github.com/FirebrowserDevs/FireBrowser-Uwp/blob/main/LICENSE";
+                    url = "https://github.com/FirebrowserDevs/FireBrowser-Uwp/TEXT/main/LICENSE";
                     break;
             }
             MainPage mp = new();

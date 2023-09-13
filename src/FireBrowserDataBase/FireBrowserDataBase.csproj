@@ -122,7 +122,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BankC\BankCard.cs" />
-    <Compile Include="BankC\DataHelper.cs" />
+    <Compile Include="BankC\DataCryptManager.cs" />
     <Compile Include="BankC\EnqHelper.cs" />
     <Compile Include="DbAddHis.cs" />
     <Compile Include="DbClear.cs" />
@@ -142,6 +142,12 @@
     <PackageReference Include="SQLitePCLRaw.bundle_green">
       <Version>2.1.5</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FireBrowserInterop\FireBrowserInterop.csproj">
+      <Project>{c0b577c9-a42d-49db-b53b-4b9063e16328}</Project>
+      <Name>FireBrowserInterop</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Loaded="Page_Loaded"
-    xmlns:labs="using:CommunityToolkit.Labs.WinUI">
+    xmlns:labs="using:CommunityToolkit.WinUI.Controls">
     <StackPanel>
         <labs:SettingsCard Header="WebView2 StatusBar" Description="turn on or off the default statusbar" Margin="0,2,0,0">
             <labs:SettingsCard.HeaderIcon>
