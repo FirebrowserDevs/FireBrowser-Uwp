@@ -128,6 +128,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Compile.cpp" />
+    <ClCompile Include="VideoCodec.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="VideoCodec.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
