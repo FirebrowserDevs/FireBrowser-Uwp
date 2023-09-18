@@ -33,7 +33,5 @@ if your building the project on windows 10 make sure to use the 2004 sdk as that
    <img src="src/FireBrowser/Assets/settings.png" />
 </div>
 
-TBD
-
 # License
 GPL v3.0
