@@ -28,9 +28,10 @@ if your building the project on windows 10 make sure to use the 2004 sdk as that
 # Screenshots
 
 <div style="display: flex; align-items: center;">
-   <img src="src/FireBrowser/Assets/HomePage.png" />
-   <img src="src/FireBrowser/Assets/Webpage.png" />
-   <img src="src/FireBrowser/Assets/settings.png" />
+   <img src="images/Image1New.png" />
+   <img src="images/image2.png" />
+   <img src="images/image3.png" />
+   <img src="images/image4.png" />
 </div>
 
 # License
