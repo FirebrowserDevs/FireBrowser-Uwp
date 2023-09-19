@@ -18,7 +18,6 @@ namespace FireBrowser.Launch
     /// </summary>
     public sealed partial class Setup : Page
     {
-        MediaPlayer mediaPlayer;
         public Setup()
         {
             this.InitializeComponent();
@@ -35,8 +34,11 @@ namespace FireBrowser.Launch
             formattableTitleBar.ButtonPressedBackgroundColor = Colors.Transparent;
 
             Window.Current.SetTitleBar(TitleBar);
+
             DataContext = this;
         }
+
+     
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
         {
