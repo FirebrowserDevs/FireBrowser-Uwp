@@ -95,7 +95,6 @@
 
                         </VisualStateManager.VisualStateGroups>
                     </Grid>
-
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

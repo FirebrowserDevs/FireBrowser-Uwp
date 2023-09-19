@@ -19,9 +19,6 @@ using Windows.Media.SpeechSynthesis;
 using Microsoft.Toolkit.Uwp.Connectivity;
 using System.Threading.Tasks;
 using Microsoft.Toolkit.Uwp.Notifications;
-using FireBrowser.Pages.SettingsPages;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace FireBrowser.Pages
 {
@@ -32,7 +29,6 @@ namespace FireBrowser.Pages
         {
             this.InitializeComponent();
         }
-
         public static bool IsIncognitoModeEnabled { get; set; } = false;
         private void ToggleIncognitoMode(object sender, RoutedEventArgs e)
         {
@@ -51,7 +47,6 @@ namespace FireBrowser.Pages
             WebViewElement.CoreWebView2.Settings.IsGeneralAutofillEnabled = !bool.Parse(GetSetting("DisableGenAutoFill"));
         }
 
-
         string useragent = FireBrowserInterop.SettingsHelper.GetSetting("Useragent");
 
         public bool run = false;
@@ -61,17 +56,14 @@ namespace FireBrowser.Pages
             string protocol = url.StartsWith("https://", StringComparison.OrdinalIgnoreCase) ? "https://" : "http://";
             string baseUrl = protocol + url.Substring(protocol.Length);
 
-            if (IsIncognitoModeEnabled)
-            {
-
-            }
-            else
+            if (!IsIncognitoModeEnabled)
             {
                 string address = WebViewElement.CoreWebView2.Source.ToString();
                 string title = WebViewElement.CoreWebView2.DocumentTitle.ToString();
                 var dbAddHis = new DbAddHis();
                 _ = dbAddHis.AddHistData($"{address}", $"{title}");
             }
+            else { }
 
             if (WebViewElement.CoreWebView2.Source.Contains("https"))
             {
@@ -140,7 +132,6 @@ namespace FireBrowser.Pages
 
             LoadSettings();
             WebView2 s = WebViewElement;
-
 
             if (param?.Param != null)
             {
@@ -291,16 +282,12 @@ namespace FireBrowser.Pages
             };
         }
 
-
-     
-
         string SelectionText;
         public void select()
         {
             FireBrowser.Core.UseContent.MainPageContent.SelectNewTab();
         }
 
-     
         private void CoreWebView2_ContextMenuRequested(CoreWebView2 sender, CoreWebView2ContextMenuRequestedEventArgs args)
         {
             var flyout1 = (Microsoft.UI.Xaml.Controls.CommandBarFlyout)Resources["Ctx"];
@@ -421,7 +408,6 @@ namespace FireBrowser.Pages
                         {
                             UseContent.MainPageContent.Tabs.TabItems.Add(UseContent.MainPageContent.CreateNewTab(typeof(WebContent), new Uri(SelectionText)));
                         }
-
                         break;
                     case "OpenInWindow":
                         OpenNewWindow(new Uri(SelectionText));

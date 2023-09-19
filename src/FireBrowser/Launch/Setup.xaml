@@ -75,7 +75,6 @@
                         Content="Setup your browser"
                         Style="{ThemeResource AccentButtonStyle}" />
                 </StackPanel>
-
             </Grid>
         </Grid>
     </Grid>

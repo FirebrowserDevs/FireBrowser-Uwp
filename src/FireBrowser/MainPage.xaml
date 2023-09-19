@@ -111,7 +111,7 @@
                 </StackPanel>
             </StackPanel>
         </Flyout>
-        
+
         <DataTemplate x:Key="DefaultDataTemplate">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -187,7 +187,7 @@
                     Height="160" 
                     Margin="0,5,0,0"/>
                 <Grid>
-                  
+
                     <Button
                         HorizontalAlignment="Left"
                         Content="{firebrowser:FluentIcon Glyph=&#xE946;}"

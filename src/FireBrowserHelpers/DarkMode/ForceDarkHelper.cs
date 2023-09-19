@@ -2,15 +2,13 @@
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace FireBrowserHelpers.DarkMode
+namespace FireBrowserHelpers.DarkMode;
+public class ForceDarkHelper
 {
-    public class ForceDarkHelper
+    public static async Task<string> GetForceDark()
     {
-        public static async Task<string> GetForceDark()
-        {
-            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///FireBrowserHelpers/DarkMode/Jscript/forcedark.js"));
-            string jscript = await FileIO.ReadTextAsync(file);
-            return jscript;
-        }
+        StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///FireBrowserHelpers/DarkMode/Jscript/forcedark.js"));
+        string jscript = await FileIO.ReadTextAsync(file);
+        return jscript;
     }
 }

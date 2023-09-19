@@ -30,7 +30,7 @@
     </PackageCertificateThumbprint>
     <PackageCertificateKeyFile>FireBrowser_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-    <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
+    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -285,6 +285,7 @@
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />
     <Content Include="Assets\toast128.png" />
+    <Content Include="Assets\webview.png" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
@@ -440,7 +441,7 @@
       <Version>8.2.1</Version>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Uwp.Controls.SettingsControls">
-      <Version>8.0.230828-rc</Version>
+      <Version>8.0.230907</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>

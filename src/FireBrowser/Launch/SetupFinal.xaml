@@ -4,71 +4,69 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labs="using:CommunityToolkit.WinUI.Controls"
-    xmlns:local="using:FireBrowser.Launch"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
     <Grid>
-        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <TextBlock
-                Margin="0,10,0,0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                FontSize="22"
-                FontWeight="Bold">
-                Setup WebView Settings
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid
+     x:Name="TitleBar"
+     Grid.Row="0"
+     VerticalAlignment="Stretch"
+     Canvas.ZIndex="1"
+     ColumnSpacing="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Image Margin="5,5,0,5" Height="32" Width="32" Source="ms-appx:///Assets/Icons/Webset.svg" />
+            <TextBlock Grid.Column="1" VerticalAlignment="Center">
+         <Run Text="WebView" />
+         <Run  CharacterSpacing="2"  FontWeight="Light" Text="Settings"/>
             </TextBlock>
-            <labs:SettingsCard
-                Width="600"
-                Margin="0,25,0,0"
-                Description="turn on or off the default statusbar"
-                Header="WebView2 StatusBar">
-                <labs:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xF168;" />
-                </labs:SettingsCard.HeaderIcon>
-                <ToggleSwitch x:Name="StatusTog" Toggled="StatusTog_Toggled" />
-            </labs:SettingsCard>
-            <labs:SettingsCard
-                Width="600"
-                Margin="0,2,0,0"
-                Description="turn on or off the default BrowserAcceleratorKeys"
-                Header="WebView2 Browser Accelerator Keys">
-                <labs:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE9A9;" />
-                </labs:SettingsCard.HeaderIcon>
-                <ToggleSwitch x:Name="BrowserKeys" Toggled="BrowserKeys_Toggled" />
-            </labs:SettingsCard>
-            <labs:SettingsCard
-                Width="600"
-                Margin="0,2,0,0"
-                Description="turn on or off the default Scripts Dialogs"
-                Header="WebView2 Script Dialogs">
-                <labs:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xED0E;" />
-                </labs:SettingsCard.HeaderIcon>
-                <ToggleSwitch x:Name="BrowserScripts" Toggled="BrowserScripts_Toggled" />
-            </labs:SettingsCard>
-            <labs:SettingsCard
-                Width="600"
-                Margin="0,2,0,0"
-                Description="WebView2 Useragent Settings"
-                Header="WebView2 Useragent">
-                <labs:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEE57;" />
-                </labs:SettingsCard.HeaderIcon>
-                <TextBox
-                    x:Name="Agent"
-                    Text="FireBrowser Webview"
-                    TextChanged="Agent_TextChanged" />
-            </labs:SettingsCard>
-            <Button
-                x:Name="Install"
-                Margin="0,8,0,0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Click="Install_Click">
-                Finish Setup
-            </Button>
-        </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="20" Height="500" Width="950">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="500" />
+            </Grid.ColumnDefinitions>
+
+            <Border  Grid.Column="0"  CornerRadius="10" Width="450" Height="350">
+                <Border.Background>
+                    <ImageBrush ImageSource="ms-appx:///Assets/webview.png" />
+                </Border.Background>
+            </Border>
+
+            <StackPanel Width="480" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                <labs:SettingsCard Description="turn on or off the default statusbar" Header="WebView2 StatusBar">
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xF168;" />
+                    </labs:SettingsCard.HeaderIcon>
+                    <ToggleSwitch x:Name="StatusTog" Toggled="StatusTog_Toggled" />
+                </labs:SettingsCard>
+                <labs:SettingsCard Margin="0,1,0,0" Header="WebView2 Browser Accelerator Keys"   Description="turn on or off the default BrowserAcceleratorKeys">
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE9A9;" />
+                    </labs:SettingsCard.HeaderIcon>
+                    <ToggleSwitch x:Name="BrowserKeys" Toggled="BrowserKeys_Toggled" />
+                </labs:SettingsCard>
+                <labs:SettingsCard Margin="0,1,0,0"  Description="turn on or off the default Scripts Dialogs" Header="WebView2 Script Dialogs">
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xED0E;" />
+                    </labs:SettingsCard.HeaderIcon>
+                    <ToggleSwitch x:Name="BrowserScripts" Toggled="BrowserScripts_Toggled" />
+                </labs:SettingsCard>
+                <labs:SettingsCard Margin="0,2,0,0" Description="WebView2 Useragent Settings" Header="WebView2 Useragent">
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEE57;" />
+                    </labs:SettingsCard.HeaderIcon>
+                    <TextBox  x:Name="Agent" Text="FireBrowser Webview"  TextChanged="Agent_TextChanged" />
+                </labs:SettingsCard>
+                <Button x:Name="Finish" Click="Finish_Click" Margin="190,10,0,10"  Content="Finish Setup"  Style="{ThemeResource AccentButtonStyle}" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>

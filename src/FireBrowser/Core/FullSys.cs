@@ -2,54 +2,53 @@
 using System.ComponentModel;
 using Windows.UI.ViewManagement;
 
-namespace FireBrowser.Core
+namespace FireBrowser.Core;
+
+public class FullSys
 {
-    public class FullSys
+    #region fullscreensys
+    private bool fullScreen = false;
+
+    [DefaultValue(false)]
+    public bool FullScreen
     {
-        #region fullscreensys
-        private bool fullScreen = false;
-
-        [DefaultValue(false)]
-        public bool FullScreen
+        get { return fullScreen; }
+        set
         {
-            get { return fullScreen; }
-            set
+            ApplicationView view = ApplicationView.GetForCurrentView();
+            if (value)
             {
-                ApplicationView view = ApplicationView.GetForCurrentView();
-                if (value)
+                try
                 {
-                    try
+                    if (!view.IsFullScreenMode)
                     {
-                        if (!view.IsFullScreenMode)
-                        {
-                            view.TryEnterFullScreenMode();
-                            Core.UseContent.MainPageContent.HideToolbar(true);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        FireExceptions.ExceptionsHelper.LogException(ex);
+                        view.TryEnterFullScreenMode();
+                        Core.UseContent.MainPageContent.HideToolbar(true);
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    try
-                    {
-                        if (view.IsFullScreenMode)
-                        {
-                            view.ExitFullScreenMode();
-                            Core.UseContent.MainPageContent.HideToolbar(false);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        FireExceptions.ExceptionsHelper.LogException(ex);
-                    }
+                    FireExceptions.ExceptionsHelper.LogException(ex);
                 }
-                fullScreen = value;
             }
+            else
+            {
+                try
+                {
+                    if (view.IsFullScreenMode)
+                    {
+                        view.ExitFullScreenMode();
+                        Core.UseContent.MainPageContent.HideToolbar(false);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    FireExceptions.ExceptionsHelper.LogException(ex);
+                }
+            }
+            fullScreen = value;
         }
-
-        #endregion
     }
+
+    #endregion
 }

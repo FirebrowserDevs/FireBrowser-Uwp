@@ -9,15 +9,12 @@
     mc:Ignorable="d"
     xmlns:dllimg="using:FireBrowserAssets"
     Height="Auto"
-    NavigationCacheMode="Enabled"
-    >
+    NavigationCacheMode="Enabled">
     <Grid  x:Name="Grid" Background="{x:Bind local:NewTab.GetGridBackgroundAsync(ViewModel.BackgroundType), Mode=OneWay}">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <!-- VisualState to be triggered when the
-                             window width is >=640 effective pixels. -->
                         <AdaptiveTrigger MinWindowWidth="640" />
                     </VisualState.StateTriggers>
                 </VisualState>
@@ -36,7 +33,7 @@
                             Enable Auto Fill TextBox
                         </ToggleSwitch>
                         <ToggleSwitch x:Name="Mode" Toggled="Mode_Toggled">
-                           Enable Light Mode
+                            Enable Light Mode
                         </ToggleSwitch>
                     </StackPanel>
                 </Flyout>
@@ -95,7 +92,8 @@
             <AutoSuggestBox x:Name="NewTabSearchBox"
                             x:Uid="SearchBar"
                             Grid.Row="0"
-                            Height="40"                         
+                            Height="40" 
+                            MinWidth="150"
                             BorderThickness="1,1,1,1"
                             CornerRadius="5"
                             BorderBrush="{ThemeResource SystemAltHighColor}"

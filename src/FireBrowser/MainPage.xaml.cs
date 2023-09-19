@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using FireBrowser.Controls;
+using FireBrowser.Core;
 using FireBrowser.Pages;
 using FireBrowserCore.Models;
 using FireBrowserCore.Overlay;
@@ -660,11 +661,13 @@ namespace FireBrowser
                 frame.Navigate(typeof(Pages.NewTab), passer);
             }
 
+         
+
             ToolTip toolTip = new();
             Grid grid = new();
             Image previewImage = new();
             TextBlock textBlock = new();
-            //textBlock.Text = GetTitle();
+           // textBlock.Text = GetTitle();
             grid.Children.Add(previewImage);
             grid.Children.Add(textBlock);
             toolTip.Content = grid;

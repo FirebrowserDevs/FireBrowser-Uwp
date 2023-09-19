@@ -1,41 +1,35 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Windows.Storage;
+﻿namespace FireBrowserCore.Overlay;
 
-namespace FireBrowserCore.Overlay
+public class AppOverlay
 {
-    public class AppOverlay
+    #region appdata
+
+    public class AppSettings
     {
-        #region appdata
+        public bool IsFirstLaunch { get; set; }
 
-        public class AppSettings
-        {
-            public bool IsFirstLaunch { get; set; }
-
-            public bool IsConnected { get; set; }
-        }
-
-        public class AppLaunchPasser
-        {
-            public AppLaunchType LaunchType { get; set; }
-            public object LaunchData { get; set; }
-
-            public string UserName { get; set; }
-        }
-
-        public enum AppLaunchType
-        {
-            LaunchBasic,
-            LaunchIncognito,
-            LaunchStartup,
-            FirstLaunch,
-            FilePDF,
-            URIHttp,
-            URIFireBrowser,
-            Reset,
-        }
-
-        #endregion
+        public bool IsConnected { get; set; }
     }
+
+    public class AppLaunchPasser
+    {
+        public AppLaunchType LaunchType { get; set; }
+        public object LaunchData { get; set; }
+
+        public string UserName { get; set; }
+    }
+
+    public enum AppLaunchType
+    {
+        LaunchBasic,
+        LaunchIncognito,
+        LaunchStartup,
+        FirstLaunch,
+        FilePDF,
+        URIHttp,
+        URIFireBrowser,
+        Reset,
+    }
+
+    #endregion
 }

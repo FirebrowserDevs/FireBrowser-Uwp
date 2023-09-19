@@ -2,15 +2,13 @@
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace FireBrowserHelpers.AdBlocker
+namespace FireBrowserHelpers.AdBlocker;
+public class AdBlockHelper
 {
-    public class AdBlockHelper
+    public static async Task<string> GetAdblockReadAsync()
     {
-        public static async Task<string> GetAdblockReadAsync()
-        {
-            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///FireBrowserHelpers/AdBlocker/Jscript/firebrowser-removead.js"));
-            string jscript = await FileIO.ReadTextAsync(file);
-            return jscript;
-        }
+        StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///FireBrowserHelpers/AdBlocker/Jscript/firebrowser-removead.js"));
+        string jscript = await FileIO.ReadTextAsync(file);
+        return jscript;
     }
 }
