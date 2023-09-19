@@ -311,6 +311,8 @@ namespace FireBrowser
                 }
                 else
                 {
+
+                    // TODO: Change this back to MainPage
                     if (rootFrame.Content == null)
                     {
                         rootFrame.Navigate(typeof(MainPage), passer);

@@ -7,6 +7,7 @@ using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -34,17 +35,7 @@ namespace FireBrowser.Launch
             formattableTitleBar.ButtonPressedBackgroundColor = Colors.Transparent;
 
             Window.Current.SetTitleBar(TitleBar);
-            playmedia();
-        }
-
-        public void playmedia()
-        {
-            mediaPlayer = new MediaPlayer();
-            mediaPlayer.Source = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Launch/firebrowser.mp4"));
-            _mediaPlayerElement.SetMediaPlayer(mediaPlayer);
-
-            mediaPlayer.CommandManager.IsEnabled = false;
-            mediaPlayer.Play();
+            DataContext = this;
         }
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
@@ -55,12 +46,32 @@ namespace FireBrowser.Launch
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            FrameNext.Visibility = Visibility.Visible;
-            FrameNext.Navigate(typeof(SetupSettings));
-            _mediaPlayerElement.Visibility = Visibility.Collapsed;
-            txt2.Visibility = Visibility.Collapsed;
-            txt.Visibility = Visibility.Collapsed;
-            btn.Visibility = Visibility.Collapsed;
+            Frame.Visibility = Visibility.Visible;
+            Frame.Navigate(typeof(SetupSettings), null, new DrillInNavigationTransitionInfo());
         }
+
+        private string _introMessage = @"
+• Seamless browsing experience.
+
+• One-click access to favorite websites and a built-in favorites organizer.
+
+• Immersive full-screen mode.
+
+• Prioritizes user convenience.
+
+• Caters to users seeking a user-friendly web browser with advanced features.
+";
     }
 }
+
+/* INCASE U NEED PREVIOUS TEXT
+ * 
+ * 
+ * FireBrowser is a top-notch web browser that has all the features you need for an effortless and enjoyable browsing experience. 
+With FireBrowser, you can easily save your favorite websites to access them with just one click.
+The built-in favorites feature allows you to organize your frequently visited sites and save time. Moreover, 
+FireBrowser keeps a record of your browsing history, so you can easily revisit any page you have visited in the past.
+One of the best things about FireBrowser is its full-screen mode. When you enable full-screen mode, FireBrowser will fill your entire screen,
+providing you with an uninterrupted browsing experience. Whether you want to watch a movie or just browse your favorite websites, 
+full-screen mode is perfect for both.
+ */

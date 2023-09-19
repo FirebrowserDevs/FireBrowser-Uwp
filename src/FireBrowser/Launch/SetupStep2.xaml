@@ -1,89 +1,118 @@
 ﻿<Page
     x:Class="FireBrowser.Launch.SetupStep2"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labs="using:CommunityToolkit.WinUI.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    mc:Ignorable="d"
-    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
+    mc:Ignorable="d">
     <Frame x:Name="ContentFrame">
         <Grid>
             <StackPanel VerticalAlignment="Center">
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="22" FontWeight="Bold">
-            Account Stuff
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="22"
+                    FontWeight="Bold">
+                    Account Stuff
                 </TextBlock>
-                <labs:SettingsCard  Width="600" Margin="0,25,0,0">
+                <labs:SettingsCard Width="600" Margin="0,25,0,0">
                     <labs:SettingsCard.Header>
                         FireBrowser Light Mode ( This Is Optional )
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.HeaderIcon>
-                        <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEC4A;"/>
+                        <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEC4A;" />
                     </labs:SettingsCard.HeaderIcon>
-                    <ToggleSwitch x:Name="LgMode" Toggled="LgMode_Toggled"/>
+                    <ToggleSwitch x:Name="LgMode" Toggled="LgMode_Toggled" />
                 </labs:SettingsCard>
-                <labs:SettingsExpander VerticalAlignment="Top" Margin="0,2,0,0" Width="600">
+                <labs:SettingsExpander
+                    Width="600"
+                    Margin="0,2,0,0"
+                    VerticalAlignment="Top">
                     <labs:SettingsExpander.Header>
                         Hex Colors
                     </labs:SettingsExpander.Header>
                     <labs:SettingsExpander.HeaderIcon>
-                        <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE70F;"/>
+                        <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE70F;" />
                     </labs:SettingsExpander.HeaderIcon>
                     <labs:SettingsExpander.Items>
                         <labs:SettingsCard>
                             <labs:SettingsCard.Header>
                                 Color Toolbar
                             </labs:SettingsCard.Header>
-                            <TextBox x:Name="tbc" Text="#000000" TextChanged="tbc_TextChanged"/>
+                            <TextBox
+                                x:Name="tbc"
+                                Text="#000000"
+                                TextChanged="tbc_TextChanged" />
                         </labs:SettingsCard>
                         <labs:SettingsCard>
                             <labs:SettingsCard.Header>
                                 Color TabView Background
                             </labs:SettingsCard.Header>
-                            <TextBox x:Name="tbv" Text="#000000" TextChanged="tbv_TextChanged"/>
+                            <TextBox
+                                x:Name="tbv"
+                                Text="#000000"
+                                TextChanged="tbv_TextChanged" />
                         </labs:SettingsCard>
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
-                <labs:SettingsCard  Width="600" Margin="0,5,0,0">
+                <labs:SettingsCard Width="600" Margin="0,5,0,0">
                     <labs:SettingsCard.Header>
                         Microsoft Account Connect ( This Is Optional )
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.HeaderIcon>
-                        <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE910;"/>
+                        <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xE910;" />
                     </labs:SettingsCard.HeaderIcon>
                     <Button x:Name="ConnectBtn" Click="ConnectBtn_Click">
                         Connect
                     </Button>
                 </labs:SettingsCard>
-                <labs:SettingsCard IsEnabled="False" VerticalAlignment="Top" Margin="0,5,0,0" Width="600">
+                <labs:SettingsCard
+                    Width="600"
+                    Margin="0,5,0,0"
+                    VerticalAlignment="Top"
+                    IsEnabled="False">
                     <labs:SettingsCard.Header>
                         Username Disabled Coming Soon
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.HeaderIcon>
-                        <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEE57;"/>
+                        <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEE57;" />
                     </labs:SettingsCard.HeaderIcon>
-                    <TextBox x:Name="User"/>
+                    <TextBox x:Name="User" />
                 </labs:SettingsCard>
-                <labs:SettingsCard  Width="600" Margin="0,5,0,0">
+                <labs:SettingsCard Width="600" Margin="0,5,0,0">
                     <labs:SettingsCard.Header>
                         FireBrowser Open In New Tab Auto ( Yes,No )
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.HeaderIcon>
-                        <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEC6C;"/>
+                        <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEC6C;" />
                     </labs:SettingsCard.HeaderIcon>
-                    <ToggleSwitch x:Name="TgTabUp" Toggled="TgTabUp_Toggled"/>
+                    <ToggleSwitch x:Name="TgTabUp" Toggled="TgTabUp_Toggled" />
                 </labs:SettingsCard>
-                <labs:SettingsCard  Header="FireBrowser - SpeakEngine" Description="Change language Of Speech Engine"  Margin="0,2,0,0" Width="600">
+                <labs:SettingsCard
+                    Width="600"
+                    Margin="0,2,0,0"
+                    Description="Change language Of Speech Engine"
+                    Header="FireBrowser - SpeakEngine">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource FluentIcons}" Glyph="&#xEFA9;" />
                     </labs:SettingsCard.HeaderIcon>
-                    <ComboBox x:Name="Langue" SelectionChanged="Langue_SelectionChanged" Loaded="Langue_Loaded">
+                    <ComboBox
+                        x:Name="Langue"
+                        Loaded="Langue_Loaded"
+                        SelectionChanged="Langue_SelectionChanged">
                         <x:String>nl-NL</x:String>
                         <x:String>en-US</x:String>
                     </ComboBox>
                 </labs:SettingsCard>
-                <Button Click="Install_Click" x:Name="Install" Margin="0,8,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Button
+                    x:Name="Install"
+                    Margin="0,8,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Click="Install_Click">
                     Next Setup
                 </Button>
             </StackPanel>

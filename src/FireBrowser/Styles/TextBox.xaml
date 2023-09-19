@@ -9,8 +9,8 @@
     </ResourceDictionary.MergedDictionaries>
     <Style x:Key="PortalBarStyle" TargetType="AutoSuggestBox">
         <Setter Property="VerticalAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Foreground" Value="{ThemeResource TextControlForeground}" />
         <Setter Property="Background" Value="{ThemeResource TextControlBackground}" />
@@ -21,20 +21,11 @@
         <Setter Property="TextBoxStyle" Value="{StaticResource AutoSuggestBoxTextBoxStyle}" />
         <Setter Property="UseSystemFocusVisuals" Value="{ThemeResource IsApplicationFocusVisualKindReveal}" />
         <Setter Property="CornerRadius" Value="{ThemeResource ControlCornerRadius}" />
-        <Setter Property="primitives:AutoSuggestBoxHelper.KeepInteriorCornersSquare" Value="true"/>
+        <Setter Property="primitives:AutoSuggestBoxHelper.KeepInteriorCornersSquare" Value="true" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="AutoSuggestBox">
                     <Grid x:Name="LayoutRoot">
-
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="Orientation">
-                                <VisualState x:Name="Landscape" />
-                                <VisualState x:Name="Portrait" />
-                            </VisualStateGroup>
-
-                        </VisualStateManager.VisualStateGroups>
-
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
@@ -43,50 +34,52 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <TextBox x:Name="TextBox"
-                            Style="{TemplateBinding TextBoxStyle}"
-                            PlaceholderText="{TemplateBinding PlaceholderText}"
-                            Header="{TemplateBinding Header}"
+                        <TextBox
+                            x:Name="TextBox"
                             Width="{TemplateBinding Width}"
+                            Margin="0"
+                            Padding="32,6,6,0"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                            contract7Present:CornerRadius="{TemplateBinding CornerRadius}"
                             contract7Present:Description="{TemplateBinding Description}"
-                            Foreground="{TemplateBinding Foreground}"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            FontSize="{TemplateBinding FontSize}"
-                            FontFamily="{TemplateBinding FontFamily}"
-                            FontWeight="{TemplateBinding FontWeight}"
-                            Padding="32,6,6,0"
-                            FontStretch="{TemplateBinding FontStretch}"
-                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            ScrollViewer.BringIntoViewOnFocusChange="False"
                             Canvas.ZIndex="0"
-                                 IsSpellCheckEnabled="False"
-                            Margin="0"
                             DesiredCandidateWindowAlignment="BottomEdge"
-                            UseSystemFocusVisuals="{TemplateBinding UseSystemFocusVisuals}"
-                            contract7Present:CornerRadius="{TemplateBinding CornerRadius}"/>
+                            FontFamily="{TemplateBinding FontFamily}"
+                            FontSize="{TemplateBinding FontSize}"
+                            FontStretch="{TemplateBinding FontStretch}"
+                            FontWeight="{TemplateBinding FontWeight}"
+                            Foreground="{TemplateBinding Foreground}"
+                            Header="{TemplateBinding Header}"
+                            IsSpellCheckEnabled="False"
+                            PlaceholderText="{TemplateBinding PlaceholderText}"
+                            ScrollViewer.BringIntoViewOnFocusChange="False"
+                            Style="{TemplateBinding TextBoxStyle}"
+                            UseSystemFocusVisuals="{TemplateBinding UseSystemFocusVisuals}" />
 
                         <Popup x:Name="SuggestionsPopup">
-                            <Border x:Name="SuggestionsContainer"
-                                    Padding="{ThemeResource AutoSuggestListMargin}"
-                                    BorderThickness="{ThemeResource AutoSuggestListBorderThemeThickness}"
-                                    BorderBrush="{ThemeResource AutoSuggestBoxSuggestionsListBorderBrush}"
-                                    Background="{ThemeResource AutoSuggestBoxSuggestionsListBackground}"
-                                    CornerRadius="{ThemeResource OverlayCornerRadius}">
+                            <Border
+                                x:Name="SuggestionsContainer"
+                                Padding="{ThemeResource AutoSuggestListMargin}"
+                                Background="{ThemeResource AutoSuggestBoxSuggestionsListBackground}"
+                                BorderBrush="{ThemeResource AutoSuggestBoxSuggestionsListBorderBrush}"
+                                BorderThickness="{ThemeResource AutoSuggestListBorderThemeThickness}"
+                                CornerRadius="{ThemeResource OverlayCornerRadius}">
                                 <Border.RenderTransform>
                                     <contract7NotPresent:TranslateTransform x:Name="UpwardTransform" />
                                 </Border.RenderTransform>
                                 <ListView
                                     x:Name="SuggestionsList"
+                                    MaxHeight="{ThemeResource AutoSuggestListMaxHeight}"
+                                    Margin="{ThemeResource AutoSuggestListPadding}"
                                     DisplayMemberPath="{TemplateBinding DisplayMemberPath}"
                                     IsItemClickEnabled="True"
-                                    ItemTemplate="{TemplateBinding ItemTemplate}"
-                                    ItemTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                                     ItemContainerStyle="{TemplateBinding ItemContainerStyle}"
-                                    MaxHeight="{ThemeResource AutoSuggestListMaxHeight}"
-                                    Margin="{ThemeResource AutoSuggestListPadding}">
+                                    ItemTemplate="{TemplateBinding ItemTemplate}"
+                                    ItemTemplateSelector="{TemplateBinding ItemTemplateSelector}">
                                     <ListView.ItemContainerTransitions>
                                         <contract7NotPresent:TransitionCollection />
                                     </ListView.ItemContainerTransitions>
@@ -94,6 +87,13 @@
                             </Border>
                         </Popup>
 
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="Orientation">
+                                <VisualState x:Name="Landscape" />
+                                <VisualState x:Name="Portrait" />
+                            </VisualStateGroup>
+
+                        </VisualStateManager.VisualStateGroups>
                     </Grid>
 
                 </ControlTemplate>

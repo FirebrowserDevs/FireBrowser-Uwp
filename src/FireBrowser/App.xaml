@@ -6,11 +6,11 @@
     <Application.Resources>
         <muxc:XamlControlsResources>
             <muxc:XamlControlsResources.MergedDictionaries>
-                <ResourceDictionary Source="Styles/Resources.xaml"/>
-                <ResourceDictionary Source="Styles/Buttons.xaml"/>
-                <ResourceDictionary Source="Styles/Card.xaml"/>
-                <ResourceDictionary Source="Styles/TabView.xaml"/>
-                <ResourceDictionary Source="Styles/TextBox.xaml"/>
+                <ResourceDictionary Source="Styles/Resources.xaml" />
+                <ResourceDictionary Source="Styles/Buttons.xaml" />
+                <ResourceDictionary Source="Styles/Card.xaml" />
+                <ResourceDictionary Source="Styles/TabView.xaml" />
+                <ResourceDictionary Source="Styles/TextBox.xaml" />
             </muxc:XamlControlsResources.MergedDictionaries>
         </muxc:XamlControlsResources>
     </Application.Resources>

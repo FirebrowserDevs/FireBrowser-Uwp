@@ -6,16 +6,19 @@
         <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
     </ResourceDictionary.MergedDictionaries>
 
-    <SolidColorBrush x:Key="QuietButtonBackground" Color="Transparent"/>
-    <SolidColorBrush x:Key="QuietButtonDisabledBackground" Color="Transparent"/>
-    <SolidColorBrush x:Key="QuietButtonDisabledBorderBrush" Color="Transparent"/>
+    <SolidColorBrush x:Key="QuietButtonBackground" Color="Transparent" />
+    <SolidColorBrush x:Key="QuietButtonDisabledBackground" Color="Transparent" />
+    <SolidColorBrush x:Key="QuietButtonDisabledBorderBrush" Color="Transparent" />
 
-    <Style x:Key="QuietButtonStyle" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+    <Style
+        x:Key="QuietButtonStyle"
+        BasedOn="{StaticResource DefaultButtonStyle}"
+        TargetType="Button">
         <Setter Property="Background" Value="{ThemeResource QuietButtonBackground}" />
         <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}" />
         <Setter Property="Padding" Value="5" />
-        <Setter Property="Width" Value="32"/>
-        <Setter Property="Height" Value="32"/>
+        <Setter Property="Width" Value="32" />
+        <Setter Property="Height" Value="32" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="FontFamily" Value="{StaticResource FluentIcons}" />
@@ -29,24 +32,24 @@
                 <ControlTemplate TargetType="Button">
                     <ContentPresenter
                         x:Name="ContentPresenter"
+                        Padding="{TemplateBinding Padding}"
+                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        local:AnimatedIcon.State="Normal"
+                        AutomationProperties.AccessibilityView="Raw"
                         Background="{TemplateBinding Background}"
                         BackgroundSizing="{TemplateBinding BackgroundSizing}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         Content="{TemplateBinding Content}"
                         ContentTemplate="{TemplateBinding ContentTemplate}"
                         ContentTransitions="{TemplateBinding ContentTransitions}"
-                        CornerRadius="{TemplateBinding CornerRadius}"
-                        Padding="{TemplateBinding Padding}"
-                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                        AutomationProperties.AccessibilityView="Raw"
-                        local:AnimatedIcon.State="Normal">
+                        CornerRadius="{TemplateBinding CornerRadius}">
                         <ContentPresenter.BackgroundTransition>
                             <BrushTransition Duration="0:0:0.083" />
                         </ContentPresenter.BackgroundTransition>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="Normal" />
 
                                 <VisualState x:Name="PointerOver">
                                     <Storyboard>
@@ -61,7 +64,7 @@
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                     <VisualState.Setters>
-                                        <Setter Target="ContentPresenter.(local:AnimatedIcon.State)" Value="PointerOver"/>
+                                        <Setter Target="ContentPresenter.(local:AnimatedIcon.State)" Value="PointerOver" />
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="Pressed">
@@ -77,7 +80,7 @@
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                     <VisualState.Setters>
-                                        <Setter Target="ContentPresenter.(local:AnimatedIcon.State)" Value="Pressed"/>
+                                        <Setter Target="ContentPresenter.(local:AnimatedIcon.State)" Value="Pressed" />
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="Disabled">
@@ -93,8 +96,8 @@
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                     <VisualState.Setters>
-                                        <!-- DisabledVisual Should be handled by the control, not the animated icon. -->
-                                        <Setter Target="ContentPresenter.(local:AnimatedIcon.State)" Value="Normal"/>
+                                        <!--  DisabledVisual Should be handled by the control, not the animated icon.  -->
+                                        <Setter Target="ContentPresenter.(local:AnimatedIcon.State)" Value="Normal" />
                                     </VisualState.Setters>
                                 </VisualState>
                             </VisualStateGroup>

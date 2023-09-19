@@ -54,7 +54,7 @@ namespace FireBrowser.Pages
 
             GridSelect.SelectedValue = ViewModel.BackgroundType.ToString();
 
-            NewColor.Text = cls;
+            //NewColor.Text = cls;
 
             // Visibility setup based on LightMode setting
             Edit.Visibility = isMode ? Visibility.Collapsed : Visibility.Visible;
