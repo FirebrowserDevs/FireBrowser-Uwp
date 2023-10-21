@@ -138,10 +138,7 @@ namespace FireBrowser.Pages
                 WebViewElement.CoreWebView2.Navigate(param.Param.ToString());
             }
 
-            if (useragent == "")
-            {
-                useragent = "1";
-            }
+            useragent = string.IsNullOrEmpty(useragent) ? "1" : useragent;
 
             var userAgent = s?.CoreWebView2.Settings.UserAgent;
             if (!string.IsNullOrEmpty(userAgent))
@@ -149,27 +146,18 @@ namespace FireBrowser.Pages
                 var edgIndex = userAgent.IndexOf("Edg/");
                 if (edgIndex >= 0)
                 {
-                    if (IsIncognitoModeEnabled == true)
+                    if (IsIncognitoModeEnabled)
                     {
                         userAgent = userAgent.Substring(25, edgIndex - 25);
-                        userAgent = userAgent.Replace($"{useragent}", $"{useragent}");
                     }
-                    else
+                    else if (!string.IsNullOrEmpty(userAgent))
                     {
-                        if (!string.IsNullOrEmpty(userAgent))
-                        {
-
-                            if (edgIndex >= 0)
-                            {
-                                userAgent = userAgent.Substring(0, edgIndex - 0);
-                                userAgent = userAgent.Replace($"{useragent}", $"{useragent}");
-                                s.CoreWebView2.Settings.UserAgent = userAgent;
-                            }
-                        }
+                        userAgent = userAgent.Substring(0, edgIndex);
+                        s.CoreWebView2.Settings.UserAgent = userAgent;
                     }
                 }
             }
-           
+
             s.CoreWebView2.Settings.UserAgent = userAgent;        
             s.CoreWebView2.Settings.IsBuiltInErrorPageEnabled = true;
             s.CoreWebView2.Settings.AreDefaultContextMenusEnabled = true;
@@ -292,8 +280,8 @@ namespace FireBrowser.Pages
         {
             var flyout1 = (Microsoft.UI.Xaml.Controls.CommandBarFlyout)Resources["Ctx"];
             OpenLinks.Visibility = Visibility.Collapsed;
-            FlyoutBase.SetAttachedFlyout(WebViewElement, flyout1);
             var flyout = FlyoutBase.GetAttachedFlyout(WebViewElement);
+
             var options = new FlyoutShowOptions()
             {
                 Position = args.Location,
@@ -302,21 +290,16 @@ namespace FireBrowser.Pages
 
             if (args.ContextMenuTarget.Kind == CoreWebView2ContextMenuTargetKind.SelectedText)
             {
-                flyout = (Microsoft.UI.Xaml.Controls.CommandBarFlyout)Resources["Ctx"];
                 SelectionText = args.ContextMenuTarget.SelectionText;
-                OpenLinks.Visibility = Visibility.Collapsed;
             }
-
             else if (args.ContextMenuTarget.HasLinkUri)
             {
-                flyout = (Microsoft.UI.Xaml.Controls.CommandBarFlyout)Resources["Ctx"];
-                SelectionText = args.ContextMenuTarget.LinkText;
                 SelectionText = args.ContextMenuTarget.LinkUri;
                 OpenLinks.Visibility = Visibility.Visible;
             }
 
-
-            flyout?.ShowAt(WebViewElement, options);
+            flyout = flyout ?? (Microsoft.UI.Xaml.Controls.CommandBarFlyout)Resources["Ctx"];
+            flyout.ShowAt(WebViewElement, options);
             args.Handled = true;
         }
 

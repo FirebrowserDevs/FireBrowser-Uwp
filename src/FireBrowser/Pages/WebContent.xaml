@@ -72,7 +72,6 @@
                         <FontIcon Glyph="&#xE7F8;" FontSize="50"/>
                         <muxc:ProgressBar x:Name="pcToNet" Width="100" Margin="10" Value="100" Foreground="{ThemeResource TextBoxForegroundHeaderThemeBrush}"/>
                         <FontIcon x:Name="netIcon" Glyph="&#xEC3F;" FontSize="50" Opacity="1" />
-                        <!--Foreground="BlueViolet"-->
                         <muxc:ProgressBar x:Name="netToWeb" Width="100" Margin="10" Value="100" Background="Red"  Foreground="{ThemeResource TextBoxForegroundHeaderThemeBrush}"/>
                         <FontIcon Glyph="&#xF384;" FontSize="50" Opacity="0.3" />
                     </StackPanel>
@@ -105,7 +104,7 @@
 
         </Grid>
         <Grid x:Name="Grid" Loaded="Grid_Loaded_1">
-            <muxc:ProgressBar muxc:BackdropMaterial.ApplyToRootOrPageBackground="True" x:Name="Progress" Canvas.ZIndex="1" IsIndeterminate="True" Height="3" VerticalAlignment="Top"/>
+            <muxc:ProgressBar x:Name="Progress" Canvas.ZIndex="1" IsIndeterminate="True" Height="3" VerticalAlignment="Top"/>
             <muxc:WebView2 
          Margin="0,0,0,0"
          x:Name="WebViewElement"

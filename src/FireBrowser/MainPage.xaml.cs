@@ -1189,6 +1189,7 @@ namespace FireBrowser
         public static async void OpenNewWindow(Uri uri)
         {
             await Windows.System.Launcher.LaunchUriAsync(uri);
+          
         }
 
         private void TabMenuClick(object sender, RoutedEventArgs e)
