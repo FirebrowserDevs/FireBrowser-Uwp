@@ -19,6 +19,7 @@
             <TextBlock Text=" * Setup ( Freezing )"/>
             <TextBlock Text=" * Frames Dropping"/>
             <TextBlock Text=" * Memory Leak"/>
+            <TextBlock Text=" * Settings Control "/>
             <TextBlock HorizontalAlignment="Left" Height="Auto" Margin="0,15,0,0">
               New Features
             </TextBlock>
@@ -34,12 +35,13 @@
             <TextBlock Text=" * Database"/>
             <TextBlock Text=" * Settings"/>
             <TextBlock Text=" * App Launch Profile"/>
+            <TextBlock Text=" * Code Backend"/>
             <TextBlock HorizontalAlignment="Left" Height="Auto" Margin="0,15,0,0">
               Our Discord
             </TextBlock>
             <HyperlinkButton Content="https://discord.gg/kYStRKBHwy" Click="HyperlinkButton_Click"/>
             <TextBlock HorizontalAlignment="Center" Height="Auto" Margin="0,15,0,0" FontWeight="Bold">
-                Note * Pre-Alpha Stage Software
+                Note * Pre-Alpha Stage Software ( Deprecated To FireBrowserWinUi )
             </TextBlock>
         </StackPanel>
     </Grid>

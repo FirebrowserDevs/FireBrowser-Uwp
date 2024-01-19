@@ -29,6 +29,12 @@
                             </StackPanel>
                         </StackPanel>
                     </Button>
+                    <muxc:InfoBar
+            Margin="0,10,0,0"
+IsOpen="True"
+Severity="Warning"
+Title="Deprecated"
+Message="Development Is Started On New App Named FireBrowserWinUi With Better Speed And New UserCore And Ui ( This App Will No Longer Update )" />
                     <Border x:Name="UserBorder" Visibility="Collapsed" BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.3" Margin="10,5,10,10" BorderThickness="1"/>
                     <StackPanel>
                         <Frame x:Name="UserFrame" Visibility="Collapsed">
