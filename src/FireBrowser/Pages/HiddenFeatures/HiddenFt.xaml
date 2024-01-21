@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:labs="using:CommunityToolkit.WinUI.Controls">
     <Grid Margin="4,0,-4,0">
         <Grid.RowDefinitions>
@@ -16,6 +17,7 @@
             <TextBlock Margin="75,0,0,0" Text="FireBrowser Experimental Features Use Add Own Risk"/>
             <TextBlock Text="It Can Break The Experience ( Manaully Restart Required )" Width="354"/>
         </StackPanel>
+
         <StackPanel Orientation="Horizontal" Grid.Row="1">
             <labs:SettingsCard Grid.Row="1" Margin="10,10,10,0" VerticalAlignment="Top">
                 <labs:SettingsCard.Header>
@@ -30,5 +32,11 @@
                 <ToggleSwitch  x:Name="HiddenTb2" Toggled="HiddenTb2_Toggled"/>
             </labs:SettingsCard>
         </StackPanel>
+        <muxc:InfoBar
+            Margin="10,17,909,18"
+IsOpen="True"
+Severity="Warning"
+Title="Deprecated"
+Message="Development Is Started On New App Named FireBrowserWinUi" />
     </Grid>
 </Page>

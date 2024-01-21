@@ -29,11 +29,9 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-
                         <TextBox
                             x:Name="TextBox"
                             Width="{TemplateBinding Width}"
@@ -86,13 +84,11 @@
                                 </ListView>
                             </Border>
                         </Popup>
-
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="Orientation">
                                 <VisualState x:Name="Landscape" />
                                 <VisualState x:Name="Portrait" />
                             </VisualStateGroup>
-
                         </VisualStateManager.VisualStateGroups>
                     </Grid>
                 </ControlTemplate>

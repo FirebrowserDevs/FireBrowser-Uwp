@@ -9,12 +9,10 @@
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     muxc:AnimatedIcon.State="True"
-    NavigationCacheMode="Disabled"
     xmlns:dllimg="using:FireBrowserAssets"
     mc:Ignorable="d">
     <Page.Resources>
-        <Flyout
-            
+        <Flyout          
             x:Name="MoreFlyout"
             ShouldConstrainToRootBounds="False"
             Placement="Bottom">
@@ -118,56 +116,6 @@ Message="Development Is Started On New App Named FireBrowserWinUi With Better Sp
                 </StackPanel>
             </StackPanel>
         </Flyout>
-
-        <DataTemplate x:Key="DefaultDataTemplate">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Border
-                    Grid.Column="0"
-                    Width="24"
-                    Height="24"
-                    Margin="0,0,12,0"
-                    VerticalAlignment="Center"
-                    Background="{Binding Color}"
-                    CornerRadius="16">
-                    <FontIcon
-                        FontFamily="{StaticResource FluentIcons}"
-                        FontSize="16"
-                        Foreground="White"
-                        Glyph="{Binding Icon}" />
-                </Border>
-                <TextBlock
-                    Grid.Column="1"
-                    VerticalAlignment="Center"
-                    Text="{Binding Text}" />
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate x:Key="StringDataTemplate" x:DataType="x:String">
-            <Grid Margin="10" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
-                <TextBlock
-                    Padding="10"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Foreground="{ThemeResource SystemControlForegroundChromeWhiteBrush}"
-                    Text="{Binding Text}"
-                    TextWrapping="Wrap" />
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate x:Key="IntDataTemplate" x:DataType="x:Int32">
-            <Grid Margin="10" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
-                <TextBlock
-                    Padding="10"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Style="{StaticResource HeaderTextBlockStyle}"
-                    Text="{x:Bind}" />
-            </Grid>
-        </DataTemplate>
         <Flyout x:Name="FavoritesFlyout">
             <StackPanel>
                 <TextBlock />
@@ -389,7 +337,6 @@ Message="Development Is Started On New App Named FireBrowserWinUi With Better Sp
             TabStripDragOver="Tabs_TabStripDragOver"
             TabStripDrop="Tabs_TabStripDrop"
             TabItemsChanged="Tabs_TabItemsChanged"
-            TabDroppedOutside="Tabs_TabDroppedOutside"
             Mode="Modern"
             >
             <firebrowser:FireBrowserTabView.TabStripHeader>

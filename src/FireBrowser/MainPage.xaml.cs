@@ -23,6 +23,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
@@ -45,29 +46,6 @@ using NewTab = FireBrowser.Pages.NewTab;
 
 namespace FireBrowser
 {
-    public class StringOrIntTemplateSelector : DataTemplateSelector
-    {
-        public DataTemplate StringTemplate { get; set; }
-        public DataTemplate IntTemplate { get; set; }
-        public DataTemplate DefaultTemplate { get; set; }
-
-        protected override DataTemplate SelectTemplateCore(object item)
-        {
-            if (item is string)
-            {
-                return StringTemplate;
-            }
-            else if (item is int)
-            {
-                return IntTemplate;
-            }
-            else
-            {
-                return DefaultTemplate;
-            }
-        }
-    }
-
     public sealed partial class MainPage : Page
     {
         AppWindow RootAppWindow = null;
@@ -192,42 +170,7 @@ namespace FireBrowser
             Tabs.TabItems.Add(tab);
         }
 
-        string testSetting = FireBrowserInterop.SettingsHelper.GetSetting("DragOutSideExperiment");
-        private void Tabs_TabDroppedOutside(TabView sender, TabViewTabDroppedOutsideEventArgs args)
-        {
-            if (testSetting == "0x1")
-            {
-               //MoveTabToNewWindow(args.Tab);
-            }
-            else
-            {
-
-            }
-        }
-
-        private async void MoveTabToNewWindow(TabViewItem tab)
-        {
-            if (!ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 10))
-            {
-                return;
-            }
-
-            AppWindow newWindow = await AppWindow.TryCreateAsync();
-            
-            MainPage newPage = new MainPage();
-                      
-            newPage.SetupWindow(newWindow);
-    
-            ElementCompositionPreview.SetAppWindowContent(newWindow, newPage);
-            newWindow.TitleBar.BackgroundColor = Colors.Transparent;
-            BackdropMaterial.SetApplyToRootOrPageBackground(newPage, true);
-
-
-            Tabs.TabItems.Remove(tab);
-            newPage.AddTabToTabs(tab);
-
-            await newWindow.TryShowAsync();
-        }
+        string testSetting = FireBrowserInterop.SettingsHelper.GetSetting("DragOutSideExperiment");  
 
         private async void Tabs_TabItemsChanged(TabView sender, Windows.Foundation.Collections.IVectorChangedEventArgs args)
         {
@@ -488,20 +431,15 @@ namespace FireBrowser
         #endregion
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
         {
-            if (FlowDirection == FlowDirection.LeftToRight)
-            {
-                CustomDragRegion.MinWidth = sender.SystemOverlayRightInset;
-                VBtn.MinWidth = sender.SystemOverlayLeftInset;
-            }
-            else
-            {
-                CustomDragRegion.MinWidth = sender.SystemOverlayLeftInset;
-                VBtn.MinWidth = sender.SystemOverlayRightInset;
-            }
+            var rightInset = FlowDirection == FlowDirection.LeftToRight ? sender.SystemOverlayRightInset : sender.SystemOverlayLeftInset;
+            var leftInset = FlowDirection == FlowDirection.LeftToRight ? sender.SystemOverlayLeftInset : sender.SystemOverlayRightInset;
 
-            // Ensure that the height of the custom regions are the same as the titlebar.
+            CustomDragRegion.MinWidth = rightInset;
+            VBtn.MinWidth = leftInset;
+
             CustomDragRegion.Height = VBtn.Height = sender.Height;
         }
+
 
         public class Passer
         {
@@ -538,32 +476,9 @@ namespace FireBrowser
         #endregion
 
         #region frames
-        public Frame TabContent
-        {
-            get
-            {
-                FireBrowserTabViewItem selectedItem = (FireBrowserTabViewItem)Tabs.SelectedItem;
-                if (selectedItem != null)
-                {
-                    return (Frame)selectedItem.Content;
-                }
-                return null;
-            }
-        }
+        public Frame TabContent => (Tabs.SelectedItem as FireBrowserTabViewItem)?.Content as Frame;
 
-
-
-        public WebView2 TabWebView
-        {
-            get
-            {
-                if (TabContent.Content is WebContent)
-                {
-                    return (TabContent.Content as WebContent).WebViewElement;
-                }
-                return null;
-            }
-        }
+        public WebView2 TabWebView => (TabContent?.Content as WebContent)?.WebViewElement;
 
         #endregion
 
@@ -840,22 +755,14 @@ namespace FireBrowser
 
         public void SmallUpdates()
         {
-            UrlBox.Text = TabWebView.CoreWebView2.Source.ToString();
-            ViewModel.Securitytype = TabWebView.CoreWebView2.Source.ToString();
+            var source = TabWebView.CoreWebView2.Source.ToString();
+            UrlBox.Text = ViewModel.Securitytype = source;
 
-            if (TabWebView.CoreWebView2.Source.Contains("https"))
-            {
-                ViewModel.SecurityIcon = "\uE72E";
-                ViewModel.SecurityIcontext = "Https Secured Website";
-                ViewModel.Securitytext = "This Page Is Secured By A Valid SSL Certificate, Trusted By Root Authorities";
-            }
-            else if (TabWebView.CoreWebView2.Source.Contains("http"))
-            {
-                ViewModel.SecurityIcon = "\uE785";
-                ViewModel.SecurityIcontext = "Http UnSecured Website";
-                ViewModel.Securitytext = "This Page Is Unsecured By A Un-Valid SSL Certificate, Please Be Careful";
-            }
+            ViewModel.SecurityIcon = source.Contains("https") ? "\uE72E" : "\uE785";
+            ViewModel.SecurityIcontext = source.Contains("https") ? "Https Secured Website" : "Http UnSecured Website";
+            ViewModel.Securitytext = source.Contains("https") ? "This Page Is Secured By A Valid SSL Certificate, Trusted By Root Authorities" : "This Page Is Unsecured By A Un-Valid SSL Certificate, Please Be Careful";
         }
+
 
         private async void ToolbarButtonClick(object sender, RoutedEventArgs e)
         {
@@ -1022,41 +929,21 @@ namespace FireBrowser
         #region tabsbuttons
         private void Tabs_AddTabButtonClick(TabView sender, object args)
         {
-            if (incog == true)
-            {
-                sender.TabItems.Add(CreateNewIncog());
-            }
-            else
-            {
-                sender.TabItems.Add(CreateNewTab());
-            }
+            sender.TabItems.Add(incog ? CreateNewIncog() : CreateNewTab());
             SelectNewTab();
         }
 
-        public void SelectNewTab()
-        {
-            var tabToSelect = Tabs.TabItems.Count - 1;
-            Tabs.SelectedIndex = tabToSelect;
-        }
+        public void SelectNewTab() => Tabs.SelectedIndex = Tabs.TabItems.Count - 1;
+
 
         private void Tabs_TabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
         {
-            TabViewItem selectedItem = args.Tab;
-            var tabContent = (Frame)selectedItem.Content;
+            if (args.Tab.Content is WebContent webContent)
+                webContent.WebViewElement?.Close();
 
-            if (tabContent.Content is WebContent webContent)
-            {
-                var webView = webContent.WebViewElement;
-
-                if (webView != null)
-                {
-                    webView.Close();
-                }
-            }
-
-            var tabItems = (sender as TabView)?.TabItems;
-            tabItems?.Remove(args.Tab);
+            (sender as TabView)?.TabItems?.Remove(args.Tab);
         }
+
         #endregion
 
         private ObservableCollection<HistoryItem> browserHistory;
@@ -1162,35 +1049,25 @@ namespace FireBrowser
 
         private void SearchHistoryMenuFlyout_Click(object sender, RoutedEventArgs e)
         {
-            if (HistorySearchMenuItem.Visibility == Visibility.Collapsed)
-            {
-                HistorySearchMenuItem.Visibility = Visibility.Visible;
-                HistorySmallTitle.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                HistorySearchMenuItem.Visibility = Visibility.Collapsed;
-                HistorySmallTitle.Visibility = Visibility.Visible;
-            }
+            ToggleVisibility(HistorySearchMenuItem, Visibility.Collapsed);
+            ToggleVisibility(HistorySmallTitle, Visibility.Visible);
         }
-        private async void ClearHistoryDataMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            await DbClear.ClearDb();
-            HistoryTemp.ItemsSource = null;
-        }
+
+        private async void ClearHistoryDataMenuItem_Click(object sender, RoutedEventArgs e) =>
+            await DbClear.ClearDb().ContinueWith(_ => HistoryTemp.ItemsSource = null);
 
         private void OpenHistoryMenuItem_Click(object sender, RoutedEventArgs e)
         {
             UrlBox.Text = "firebrowser://history";
-            Thread.Sleep(5);
+            Task.Delay(5).Wait();
             TabContent.Navigate(typeof(Pages.TimeLine.Timeline));
         }
 
-        public static async void OpenNewWindow(Uri uri)
-        {
-            await Windows.System.Launcher.LaunchUriAsync(uri);
-          
-        }
+        public static async void OpenNewWindow(Uri uri) => await Windows.System.Launcher.LaunchUriAsync(uri);
+
+        private static void ToggleVisibility(UIElement element, Visibility visibility) =>
+            element.Visibility = element.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+
 
         private void TabMenuClick(object sender, RoutedEventArgs e)
         {
@@ -1256,12 +1133,10 @@ namespace FireBrowser
                 : Visibility.Visible;
         }
 
-
-
         private void OpenFavoritesMenu_Click(object sender, RoutedEventArgs e)
         {
             UrlBox.Text = "firebrowser://favorites";
-            Thread.Sleep(5);
+            Task.Delay(5).Wait();
             TabContent.Navigate(typeof(Pages.TimeLine.Timeline));
         }
 
@@ -1269,17 +1144,16 @@ namespace FireBrowser
         {
             if (browserHistory == null) return;
 
-            // Clear the collection to start fresh with filtered items
             HistoryTemp.ItemsSource = null;
 
-            // Filter the browser history based on the search text
             var filteredHistory = new ObservableCollection<HistoryItem>(browserHistory
                 .Where(item => item.Url.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
                                item.Title?.Contains(searchText, StringComparison.OrdinalIgnoreCase) == true));
 
-            // Bind the filtered browser history items to the ListView
             HistoryTemp.ItemsSource = filteredHistory;
         }
+
+
 
         private void HistorySearchMenuItem_TextChanged(object sender, TextChangedEventArgs e)
         {

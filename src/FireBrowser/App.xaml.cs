@@ -225,66 +225,50 @@ namespace FireBrowser
         // Check if it's the first launch of the app
         public async Task<bool> CheckFirstLaunchAsync()
         {
-            StorageFile settingsFile = null;
-
             try
             {
-                settingsFile = await ApplicationData.Current.LocalFolder.TryGetItemAsync("Params.json") as StorageFile;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("An error occurred while checking for the settings file: " + ex.Message);
-            }
+                var settingsFile = await ApplicationData.Current.LocalFolder.TryGetItemAsync("Params.json") as StorageFile;
 
-            if (settingsFile == null)
-            {
-                try
+                if (settingsFile == null)
                 {
-                    AppSettings settings = new AppSettings { IsFirstLaunch = true, IsConnected = false };
-                    string settingsJson = JsonConvert.SerializeObject(settings);
+                    var settings = new AppSettings { IsFirstLaunch = true, IsConnected = false };
+                    var settingsJson = JsonConvert.SerializeObject(settings);
 
                     settingsFile = await ApplicationData.Current.LocalFolder.CreateFileAsync("Params.json", CreationCollisionOption.ReplaceExisting);
                     await FileIO.WriteTextAsync(settingsFile, settingsJson);
 
                     return true;
                 }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine("An error occurred while creating and saving the settings file: " + ex.Message);
-                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("An error occurred: " + ex.Message);
             }
 
             return false;
         }
 
 
-        /// <param name="e">Details about the launch request and process.</param>
+
         protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            // CoreApplication.EnablePrelaunch was introduced in Windows 10 version 1607
             bool canEnablePrelaunch = Windows.Foundation.Metadata.ApiInformation.IsMethodPresent("Windows.ApplicationModel.Core.CoreApplication", "EnablePrelaunch");
 
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Maximized;
 
-            Frame rootFrame = Window.Current.Content as Frame;
+            Frame rootFrame = Window.Current.Content as Frame ?? new Frame();
 
-            if (rootFrame == null)
+            rootFrame.NavigationFailed += OnNavigationFailed;
+
+            if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
             {
-                rootFrame = new Frame();
-
-                rootFrame.NavigationFailed += OnNavigationFailed;
-
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    Debug.WriteLine("App Terminated", e.Arguments);
-                }
-
-                Window.Current.Content = rootFrame;
+                Debug.WriteLine("App Terminated", e.Arguments);
             }
 
-            if (e.PrelaunchActivated == false)
-            {
+            Window.Current.Content = rootFrame;
 
+            if (!e.PrelaunchActivated)
+            {
                 AppLaunchPasser passer = new AppLaunchPasser()
                 {
                     LaunchType = AppLaunchType.LaunchBasic,
@@ -300,49 +284,22 @@ namespace FireBrowser
 
                 if (isFirstLaunch)
                 {
-                    if (rootFrame == null)
-                    {
-                        rootFrame = new Frame();
-                        Window.Current.Content = rootFrame;
-                    }
-
                     rootFrame.Navigate(typeof(Setup));
-                    Window.Current.Activate();
                 }
-                else
+                else if (rootFrame.Content == null)
                 {
-
-                    // TODO: Change this back to MainPage
-                    if (rootFrame.Content == null)
-                    {
-                        rootFrame.Navigate(typeof(MainPage), passer);
-                    }
-                    // Ensure the current window is active
-                    Window.Current.Activate();
+                    rootFrame.Navigate(typeof(MainPage), passer);
                 }
 
+                Window.Current.Activate();
             }
         }
 
-        /// <param name="sender">The Frame which failed navigation</param>
-        /// <param name="e">Details about the navigation failure</param>
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
-        {
-            throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
-        }
 
-        /// <param name="sender">The source of the suspend request.</param>
-        /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
-        {
-            var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
-            deferral.Complete();
-        }
+        void OnNavigationFailed(object sender, NavigationFailedEventArgs e) =>
+       throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
 
-        protected override async void OnBackgroundActivated(BackgroundActivatedEventArgs args)
-        {
-          
-        }
+        private void OnSuspending(object sender, SuspendingEventArgs e) =>
+            e.SuspendingOperation.GetDeferral().Complete();
     }
 }
